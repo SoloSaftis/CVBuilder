@@ -1,0 +1,163 @@
+{
+  "reviewed_at": "2026-11-08",
+  "scope": "General editorial guidance; not candidate evidence.",
+  "sources": [
+    {
+      "id": "hays_interests_dk",
+      "title": "How to write a great CV",
+      "author": "Hays Denmark",
+      "url": "https://www.hays.dk/en/recruitment-agency/career-centre/prepare-your-cv",
+      "kind": "recruiter_primary",
+      "reviewed_at": "2026-11-08",
+      "notes": "Interesser er valgfrie, korte og kan knyttes til eksplisitte åpne arbeidsplassaktiviteter. Eksempel på fotball gjelder faktisk spillinteresse; det gjør ikke en tilskuer til utøver."
+    },
+    {
+      "id": "hays_interests_cz",
+      "title": "Shall I add hobbies to my CV?",
+      "author": "Hays",
+      "url": "https://www.hays.cz/en/career-advice/shall-i-add-hobbies-to-my-cv",
+      "kind": "recruiter_primary",
+      "reviewed_at": "2026-11-08",
+      "notes": "Vurder plass og konkret relevans. En lang interesseliste skal ikke fortrenge relevant erfaring. Generelle hobbyer er ikke selvstendig dokumentasjon på profesjonelle ferdigheter."
+    },
+    {
+      "id": "forbes_ai_era",
+      "title": "How To Craft An AI-Era Resume That Gets You Hired",
+      "author": "William Arruda / Forbes",
+      "url": "https://www.forbes.com/sites/williamarruda/2026/09/29/how-to-craft-an-ai-era-resume-that-gets-you-hired/",
+      "kind": "career_commentary_primary",
+      "published": "2026-09-29",
+      "reviewed_at": "2026-11-08",
+      "retrieval": "Accessible article text reviewed through the web tool; returned via Forbes Tollbit in rewritten form, including the six numbered sections.",
+      "notes": "Knytt faktiske bidrag til stillingskrav og vis effekt uten overdrivelse. Artikkelen avviser en absolutt énsideregel; dette opphever ikke kandidatens grense på to sider. Ingen statistikk eller intervjuløfter brukes som byggekrav."
+    },
+    {
+      "id": "coursera_ai_resume",
+      "title": "How to Write an Artificial Intelligence Resume Step by Step with Examples",
+      "author": "Coursera Staff",
+      "url": "https://www.coursera.org/articles/artificial-intelligence-resume",
+      "kind": "education_editorial_primary",
+      "updated": "2026-08-27",
+      "reviewed_at": "2026-11-08",
+      "retrieval": "Article sections and concluding resume tips reviewed.",
+      "notes": "Handler primært om søknader til jobber som krever AI-ferdigheter. Vi bruker rådene om relevant erfaring, kort profil, tydelig utdanning og maksimalt to sider; kandidatens AI-interesse oppgraderes ikke til ML-erfaring eller sertifikater."
+    },
+    {
+      "id": "denken_ai_era",
+      "title": "What matters on your resume in the AI era?",
+      "author": "Denken Solutions Inc. / LinkedIn",
+      "url": "https://www.linkedin.com/pulse/what-matters-your-resume-ai-era-denkensolutions-byw9f/",
+      "kind": "staffing_company_primary",
+      "published": "2026-09-15",
+      "reviewed_at": "2026-11-08",
+      "retrieval": "Public article body reviewed, including all seven numbered sections and conclusion.",
+      "notes": "Prioriter relevant problemløsning, naturlige fagord, egne bidrag og konkret læring. Bruk en tydelig struktur for både mennesker og systemer; ikke kopier annonsen, overfyll nøkkelord eller legg til ferdigheter kandidaten mangler."
+    },
+    {
+      "id": "greenhouse_parse",
+      "title": "Unsuccessful resume parse",
+      "author": "Greenhouse Support",
+      "url": "https://support.greenhouse.io/hc/en-us/articles/200989175-Unsuccessful-resume-parse",
+      "kind": "ats_vendor_primary",
+      "reviewed_at": "2026-11-08",
+      "notes": "Leverandøren beskriver automatisk feltutfylling og feil ved blant annet spalter, bilder, tabeller og kontaktinfo i topptekst eller tekstbokser. Filgrensen for denne parseren er 2,5 MB, ikke en universell ATS-grense. En parserfeil innebærer behov for manuell registrering; den dokumenterer ikke automatisk avslag eller AI-rangering."
+    },
+    {
+      "id": "half_interests",
+      "title": "What to put on a CV",
+      "author": "Robert Half New Zealand; Kelsey Llewellyn",
+      "url": "https://www.roberthalf.com/nz/en/insights/career-development/resume-include",
+      "kind": "recruiter_primary",
+      "reviewed_at": "2026-11-08",
+      "notes": "Prioriter relevant erfaring. Interesser er valgfrie og bør være selektive og korte. Brukes som redaksjonelt råd; artikkelens regionale lengde- og bildevaner er ikke en universell standard."
+    },
+    {
+      "id": "video_raj",
+      "title": "You NEED this CV design in 2026: From a Cambridge University Careers Pro",
+      "author": "Raj Sidhu",
+      "url": "https://www.youtube.com/watch?v=TdXCrN9NpTY",
+      "kind": "video_auto_captions",
+      "retrieval": "Fullstendige engelske automatiske undertekster hentet og lest; 144 segmenter, ca. 6 minutter.",
+      "published": "2025-03-18",
+      "limitations": "Forfatterens Cambridge-tilknytning er egenpresentasjon, ikke institusjonell anbefaling. Automatiske undertekster feilstaver blant annet fontnavn. Videoens 3,9-sekunderspåstand er ikke uavhengig etterprøvd.",
+      "notes": [
+        {
+          "seconds": 21,
+          "point": "Sans-serif foretrekkes; konkrete fonter er forfatterens smak."
+        },
+        {
+          "seconds": 84,
+          "point": "Luft rundt innhold skal lede oppmerksomheten."
+        },
+        {
+          "seconds": 138,
+          "point": "Prioriter tydelig kontrast."
+        },
+        {
+          "seconds": 162,
+          "point": "Balanser innholdet; datoer eller sted kan plasseres mot høyre."
+        },
+        {
+          "seconds": 176,
+          "point": "Forfatteren fraråder kursiv og anbefaler sparsom, konsekvent fet skrift."
+        },
+        {
+          "seconds": 223,
+          "point": "Word-eksemplet bruker moderate marger og omtrent 11,5 punkters brødtekst."
+        },
+        {
+          "seconds": 332,
+          "point": "Videoen henviser videre for selve innholdsarbeidet."
+        }
+      ]
+    },
+    {
+      "id": "hays_cv",
+      "title": "CV writing tips: Your CV questions answered",
+      "author": "Karen Young / Hays",
+      "url": "https://www.hays.co.uk/career-advice/article/cv-writing-your-questions-answered",
+      "kind": "recruiter_primary",
+      "notes": "Tilpass profil og kompetanse til rollen; vis relevante nøkkelord i sammenheng; prioriter nyere og relevant erfaring. CV og LinkedIn bør ha samsvarende datoer og titler. Artikkelen åpner for kompetanse i sidespalte."
+    },
+    {
+      "id": "page_engineering",
+      "title": "Updating your engineering CV: Expert advice",
+      "author": "Michael Page; blant annet Joe Walton, Director of Michael Page Manufacturing",
+      "url": "https://www.michaelpage.co.uk/advice/career-advice/cover-letter-and-cv-advice/updating-your-engineering-cv-expert-advice",
+      "kind": "recruiter_primary",
+      "notes": "Ingeniører bør vise reell teknisk erfaring og egne bidrag. Bruk omvendt kronologi og konkrete prestasjoner som tåler intervju. To A4-sider er en nyttig målsetting, men ikke en absolutt grense dersom vesentlig informasjon ellers forsvinner."
+    },
+    {
+      "id": "half_ats",
+      "title": "How to Write an ATS-Friendly Resume",
+      "author": "Robert Half New Zealand; Megan Alexander",
+      "url": "https://www.roberthalf.com/nz/en/insights/landing-job/how-to-write-an-ats-friendly-resume",
+      "kind": "recruiter_primary",
+      "notes": "Bruk gjenkjennelige overskrifter og relevante fagord. Enkel struktur reduserer risiko ved maskinell lesing. Kontaktinfo bør stå i dokumentets hovedinnhold. Komplekse tabeller og sidespalter kan gi tolkningsproblemer; tekstuttrekk alene beviser ikke kompatibilitet med alle ATS-systemer."
+    },
+    {
+      "id": "half_results",
+      "title": "Common resume mistakes to avoid",
+      "author": "Robert Half Canada",
+      "url": "https://www.roberthalf.com/ca/en/insights/landing-job/common-resume-mistakes-to-avoid-7-resume-errors-that-cost-interviews",
+      "kind": "recruiter_primary",
+      "notes": "Vis hva som ble oppnådd fremfor bare ansvar. Bruk korrekte tall der de er meningsfulle; konkrete kvalitative resultater er også nyttige. Kandidaten må kontrollere KI-assistert tekst."
+    },
+    {
+      "id": "page_sector",
+      "title": "How to write a CV for your sector",
+      "author": "Michael Page",
+      "url": "https://www.michaelpage.co.uk/advice/career-advice/cover-letter-and-cv-advice/how-write-cv-your-sector",
+      "kind": "recruiter_primary",
+      "notes": "Prioriter relevant erfaring og korrektur. Tekniske roller bør ha en enkel og tydelig presentasjon. Den britiske veiledningen fraråder bilde med mindre arbeidsgiver ber om det; dette overføres ikke automatisk til alle land."
+    },
+    {
+      "id": "tekna",
+      "title": "Jeg skal skrive CV og søknad",
+      "author": "Tekna",
+      "url": "https://www.tekna.no/karriere/digitalt-jobbsokerkurs/soknadogcv/",
+      "kind": "norwegian_professional_body",
+      "notes": "Tilpass CV-en til stillingen, prioriter relevant erfaring og bruk presise fagtermer fra annonsen der kandidaten faktisk har kompetansen."
+    }
+  ]
+}

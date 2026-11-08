@@ -1,0 +1,6 @@
+CVBuilder 2 – bærbar utgave for Linux
+
+Pakk ut og kjør ./CVBuilder. Mappen «CVBuilder-data» gjør utgaven bærbar.
+Vil du ha programmet i menyen: kopier cvbuilder.desktop til ~/.local/share/applications
+og cvbuilder.png til ~/.local/share/icons, og legg CVBuilder i PATH.
+API-nøkler for AI lagres i systemets nøkkelring (Secret Service, for eksempel GNOME Keyring).

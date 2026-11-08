@@ -1,0 +1,10 @@
+{
+  "default": "deny",
+  "tools": [
+    "workflow",
+    "prompt"
+  ],
+  "network": false,
+  "candidate_data_upload": false,
+  "release_tool_exposed": false
+}

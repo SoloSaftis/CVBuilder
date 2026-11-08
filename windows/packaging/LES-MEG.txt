@@ -1,0 +1,15 @@
+CVBuilder 2 – bærbar utgave for Windows
+=======================================
+
+Start: dobbeltklikk CVBuilder.exe. Ingen installasjon.
+
+Mappen «CVBuilder-data» ved siden av programmet gjør utgaven bærbar:
+utkast og innstillinger lagres der, så du kan ha alt på en minnepinne.
+Sletter du mappen, lagres alt i stedet i din egen brukermappe.
+
+AI er valgfritt (knappen «Koble til AI…»). Du bruker din egen API-nøkkel
+fra Anthropic (Claude), OpenAI (ChatGPT), Google (Gemini) eller xAI (Grok).
+Nøkkelen lagres i Windows sin egen legitimasjonsbehandling, ikke i mappen.
+
+Windows kan vise «Windows beskyttet PC-en» første gang, fordi programmet
+ikke er kodesignert ennå. Velg «Mer informasjon» og «Kjør likevel».

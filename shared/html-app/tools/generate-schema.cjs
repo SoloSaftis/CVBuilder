@@ -1,0 +1,1 @@
+const fs=require('node:fs'),path=require('node:path'),contract=require('../contract.js');for(const [name,value]of [['intake.schema.json',contract.schema],['utkast.json',contract.blank()]]){const target=path.join(__dirname,'../templates',name);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,JSON.stringify(value,null,2)+'\n');}

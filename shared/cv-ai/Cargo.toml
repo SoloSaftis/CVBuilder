@@ -1,0 +1,18 @@
+[package]
+name = "cv-ai"
+description = "Optional AI help for CVBuilder: Claude, ChatGPT, Gemini and Grok with the user's own API key"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+cv-core = { path = "../cv-core" }
+craft-ai-core = { git = "https://github.com/storytold/craft-ai-integrations", rev = "29297b2fbe11077201edc657bff3315e93841d22" }
+craft-ai-openai = { git = "https://github.com/storytold/craft-ai-integrations", rev = "29297b2fbe11077201edc657bff3315e93841d22" }
+craft-ai-native = { git = "https://github.com/storytold/craft-ai-integrations", rev = "29297b2fbe11077201edc657bff3315e93841d22" }
+ureq = { version = "3", default-features = false, features = ["rustls", "platform-verifier", "json"] }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true

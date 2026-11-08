@@ -1,0 +1,698 @@
+{
+ "long": {
+  "project": {
+   "version": 2,
+   "language": "no",
+   "candidate": {
+    "name": "Ingrid Haugland",
+    "email": "ingrid.haugland@example.no",
+    "phone": "+47 400 00 000",
+    "city": "Trondheim, Norge",
+    "headline": "Prosjektkoordinator | Innkjøp | Kundeoppfølging",
+    "linkedin": "https://www.linkedin.com/in/eksempel",
+    "summary": "Prosjektkoordinator med sju års erfaring fra bygg og eiendom. Planlegger leveranser, følger opp leverandører og holder kunder oppdatert fra kontrakt til overlevering. Har redusert forsinkelser med faste ukeplaner og tydelige avviksrutiner, og vil bruke dette som koordinator i en voksende entreprenør.",
+    "photo": ""
+   },
+   "target": {
+    "role": "Prosjektkoordinator",
+    "company": "Eksempel Entreprenør AS",
+    "url": "",
+    "description": "Vi søker en strukturert prosjektkoordinator med erfaring fra bygg. Du vil ha ansvar for fremdriftsplaner, innkjøp, oppfølging av underleverandører, HMS-dokumentasjon og kundekontakt. Erfaring med Excel, ISY ProArc og Power BI er en fordel. TwinCAT 3 og CODESYS er en fordel. Legemiddelhåndtering. Legemiddelhåndtering.",
+    "keywords": [
+     "prosjektkoordinator",
+     "fremdriftsplan",
+     "innkjøp",
+     "underleverandører",
+     "HMS",
+     "kundekontakt",
+     "Excel",
+     "Power BI",
+     "ISY ProArc",
+     "TwinCAT",
+     "C/C++",
+     "maskinsikkerhet"
+    ]
+   },
+   "experience": [
+    {
+     "id": "ex_1",
+     "company": "Fjellvegg Bygg AS (fiktiv)",
+     "title": "Prosjektkoordinator",
+     "location": "Trondheim",
+     "start": "2021-03",
+     "end": null,
+     "bullets": [
+      "Koordinerer innkjøp og leveranser for 6 boligprosjekter samtidig, med til sammen 140 leiligheter.",
+      "Innførte felles ukeplan for underleverandører og reduserte forsinkede leveranser med 30 % på ett år.",
+      "Utarbeider HMS- og FDV-dokumentasjon og leder overleveringsmøter med kunder."
+     ],
+     "evidence": "Eksempel.",
+     "confirmed": true
+    },
+    {
+     "id": "ex_2",
+     "company": "Byggvare Midt AS (fiktiv)",
+     "title": "Innkjøpsmedarbeider",
+     "location": "Trondheim",
+     "start": "2018-01",
+     "end": "2021-02",
+     "bullets": [
+      "Fulgte opp 40 faste leverandører på pris, leveringstid og reklamasjoner.",
+      "Bygget rapport i Power BI som ga ledelsen ukentlig oversikt over lagerverdi."
+     ],
+     "evidence": "Eksempel.",
+     "confirmed": true
+    },
+    {
+     "id": "ex_3",
+     "company": "Nordlys Montasje AS (fiktiv)",
+     "title": "Montør",
+     "location": "",
+     "start": "2012",
+     "end": "2015-06",
+     "bullets": [
+      "Jeg var ansvarlig for montasje på 12 byggeplasser.",
+      "Monterte og testet tavler.",
+      "Monterte ventilasjon.",
+      "Monterte belysning i 3 skoler.",
+      "Monterte solcellepaneler."
+     ],
+     "evidence": "",
+     "confirmed": true
+    },
+    {
+     "id": "ex_4",
+     "company": "Fjordkyst Elektro AS (fiktiv)",
+     "title": "Lærling",
+     "location": "Ålesund",
+     "start": "2009-08",
+     "end": "2011-06",
+     "bullets": [
+      "Født 1990. Lærte faget hos dyktige og motiverte kolleger, og var løsningsorientert."
+     ],
+     "evidence": "",
+     "confirmed": true
+    }
+   ],
+   "education": [
+    {
+     "qualification": "Bachelor i økonomi og administrasjon",
+     "institution": "Eksempel høgskole",
+     "start": "2015",
+     "end": "2018"
+    }
+   ],
+   "skills": [
+    {
+     "group": "Prosjekt",
+     "name": "fremdriftsplaner",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Prosjekt",
+     "name": "innkjøp og bestilling",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Prosjekt",
+     "name": "oppfølging av underleverandører",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Prosjekt",
+     "name": "HMS-dokumentasjon",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Verktøy",
+     "name": "Excel (pivot, oppslag)",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Verktøy",
+     "name": "Power BI",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Verktøy",
+     "name": "MS Project",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Kunde",
+     "name": "kundekontakt og avklaringer",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Kunde",
+     "name": "overleveringsdokumentasjon",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    }
+   ],
+   "languages": [
+    {
+     "name": "Norsk",
+     "level": "morsmål"
+    },
+    {
+     "name": "Engelsk",
+     "level": "flytende"
+    }
+   ],
+   "certifications": [
+    {
+     "name": "Prosjektledelse, grunnkurs",
+     "issuer": "Eksempel kursleverandør",
+     "year": "2022"
+    }
+   ],
+   "interests": [
+    {
+     "id": "ex_i1",
+     "label": "Langrenn",
+     "status": "current",
+     "description": "Eksempel.",
+     "category": "sport",
+     "tags": [
+      "ski"
+     ],
+     "confirmed": true,
+     "specificity": 1
+    },
+    {
+     "id": "ex_i2",
+     "label": "Frivillig i idrettslag",
+     "status": "current",
+     "description": "Eksempel.",
+     "category": "community",
+     "tags": [
+      "frivillig"
+     ],
+     "confirmed": true,
+     "specificity": 2
+    }
+   ],
+   "public_context": [],
+   "options": {
+    "layout": "classic",
+    "photo": false,
+    "include_interests": true,
+    "interest_ids": [
+     "ex_i1",
+     "ex_i2"
+    ],
+    "page_limit": 2
+   },
+   "approvals": {
+    "facts_confirmed": false
+   }
+  },
+  "ready": [
+   "approvals: bekreft at opplysningene er riktige"
+  ],
+  "checks": [
+   {
+    "level": "pass",
+    "text": "Kontaktinformasjon står som vanlig tekst øverst"
+   },
+   {
+    "level": "pass",
+    "text": "Telefonnummeret har landskode"
+   },
+   {
+    "level": "pass",
+    "text": "LinkedIn-profil er oppgitt"
+   },
+   {
+    "level": "pass",
+    "text": "Overskriften speiler stillingen"
+   },
+   {
+    "level": "pass",
+    "text": "Profilen har 41 ord"
+   },
+   {
+    "level": "warn",
+    "text": "Bare 8 av 12 fagord fra annonsen finnes i CV-en"
+   },
+   {
+    "level": "pass",
+    "text": "9 kompetanser i kompetanseseksjonen"
+   },
+   {
+    "level": "pass",
+    "text": "Kompetansene er gruppert"
+   },
+   {
+    "level": "pass",
+    "text": "Punktene er korte nok til å skannes"
+   },
+   {
+    "level": "warn",
+    "text": "1 punkt starter med «Jeg» eller «Ansvarlig for»"
+   },
+   {
+    "level": "info",
+    "text": "Mange punkter starter med samme ord"
+   },
+   {
+    "level": "info",
+    "text": "1 av 4 jobber viser et målbart resultat"
+   },
+   {
+    "level": "info",
+    "text": "Moteord som ikke beviser noe"
+   },
+   {
+    "level": "warn",
+    "text": "Personopplysninger som ikke hører hjemme i en CV"
+   },
+   {
+    "level": "info",
+    "text": "Opphold over seks måneder i tidslinjen"
+   },
+   {
+    "level": "info",
+    "text": "Arbeidssted mangler for noen jobber"
+   },
+   {
+    "level": "pass",
+    "text": "2 A4-sider"
+   },
+   {
+    "level": "pass",
+    "text": "Én tekstspalte, vanlige overskrifter og ekte tekst"
+   }
+  ],
+  "match": {
+   "found": [
+    "prosjektkoordinator",
+    "fremdriftsplan",
+    "innkjøp",
+    "underleverandører",
+    "HMS",
+    "kundekontakt",
+    "Excel",
+    "Power BI"
+   ],
+   "missing": [
+    "ISY ProArc",
+    "TwinCAT",
+    "C/C++",
+    "maskinsikkerhet"
+   ],
+   "coverage": 67
+  },
+  "plain": "Ingrid Haugland\nProsjektkoordinator | Innkjøp | Kundeoppfølging\ningrid.haugland@example.no | +47 400 00 000 | Trondheim, Norge | https://www.linkedin.com/in/eksempel\n\nPROFIL\nProsjektkoordinator med sju års erfaring fra bygg og eiendom. Planlegger leveranser, følger opp leverandører og holder kunder oppdatert fra kontrakt til overlevering. Har redusert forsinkelser med faste ukeplaner og tydelige avviksrutiner, og vil bruke dette som koordinator i en voksende entreprenør.\n\nKJERNEKOMPETANSE\nProsjekt: fremdriftsplaner, innkjøp og bestilling, oppfølging av underleverandører, HMS-dokumentasjon\nVerktøy: Excel (pivot, oppslag), Power BI, MS Project\nKunde: kundekontakt og avklaringer, overleveringsdokumentasjon\n\nARBEIDSERFARING\n\nProsjektkoordinator | Fjellvegg Bygg AS (fiktiv) | Trondheim\n03.2021 – nå\n- Koordinerer innkjøp og leveranser for 6 boligprosjekter samtidig, med til sammen 140 leiligheter.\n- Innførte felles ukeplan for underleverandører og reduserte forsinkede leveranser med 30 % på ett år.\n- Utarbeider HMS- og FDV-dokumentasjon og leder overleveringsmøter med kunder.\n\nInnkjøpsmedarbeider | Byggvare Midt AS (fiktiv) | Trondheim\n01.2018 – 02.2021\n- Fulgte opp 40 faste leverandører på pris, leveringstid og reklamasjoner.\n- Bygget rapport i Power BI som ga ledelsen ukentlig oversikt over lagerverdi.\n\nMontør | Nordlys Montasje AS (fiktiv)\n2012 – 06.2015\n- Jeg var ansvarlig for montasje på 12 byggeplasser.\n- Monterte og testet tavler.\n- Monterte ventilasjon.\n- Monterte belysning i 3 skoler.\n- Monterte solcellepaneler.\n\nLærling | Fjordkyst Elektro AS (fiktiv) | Ålesund\n08.2009 – 06.2011\n- Født 1990. Lærte faget hos dyktige og motiverte kolleger, og var løsningsorientert.\n\nUTDANNING\nBachelor i økonomi og administrasjon | Eksempel høgskole | 2015 – 2018\n\nKURS OG SERTIFISERINGER\nProsjektledelse, grunnkurs | Eksempel kursleverandør | 2022\n\nSPRÅK\nNorsk: morsmål | Engelsk: flytende\n"
+ },
+ "example": {
+  "project": {
+   "version": 2,
+   "language": "no",
+   "candidate": {
+    "name": "Ingrid Haugland",
+    "email": "ingrid.haugland@example.no",
+    "phone": "+47 400 00 000",
+    "city": "Trondheim, Norge",
+    "headline": "Prosjektkoordinator | Innkjøp | Kundeoppfølging",
+    "linkedin": "https://www.linkedin.com/in/eksempel",
+    "summary": "Prosjektkoordinator med sju års erfaring fra bygg og eiendom. Planlegger leveranser, følger opp leverandører og holder kunder oppdatert fra kontrakt til overlevering. Har redusert forsinkelser med faste ukeplaner og tydelige avviksrutiner, og vil bruke dette som koordinator i en voksende entreprenør.",
+    "photo": ""
+   },
+   "target": {
+    "role": "Prosjektkoordinator",
+    "company": "Eksempel Entreprenør AS",
+    "url": "",
+    "description": "Vi søker en strukturert prosjektkoordinator med erfaring fra bygg. Du vil ha ansvar for fremdriftsplaner, innkjøp, oppfølging av underleverandører, HMS-dokumentasjon og kundekontakt. Erfaring med Excel, ISY ProArc og Power BI er en fordel.",
+    "keywords": [
+     "prosjektkoordinator",
+     "fremdriftsplan",
+     "innkjøp",
+     "underleverandører",
+     "HMS",
+     "kundekontakt",
+     "Excel",
+     "Power BI",
+     "ISY ProArc"
+    ]
+   },
+   "experience": [
+    {
+     "id": "ex_1",
+     "company": "Fjellvegg Bygg AS (fiktiv)",
+     "title": "Prosjektkoordinator",
+     "location": "Trondheim",
+     "start": "2021-03",
+     "end": null,
+     "bullets": [
+      "Koordinerer innkjøp og leveranser for 6 boligprosjekter samtidig, med til sammen 140 leiligheter.",
+      "Innførte felles ukeplan for underleverandører og reduserte forsinkede leveranser med 30 % på ett år.",
+      "Utarbeider HMS- og FDV-dokumentasjon og leder overleveringsmøter med kunder."
+     ],
+     "evidence": "Eksempel.",
+     "confirmed": true
+    },
+    {
+     "id": "ex_2",
+     "company": "Byggvare Midt AS (fiktiv)",
+     "title": "Innkjøpsmedarbeider",
+     "location": "Trondheim",
+     "start": "2018-01",
+     "end": "2021-02",
+     "bullets": [
+      "Fulgte opp 40 faste leverandører på pris, leveringstid og reklamasjoner.",
+      "Bygget rapport i Power BI som ga ledelsen ukentlig oversikt over lagerverdi."
+     ],
+     "evidence": "Eksempel.",
+     "confirmed": true
+    }
+   ],
+   "education": [
+    {
+     "qualification": "Bachelor i økonomi og administrasjon",
+     "institution": "Eksempel høgskole",
+     "start": "2015",
+     "end": "2018"
+    }
+   ],
+   "skills": [
+    {
+     "group": "Prosjekt",
+     "name": "fremdriftsplaner",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Prosjekt",
+     "name": "innkjøp og bestilling",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Prosjekt",
+     "name": "oppfølging av underleverandører",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Prosjekt",
+     "name": "HMS-dokumentasjon",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Verktøy",
+     "name": "Excel (pivot, oppslag)",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Verktøy",
+     "name": "Power BI",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Verktøy",
+     "name": "MS Project",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Kunde",
+     "name": "kundekontakt og avklaringer",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    },
+    {
+     "group": "Kunde",
+     "name": "overleveringsdokumentasjon",
+     "evidence": "Eksempel: beskriv hvor du har brukt dette.",
+     "confirmed": true
+    }
+   ],
+   "languages": [
+    {
+     "name": "Norsk",
+     "level": "morsmål"
+    },
+    {
+     "name": "Engelsk",
+     "level": "flytende"
+    }
+   ],
+   "certifications": [
+    {
+     "name": "Prosjektledelse, grunnkurs",
+     "issuer": "Eksempel kursleverandør",
+     "year": "2022"
+    }
+   ],
+   "interests": [
+    {
+     "id": "ex_i1",
+     "label": "Langrenn",
+     "status": "current",
+     "description": "Eksempel.",
+     "category": "sport",
+     "tags": [
+      "ski"
+     ],
+     "confirmed": true,
+     "specificity": 1
+    },
+    {
+     "id": "ex_i2",
+     "label": "Frivillig i idrettslag",
+     "status": "current",
+     "description": "Eksempel.",
+     "category": "community",
+     "tags": [
+      "frivillig"
+     ],
+     "confirmed": true,
+     "specificity": 2
+    }
+   ],
+   "public_context": [],
+   "options": {
+    "layout": "classic",
+    "photo": false,
+    "include_interests": true,
+    "interest_ids": [
+     "ex_i1",
+     "ex_i2"
+    ],
+    "page_limit": 2
+   },
+   "approvals": {
+    "facts_confirmed": false
+   }
+  },
+  "ready": [
+   "approvals: bekreft at opplysningene er riktige"
+  ],
+  "checks": [
+   {
+    "level": "pass",
+    "text": "Kontaktinformasjon står som vanlig tekst øverst"
+   },
+   {
+    "level": "pass",
+    "text": "Telefonnummeret har landskode"
+   },
+   {
+    "level": "pass",
+    "text": "LinkedIn-profil er oppgitt"
+   },
+   {
+    "level": "pass",
+    "text": "Overskriften speiler stillingen"
+   },
+   {
+    "level": "pass",
+    "text": "Profilen har 41 ord"
+   },
+   {
+    "level": "pass",
+    "text": "8 av 9 fagord fra annonsen finnes i CV-en"
+   },
+   {
+    "level": "pass",
+    "text": "9 kompetanser i kompetanseseksjonen"
+   },
+   {
+    "level": "pass",
+    "text": "Kompetansene er gruppert"
+   },
+   {
+    "level": "pass",
+    "text": "Punktene er korte nok til å skannes"
+   },
+   {
+    "level": "pass",
+    "text": "Punktene starter med handling"
+   },
+   {
+    "level": "pass",
+    "text": "Variert språk i punktene"
+   },
+   {
+    "level": "info",
+    "text": "1 av 2 jobber viser et målbart resultat"
+   },
+   {
+    "level": "pass",
+    "text": "Ingen tomme moteord"
+   },
+   {
+    "level": "pass",
+    "text": "Ingen unødvendige personopplysninger"
+   },
+   {
+    "level": "pass",
+    "text": "Ingen uforklarte opphold over seks måneder"
+   },
+   {
+    "level": "pass",
+    "text": "Arbeidssted er oppgitt for jobbene"
+   },
+   {
+    "level": "pass",
+    "text": "2 A4-sider"
+   },
+   {
+    "level": "pass",
+    "text": "Én tekstspalte, vanlige overskrifter og ekte tekst"
+   }
+  ],
+  "match": {
+   "found": [
+    "prosjektkoordinator",
+    "fremdriftsplan",
+    "innkjøp",
+    "underleverandører",
+    "HMS",
+    "kundekontakt",
+    "Excel",
+    "Power BI"
+   ],
+   "missing": [
+    "ISY ProArc"
+   ],
+   "coverage": 89
+  },
+  "plain": "Ingrid Haugland\nProsjektkoordinator | Innkjøp | Kundeoppfølging\ningrid.haugland@example.no | +47 400 00 000 | Trondheim, Norge | https://www.linkedin.com/in/eksempel\n\nPROFIL\nProsjektkoordinator med sju års erfaring fra bygg og eiendom. Planlegger leveranser, følger opp leverandører og holder kunder oppdatert fra kontrakt til overlevering. Har redusert forsinkelser med faste ukeplaner og tydelige avviksrutiner, og vil bruke dette som koordinator i en voksende entreprenør.\n\nKJERNEKOMPETANSE\nProsjekt: fremdriftsplaner, innkjøp og bestilling, oppfølging av underleverandører, HMS-dokumentasjon\nVerktøy: Excel (pivot, oppslag), Power BI, MS Project\nKunde: kundekontakt og avklaringer, overleveringsdokumentasjon\n\nARBEIDSERFARING\n\nProsjektkoordinator | Fjellvegg Bygg AS (fiktiv) | Trondheim\n03.2021 – nå\n- Koordinerer innkjøp og leveranser for 6 boligprosjekter samtidig, med til sammen 140 leiligheter.\n- Innførte felles ukeplan for underleverandører og reduserte forsinkede leveranser med 30 % på ett år.\n- Utarbeider HMS- og FDV-dokumentasjon og leder overleveringsmøter med kunder.\n\nInnkjøpsmedarbeider | Byggvare Midt AS (fiktiv) | Trondheim\n01.2018 – 02.2021\n- Fulgte opp 40 faste leverandører på pris, leveringstid og reklamasjoner.\n- Bygget rapport i Power BI som ga ledelsen ukentlig oversikt over lagerverdi.\n\nUTDANNING\nBachelor i økonomi og administrasjon | Eksempel høgskole | 2015 – 2018\n\nKURS OG SERTIFISERINGER\nProsjektledelse, grunnkurs | Eksempel kursleverandør | 2022\n\nSPRÅK\nNorsk: morsmål | Engelsk: flytende\n"
+ },
+ "blank": {
+  "project": {
+   "version": 2,
+   "language": "no",
+   "candidate": {
+    "name": "",
+    "email": "",
+    "phone": "",
+    "city": "",
+    "headline": "",
+    "linkedin": "",
+    "summary": "",
+    "photo": ""
+   },
+   "target": {
+    "role": "",
+    "company": "",
+    "url": "",
+    "description": "",
+    "keywords": []
+   },
+   "experience": [],
+   "education": [],
+   "skills": [],
+   "languages": [],
+   "certifications": [],
+   "interests": [],
+   "public_context": [],
+   "options": {
+    "layout": "classic",
+    "photo": false,
+    "include_interests": true,
+    "interest_ids": [],
+    "page_limit": 2
+   },
+   "approvals": {
+    "facts_confirmed": false
+   }
+  },
+  "ready": [
+   "Fullt navn må fylles ut.",
+   "E-post må fylles ut.",
+   "Telefon må fylles ut.",
+   "By og land må fylles ut.",
+   "Faglig overskrift må fylles ut.",
+   "Skriv hvilken stilling du søker (under «Stillingen»).",
+   "Legg til minst én jobb eller utdanning.",
+   "approvals: bekreft at opplysningene er riktige"
+  ],
+  "checks": [
+   {
+    "level": "warn",
+    "text": "Kontaktinformasjon mangler"
+   },
+   {
+    "level": "info",
+    "text": "LinkedIn-profil mangler"
+   },
+   {
+    "level": "warn",
+    "text": "Faglig overskrift mangler"
+   },
+   {
+    "level": "warn",
+    "text": "Profiltekst mangler"
+   },
+   {
+    "level": "info",
+    "text": "Ingen fagord fra annonsen er lagt inn"
+   },
+   {
+    "level": "warn",
+    "text": "Ingen kompetanser lagt inn"
+   },
+   {
+    "level": "pass",
+    "text": "Ingen tomme moteord"
+   },
+   {
+    "level": "pass",
+    "text": "Ingen unødvendige personopplysninger"
+   },
+   {
+    "level": "pass",
+    "text": "Ingen uforklarte opphold over seks måneder"
+   },
+   {
+    "level": "pass",
+    "text": "2 A4-sider"
+   },
+   {
+    "level": "pass",
+    "text": "Én tekstspalte, vanlige overskrifter og ekte tekst"
+   }
+  ],
+  "match": {
+   "found": [],
+   "missing": [],
+   "coverage": null
+  },
+  "plain": "\n"
+ }
+}

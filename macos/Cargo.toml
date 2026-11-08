@@ -1,0 +1,15 @@
+[package]
+name = "cvbuilder-macos"
+description = "CVBuilder for macOS: starts the shared app and holds what is specific to macOS"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[[bin]]
+name = "CVBuilder"
+path = "src/main.rs"
+
+[dependencies]
+cvbuilder-app = { path = "../shared/app" }

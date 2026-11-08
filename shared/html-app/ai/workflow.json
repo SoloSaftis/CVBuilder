@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "execution": "connected-host-or-manual; no automatic model calls",
+  "intake_schema": "../templates/intake.schema.json",
+  "policy": "BUILD_RULES.md",
+  "tasks": [
+    {
+      "role": "recruitment_intelligence",
+      "depends_on": [],
+      "prompt": "prompts/recruitment_intelligence.md"
+    },
+    {
+      "role": "candidate_intelligence",
+      "depends_on": [],
+      "prompt": "prompts/candidate_intelligence.md"
+    },
+    {
+      "role": "technical_specialist",
+      "depends_on": [
+        "candidate_intelligence",
+        "recruitment_intelligence"
+      ],
+      "prompt": "prompts/technical_specialist.md"
+    },
+    {
+      "role": "achievement_strategist",
+      "depends_on": [
+        "candidate_intelligence"
+      ],
+      "prompt": "prompts/achievement_strategist.md"
+    },
+    {
+      "role": "ats_strategist",
+      "depends_on": [
+        "technical_specialist",
+        "achievement_strategist"
+      ],
+      "prompt": "prompts/ats_strategist.md"
+    },
+    {
+      "role": "bilingual_editor",
+      "depends_on": [
+        "ats_strategist"
+      ],
+      "prompt": "prompts/bilingual_editor.md"
+    },
+    {
+      "role": "creative_director",
+      "depends_on": [
+        "bilingual_editor"
+      ],
+      "prompt": "prompts/creative_director.md"
+    },
+    {
+      "role": "independent_qa_auditor",
+      "depends_on": [
+        "creative_director"
+      ],
+      "prompt": "prompts/independent_qa_auditor.md"
+    },
+    {
+      "role": "cv_manager",
+      "depends_on": [
+        "independent_qa_auditor"
+      ],
+      "prompt": "prompts/cv_manager.md"
+    }
+  ],
+  "gates": [
+    "strict_input",
+    "candidate_facts",
+    "evidence_review",
+    "interest_authenticity",
+    "independent_qa",
+    "manager_approval",
+    "artifact_render_review"
+  ]
+}

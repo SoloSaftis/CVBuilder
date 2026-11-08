@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "language": "no",
+  "candidate": {
+    "name": "",
+    "email": "",
+    "phone": "",
+    "city": "",
+    "headline": "",
+    "linkedin": "",
+    "summary": "",
+    "photo": ""
+  },
+  "target": {
+    "role": "",
+    "company": "",
+    "url": "",
+    "description": "",
+    "keywords": []
+  },
+  "experience": [],
+  "education": [],
+  "skills": [],
+  "languages": [],
+  "certifications": [],
+  "interests": [],
+  "public_context": [],
+  "options": {
+    "layout": "classic",
+    "photo": false,
+    "include_interests": true,
+    "interest_ids": [],
+    "page_limit": 2
+  },
+  "approvals": {
+    "facts_confirmed": false
+  }
+}

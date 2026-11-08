@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Manual review report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "role",
+    "input_sha256",
+    "status",
+    "reviewer",
+    "findings",
+    "blockers",
+    "dependencies"
+  ],
+  "properties": {
+    "role": {
+      "enum": [
+        "recruitment_intelligence",
+        "candidate_intelligence",
+        "technical_specialist",
+        "achievement_strategist",
+        "ats_strategist",
+        "bilingual_editor",
+        "creative_director",
+        "independent_qa_auditor",
+        "cv_manager"
+      ]
+    },
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "status": {
+      "enum": [
+        "approved",
+        "blocked"
+      ]
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    }
+  }
+}

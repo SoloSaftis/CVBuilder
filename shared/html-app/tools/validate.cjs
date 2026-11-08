@@ -1,0 +1,3 @@
+'use strict';
+const fs=require('node:fs'),contract=require('../contract.js');
+try{const file=process.argv[2];if(!file)throw Error('Bruk: node tools/validate.cjs prosjekt.json [--ready]');if(fs.statSync(file).size>3000000)throw Error('Filen er større enn 3 MB.');const value=JSON.parse(fs.readFileSync(file,'utf8')),errors=process.argv.includes('--ready')?contract.ready(value):contract.validate(value);if(errors.length)throw Error(errors.join('\n'));console.log(process.argv.includes('--ready')?'Skjema og kandidatbekreftelse godkjent; dokumentlayout må kontrolleres separat.':'Utkastet følger det strenge skjemaformatet.');}catch(error){console.error(error.message);process.exitCode=1;}

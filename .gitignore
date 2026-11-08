@@ -1,0 +1,11 @@
+# Personal material stays on this PC: real CVs, photos, source documents, working files.
+/outputs/
+/work/
+/.playwright-cli/
+/.claude/worktrees/
+
+# Build output
+/target/
+/*/dist/
+/shared/html-app/dist/
+/shared/html-app/node_modules/

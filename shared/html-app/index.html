@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="nb"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>CVBuilder Familie</title><link rel="icon" href="data:,"><link rel="stylesheet" href="family.css"></head>
+<body>
+<div class="workspace">
+ <aside class="editor">
+  <header class="intro">
+   <div class="brand">CVBuilder <span>Familie</span></div>
+   <h1>Din erfaring.<br>En CV som blir lest.</h1>
+   <p>Alt blir på denne maskinen. Ingen konto, ingen opplasting. Byggeren hjelper deg å skrive en CV som både rekrutterere og søknadssystemene de bruker (ATS) leser riktig.</p>
+   <div class="actions">
+    <button id="new-cv" type="button" class="primary">Ny tom CV</button>
+    <button id="load-example" type="button">Vis eksempel</button>
+    <button id="open" type="button">Åpne fil</button>
+    <button id="save" type="button">Lagre som fil</button>
+    <button id="restore" type="button" hidden title="Henter CV-en du hadde før du valgte Ny tom CV, Vis eksempel eller åpnet en fil">Gjenopprett forrige CV</button>
+    <input type="file" id="project-file" accept=".json,application/json" hidden>
+   </div>
+      <label class="check remember"><input id="remember" type="checkbox" checked> Husk utkastet i denne nettleseren på denne maskinen</label>
+   <div id="example-banner" class="example-banner" hidden><strong>Du ser et eksempel.</strong> Personen og firmaene er oppdiktet. Endre et felt for å gjøre det til din egen, eller velg «Ny tom CV».</div>
+  </header>
+  <form id="form" novalidate></form>
+  <section class="panel"><h2>Rekrutterersjekk</h2><p class="hint">Åpne regler etter vanlige råd fra rekrutterere og ATS-leverandører: fagord fra annonsen, korte handlingspunkter, målbare resultater, ingen moteord og ingen sensitive personopplysninger. Veiledning, ikke en poengsum eller garanti.</p><div id="recruiter" aria-live="polite"></div></section>
+  <section class="panel"><h2>Kontroll før eksport</h2><label class="check"><input id="approval" type="checkbox"> Jeg har kontrollert opplysningene og bekrefter at de er riktige.</label><p class="hint">Du får også spørsmålet når du laster ned. Endrer du noe etterpå, spør vi på nytt.</p><div id="validation" role="status" aria-live="polite"></div></section>
+  <section class="panel"><h2>Slik blir CV-en lest riktig</h2><ul class="rules"><li>Én tekstspalte og vanlige overskrifter i alle maler.</li><li>Ekte tekst og punktlister; ingen tabeller, tekstbokser, ikoner eller ferdighetsstolper.</li><li>Kontaktinformasjon i selve dokumentet, ikke i topptekst eller bilde.</li><li>Maks to A4-sider. Bilde er valgfritt.</li><li>Lever helst Word eller PDF fra knappene her, og sjekk feltene portalen fyller ut automatisk.</li></ul></section>
+ </aside>
+ <nav class="view-tabs" aria-label="Visning"><button id="show-form" type="button" aria-pressed="true">Skjema</button><button id="show-cv" type="button" aria-pressed="false">Se CV-en</button></nav>
+ <main class="preview">
+  <header class="toolbar"><strong id="page-count">Forhåndsvisning</strong><div class="toolbar-actions"><span id="export-hint" hidden></span><button id="text" type="button" disabled title="Kopierer CV-en som ren tekst, til portaler som ber deg lime den inn">Kopier tekst</button><button id="word" type="button" disabled>Last ned Word</button><button id="pdf" type="button" class="primary" disabled>Last ned PDF</button></div></header>
+  <div id="confirm-bar" class="confirm-bar" hidden role="dialog" aria-labelledby="confirm-text"><p id="confirm-text"><strong>Stemmer alt i CV-en?</strong> Les gjennom en siste gang: navn, kontaktinfo, datoer og at alt du skriver er sant.</p><div><button id="confirm-yes" type="button" class="primary">Ja, last ned</button><button id="confirm-no" type="button">Avbryt</button></div></div>
+  <div id="status" role="status">Fyll ut skjemaet for å lage din CV.</div>
+  <div id="pages"></div>
+ </main>
+</div>
+<script src="contract.js"></script><script src="interest-evaluator.js"></script><script src="recruiter-checks.js"></script><script src="layouts.js"></script><script src="example.js"></script><script src="docx.js"></script><script src="vendor/jspdf.umd.min.js"></script><script src="pdf-export.js"></script><script src="family.js"></script>
+</body></html>

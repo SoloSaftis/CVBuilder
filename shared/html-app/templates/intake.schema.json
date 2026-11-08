@@ -1,0 +1,469 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CVBuilder candidate intake version 2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "language",
+    "candidate",
+    "target",
+    "experience",
+    "education",
+    "skills",
+    "languages",
+    "certifications",
+    "interests",
+    "public_context",
+    "options",
+    "approvals"
+  ],
+  "properties": {
+    "version": {
+      "const": 2
+    },
+    "language": {
+      "enum": [
+        "no",
+        "en"
+      ]
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "email",
+        "phone",
+        "city",
+        "headline",
+        "linkedin",
+        "summary",
+        "photo"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "headline": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "linkedin": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 1500
+        },
+        "photo": {
+          "type": "string",
+          "maxLength": 750000,
+          "pattern": "^$|^data:image/jpeg;base64,[A-Za-z0-9+/=]+$"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "company",
+        "url",
+        "description",
+        "keywords"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "company": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 15000
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "maxItems": 30
+        }
+      }
+    },
+    "experience": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "company",
+          "title",
+          "location",
+          "start",
+          "end",
+          "bullets",
+          "evidence",
+          "confirmed"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "company": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "start": {
+            "type": "string",
+            "maxLength": 7,
+            "pattern": "^$|^[12][0-9]{3}(-(0[1-9]|1[0-2]))?$"
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 7,
+                "pattern": "^$|^[12][0-9]{3}(-(0[1-9]|1[0-2]))?$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bullets": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 500
+            },
+            "maxItems": 5
+          },
+          "evidence": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "confirmed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "maxItems": 12
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "qualification",
+          "institution",
+          "start",
+          "end"
+        ],
+        "properties": {
+          "qualification": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "institution": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "start": {
+            "type": "string",
+            "maxLength": 4,
+            "pattern": "^$|^[12][0-9]{3}$"
+          },
+          "end": {
+            "type": "string",
+            "maxLength": 4,
+            "pattern": "^$|^[12][0-9]{3}$"
+          }
+        }
+      },
+      "maxItems": 8
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "group",
+          "name",
+          "evidence",
+          "confirmed"
+        ],
+        "properties": {
+          "group": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "evidence": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "confirmed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "maxItems": 30
+    },
+    "languages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "level"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "level": {
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      },
+      "maxItems": 8
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "issuer",
+          "year"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "issuer": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "year": {
+            "type": "string",
+            "maxLength": 4,
+            "pattern": "^$|^[12][0-9]{3}$"
+          }
+        }
+      },
+      "maxItems": 10
+    },
+    "interests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "label",
+          "status",
+          "description",
+          "category",
+          "tags",
+          "confirmed",
+          "specificity"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "status": {
+            "enum": [
+              "current",
+              "former",
+              "interest"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 400
+          },
+          "category": {
+            "enum": [
+              "technology",
+              "outdoors",
+              "sport",
+              "creative",
+              "community",
+              "other"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "maxItems": 12
+          },
+          "confirmed": {
+            "type": "boolean"
+          },
+          "specificity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2
+          }
+        }
+      },
+      "maxItems": 20
+    },
+    "public_context": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "topic",
+          "tags",
+          "source_url",
+          "checked_on",
+          "scope",
+          "verified"
+        ],
+        "properties": {
+          "topic": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "maxItems": 12
+          },
+          "source_url": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "checked_on": {
+            "type": "string",
+            "maxLength": 10,
+            "pattern": "^$|^[12][0-9]{3}-[0-9]{2}-[0-9]{2}$"
+          },
+          "scope": {
+            "enum": [
+              "employer_activity",
+              "professional_bio"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        }
+      },
+      "maxItems": 8
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "layout",
+        "photo",
+        "include_interests",
+        "interest_ids",
+        "page_limit"
+      ],
+      "properties": {
+        "layout": {
+          "enum": [
+            "classic",
+            "modern",
+            "nordic",
+            "compact"
+          ]
+        },
+        "photo": {
+          "type": "boolean"
+        },
+        "include_interests": {
+          "type": "boolean"
+        },
+        "interest_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "maxItems": 3,
+          "uniqueItems": true
+        },
+        "page_limit": {
+          "const": 2
+        }
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "facts_confirmed"
+      ],
+      "properties": {
+        "facts_confirmed": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+# Same line endings on every platform; shell scripts must stay LF to run on Linux and macOS.
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.ico binary
