@@ -1,7 +1,10 @@
 //! Draws the CVBuilder icon (a page with heading lines and a check mark on a blue tile) at the
 //! sizes Windows, MSIX, Linux and macOS need, into shared/assets.
 //! Run: cargo run -p cvbuilder-app --example make_icons
-use image::{ImageBuffer, Rgba, RgbaImage, codecs::ico::{IcoEncoder, IcoFrame}, ExtendedColorType};
+use image::{
+    ExtendedColorType, ImageBuffer, Rgba, RgbaImage,
+    codecs::ico::{IcoEncoder, IcoFrame},
+};
 
 fn tile(size: u32) -> RgbaImage {
     let s = size as f32;
@@ -42,10 +45,7 @@ fn tile(size: u32) -> RgbaImage {
 fn main() {
     let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../assets");
     std::fs::create_dir_all(&dir).expect("assets dir");
-    let frames: Vec<IcoFrame> = [16, 24, 32, 48, 64, 128, 256]
-        .iter()
-        .map(|&n| IcoFrame::as_png(tile(n).as_raw(), n, n, ExtendedColorType::Rgba8).expect("frame"))
-        .collect();
+    let frames: Vec<IcoFrame> = [16, 24, 32, 48, 64, 128, 256].iter().map(|&n| IcoFrame::as_png(tile(n).as_raw(), n, n, ExtendedColorType::Rgba8).expect("frame")).collect();
     let file = std::fs::File::create(dir.join("cvbuilder.ico")).expect("ico");
     IcoEncoder::new(file).encode_images(&frames).expect("encode");
     for n in [44, 50, 150, 256, 512] {

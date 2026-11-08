@@ -18,7 +18,7 @@ jobs:
       - name: HTML app rules
         run: node --test shared/html-app/tests/core.cjs
       - name: Rust rules match the HTML app, AI layer
-        run: cargo test -p cv-core -p cv-ai --release --locked
+        run: cargo test -p cv-core -p cv-ai -p cv-mcp --release --locked
 
   windows:
     needs: shared

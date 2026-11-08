@@ -1,8 +1,14 @@
 # CVBuilder
 
 Build a CV that recruiters and applicant-tracking systems (ATS) read correctly: one text column,
-standard headings, real text, at most two A4 pages. Four layouts, Word and PDF from one layout,
-a recruiter checklist, and optional AI help with your own API key (Claude, ChatGPT, Gemini, Grok).
+standard headings, real text, two A4 pages recommended. 31 designs (CVBuilder's own plus single-column
+remakes of Reactive Resume and RenderCV templates) and your own imported designs, Word and PDF from one layout,
+a recruiter checklist, and an optional AI chat that edits the CV while you watch: Claude, ChatGPT,
+Gemini or Grok with your own API key, a local model (Ollama, LM Studio …) on your own computer, or
+your own Claude Code over MCP. Colours are chosen separately from the design, per CV or per section. CVBuilder is also an MCP
+server, so other AI apps can work on the open CV. Page layout (size, margins, columns, text size,
+spacing, page breaks and a page target) is saved with each CV, and the interface is in Norwegian or
+English (it follows the system by default).
 
 ## Repository layout
 
@@ -22,7 +28,8 @@ that is the same on every platform belongs in `shared/`.
 - **v1 – HTML app** (`shared/html-app`): one self-contained `CVBuilder.html`, double-click to run
   in Edge or Chrome, fully offline. Build: `node shared/html-app/tools/build-single.cjs`.
 - **v2 – desktop app** (Rust): a live preview of the exact exported pages, photo crop and light
-  fixes, and optional AI. Build for this computer: `cargo build -p cvbuilder-windows --release`
+  fixes, and an AI chat beside the CV that changes it live through MCP tools (every change can be
+  undone). Build for this computer: `cargo build -p cvbuilder-windows --release`
   (or `-linux`, `-macos`). Package: see each platform folder.
 
 Both apps read and write the same project files and apply the same rules; a parity test
@@ -32,6 +39,15 @@ Both apps read and write the same project files and apply the same rules; a pari
 
 No personal data belongs in this repository. Tests use fictional people only. Your own CVs,
 photos and working files go in `outputs/` and `work/`, which git ignores.
+
+## Designs
+
+Every design is one column of real text with standard headings, so each reads the same in an
+applicant-tracking system. Designs from Reactive Resume (MIT, © Amruth Pillai) and RenderCV (MIT,
+© Sina Atalay and contributors) are remakes: their look (fonts, colours, header and headings) on
+CVBuilder's single-column layout; sidebars and columns are left out on purpose. Licence texts are in
+`shared/assets/licenses/`. Your own designs are `.cvdesign.json` files: see
+[`shared/cv-core/DESIGN-FORMAT.md`](shared/cv-core/DESIGN-FORMAT.md).
 
 ## Licence
 
