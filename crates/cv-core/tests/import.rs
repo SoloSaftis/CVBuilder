@@ -79,7 +79,93 @@ fn an_existing_cv_without_ai() {
     assert_eq!(c.summary, "Erfaren elektriker med fagbrev. Liker å løse problemer.");
     assert_eq!(read.project.skills.iter().map(|s| s.name.as_str()).collect::<Vec<_>>(), ["PLS", "Elkraft", "Feilsøking"]);
     assert_eq!(read.project.languages[1].level, "flytende");
-    assert!(read.rest.contains("Strøm AS"), "jobs are kept for the person or the AI");
+    let job = &read.project.experience[0];
+    assert_eq!((job.title.as_str(), job.company.as_str(), job.start.as_str(), job.end.as_deref()), ("Elektriker", "Strøm AS", "2018", None));
+    assert_eq!(job.bullets, ["Installerte anlegg"]);
+}
+
+/// The fictional example CV saved by Word in every format people send: each gives the same CV.
+#[test]
+fn cvs_in_word_doc_odt_rtf_pdf_and_unicode_text_fill_in_the_same() {
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/cv-files");
+    for name in ["example.docx", "example.doc", "example.odt", "example.rtf", "example.pdf", "example-utf16.txt"] {
+        let text = import::text_from_file(&dir.join(name)).unwrap_or_else(|e| panic!("{name}: {e}"));
+        let r = import::read_cv(&text);
+        let p = &r.project;
+        let c = &p.candidate;
+        assert_eq!(c.name, "Ingrid Haugland", "{name}");
+        assert_eq!(c.email, "ingrid.haugland@example.no", "{name}");
+        assert_eq!(c.phone, "+47 400 00 000", "{name}");
+        assert_eq!(c.city, "Trondheim, Norge", "{name}");
+        assert_eq!(c.headline, "Prosjektkoordinator | Innkjøp | Kundeoppfølging", "{name}");
+        assert!(c.summary.starts_with("Prosjektkoordinator med sju års erfaring"), "{name}: {}", c.summary);
+        let jobs: Vec<_> = p.experience.iter().map(|j| (j.title.as_str(), j.company.as_str(), j.location.as_str(), j.start.as_str(), j.end.as_deref(), j.bullets.len())).collect();
+        assert_eq!(
+            jobs,
+            [("Prosjektkoordinator", "Fjellvegg Bygg AS (fiktiv)", "Trondheim", "2021-03", None, 3), ("Innkjøpsmedarbeider", "Byggvare Midt AS (fiktiv)", "Trondheim", "2018-01", Some("2021-02"), 2)],
+            "{name}"
+        );
+        let e = &p.education[0];
+        assert_eq!((e.qualification.as_str(), e.institution.as_str(), e.start.as_str(), e.end.as_str()), ("Bachelor i økonomi og administrasjon", "Eksempel høgskole", "2015", "2018"), "{name}");
+        let cert = &p.certifications[0];
+        assert_eq!((cert.name.as_str(), cert.issuer.as_str(), cert.year.as_str()), ("Prosjektledelse, grunnkurs", "Eksempel kursleverandør", "2022"), "{name}");
+        let langs: Vec<_> = p.languages.iter().map(|l| (l.name.as_str(), l.level.as_str())).collect();
+        assert_eq!(langs, [("Norsk", "morsmål"), ("Engelsk", "flytende")], "{name}");
+        assert_eq!(p.interests.iter().map(|i| i.label.as_str()).collect::<Vec<_>>(), ["Langrenn", "Frivillig i idrettslag"], "{name}");
+        assert!(p.skills.iter().any(|s| s.group == "Verktøy" && s.name == "Power BI"), "{name}");
+        assert!(r.rest.is_empty(), "{name}: nothing left over, got {}", r.rest);
+    }
+}
+
+/// English layouts from CV builders: a two-column sidebar, headings with the section's first
+/// words on the same line, spaced-out headings, the employer above the title, page numbers.
+#[test]
+fn english_cvs_from_common_layouts() {
+    let sidebar = "Skills\nProduct design\n\nInteraction design, Design systems,\nPrototyping\n\nResearch\n\nUsability testing, Interviewing, Journey\nmapping\n\n\
+        Education\nUniversity of the Arts\nLondon\nMA\nBrand Communication\n2013 – 2017\n\nCertifications\nUX Design Professional\nCertificate\n2024\nGoogle\n\n\
+        Languages\nEnglish\nFluent Dutch\nConversational\n\nInterests\nEditorial illustration\nAlex Example\n\nSenior Product Designer\n\n\
+        alex.example@example.com +1 (202) 555-0110\nAmsterdam, Netherlands alexexample.example.com\n\nS U M M A RY\n\
+        Senior Product Designer with eight years of experience in digital product design. Combines thoughtful problem solving with hands-\non delivery and clear communication.\n\n\
+        E X P E R I E N C E\nNorthstar Health London, UK\nSenior Product Designer 2022 – Present\n• Led a patient booking redesign across web and mobile,\n\
+        increasing completed appointments by 28% in six months.\n\n• Built an accessible component library used by six squads.\n\n\
+        Studio Assembly London, UK\nProduct Designer Jan 2019 – Dec 2022\n• Designed self-service journeys for retail clients.\n\nAlex Example 1 / 2\n\n\
+        Projects Open Metrics Toolkit 2025\nPublished a lightweight dashboard starter used by 14 teams.\n\n\
+        Community\nCommunity Skills Network\n2023 – Present\nMentored emerging designers\nthrough monthly portfolio reviews.\n";
+    let r = import::read_cv(sidebar);
+    let p = &r.project;
+    let c = &p.candidate;
+    assert_eq!((c.name.as_str(), c.headline.as_str(), c.city.as_str(), c.phone.as_str()), ("Alex Example", "Senior Product Designer", "Amsterdam, Netherlands", "+1 (202) 555-0110"));
+    assert_eq!(c.extra[0].value, "alexexample.example.com");
+    assert!(c.summary.contains("hands-on delivery"), "{}", c.summary);
+    assert_eq!(p.language, cv_core::model::Language::En);
+    let jobs: Vec<_> = p.experience.iter().map(|j| (j.title.as_str(), j.company.as_str(), j.location.as_str(), j.start.as_str(), j.end.as_deref(), j.bullets.len())).collect();
+    assert_eq!(jobs, [("Senior Product Designer", "Northstar Health", "London, UK", "2022", None, 2), ("Product Designer", "Studio Assembly", "London, UK", "2019-01", Some("2022-12"), 1)]);
+    assert_eq!(p.experience[0].bullets[0], "Led a patient booking redesign across web and mobile, increasing completed appointments by 28% in six months.");
+    let e = &p.education[0];
+    assert_eq!((e.qualification.as_str(), e.institution.as_str()), ("MA Brand Communication", "University of the Arts London"));
+    assert_eq!((p.certifications[0].name.as_str(), p.certifications[0].issuer.as_str()), ("UX Design Professional Certificate", "Google"));
+    let langs: Vec<_> = p.languages.iter().map(|l| (l.name.as_str(), l.level.as_str())).collect();
+    assert_eq!(langs, [("English", "Fluent"), ("Dutch", "Conversational")]);
+    assert!(p.skills.iter().any(|s| s.group == "Research" && s.name == "Journey mapping"));
+    assert_eq!(p.interests.iter().map(|i| i.label.as_str()).collect::<Vec<_>>(), ["Editorial illustration"]);
+    let sections: Vec<_> = p.custom_sections.iter().map(|s| (s.title.as_str(), s.items[0].title.as_str(), s.items[0].date.as_str())).collect();
+    assert_eq!(sections, [("Projects", "Open Metrics Toolkit", "2025"), ("Volunteering", "Community Skills Network", "2023 – Present")]);
+    assert_eq!(p.custom_sections[1].items[0].bullets, ["Mentored emerging designers through monthly portfolio reviews."]);
+}
+
+#[test]
+fn plain_text_cvs_with_pipes_and_a_shared_language_level() {
+    let text = "Kari Nordmann\nElektriker\nkari@example.no | 912 34 567 | Bergen\n\nARBEIDSERFARING\n\nElektriker | Strøm AS | Bergen\n01.2020 – nå\n- Installerte og feilsøkte anlegg i næringsbygg.\n\n\
+        Lærling | Lys og Varme AS | Os\n08.2016 – 12.2019\n- Fikk fagbrev i 2019.\n\nUTDANNING\nVg3 Elektrikerfaget | Bergen tekniske fagskole | 2014 – 2016\n\n\
+        SPRÅK\nNorsk og engelsk\nflytende skriftlig og muntlig\n";
+    let r = import::read_cv(text);
+    let p = &r.project;
+    let jobs: Vec<_> = p.experience.iter().map(|j| (j.title.as_str(), j.company.as_str(), j.location.as_str(), j.start.as_str(), j.end.as_deref())).collect();
+    assert_eq!(jobs, [("Elektriker", "Strøm AS", "Bergen", "2020-01", None), ("Lærling", "Lys og Varme AS", "Os", "2016-08", Some("2019-12"))]);
+    assert_eq!((p.education[0].qualification.as_str(), p.education[0].institution.as_str()), ("Vg3 Elektrikerfaget", "Bergen tekniske fagskole"));
+    let langs: Vec<_> = p.languages.iter().map(|l| (l.name.as_str(), l.level.as_str())).collect();
+    assert_eq!(langs, [("Norsk", "flytende skriftlig og muntlig"), ("Engelsk", "flytende skriftlig og muntlig")]);
+    assert_eq!(p.candidate.city, "Bergen");
 }
 
 // ---------- job ads: the shapes people paste ----------
@@ -317,7 +403,7 @@ fn broken_empty_locked_and_wrong_files_give_a_clear_error() {
         ("text.pdf", b"Dette er bare tekst med et feil navn, ikke en PDF i det hele tatt.".to_vec(), ".pdf"),
         ("half.docx", docx[..docx.len() / 2].to_vec(), "Word"),
         ("old.doc", vec![0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1, 0, 0, 0, 0], ".doc"),
-        ("letter.rtf", b"{\\rtf1\\ansi Hei}".to_vec(), "RTF"),
+        ("letter.rtf", b"{\\rtf1\\ansi Hei}".to_vec(), "tekst"),
         ("bin.txt", (0..2000u32).map(|i| (i * 7 % 256) as u8).collect(), "kan ikke leses"),
         ("x.xyz", b"hello there, this is some text".to_vec(), "PDF"),
     ];
@@ -434,5 +520,37 @@ fn more_trades_standards_and_the_employer_on_the_second_line() {
     // The line after the title is not an employer when it is a place, a type or a heading.
     for second in ["Oslo", "Heltid", "Om stillingen", "Publisert 3. mai"] {
         assert_eq!(import::read_ad(&format!("Kokk\n{second}\n\nVi lager mat fra bunnen av.")).company, "", "{second}");
+    }
+}
+
+/// Reads every CV in CVBUILDER_CV_DIR and prints what was found, for checking the reader by eye:
+/// `CVBUILDER_CV_DIR=<folder> cargo test -p cv-core --test import read_cv_folder -- --ignored --nocapture`
+#[test]
+#[ignore = "reads a folder of real CVs; run on purpose"]
+fn read_cv_folder() {
+    let Ok(dir) = std::env::var("CVBUILDER_CV_DIR") else { return };
+    let mut files: Vec<_> = std::fs::read_dir(dir).expect("folder").flatten().map(|e| e.path()).collect();
+    files.sort();
+    for path in files {
+        let name = path.file_name().unwrap_or_default().to_string_lossy().to_string();
+        match cv_core::import::text_from_file(&path) {
+            Err(e) => println!("== {name}: ERROR {e}"),
+            Ok(text) => {
+                let r = cv_core::import::read_cv(&text);
+                let p = &r.project;
+                println!(
+                    "== {name}: name={:?} email={} phone={} city={:?} headline={:?} summary={}w skills={} langs={} jobs={} edu={} certs={} interests={} rest={}c",
+                    p.candidate.name, !p.candidate.email.is_empty(), !p.candidate.phone.is_empty(), p.candidate.city, p.candidate.headline,
+                    p.candidate.summary.split_whitespace().count(), p.skills.len(), p.languages.len(), p.experience.len(), p.education.len(),
+                    p.certifications.len(), p.interests.len(), r.rest.chars().count()
+                );
+                for j in &p.experience {
+                    println!("   job: {:?} @ {:?} {}–{:?} ({} bullets)", j.title, j.company, j.start, j.end, j.bullets.len());
+                }
+                for e in &p.education {
+                    println!("   edu: {:?} @ {:?} {}–{}", e.qualification, e.institution, e.start, e.end);
+                }
+            }
+        }
     }
 }

@@ -10,6 +10,9 @@ publish = false
 [dependencies]
 wordcraft-doc.workspace = true
 wordcraft-docx.workspace = true
+wordcraft-docbin.workspace = true
+wordcraft-formats.workspace = true
+zip = { version = "3", default-features = false, features = ["deflate"] }
 wordcraft-pdf.workspace = true
 wordcraft-layout.workspace = true
 serde.workspace = true

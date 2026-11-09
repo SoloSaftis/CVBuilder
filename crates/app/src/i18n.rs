@@ -454,6 +454,22 @@ fn rule(pattern: &str, f: fn(&Captures) -> String) -> Rule {
 /// Messages with numbers, names or lists in them. The first that matches is used.
 static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
     vec![
+        // ---- cv-core: reading CV and ad files ----
+        rule(r"^«\.(\w+)» kan ikke leses\. Bruk PDF, Word \(\.docx eller \.doc\), OpenDocument \(\.odt\), RTF, tekst \(\.txt/\.md\) eller en nettside \(\.html\)\.$", |c| {
+            format!("«.{}» cannot be read. Use PDF, Word (.docx or .doc), OpenDocument (.odt), RTF, text (.txt/.md) or a web page (.html).", &c[1])
+        }),
+        rule(r"^Den eldre Word-filen \(\.doc\) kunne ikke leses: (.+)\. Åpne den i Word og lagre den som \.docx\.$", |c| {
+            format!("The older Word file (.doc) could not be read: {}. Open it in Word and save it as .docx.", &c[1])
+        }),
+        rule(r"^(RTF-filen|Nettarkivet \(\.mht\)|OpenDocument-filen) kunne ikke leses(?:: (.+))?\. Lagre den som Word \(\.docx\) eller PDF og prøv igjen\.$", |c| {
+            let what = match &c[1] {
+                "RTF-filen" => "The RTF file",
+                "OpenDocument-filen" => "The OpenDocument file",
+                _ => "The web archive (.mht)",
+            };
+            let why = c.get(2).map(|m| format!(": {}", m.as_str())).unwrap_or_default();
+            format!("{what} could not be read{why}. Save it as Word (.docx) or PDF and try again.")
+        }),
         // ---- cv-core: own checklist files ----
         rule(r"Punkt (\d+) mangler tekst\.", |c| format!("Point {} has no text.", &c[1])),
         rule(r"Punkt (\d+) har ingen egen id\.", |c| format!("Point {} has no id of its own.", &c[1])),
@@ -1308,14 +1324,14 @@ static EN: &[(&str, &str)] = &[
     ("Hent inn en CV du har fra før", "Import a CV you already have"),
     ("Filer som kan leses", "Files that can be read"),
     (
-        "PDF med ekte tekst (ikke skannet) · Word (.docx) · tekst (.txt, .md) · nettside (.html) · CVBuilder-utkast (.json)",
-        "PDF with real text (not scanned) · Word (.docx) · text (.txt, .md) · web page (.html) · CVBuilder draft (.json)",
+        "PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)",
+        "PDF with real text (not scanned) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · text (.txt, .md) · web page (.html, .mht) · CVBuilder draft (.json)",
     ),
     ("Med AI – fyller ut alt, også jobber og utdanning", "With AI – fills in everything, including jobs and education"),
     ("Koble til AI under AI-fanen for å bruke dette.", "Connect AI under the AI tab to use this."),
     (
-        "Uten AI – kontaktinfo, profil, kompetanse og språk. Resten vises, så du kan lime det inn.",
-        "Without AI – contact details, profile, skills and languages. The rest is shown so you can paste it in.",
+        "Uten AI – på denne maskinen: kontaktinfo, profil, jobber, utdanning, kompetanse, språk, kurs og interesser.",
+        "Without AI – on this computer: contact details, profile, jobs, education, skills, languages, courses and interests."
     ),
     (
         "Du får en ny CV med designet og fargene du har valgt. Den du har nå kan hentes tilbake med Angre. Med AI sendes teksten til tjenesten du har koblet til.",
@@ -1324,8 +1340,8 @@ static EN: &[(&str, &str)] = &[
     ("Velg fil", "Choose file"),
     ("Dette må plasseres", "This still needs a place"),
     (
-        "Kontaktinfo, profil, kompetanse og språk er fylt inn. Jobber, utdanning og annet må du legge inn selv i skjemaet – kopier fra teksten under – eller la AI-en gjøre det.",
-        "Contact details, profile, skills and languages are filled in. Add jobs, education and the rest yourself in the form – copy from the text below – or let the AI do it.",
+        "Det meste er fylt inn. Dette kunne ikke plasseres sikkert – legg det inn selv i skjemaet (kopier fra teksten under), eller la AI-en gjøre det.",
+        "Most of it is filled in. This could not be placed with confidence – add it in the form yourself (copy from the text below), or let the AI do it."
     ),
     ("La AI-en legge det inn", "Let the AI add it"),
     ("Kopier teksten", "Copy the text"),
@@ -1509,7 +1525,9 @@ static EN: &[(&str, &str)] = &[
     ("Slå av den lokale modellen i CVBuilder", "Turn off the local model in CVBuilder"),
     // import_ui.rs, settings_ui.rs, lib.rs
     ("AI-en leser hele CV-en og fyller ut alle delene. Teksten sendes til AI-tjenesten.", "The AI reads the whole CV and fills in every part. The text is sent to the AI service."),
-    ("Leses på denne maskinen. Jobber og utdanning legger du inn selv.", "Read on this computer. You add jobs and education yourself."),
+    ("Leses på denne maskinen, og ingenting sendes. Sjekk resultatet; det som ikke kunne plasseres, vises til slutt.",
+        "Read on this computer, and nothing is sent. Check the result; anything that could not be placed is shown at the end."
+    ),
     ("Velg CV-filen du vil hente inn", "Choose the CV file you want to bring in"),
     ("Lukk uten å endre noe (Esc)", "Close without changing anything (Esc)"),
     ("AI-en legger jobbene, utdanningen og resten inn i skjemaet", "The AI puts the jobs, the education and the rest into the form"),
@@ -1933,11 +1951,11 @@ static DYN: &[(&str, &str)] = &[
     ),
     ("Filen er for stor (over 50 MB) til å være en annonse eller en CV.", "The file is too large (over 50 MB) to be an ad or a CV."),
     ("Filen er tom; det er ingen tekst å hente.", "The file is empty; there is no text to read."),
-    ("OpenDocument-filer (.odt) kan ikke leses. Lagre den som Word (.docx) eller PDF først.", "OpenDocument files (.odt) cannot be read. Save it as Word (.docx) or PDF first."),
-    ("Pages-filer kan ikke leses. Eksporter den som Word (.docx) eller PDF først.", "Pages files cannot be read. Export it as Word (.docx) or PDF first."),
-    ("Filen er en ZIP-pakke, ikke en Word-fil (.docx), og kan ikke leses.", "The file is a ZIP archive, not a Word file (.docx), and cannot be read."),
-    ("Dette er en eldre Word-fil (.doc). Åpne den i Word og lagre den som .docx, så kan den leses.", "This is an older Word file (.doc). Open it in Word and save it as .docx, then it can be read."),
-    ("RTF-filer kan ikke leses. Lagre den som Word (.docx) eller PDF først.", "RTF files cannot be read. Save it as Word (.docx) or PDF first."),
+    ("Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.", "The Word file is password-protected. Open it in Word, remove the password and save it again."),
+    ("Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.", "The older Word file (.doc) could not be read. Open it in Word and save it as .docx."),
+    ("Pages-filen kunne ikke åpnes.", "The Pages file could not be opened."),
+    ("Pages-filen har ingen forhåndsvisning å lese. I Pages: Fil → Eksporter til → Word eller PDF.", "The Pages file has no preview to read. In Pages: File → Export To → Word or PDF."),
+    ("Filen er en ZIP-pakke, men ikke en Word-, OpenDocument- eller Pages-fil, og kan ikke leses.", "The file is a ZIP archive, but not a Word, OpenDocument or Pages file, and cannot be read."),
     ("Filen heter .pdf, men er ikke en PDF. Den kan være skadet eller bare delvis lastet ned.", "The file is named .pdf but is not a PDF. It may be damaged or only partly downloaded."),
     ("Filen heter .docx, men er ikke en Word-fil. Den kan være skadet eller bare delvis lastet ned.", "The file is named .docx but is not a Word file. It may be damaged or only partly downloaded."),
     ("PDF-en er passordbeskyttet eller låst. Åpne den, kopier teksten og lim den inn i stedet.", "The PDF is password-protected or locked. Open it, copy the text and paste it in instead."),
@@ -1962,6 +1980,14 @@ static DYN: &[(&str, &str)] = &[
     ("profil", "profile"),
     ("kompetanse", "skills"),
     ("språk", "languages"),
+    ("sted", "town"),
+    ("nettside", "website"),
+    ("tittel", "title"),
+    ("jobber", "jobs"),
+    ("utdanning", "education"),
+    ("kurs", "courses"),
+    ("interesser", "interests"),
+    ("andre seksjoner", "other sections"),
     // ---- cv-ai: fetching pages and talking to AI services ----
     ("Lenken må starte med https://", "The link must start with https://"),
     ("Fikk ikke hentet siden. Sjekk lenken og internettforbindelsen.", "Could not fetch the page. Check the link and your internet connection."),

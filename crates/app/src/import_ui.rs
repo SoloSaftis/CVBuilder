@@ -179,7 +179,7 @@ impl CvApp {
             egui::Frame::new().fill(t.accent_soft).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin::same(10)).show(ui, |ui| {
                 ui.set_width(ui.available_width());
                 ui.label(RichText::new(i18n::t("Filer som kan leses")).family(theme::medium()));
-                ui.add(egui::Label::new(i18n::t("PDF med ekte tekst (ikke skannet) · Word (.docx) · tekst (.txt, .md) · nettside (.html) · CVBuilder-utkast (.json)")).wrap());
+                ui.add(egui::Label::new(i18n::t("PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)")).wrap());
             });
             ui.add_space(8.0);
             ui.add_enabled_ui(has_ai, |ui| {
@@ -190,8 +190,8 @@ impl CvApp {
             if !has_ai {
                 ui.label(RichText::new(i18n::t("Koble til AI under AI-fanen for å bruke dette.")).size(12.0).color(t.faint));
             }
-            ui.radio_value(&mut self.import.use_ai, false, i18n::t("Uten AI – kontaktinfo, profil, kompetanse og språk. Resten vises, så du kan lime det inn."))
-                .on_hover_text(i18n::t("Leses på denne maskinen. Jobber og utdanning legger du inn selv."));
+            ui.radio_value(&mut self.import.use_ai, false, i18n::t("Uten AI – på denne maskinen: kontaktinfo, profil, jobber, utdanning, kompetanse, språk, kurs og interesser."))
+                .on_hover_text(i18n::t("Leses på denne maskinen, og ingenting sendes. Sjekk resultatet; det som ikke kunne plasseres, vises til slutt."));
             ui.add_space(6.0);
             theme::hint(ui, i18n::t("Du får en ny CV med designet og fargene du har valgt. Den du har nå kan hentes tilbake med Angre. Med AI sendes teksten til tjenesten du har koblet til."));
             ui.add_space(8.0);
@@ -226,7 +226,7 @@ impl CvApp {
             ui.heading(i18n::t("Dette må plasseres"));
             ui.add(
                 egui::Label::new(i18n::t(
-                    "Kontaktinfo, profil, kompetanse og språk er fylt inn. Jobber, utdanning og annet må du legge inn selv i skjemaet – kopier fra teksten under – eller la AI-en gjøre det.",
+                    "Det meste er fylt inn. Dette kunne ikke plasseres sikkert – legg det inn selv i skjemaet (kopier fra teksten under), eller la AI-en gjøre det.",
                 ))
                 .wrap(),
             );

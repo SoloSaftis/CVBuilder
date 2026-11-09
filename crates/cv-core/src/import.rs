@@ -8,10 +8,10 @@ use regex::Regex;
 use serde_json::Value;
 
 use crate::checks;
-use crate::model::{Project, Skill, SpokenLanguage};
+use crate::model::{Project, Skill};
 
 /// The file types that can be read, for dialogs and messages.
-pub const FILE_TYPES: [&str; 7] = ["pdf", "docx", "txt", "md", "html", "htm", "json"];
+pub const FILE_TYPES: [&str; 16] = ["pdf", "docx", "doc", "odt", "rtf", "pages", "txt", "md", "html", "htm", "mht", "mhtml", "fodt", "dotx", "docm", "json"];
 
 /// Files larger than this are not ads or CVs; reading them would only make the app wait.
 const MAX_FILE: u64 = 50_000_000;
@@ -126,18 +126,21 @@ pub fn text_from_bytes(bytes: &[u8], ext: &str) -> Result<String, String> {
     let text = match (kind, ext) {
         (Kind::Pdf, _) => pdf_text(bytes)?,
         (Kind::Zip, "docx" | "docm" | "dotx" | "") => docx_text(bytes)?,
-        (Kind::Zip, "odt") => return Err("OpenDocument-filer (.odt) kan ikke leses. Lagre den som Word (.docx) eller PDF først.".into()),
-        (Kind::Zip, "pages") => return Err("Pages-filer kan ikke leses. Eksporter den som Word (.docx) eller PDF først.".into()),
-        (Kind::Zip, _) => docx_text(bytes).map_err(|_| "Filen er en ZIP-pakke, ikke en Word-fil (.docx), og kan ikke leses.".to_string())?,
-        (Kind::OldWord, _) => return Err("Dette er en eldre Word-fil (.doc). Åpne den i Word og lagre den som .docx, så kan den leses.".into()),
-        (Kind::Rtf, _) => return Err("RTF-filer kan ikke leses. Lagre den som Word (.docx) eller PDF først.".into()),
-        (Kind::Binary, _) | (_, "doc") => return Err(format!("«.{ext}» kan ikke leses. Bruk PDF, Word (.docx), tekst (.txt/.md) eller en nettside (.html).")),
+        (Kind::Zip, "odt" | "ott") => formats_text("odt", bytes)?,
+        (Kind::Zip, "pages") => pages_text(bytes)?,
+        // A package whose name says nothing: Word first, then OpenDocument, then a Pages preview.
+        (Kind::Zip, _) => docx_text(bytes).or_else(|_| formats_text("odt", bytes)).or_else(|_| pages_text(bytes)).map_err(|_| "Filen er en ZIP-pakke, men ikke en Word-, OpenDocument- eller Pages-fil, og kan ikke leses.".to_string())?,
+        (Kind::OldWord, _) => doc_text(bytes)?,
+        (Kind::Rtf, _) => formats_text("rtf", bytes)?,
+        (_, "mht" | "mhtml") => formats_text("mht", bytes)?,
+        (Kind::Text, "fodt") => formats_text("fodt", bytes)?,
+        (Kind::Binary, _) | (_, "doc") => return Err(format!("«.{ext}» kan ikke leses. Bruk PDF, Word (.docx eller .doc), OpenDocument (.odt), RTF, tekst (.txt/.md) eller en nettside (.html).")),
         // A web page saved under another name is still a web page.
         (Kind::Html, _) | (_, "html" | "htm" | "xhtml") => strip_html(&decode_text(bytes)),
         (_, "pdf") => return Err("Filen heter .pdf, men er ikke en PDF. Den kan være skadet eller bare delvis lastet ned.".into()),
         (_, "docx") => return Err("Filen heter .docx, men er ikke en Word-fil. Den kan være skadet eller bare delvis lastet ned.".into()),
         (Kind::Text, "txt" | "md" | "text" | "markdown" | "") => decode_text(bytes),
-        (Kind::Text, other) => return Err(format!("«.{other}» kan ikke leses. Bruk PDF, Word (.docx), tekst (.txt/.md) eller en nettside (.html).")),
+        (Kind::Text, other) => return Err(format!("«.{other}» kan ikke leses. Bruk PDF, Word (.docx eller .doc), OpenDocument (.odt), RTF, tekst (.txt/.md) eller en nettside (.html).")),
     };
     let text = tidy(&text);
     if text.trim().chars().filter(|c| c.is_alphanumeric()).count() < 20 {
@@ -164,6 +167,46 @@ fn docx_text(bytes: &[u8]) -> Result<String, String> {
         Some(Err(e)) => Err(format!("Word-filen kunne ikke leses: {e}")),
         None => Err("Word-filen kunne ikke leses. Den kan være skadet. Åpne den i Word og lagre den på nytt.".into()),
     }
+}
+
+/// An old Word file (Word 97–2003, .doc), read by WordCraft.
+fn doc_text(bytes: &[u8]) -> Result<String, String> {
+    if wordcraft_docbin::is_encrypted(bytes) {
+        return Err("Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.".into());
+    }
+    let owned = bytes.to_vec();
+    match isolated(move || wordcraft_docbin::read(&owned).map(|doc| doc.plain_text(wordcraft_doc::StoryRef::Body)).map_err(|e| e.to_string())) {
+        Some(Ok(t)) => Ok(t),
+        Some(Err(e)) => Err(format!("Den eldre Word-filen (.doc) kunne ikke leses: {e}. Åpne den i Word og lagre den som .docx.")),
+        None => Err("Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.".into()),
+    }
+}
+
+/// RTF, OpenDocument (.odt, .fodt) and saved web archives (.mht), read by WordCraft.
+fn formats_text(ext: &'static str, bytes: &[u8]) -> Result<String, String> {
+    let owned = bytes.to_vec();
+    let name = match ext {
+        "rtf" => "RTF-filen",
+        "mht" => "Nettarkivet (.mht)",
+        _ => "OpenDocument-filen",
+    };
+    match isolated(move || wordcraft_formats::import(ext, &owned).unwrap_or_else(|| Err("ukjent format".into())).map(|doc| doc.plain_text(wordcraft_doc::StoryRef::Body))) {
+        Some(Ok(t)) => Ok(t),
+        Some(Err(e)) => Err(format!("{name} kunne ikke leses: {e}. Lagre den som Word (.docx) eller PDF og prøv igjen.")),
+        None => Err(format!("{name} kunne ikke leses. Lagre den som Word (.docx) eller PDF og prøv igjen.")),
+    }
+}
+
+/// An Apple Pages file: a package with a PDF preview of the document inside.
+fn pages_text(bytes: &[u8]) -> Result<String, String> {
+    let mut zip = zip::ZipArchive::new(std::io::Cursor::new(bytes)).map_err(|_| "Pages-filen kunne ikke åpnes.".to_string())?;
+    let name = zip.file_names().find(|n| n.to_lowercase().ends_with("preview.pdf")).map(str::to_string);
+    let Some(name) = name else {
+        return Err("Pages-filen har ingen forhåndsvisning å lese. I Pages: Fil → Eksporter til → Word eller PDF.".into());
+    };
+    let mut pdf = Vec::new();
+    std::io::Read::read_to_end(&mut zip.by_name(&name).map_err(|e| e.to_string())?, &mut pdf).map_err(|e| e.to_string())?;
+    pdf_text(&pdf)
 }
 
 /// A job ad from a file: a saved web page is read with its job data, other files as text.
@@ -395,7 +438,7 @@ fn boilerplate(line: &str) -> bool {
         "sist endret", "finn-kode", "finnkode", "annonse ", "ref.", "referanse", "vis ", "show ", "see who", "se hvem", "dear ", "hei ", "hello ", "hi ", "kjære ",
     ];
     let l = line.trim().trim_end_matches([':', '!', '.']).to_lowercase();
-    EXACT.contains(&l.as_str()) || STARTS.iter().any(|s| l.starts_with(s)) || heading_kind(&l).is_some()
+    EXACT.contains(&l.as_str()) || STARTS.iter().any(|s| l.starts_with(s)) || crate::cvread::is_heading(&l)
 }
 
 /// A line ending in a company form («AS», «ASA», «AB», «Ltd» …) or a public employer's kind.
@@ -1039,123 +1082,4 @@ pub fn apply_ad(project: &mut Project, ad: &AdInfo) -> String {
     out
 }
 
-/// What could be read from an existing CV without AI, and the text that was not used.
-#[derive(Debug, Clone, Default)]
-pub struct CvRead {
-    pub project: Project,
-    /// The parts that need a person (or AI) to sort: jobs, education and the like.
-    pub rest: String,
-    pub found: Vec<String>,
-}
-
-fn heading_kind(line: &str) -> Option<&'static str> {
-    let l = line.trim().trim_end_matches(':').to_lowercase();
-    if l.chars().count() > 40 {
-        return None;
-    }
-    let is = |words: &[&str]| words.iter().any(|w| l == *w || l.starts_with(&format!("{w} ")));
-    if is(&["profil", "profile", "sammendrag", "summary", "om meg", "about me", "about", "personlig profil"]) {
-        Some("profile")
-    } else if is(&["kjernekompetanse", "kompetanse", "ferdigheter", "skills", "core skills", "key skills", "technical skills", "nøkkelkompetanse"]) {
-        Some("skills")
-    } else if is(&["språk", "languages", "language skills", "språkkunnskaper"]) {
-        Some("languages")
-    } else if is(&["arbeidserfaring", "erfaring", "experience", "work experience", "professional experience", "yrkeserfaring", "employment"]) {
-        Some("experience")
-    } else if is(&["utdanning", "education", "utdannelse"]) {
-        Some("education")
-    } else if is(&["kurs", "sertifiseringer", "kurs og sertifiseringer", "certifications", "courses", "certificates"]) {
-        Some("certifications")
-    } else if is(&["interesser", "interests", "hobbyer", "hobbies", "fritid"]) {
-        Some("interests")
-    } else if is(&["referanser", "references", "personalia", "kontakt", "contact"]) {
-        Some("other")
-    } else {
-        None
-    }
-}
-
-/// Reads an existing CV's text without AI: contact details, the profile, skills and languages.
-/// Jobs and education are kept as text for the person (or the AI) to place.
-pub fn read_cv(text: &str) -> CvRead {
-    static EMAIL: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}").expect("regex"));
-    static PHONE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?:\+\d{1,3}[\s.\-]?)?(?:\d[\s.\-]?){7,11}\d").expect("regex"));
-    static LINKEDIN: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)(?:https?://)?(?:[a-z]{2,3}\.)?linkedin\.com/in/[A-Za-z0-9_\-%]+/?").expect("regex"));
-    let text = tidy(text);
-    let mut p = Project::default();
-    let mut found = Vec::new();
-    let c = &mut p.candidate;
-    if let Some(m) = EMAIL.find(&text) {
-        c.email = m.as_str().to_string();
-        found.push("e-post");
-    }
-    if let Some(m) = PHONE.find_iter(&text).find(|m| m.as_str().chars().filter(char::is_ascii_digit).count() >= 8 && !m.as_str().contains('.')) {
-        c.phone = m.as_str().trim().to_string();
-        found.push("telefon");
-    }
-    if let Some(m) = LINKEDIN.find(&text) {
-        let url = m.as_str().trim_end_matches('/');
-        c.linkedin = if url.starts_with("http") { url.to_string() } else { format!("https://{url}") };
-        found.push("LinkedIn");
-    }
-    // The name: the first short line that is not contact details or a heading.
-    if let Some(name) = text.lines().take(8).find(|l| {
-        let words = l.split_whitespace().count();
-        (2..=5).contains(&words) && !l.contains('@') && !l.chars().any(|ch| ch.is_ascii_digit()) && heading_kind(l).is_none() && l.chars().all(|ch| ch.is_alphabetic() || " -.'".contains(ch))
-    }) {
-        c.name = name.trim().to_string();
-        found.push("navn");
-    }
-    // Split into headed sections.
-    let mut current = "top";
-    let mut parts: Vec<(&str, Vec<&str>)> = vec![("top", Vec::new())];
-    for line in text.lines() {
-        if let Some(kind) = heading_kind(line) {
-            current = kind;
-            parts.push((kind, Vec::new()));
-            continue;
-        }
-        if let Some(last) = parts.last_mut() {
-            last.1.push(line);
-        }
-    }
-    let _ = current;
-    let mut rest = Vec::new();
-    for (kind, lines) in &parts {
-        let body = tidy(&lines.join("\n"));
-        if body.is_empty() {
-            continue;
-        }
-        match *kind {
-            "profile" if p.candidate.summary.is_empty() => {
-                p.candidate.summary = body.lines().filter(|l| !l.is_empty()).collect::<Vec<_>>().join(" ");
-                found.push("profil");
-            }
-            "skills" => {
-                for item in body.split(['\n', ',', '•', '·', ';', '|']).map(|s| s.trim().trim_start_matches(['-', '*', '–']).trim()) {
-                    if (2..=60).contains(&item.chars().count()) {
-                        p.skills.push(Skill { group: String::new(), name: item.to_string(), evidence: String::new(), confirmed: true });
-                    }
-                }
-                if !p.skills.is_empty() {
-                    found.push("kompetanse");
-                }
-            }
-            "languages" => {
-                for item in body.split(['\n', ',', '•', '·', ';', '|']).map(str::trim).filter(|s| !s.is_empty()) {
-                    let (name, level) = item.split_once([':', '–', '-', '(']).map(|(a, b)| (a.trim(), b.trim().trim_end_matches(')'))).unwrap_or((item, ""));
-                    if (2..=30).contains(&name.chars().count()) {
-                        p.languages.push(SpokenLanguage { name: name.to_string(), level: level.to_string() });
-                    }
-                }
-                if !p.languages.is_empty() {
-                    found.push("språk");
-                }
-            }
-            "top" | "other" => {}
-            other => rest.push(format!("{}\n{body}", other.to_uppercase())),
-        }
-    }
-    let found = found.into_iter().map(String::from).collect();
-    CvRead { project: p, rest: rest.join("\n\n"), found }
-}
+pub use crate::cvread::{CvRead, read_cv};

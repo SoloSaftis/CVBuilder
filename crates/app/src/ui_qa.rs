@@ -227,6 +227,9 @@ const SCENES: &[Scene] = &[
     Scene { name: "Ny seksjon", setup: |a| a.new_section = Some(String::new()) },
     Scene { name: "Sjekklisteredigering", setup: |a| a.checklist.editing = Some(cv_core::checklist::Checklist::starter()) },
     Scene { name: "Om CVBuilder", setup: |a| a.about_open = true },
+    Scene { name: "Importer CV", setup: |a| a.import.cv_open = true },
+    Scene { name: "Importrest", setup: |a| a.import.rest = Some("ERFARING
+Som koordinator i Fjellvegg Bygg AS 2021 – nå".into()) },
     Scene {
         name: "Koble til AI",
         setup: |a| {

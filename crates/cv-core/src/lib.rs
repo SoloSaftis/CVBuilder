@@ -2,6 +2,7 @@
 //! WordCraft's document model, so both files come from one layout.
 pub mod checklist;
 pub mod checks;
+pub mod cvread;
 pub mod import;
 mod wordlists;
 pub mod document;

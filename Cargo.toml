@@ -14,6 +14,8 @@ license = "MIT OR Apache-2.0"
 [workspace.dependencies]
 wordcraft-doc = { git = "https://github.com/storytold/wordcraft", rev = "661a790540de039b6902b5cc9ffe5d49024bf3c7" }
 wordcraft-docx = { git = "https://github.com/storytold/wordcraft", rev = "661a790540de039b6902b5cc9ffe5d49024bf3c7" }
+wordcraft-docbin = { git = "https://github.com/storytold/wordcraft", rev = "661a790540de039b6902b5cc9ffe5d49024bf3c7" }
+wordcraft-formats = { git = "https://github.com/storytold/wordcraft", rev = "661a790540de039b6902b5cc9ffe5d49024bf3c7" }
 wordcraft-pdf = { git = "https://github.com/storytold/wordcraft", rev = "661a790540de039b6902b5cc9ffe5d49024bf3c7" }
 wordcraft-layout = { git = "https://github.com/storytold/wordcraft", rev = "661a790540de039b6902b5cc9ffe5d49024bf3c7" }
 wordcraft-render = { git = "https://github.com/storytold/wordcraft", rev = "661a790540de039b6902b5cc9ffe5d49024bf3c7" }
