@@ -89,7 +89,7 @@ impl CvApp {
         let custom = !self.project.options.palette.is_empty() || !self.project.options.section_colors.is_empty();
         let label = if custom { i18n::t("Farger · egne") } else { i18n::t("Farger") };
         let mut changed = false;
-        ui.menu_button(RichText::new(label).size(13.5).family(theme::medium()), |ui| {
+        crate::menu_ui::tool_menu(ui, theme::ph::PALETTE, label, i18n::t("Farger for hele CV-en, uavhengig av designet"), |ui| {
             ui.set_min_width(330.0);
             ui.label(RichText::new(i18n::t("Fargene er uavhengige av designet. Bytter du design, beholdes fargene du har valgt.")).size(12.0).color(t.dim));
             ui.add_space(4.0);
@@ -135,9 +135,7 @@ impl CvApp {
                 self.project.options.section_colors.clear();
                 changed = true;
             }
-        })
-        .response
-        .on_hover_text(i18n::t("Farger for hele CV-en, uavhengig av designet"));
+        });
         if changed {
             self.preview.changed();
             self.save_at = Some(std::time::Instant::now());

@@ -1102,6 +1102,13 @@
   "sluttdatoen": "de einddatum",
   "punktene": "de punten",
   "ekstra kontaktlinjer": "extra contactregels",
-  "rekkefølgen i kontaktlinjen": "de volgorde van de contactregel"
+  "rekkefølgen i kontaktlinjen": "de volgorde van de contactregel",
+  "Noe viktig mangler i CV-en": "Er ontbreekt iets belangrijks in het cv",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Je kunt toch downloaden, maar dit moet eerst worden ingevuld:",
+  "… og {n} til": "… en nog {n}",
+  "Last ned likevel": "Toch downloaden",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Het bestand opslaan, ook al ontbreekt er iets. Je bevestigt ook dat wat in het cv staat waar is.",
+  "Vis sjekkliste": "Checklist tonen",
+  "Lukk og se hva som mangler i sjekklisten": "Sluiten en in de checklist zien wat ontbreekt"
  }
 }

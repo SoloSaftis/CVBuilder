@@ -1102,6 +1102,13 @@
   "sluttdatoen": "종료일",
   "punktene": "항목",
   "ekstra kontaktlinjer": "추가 연락처 줄",
-  "rekkefølgen i kontaktlinjen": "연락처 줄의 순서"
+  "rekkefølgen i kontaktlinjen": "연락처 줄의 순서",
+  "Noe viktig mangler i CV-en": "이력서에 중요한 정보가 빠져 있습니다",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "그래도 다운로드할 수 있지만, 먼저 다음 항목을 채우는 것이 좋습니다:",
+  "… og {n} til": "… 외 {n}개",
+  "Last ned likevel": "그래도 다운로드",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "빠진 항목이 있어도 파일을 저장합니다. 이력서 내용이 사실임을 확인하는 것이기도 합니다.",
+  "Vis sjekkliste": "체크리스트 보기",
+  "Lukk og se hva som mangler i sjekklisten": "닫고 체크리스트에서 빠진 항목 확인"
  }
 }

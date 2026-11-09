@@ -200,8 +200,11 @@ fn check_overlaps(h: &mut Harness<'_, CvApp>, ctls: &[Ctl], screen: Rect) -> Vec
 
 /// What opens a dropdown or a menu: tested by opening it and checking its items.
 fn opens_popup(c: &Ctl) -> bool {
-    const MENUS: [&str; 14] = ["Fil", "File", "+ Seksjon", "+ Section", "Marger", "Margins", "Størrelse", "Size", "Ny side", "New page", "Spalter", "Columns", "Palett", "Palette"];
-    c.control && (c.role == Role::ComboBox || MENUS.iter().any(|m| c.label.starts_with(m)))
+    const MENUS: [&str; 14] = ["Fil", "File", "Seksjon", "Section", "Marger", "Margins", "Størrelse", "Size", "Ny side", "New page", "Spalter", "Columns", "Palett", "Palette"];
+    // Ribbon tools start with an icon from the icon font, and the ones with a menu end with ▾.
+    let label = c.label.trim_start_matches(|ch: char| crate::theme::ph::is_icon(ch) || ch.is_whitespace());
+    let caret = c.label.trim_end().ends_with(crate::theme::ph::CARET_DOWN);
+    c.control && (c.role == Role::ComboBox || caret || MENUS.iter().any(|m| label.starts_with(m)))
 }
 
 struct Scene {
@@ -369,4 +372,22 @@ fn dialog_buttons_take_real_clicks() {
     h.event(egui::Event::PointerButton { pos: cancel.center(), button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
     step(&mut h, 3);
     assert!(h.state().translate.is_none(), "the click on «Avbryt» did not close the window");
+}
+
+/// Pictures of every scene, for looking at the layout by eye:
+/// `CVBUILDER_SHOTS=<dir> cargo test --release -p cvbuilder-app ui_shots -- --ignored`
+#[test]
+#[ignore = "writes pictures; run on purpose"]
+fn ui_shots() {
+    let Ok(dir) = std::env::var("CVBUILDER_SHOTS").map(std::path::PathBuf::from) else {
+        return;
+    };
+    std::fs::create_dir_all(&dir).expect("shots folder");
+    let lang = std::env::var("CVBUILDER_QA_LANGS").unwrap_or_else(|_| "no".into());
+    private_data_folder(&lang);
+    for (i, scene) in SCENES.iter().enumerate() {
+        let mut h = harness(Vec2::new(1440.0, 900.0), scene.setup);
+        let image = h.render().expect("render");
+        image.save(dir.join(format!("{i:02}-{}.png", scene.name.replace(' ', "_")))).expect("save");
+    }
 }

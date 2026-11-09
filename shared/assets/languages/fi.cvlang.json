@@ -1102,6 +1102,13 @@
   "sluttdatoen": "päättymispäivää",
   "punktene": "luettelokohtia",
   "ekstra kontaktlinjer": "ylimääräisiä yhteystietorivejä",
-  "rekkefølgen i kontaktlinjen": "yhteystietorivin järjestystä"
+  "rekkefølgen i kontaktlinjen": "yhteystietorivin järjestystä",
+  "Noe viktig mangler i CV-en": "CV:stä puuttuu jotain tärkeää",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Voit ladata silti, mutta nämä kannattaa täyttää ensin:",
+  "… og {n} til": "… ja {n} muuta",
+  "Last ned likevel": "Lataa silti",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Tallenna tiedosto, vaikka jotain puuttuu. Vahvistat myös, että CV:n tiedot ovat totta.",
+  "Vis sjekkliste": "Näytä tarkistuslista",
+  "Lukk og se hva som mangler i sjekklisten": "Sulje ja katso tarkistuslistasta, mitä puuttuu"
  }
 }

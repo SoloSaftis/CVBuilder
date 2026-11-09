@@ -48,7 +48,7 @@ impl CvApp {
         let page = &mut self.project.options.page;
         crate::menu_ui::group(ui, i18n::t("Sideoppsett"), |ui| {
             crate::menu_ui::column(ui, |ui| {
-                ui.menu_button(i18n::tf("Marger: {m}", &[("m", margins_label(page.margins).split(" · ").next().unwrap_or(""))]), |ui| {
+                crate::menu_ui::tool_menu(ui, theme::ph::FRAME_CORNERS, &i18n::tf("Marger: {m}", &[("m", margins_label(page.margins).split(" · ").next().unwrap_or(""))]), i18n::t("Luften rundt teksten på siden. Normal passer de fleste."), |ui| {
                     for (m, tip) in [
                         (Margins::Normal, i18n::t("Passer de fleste CV-er")),
                         (Margins::Narrow, i18n::t("Mer tekst per side, men siden blir tettere")),
@@ -72,10 +72,8 @@ impl CvApp {
                             });
                         }
                     }
-                })
-                .response
-                .on_hover_text(i18n::t("Luften rundt teksten på siden. Normal passer de fleste."));
-                ui.menu_button(i18n::tf("Størrelse: {s}", &[("s", size_label(page.size).split(" · ").next().unwrap_or(""))]), |ui| {
+                });
+                crate::menu_ui::tool_menu(ui, theme::ph::FILE, &i18n::tf("Størrelse: {s}", &[("s", size_label(page.size).split(" · ").next().unwrap_or(""))]), i18n::t("Papirstørrelsen: A4 eller amerikansk Letter og Legal"), |ui| {
                     for (s, tip) in [
                         (PageSize::A4, i18n::t("Vanlig i Norge og Europa")),
                         (PageSize::Letter, i18n::t("Vanlig i USA og Canada")),
@@ -88,9 +86,7 @@ impl CvApp {
                     }
                     ui.separator();
                     ui.label(RichText::new(i18n::t("A4 brukes i Norge og Europa, Letter i USA og Canada.")).size(12.0).color(t.faint));
-                })
-                .response
-                .on_hover_text(i18n::t("Papirstørrelsen: A4 eller amerikansk Letter og Legal"));
+                });
             });
             crate::menu_ui::column(ui, |ui| {
                 let label = match page.columns {
@@ -99,7 +95,7 @@ impl CvApp {
                     Some(ColumnsChoice::Left) => i18n::t("Spalter: sidefelt venstre"),
                     Some(ColumnsChoice::Right) => i18n::t("Spalter: sidefelt høyre"),
                 };
-                ui.menu_button(label, |ui| {
+                crate::menu_ui::tool_menu(ui, theme::ph::COLUMNS, &label, i18n::t("Én spalte leses best av ATS. To spalter gir et sidefelt."), |ui| {
                     let two = i18n::t("Et sidefelt med kontakt og kompetanse. Eldre ATS kan lese to spalter i feil rekkefølge.");
                     for (choice, name, tip) in [
                         (None, i18n::t("Som designet"), i18n::t("Bruk spaltene designet har")),
@@ -114,9 +110,7 @@ impl CvApp {
                     }
                     ui.separator();
                     ui.label(RichText::new(i18n::t("Sidefeltet får kontakt, kompetanse, språk, kurs og interesser.\nTo spalter leses dårligere av eldre søknadssystemer.")).size(12.0).color(t.faint));
-                })
-                .response
-                .on_hover_text(i18n::t("Én spalte leses best av ATS. To spalter gir et sidefelt."));
+                });
             });
         });
         let titles: Vec<(String, String)> = cvtext::section_order(&self.project)
@@ -133,7 +127,7 @@ impl CvApp {
         crate::menu_ui::group(ui, i18n::t("Sider"), |ui| {
             crate::menu_ui::column(ui, |ui| {
                 let n = page.page_breaks.len() + page.page_breaks_after.len();
-                ui.menu_button(if n == 0 { i18n::t("Ny side …").to_string() } else { i18n::tf("Ny side … ({n})", &[("n", &n.to_string())]) }, |ui| {
+                crate::menu_ui::tool_menu(ui, theme::ph::ROWS, &if n == 0 { i18n::t("Ny side …").trim_end_matches(['…', ' ']).to_string() } else { i18n::tf("Ny side … ({n})", &[("n", &n.to_string())]).replace(" …", "") }, i18n::t("Start en seksjon på en ny side, før eller etter den, så ingen deles stygt"), |ui| {
                     ui.label(RichText::new(i18n::t("Velg seksjoner som skal starte en ny side (før), eller som skal avsluttes med et sideskift (etter).")).size(12.0).color(t.faint));
                     egui::Grid::new("page-breaks").num_columns(3).spacing([12.0, 4.0]).show(ui, |ui| {
                         ui.label(RichText::new(i18n::t("Seksjon")).size(12.0).color(t.dim));
@@ -163,9 +157,7 @@ impl CvApp {
                         page.page_breaks.clear();
                         page.page_breaks_after.clear();
                     }
-                })
-                .response
-                .on_hover_text(i18n::t("Start en seksjon på en ny side, før eller etter den, så ingen deles stygt"));
+                });
             });
             crate::menu_ui::column(ui, |ui| {
                 let color = if pages > advice + 1 {
@@ -175,38 +167,49 @@ impl CvApp {
                 } else {
                     t.dim
                 };
-                ui.label(RichText::new(i18n::tf("Anbefalt: {advice} sider", &[("advice", &advice.to_string())])).size(13.0).color(color));
+                let (p, a) = (pages.to_string(), advice.to_string());
+                let now = if pages == 1 {
+                    i18n::tf("{pages} side · anbefalt {advice}", &[("pages", &p), ("advice", &a)])
+                } else {
+                    i18n::tf("{pages} sider · anbefalt {advice}", &[("pages", &p), ("advice", &a)])
+                };
+                ui.label(RichText::new(now).size(13.0).color(color))
+                    .on_hover_text(i18n::t("Det er ingen grense, men rekrutterere bruker sekunder på hver CV: én side for kort erfaring, to sider for de fleste."));
                 ui.label(RichText::new(if advice == 1 { i18n::t("Kort erfaring: én side holder.") } else { i18n::t("To sider for de fleste. Ingen grense.") }).size(12.0).color(t.faint));
             });
         });
         let page = &mut self.project.options.page;
         crate::menu_ui::group(ui, i18n::t("Tekst og avstand"), |ui| {
             crate::menu_ui::column(ui, |ui| {
+                // Text size: icon, −, the size, +; all the same height as the other tools.
                 ui.horizontal(|ui| {
-                    ui.label(RichText::new(i18n::t("Tekst")).size(13.0));
-                    if ui
-                        .add_enabled(page.text_delta > -1.5, egui::Button::new("A−"))
+                    ui.spacing_mut().item_spacing.x = 2.0;
+                    ui.add_sized([26.0, 26.0], egui::Label::new(RichText::new(theme::ph::TEXT_AA).family(theme::icons()).size(16.0).color(t.accent)))
+                        .on_hover_text(i18n::t("Tekst"));
+                    if theme::flat_icon(ui, theme::ph::MINUS, page.text_delta > -1.5)
                         .on_hover_text(i18n::t("Mindre tekst"))
                         .on_disabled_hover_text(i18n::t("Teksten er så liten den kan bli"))
                         .clicked()
                     {
                         page.text_delta = (page.text_delta - 0.5).max(-1.5);
                     }
-                    ui.label(RichText::new(if page.text_delta == 0.0 { i18n::t("normal").to_string() } else { format!("{:+.1} pt", page.text_delta) }).size(12.5).color(t.dim));
-                    if ui.add_enabled(page.text_delta < 2.0, egui::Button::new("A+")).on_hover_text(i18n::t("Større tekst")).on_disabled_hover_text(i18n::t("Teksten er så stor den kan bli")).clicked()
-                    {
+                    let size = if page.text_delta == 0.0 { i18n::t("normal").to_string() } else { format!("{:+.1} pt", page.text_delta) };
+                    ui.add_sized([56.0, 26.0], egui::Label::new(RichText::new(size).size(13.0)));
+                    if theme::flat_icon(ui, theme::ph::PLUS, page.text_delta < 2.0).on_hover_text(i18n::t("Større tekst")).on_disabled_hover_text(i18n::t("Teksten er så stor den kan bli")).clicked() {
                         page.text_delta = (page.text_delta + 0.5).min(2.0);
                     }
                 });
-                ui.horizontal(|ui| {
-                    ui.label(RichText::new(i18n::t("Avstand")).size(13.0));
-                    for (v, name, tip) in [
-                        (0.85, i18n::t("Tett"), i18n::t("Mindre luft mellom linjer og deler – får plass til mer")),
-                        (1.0, i18n::t("Normal"), i18n::t("Vanlig avstand mellom linjer og deler")),
-                        (1.15, i18n::t("Luftig"), i18n::t("Mer luft – lettere å lese når CV-en er kort")),
-                    ] {
+                let spacings = [
+                    (0.85, i18n::t("Tett"), i18n::t("Mindre luft mellom linjer og deler – får plass til mer")),
+                    (1.0, i18n::t("Normal"), i18n::t("Vanlig avstand mellom linjer og deler")),
+                    (1.15, i18n::t("Luftig"), i18n::t("Mer luft – lettere å lese når CV-en er kort")),
+                ];
+                let current = spacings.iter().find(|(v, _, _)| (page.spacing - v).abs() < 0.01).map(|(_, n, _)| *n).unwrap_or(i18n::t("Normal"));
+                crate::menu_ui::tool_menu(ui, theme::ph::ARROWS_VERTICAL, &format!("{}: {current}", i18n::t("Avstand")), i18n::t("Vanlig avstand mellom linjer og deler"), |ui| {
+                    for (v, name, tip) in spacings {
                         if ui.radio((page.spacing - v).abs() < 0.01, name).on_hover_text(tip).clicked() {
                             page.spacing = v;
+                            ui.close();
                         }
                     }
                 });

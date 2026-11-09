@@ -1102,6 +1102,13 @@
   "sluttdatoen": "das Enddatum",
   "punktene": "die Stichpunkte",
   "ekstra kontaktlinjer": "zusätzliche Kontaktzeilen",
-  "rekkefølgen i kontaktlinjen": "die Reihenfolge der Kontaktzeile"
+  "rekkefølgen i kontaktlinjen": "die Reihenfolge der Kontaktzeile",
+  "Noe viktig mangler i CV-en": "Im Lebenslauf fehlt etwas Wichtiges",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Du kannst trotzdem herunterladen, aber das sollte zuerst ausgefüllt werden:",
+  "… og {n} til": "… und {n} weitere",
+  "Last ned likevel": "Trotzdem herunterladen",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Die Datei speichern, obwohl etwas fehlt. Du bestätigst auch, dass alles im Lebenslauf wahr ist.",
+  "Vis sjekkliste": "Checkliste anzeigen",
+  "Lukk og se hva som mangler i sjekklisten": "Schließen und in der Checkliste sehen, was fehlt"
  }
 }

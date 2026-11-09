@@ -1102,6 +1102,13 @@
   "sluttdatoen": "datum ukončení",
   "punktene": "odrážky",
   "ekstra kontaktlinjer": "další kontaktní řádky",
-  "rekkefølgen i kontaktlinjen": "pořadí v kontaktním řádku"
+  "rekkefølgen i kontaktlinjen": "pořadí v kontaktním řádku",
+  "Noe viktig mangler i CV-en": "V životopisu chybí něco důležitého",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Můžete stáhnout i tak, ale nejprve byste měli vyplnit:",
+  "… og {n} til": "… a {n} dalších",
+  "Last ned likevel": "Přesto stáhnout",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Uložit soubor, i když něco chybí. Zároveň potvrzujete, že obsah životopisu je pravdivý.",
+  "Vis sjekkliste": "Zobrazit kontrolní seznam",
+  "Lukk og se hva som mangler i sjekklisten": "Zavřít a podívat se v kontrolním seznamu, co chybí"
  }
 }

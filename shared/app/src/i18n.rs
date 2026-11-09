@@ -642,6 +642,13 @@ static EN: &[(&str, &str)] = &[
         "Read it through one last time: name, contact details, dates, and that everything in it is true – including what the AI wrote.",
     ),
     ("Ja, last ned", "Yes, download"),
+    ("Noe viktig mangler i CV-en", "Something important is missing from the CV"),
+    ("Du kan laste ned likevel, men dette bør fylles ut først:", "You can download anyway, but this should be filled in first:"),
+    ("… og {n} til", "… and {n} more"),
+    ("Last ned likevel", "Download anyway"),
+    ("Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.", "Save the file even though something is missing. You also confirm that what the CV says is true."),
+    ("Vis sjekkliste", "Show checklist"),
+    ("Lukk og se hva som mangler i sjekklisten", "Close and see what is missing in the checklist"),
     ("Ingenting er lastet ned.", "Nothing was downloaded."),
     ("Tilpass portrettet", "Adjust the portrait"),
     (

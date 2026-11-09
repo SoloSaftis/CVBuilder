@@ -1102,6 +1102,13 @@
   "sluttdatoen": "pabaigos data",
   "punktene": "punktai",
   "ekstra kontaktlinjer": "papildomos kontaktų eilutės",
-  "rekkefølgen i kontaktlinjen": "kontaktų eilutės tvarka"
+  "rekkefølgen i kontaktlinjen": "kontaktų eilutės tvarka",
+  "Noe viktig mangler i CV-en": "CV trūksta kai ko svarbaus",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Galite atsisiųsti vis tiek, bet pirmiausia reikėtų užpildyti:",
+  "… og {n} til": "… ir dar {n}",
+  "Last ned likevel": "Vis tiek atsisiųsti",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Išsaugoti failą, nors kai ko trūksta. Taip pat patvirtinate, kad CV parašyta tiesa.",
+  "Vis sjekkliste": "Rodyti kontrolinį sąrašą",
+  "Lukk og se hva som mangler i sjekklisten": "Uždaryti ir pažiūrėti kontroliniame sąraše, ko trūksta"
  }
 }

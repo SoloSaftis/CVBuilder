@@ -56,15 +56,23 @@ enum Action {
 }
 
 /// A tool button in the ribbon: a label, and a short hint on hover (also while it is off).
-fn tool(ui: &mut egui::Ui, text: &str, tip: &str, enabled: bool) -> bool {
+fn tool(ui: &mut egui::Ui, icon: &str, text: &str, tip: &str, enabled: bool) -> bool {
     debug_assert!(!tip.trim().is_empty(), "the ribbon tool «{text}» needs a tip");
-    let t = Tokens::get(ui.ctx());
-    let b = egui::Button::new(RichText::new(text).size(13.0).color(if enabled { t.text } else { t.faint }))
-        .wrap_mode(egui::TextWrapMode::Extend)
-        .frame_when_inactive(false)
-        .corner_radius(CornerRadius::same(theme::R_SM))
-        .min_size(egui::vec2(0.0, 26.0));
+    let b = theme::tool_button(ui, icon, text, enabled, false);
     ui.add_enabled(enabled, b).on_hover_text(tip).on_disabled_hover_text(tip).clicked()
+}
+
+/// An item in the Fil menu: icon and text.
+fn menu_item<'a>(ui: &egui::Ui, icon: &str, text: &str) -> egui::Button<'a> {
+    let t = Tokens::get(ui.ctx());
+    egui::Button::new((RichText::new(icon).family(theme::icons()).size(15.0).color(t.accent), RichText::new(text)))
+}
+
+/// A ribbon tool that opens a menu: icon, label and a small ▾.
+pub(crate) fn tool_menu(ui: &mut egui::Ui, icon: &str, text: &str, tip: &str, body: impl FnOnce(&mut egui::Ui)) {
+    debug_assert!(!tip.trim().is_empty(), "the ribbon menu «{text}» needs a tip");
+    let b = theme::tool_button(ui, icon, text, true, true);
+    egui::containers::menu::MenuButton::from_button(b).ui(ui, body).0.on_hover_text(tip);
 }
 
 /// What a download does, and what is missing while it cannot be done.
@@ -109,7 +117,7 @@ impl CvApp {
         let t = Tokens::get(ui.ctx());
         let mut action: Option<Action> = None;
         let blocked = !cv_core::checks::blocking(&self.project).is_empty();
-        // Tabs, with the main action and the page count on the right.
+        // Tabs, with the fold button on the right.
         ui.horizontal(|ui| {
             ui.spacing_mut().item_spacing.x = 2.0;
             let file = ui
@@ -122,34 +130,34 @@ impl CvApp {
                 .on_hover_text(i18n::t("Ny CV, åpne og lagre utkast, importer, last ned og innstillinger"));
             egui::Popup::menu(&file).show(|ui| {
                 ui.set_min_width(230.0);
-                if ui.button(i18n::t("Ny CV")).on_hover_text(i18n::t("Start på en tom CV. Den du har nå kan hentes tilbake med Angre.")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::FILE_PLUS, i18n::t("Ny CV"))).on_hover_text(i18n::t("Start på en tom CV. Den du har nå kan hentes tilbake med Angre.")).clicked() {
                     action = Some(Action::New);
                 }
-                if ui.button(i18n::t("Åpne eksempel")).on_hover_text(i18n::t("Et fiktivt eksempel med anbefalt oppsett og rekkefølge")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::LIGHTBULB, i18n::t("Åpne eksempel"))).on_hover_text(i18n::t("Et fiktivt eksempel med anbefalt oppsett og rekkefølge")).clicked() {
                     action = Some(Action::Example);
                 }
                 ui.separator();
-                if ui.button(i18n::t("Åpne")).on_hover_text(i18n::t("Åpne et lagret CVBuilder-utkast (.json)")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::FOLDER_OPEN, i18n::t("Åpne"))).on_hover_text(i18n::t("Åpne et lagret CVBuilder-utkast (.json)")).clicked() {
                     action = Some(Action::Open);
                 }
-                if ui.button(i18n::t("Lagre som")).on_hover_text(i18n::t("Lagre utkastet som fil")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som"))).on_hover_text(i18n::t("Lagre utkastet som fil")).clicked() {
                     action = Some(Action::Save);
                 }
-                if ui.button(i18n::t("Importer CV fra fil")).on_hover_text(i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV fra fil"))).on_hover_text(i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI")).clicked() {
                     action = Some(Action::ImportCv);
                 }
                 ui.separator();
-                for (kind, name) in [(Export::Pdf, i18n::t("Last ned PDF")), (Export::Word, i18n::t("Last ned Word")), (Export::Text, i18n::t("Kopier CV-en som tekst"))] {
+                for (kind, icon, name) in [(Export::Pdf, theme::ph::FILE_PDF, i18n::t("Last ned PDF")), (Export::Word, theme::ph::FILE_DOC, i18n::t("Last ned Word")), (Export::Text, theme::ph::COPY, i18n::t("Kopier CV-en som tekst"))] {
                     let tip = export_tip(kind, blocked);
-                    if ui.add_enabled(!blocked, egui::Button::new(name)).on_hover_text(&tip).on_disabled_hover_text(&tip).clicked() {
+                    if ui.add(menu_item(ui, icon, name)).on_hover_text(&tip).clicked() {
                         action = Some(Action::Export(kind));
                     }
                 }
                 ui.separator();
-                if ui.button(i18n::t("Innstillinger")).on_hover_text(i18n::t("Språk i menyene, tema og mer")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::GEAR, i18n::t("Innstillinger"))).on_hover_text(i18n::t("Språk i menyene, tema og mer")).clicked() {
                     action = Some(Action::Settings);
                 }
-                if ui.button(i18n::t("Om CVBuilder")).on_hover_text(i18n::t("Versjon, bygg og lisenser")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::INFO, i18n::t("Om CVBuilder"))).on_hover_text(i18n::t("Versjon, bygg og lisenser")).clicked() {
                     action = Some(Action::About);
                 }
             });
@@ -196,26 +204,6 @@ impl CvApp {
                 {
                     self.ribbon_folded = !self.ribbon_folded;
                 }
-                let ctx = ui.ctx().clone();
-                if theme::primary(ui, i18n::t("Last ned PDF"), &export_tip(Export::Pdf, blocked), !blocked).clicked() {
-                    self.start_export(&ctx, Export::Pdf);
-                }
-                let pages = self.preview.page_count;
-                let advice = self.recommended_pages();
-                let (fill, color) = if pages > advice + 1 {
-                    (t.danger.gamma_multiply(0.15), t.danger)
-                } else if pages > advice {
-                    (t.warning.gamma_multiply(0.15), t.warning)
-                } else {
-                    (t.hover, t.dim)
-                };
-                let (p, a) = (pages.to_string(), advice.to_string());
-                let text = if pages == 1 {
-                    i18n::tf("{pages} side · anbefalt {advice}", &[("pages", &p), ("advice", &a)])
-                } else {
-                    i18n::tf("{pages} sider · anbefalt {advice}", &[("pages", &p), ("advice", &a)])
-                };
-                theme::pill(ui, &text, fill, color).on_hover_text(i18n::t("Det er ingen grense, men rekrutterere bruker sekunder på hver CV: én side for kort erfaring, to sider for de fleste."));
             });
         });
         if self.ribbon_folded {
@@ -239,13 +227,15 @@ impl CvApp {
                     Tab::Help => {
                         group(ui, i18n::t("Hjelp"), |ui| {
                             column(ui, |ui| {
-                                if tool(ui, i18n::t("Om CVBuilder"), i18n::t("Versjon, bygg og lisenser"), true) {
+                                if tool(ui, theme::ph::INFO, i18n::t("Om CVBuilder"), i18n::t("Versjon, bygg og lisenser"), true) {
                                     action = Some(Action::About);
                                 }
-                                if tool(ui, i18n::t("Format for egne design"), i18n::t("Hvordan en .cvdesign.json-fil ser ut"), true) {
+                                if tool(ui, theme::ph::FILE_CODE, i18n::t("Format for egne design"), i18n::t("Hvordan en .cvdesign.json-fil ser ut"), true) {
                                     action = Some(Action::DesignFormat);
                                 }
-                                if tool(ui, i18n::t("Innstillinger"), i18n::t("Språk i menyene, tema og mer"), true) {
+                            });
+                            column(ui, |ui| {
+                                if tool(ui, theme::ph::GEAR, i18n::t("Innstillinger"), i18n::t("Språk i menyene, tema og mer"), true) {
                                     action = Some(Action::Settings);
                                 }
                             });
@@ -262,60 +252,57 @@ impl CvApp {
     fn home_tab(&mut self, ui: &mut egui::Ui, action: &mut Option<Action>, blocked: bool) {
         group(ui, i18n::t("Fil"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("Ny CV"), i18n::t("Start på en tom CV. Den du har nå kan hentes tilbake med Angre."), true) {
+                if tool(ui, theme::ph::FILE_PLUS, i18n::t("Ny CV"), i18n::t("Start på en tom CV. Den du har nå kan hentes tilbake med Angre."), true) {
                     *action = Some(Action::New);
                 }
-                if tool(ui, i18n::t("Eksempel"), i18n::t("Et fiktivt eksempel med anbefalt oppsett og rekkefølge"), true) {
+                if tool(ui, theme::ph::LIGHTBULB, i18n::t("Eksempel"), i18n::t("Et fiktivt eksempel med anbefalt oppsett og rekkefølge"), true) {
                     *action = Some(Action::Example);
                 }
             });
             column(ui, |ui| {
-                if tool(ui, i18n::t("Åpne"), i18n::t("Åpne et lagret CVBuilder-utkast (.json)"), true) {
+                if tool(ui, theme::ph::FOLDER_OPEN, i18n::t("Åpne"), i18n::t("Åpne et lagret CVBuilder-utkast (.json)"), true) {
                     *action = Some(Action::Open);
                 }
-                if tool(ui, i18n::t("Lagre som"), i18n::t("Lagre utkastet som fil"), true) {
+                if tool(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som"), i18n::t("Lagre utkastet som fil"), true) {
                     *action = Some(Action::Save);
                 }
             });
             column(ui, |ui| {
-                if tool(ui, i18n::t("Importer CV"), i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI"), true) {
+                if tool(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV"), i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI"), true) {
                     *action = Some(Action::ImportCv);
+                }
+                if tool(ui, theme::ph::COPY, i18n::t("Kopier tekst"), &export_tip(Export::Text, blocked), true) {
+                    *action = Some(Action::Export(Export::Text));
+                }
+            });
+            // Downloading sits with saving; while something is missing, a click shows what.
+            column(ui, |ui| {
+                if tool(ui, theme::ph::FILE_PDF, i18n::t("Last ned PDF"), &export_tip(Export::Pdf, blocked), true) {
+                    *action = Some(Action::Export(Export::Pdf));
+                }
+                if tool(ui, theme::ph::FILE_DOC, i18n::t("Last ned Word"), &export_tip(Export::Word, blocked), true) {
+                    *action = Some(Action::Export(Export::Word));
                 }
             });
         });
         group(ui, i18n::t("Stillingsannonse"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("Lim inn annonse"), i18n::t("Gå til feltet for annonseteksten øverst i skjemaet"), true) {
+                if tool(ui, theme::ph::CLIPBOARD_TEXT, i18n::t("Lim inn annonse"), i18n::t("Gå til feltet for annonseteksten øverst i skjemaet"), true) {
                     *action = Some(Action::PasteAd);
                 }
-                if tool(ui, i18n::t("Hent fra lenke"), i18n::t("Hent annonsen fra lenken i skjemaet"), true) {
+                if tool(ui, theme::ph::LINK, i18n::t("Hent fra lenke"), i18n::t("Hent annonsen fra lenken i skjemaet"), true) {
                     *action = Some(Action::AdLink);
                 }
             });
             column(ui, |ui| {
-                if tool(ui, i18n::t("Fra fil"), i18n::t("Les annonsen fra PDF, Word, tekst eller en lagret nettside"), true) {
+                if tool(ui, theme::ph::FILE_ARROW_UP, i18n::t("Fra fil"), i18n::t("Les annonsen fra PDF, Word, tekst eller en lagret nettside"), true) {
                     *action = Some(Action::AdFile);
-                }
-            });
-        });
-        group(ui, i18n::t("Eksporter"), |ui| {
-            column(ui, |ui| {
-                if tool(ui, "PDF", &export_tip(Export::Pdf, blocked), !blocked) {
-                    *action = Some(Action::Export(Export::Pdf));
-                }
-                if tool(ui, "Word", &export_tip(Export::Word, blocked), !blocked) {
-                    *action = Some(Action::Export(Export::Word));
-                }
-            });
-            column(ui, |ui| {
-                if tool(ui, i18n::t("Kopier tekst"), &export_tip(Export::Text, blocked), !blocked) {
-                    *action = Some(Action::Export(Export::Text));
                 }
             });
         });
         group(ui, i18n::t("Angre"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("Angre"), i18n::t("Hent tilbake CV-en fra før siste store endring"), self.undo.is_some()) {
+                if tool(ui, theme::ph::UNDO, i18n::t("Angre"), i18n::t("Hent tilbake CV-en fra før siste store endring"), self.undo.is_some()) {
                     *action = Some(Action::Undo);
                 }
             });
@@ -357,7 +344,7 @@ impl CvApp {
                     .on_hover_text(i18n::t("Språket i CV-en: overskrifter og datoer"));
             });
             column(ui, |ui| {
-                if tool(ui, i18n::t("Oversett"), i18n::t("Oversett hele CV-en, med AI eller selv"), true) {
+                if tool(ui, theme::ph::TRANSLATE, i18n::t("Oversett"), i18n::t("Oversett hele CV-en, med AI eller selv"), true) {
                     *action = Some(Action::Translate);
                 }
             });
@@ -368,18 +355,18 @@ impl CvApp {
         let english_cv = self.project.is_english();
         group(ui, i18n::t("Erfaring"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("+ Jobb"), i18n::t("Ny jobb i arbeidserfaringen"), true) {
+                if tool(ui, theme::ph::BRIEFCASE, i18n::t("+ Jobb").trim_start_matches(['+', ' ']), i18n::t("Ny jobb i arbeidserfaringen"), true) {
                     *action = Some(Action::Add("job"));
                 }
-                if tool(ui, i18n::t("+ Utdanning"), i18n::t("Ny utdanning: grad, fagbrev eller studium"), true) {
+                if tool(ui, theme::ph::GRADUATION_CAP, i18n::t("+ Utdanning").trim_start_matches(['+', ' ']), i18n::t("Ny utdanning: grad, fagbrev eller studium"), true) {
                     *action = Some(Action::Add("education"));
                 }
             });
             column(ui, |ui| {
-                if tool(ui, i18n::t("+ Kurs"), i18n::t("Nytt kurs eller ny sertifisering. Sertifiseringer i annonsen er ofte noe ATS ser etter."), true) {
+                if tool(ui, theme::ph::CERTIFICATE, i18n::t("+ Kurs").trim_start_matches(['+', ' ']), i18n::t("Nytt kurs eller ny sertifisering. Sertifiseringer i annonsen er ofte noe ATS ser etter."), true) {
                     *action = Some(Action::Add("certification"));
                 }
-                ui.menu_button(i18n::t("+ Seksjon"), |ui| {
+                tool_menu(ui, theme::ph::LIST_PLUS, i18n::t("+ Seksjon").trim_start_matches(['+', ' ']), i18n::t("Prosjekter, frivillig arbeid, verv, publikasjoner og andre seksjoner"), |ui| {
                     ui.label(RichText::new(i18n::t("Legg til en seksjon. Du kan endre navnet og flytte den i skjemaet.")).size(12.0).weak());
                     for (no, en) in crate::page_ui::SECTION_TYPES {
                         let name = if english_cv { en } else { no };
@@ -393,32 +380,30 @@ impl CvApp {
                         *action = Some(Action::Add("section"));
                         ui.close();
                     }
-                })
-                .response
-                .on_hover_text(i18n::t("Prosjekter, frivillig arbeid, verv, publikasjoner og andre seksjoner"));
+                });
             });
         });
         group(ui, i18n::t("Kompetanse"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("+ Kompetanse"), i18n::t("Ny kompetanse eller nytt verktøy. Bruk annonsens ord – ATS ser etter dem."), true) {
+                if tool(ui, theme::ph::STAR, i18n::t("+ Kompetanse").trim_start_matches(['+', ' ']), i18n::t("Ny kompetanse eller nytt verktøy. Bruk annonsens ord – ATS ser etter dem."), true) {
                     *action = Some(Action::Add("skill"));
                 }
-                if tool(ui, i18n::t("+ Språk"), i18n::t("Nytt språk med nivå, f.eks. engelsk – flytende"), true) {
+                if tool(ui, theme::ph::CHAT_TEXT, i18n::t("+ Språk").trim_start_matches(['+', ' ']), i18n::t("Nytt språk med nivå, f.eks. engelsk – flytende"), true) {
                     *action = Some(Action::Add("language"));
                 }
             });
             column(ui, |ui| {
-                if tool(ui, i18n::t("+ Interesse"), i18n::t("Ny interesse. Høyst tre kommer med i CV-en."), true) {
+                if tool(ui, theme::ph::HEART, i18n::t("+ Interesse").trim_start_matches(['+', ' ']), i18n::t("Ny interesse. Høyst tre kommer med i CV-en."), true) {
                     *action = Some(Action::Add("interest"));
                 }
             });
         });
         group(ui, i18n::t("Kontakt"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("+ Kontaktfelt"), i18n::t("GitHub, portefølje, nettside, førerkort …"), true) {
+                if tool(ui, theme::ph::ADDRESS_BOOK, i18n::t("+ Kontaktfelt").trim_start_matches(['+', ' ']), i18n::t("GitHub, portefølje, nettside, førerkort …"), true) {
                     *action = Some(Action::Add("contact"));
                 }
-                if tool(ui, if self.project.candidate.photo.is_empty() { i18n::t("Bilde") } else { i18n::t("Bytt bilde") }, i18n::t("Valgfritt portrett"), true) {
+                if tool(ui, theme::ph::USER_CIRCLE, if self.project.candidate.photo.is_empty() { i18n::t("Bilde") } else { i18n::t("Bytt bilde") }, i18n::t("Valgfritt portrett"), true) {
                     *action = Some(Action::Photo);
                 }
             });
@@ -434,10 +419,10 @@ impl CvApp {
         });
         group(ui, i18n::t("Egne design"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("Importer design"), i18n::t("Fra en .cvdesign.json-fil"), true) {
+                if tool(ui, theme::ph::UPLOAD, i18n::t("Importer design"), i18n::t("Fra en .cvdesign.json-fil"), true) {
                     *action = Some(Action::Import);
                 }
-                if tool(ui, i18n::t("Lagre som mal-fil"), i18n::t("Dette designet som fil du kan endre"), true) {
+                if tool(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som mal-fil"), i18n::t("Dette designet som fil du kan endre"), true) {
                     *action = Some(Action::SaveDesign);
                 }
             });
@@ -447,49 +432,59 @@ impl CvApp {
     fn view_tab(&mut self, ui: &mut egui::Ui, action: &mut Option<Action>) {
         group(ui, i18n::t("Visninger"), |ui| {
             column(ui, |ui| {
-                ui.checkbox(&mut self.views.form, i18n::t("Skjema")).on_hover_text(i18n::t("Vis eller skjul skjemaet der du skriver CV-en"));
-                ui.checkbox(&mut self.views.preview, i18n::t("Forhåndsvisning")).on_hover_text(i18n::t("Vis eller skjul sidene slik de blir i PDF-en"));
-                ui.checkbox(&mut self.views.side, i18n::t("AI og sjekkliste")).on_hover_text(i18n::t("Vis eller skjul panelet med AI-assistenten og sjekklisten"));
+                // Two rows, like the other tabs: each view is a toggle with its icon.
+                let t = Tokens::get(ui.ctx());
+                let icon = |i: &str| RichText::new(i).family(theme::icons()).size(17.0).color(t.accent);
+                let text = |s: &str| RichText::new(s).size(13.0);
+                ui.add(egui::Checkbox::new(&mut self.views.form, (icon(theme::ph::NOTEPAD), text(i18n::t("Skjema"))))).on_hover_text(i18n::t("Vis eller skjul skjemaet der du skriver CV-en"));
+                ui.add(egui::Checkbox::new(&mut self.views.preview, (icon(theme::ph::EYE), text(i18n::t("Forhåndsvisning"))))).on_hover_text(i18n::t("Vis eller skjul sidene slik de blir i PDF-en"));
             });
             column(ui, |ui| {
-                if tool(ui, i18n::t("Vis alt"), i18n::t("Vis skjema, forhåndsvisning og AI-panelet igjen"), true) {
+                let t = Tokens::get(ui.ctx());
+                let icon = |i: &str| RichText::new(i).family(theme::icons()).size(17.0).color(t.accent);
+                ui.add(egui::Checkbox::new(&mut self.views.side, (icon(theme::ph::SIDEBAR), RichText::new(i18n::t("AI og sjekkliste")).size(13.0)))).on_hover_text(i18n::t("Vis eller skjul panelet med AI-assistenten og sjekklisten"));
+                if tool(ui, theme::ph::SQUARES_FOUR, i18n::t("Vis alt"), i18n::t("Vis skjema, forhåndsvisning og AI-panelet igjen"), true) {
                     *action = Some(Action::ShowAll);
                 }
             });
         });
         group(ui, "Zoom", |ui| {
-            for col in [[(0.0, i18n::t("Tilpass")), (0.75, "75 %")], [(1.0, "100 %"), (1.5, "150 %")]] {
-                column(ui, |ui| {
-                    for (z, name) in col {
+            column(ui, |ui| {
+                let zooms = [(0.0, i18n::t("Tilpass")), (0.75, "75 %"), (1.0, "100 %"), (1.5, "150 %")];
+                let current = zooms.iter().find(|(z, _)| (self.views.zoom - z).abs() < 0.01).map(|(_, n)| *n).unwrap_or("100 %");
+                tool_menu(ui, theme::ph::ZOOM, current, i18n::t("Sidene fyller bredden av forhåndsvisningen"), |ui| {
+                    for (z, name) in zooms {
                         let on = (self.views.zoom - z).abs() < 0.01;
                         let tip = if z < 0.01 { i18n::t("Sidene fyller bredden av forhåndsvisningen").to_string() } else { i18n::tf("Siden i {zoom} av virkelig størrelse", &[("zoom", name)]) };
                         if ui.radio(on, name).on_hover_text(tip).clicked() {
                             self.views.zoom = z;
+                            ui.close();
                         }
                     }
                 });
-            }
+            });
         });
     }
 
     fn ai_tab(&mut self, ui: &mut egui::Ui, action: &mut Option<Action>) {
         group(ui, i18n::t("Tilkobling"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("Koble til AI"), i18n::t("Claude, ChatGPT, Gemini, Grok eller en lokal modell"), true) {
+                if tool(ui, theme::ph::PLUGS_CONNECTED, i18n::t("Koble til AI"), i18n::t("Claude, ChatGPT, Gemini, Grok eller en lokal modell"), true) {
                     *action = Some(Action::ConnectAi);
                 }
-                if tool(ui, i18n::t("MCP for andre apper"), i18n::t("Bruk CVBuilder fra Claude Code, Claude Desktop m.fl."), true) {
+                if tool(ui, theme::ph::PLUG, i18n::t("MCP for andre apper"), i18n::t("Bruk CVBuilder fra Claude Code, Claude Desktop m.fl."), true) {
                     *action = Some(Action::Mcp);
                 }
             });
         });
         group(ui, i18n::t("Assistent"), |ui| {
             column(ui, |ui| {
-                if tool(ui, i18n::t("Åpne chatten"), i18n::t("Be AI-assistenten om endringer i CV-en med egne ord"), true) {
+                if tool(ui, theme::ph::CHAT, i18n::t("Åpne chatten"), i18n::t("Be AI-assistenten om endringer i CV-en med egne ord"), true) {
                     *action = Some(Action::Chat);
                 }
                 if tool(
                     ui,
+                    theme::ph::CHAT_DOTS,
                     i18n::t("Ny samtale"),
                     if self.chat.running { i18n::t("Vent til AI-en er ferdig, eller stopp den i chatten.") } else { i18n::t("Start en ny samtale. CV-en endres ikke.") },
                     !self.chat.running,
@@ -498,7 +493,7 @@ impl CvApp {
                 }
             });
             column(ui, |ui| {
-                if tool(ui, i18n::t("Sjekkliste"), i18n::t("Rekrutterersjekk og hva som mangler"), true) {
+                if tool(ui, theme::ph::LIST_CHECKS, i18n::t("Sjekkliste"), i18n::t("Rekrutterersjekk og hva som mangler"), true) {
                     *action = Some(Action::Checks);
                 }
             });

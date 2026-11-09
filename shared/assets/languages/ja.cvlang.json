@@ -1102,6 +1102,13 @@
   "sluttdatoen": "終了日",
   "punktene": "箇条書き",
   "ekstra kontaktlinjer": "追加の連絡先行",
-  "rekkefølgen i kontaktlinjen": "連絡先の行の順序"
+  "rekkefølgen i kontaktlinjen": "連絡先の行の順序",
+  "Noe viktig mangler i CV-en": "履歴書に重要な情報が不足しています",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "このままダウンロードできますが、先に次の項目を入力することをおすすめします：",
+  "… og {n} til": "… ほか {n} 件",
+  "Last ned likevel": "このままダウンロード",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "不足があってもファイルを保存します。履歴書の内容が事実であることも確認したことになります。",
+  "Vis sjekkliste": "チェックリストを表示",
+  "Lukk og se hva som mangler i sjekklisten": "閉じてチェックリストで不足を確認"
  }
 }

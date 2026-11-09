@@ -1102,6 +1102,13 @@
   "sluttdatoen": "дата завершення",
   "punktene": "пункти",
   "ekstra kontaktlinjer": "додаткові рядки контактів",
-  "rekkefølgen i kontaktlinjen": "порядок у рядку контактів"
+  "rekkefølgen i kontaktlinjen": "порядок у рядку контактів",
+  "Noe viktig mangler i CV-en": "У резюме бракує чогось важливого",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Ви можете завантажити все одно, але спершу варто заповнити:",
+  "… og {n} til": "… і ще {n}",
+  "Last ned likevel": "Усе одно завантажити",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Зберегти файл, хоча чогось бракує. Ви також підтверджуєте, що все в резюме правдиве.",
+  "Vis sjekkliste": "Показати контрольний список",
+  "Lukk og se hva som mangler i sjekklisten": "Закрити й подивитися в контрольному списку, чого бракує"
  }
 }

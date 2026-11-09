@@ -55,6 +55,12 @@ const ALLOWED: &[(&str, &str, &str)] = &[
     // icon_button picks its sense in a small `if`; the helper takes a tip and always ends with
     // `r.on_hover_text(tip)`, and the test checks that no call passes an empty one.
     ("theme.rs", "let sense = if enabled { egui::Sense::click() }", "icon_button takes a tip and adds it at its end"),
+    // Builders that return the button: `tool` and `tool_menu` add the tip they are given, and the
+    // `flat_icon` and `menu_item` calls chain `.on_hover_text` themselves.
+    ("theme.rs", "egui::Button::new((icon, label, egui::RichText::new(ph::CARET_DOWN)", "tool_button: the tip is added by tool_menu"),
+    ("theme.rs", "egui::Button::new((icon, label))", "tool_button: the tip is added by tool"),
+    ("theme.rs", "let b = egui::Button::new(egui::RichText::new(icon).family(icons()).size(14.0)", "flat_icon: callers add the tip"),
+    ("menu_ui.rs", "egui::Button::new((RichText::new(icon).family(theme::icons()).size(15.0)", "menu_item: callers add the tip"),
 ];
 
 /// The source with comments blanked and string and char literals emptied (`""` stays `""`, any

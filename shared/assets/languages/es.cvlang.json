@@ -1102,6 +1102,13 @@
   "sluttdatoen": "la fecha de fin",
   "punktene": "las viñetas",
   "ekstra kontaktlinjer": "las líneas de contacto adicionales",
-  "rekkefølgen i kontaktlinjen": "el orden de la línea de contacto"
+  "rekkefølgen i kontaktlinjen": "el orden de la línea de contacto",
+  "Noe viktig mangler i CV-en": "Falta algo importante en el CV",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Puedes descargarlo igualmente, pero conviene rellenar esto primero:",
+  "… og {n} til": "… y {n} más",
+  "Last ned likevel": "Descargar igualmente",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Guardar el archivo aunque falte algo. También confirmas que lo que dice el CV es verdad.",
+  "Vis sjekkliste": "Ver lista de comprobación",
+  "Lukk og se hva som mangler i sjekklisten": "Cerrar y ver qué falta en la lista de comprobación"
  }
 }

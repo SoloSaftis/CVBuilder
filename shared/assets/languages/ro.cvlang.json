@@ -1102,6 +1102,13 @@
   "sluttdatoen": "data de încheiere",
   "punktene": "punctele",
   "ekstra kontaktlinjer": "rânduri de contact suplimentare",
-  "rekkefølgen i kontaktlinjen": "ordinea liniei de contact"
+  "rekkefølgen i kontaktlinjen": "ordinea liniei de contact",
+  "Noe viktig mangler i CV-en": "Lipsește ceva important din CV",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Poți descărca oricum, dar ar trebui să completezi mai întâi:",
+  "… og {n} til": "… și încă {n}",
+  "Last ned likevel": "Descarcă oricum",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Salvează fișierul chiar dacă lipsește ceva. Confirmi și că ce scrie în CV este adevărat.",
+  "Vis sjekkliste": "Arată lista de verificare",
+  "Lukk og se hva som mangler i sjekklisten": "Închide și vezi în lista de verificare ce lipsește"
  }
 }

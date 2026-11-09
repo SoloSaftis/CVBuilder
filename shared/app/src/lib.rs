@@ -375,10 +375,16 @@ impl CvApp {
     }
 
     fn start_export(&mut self, ctx: &egui::Context, kind: Export) {
-        if !self.project.approvals.facts_confirmed {
+        // Downloading always works. While something important is missing, the window before it
+        // says what, and the person can download anyway or go and fill it in.
+        if !self.project.approvals.facts_confirmed || !checks::blocking(&self.project).is_empty() {
             self.confirm = Some(kind);
             return;
         }
+        self.export_now(ctx, kind);
+    }
+
+    fn export_now(&mut self, ctx: &egui::Context, kind: Export) {
         match kind {
             Export::Text => {
                 ctx.copy_text(checks::plain_text(&self.project));
@@ -655,30 +661,62 @@ impl CvApp {
 
     fn confirm_dialog(&mut self, ctx: &egui::Context) {
         let Some(kind) = self.confirm else { return };
+        let missing = checks::blocking(&self.project);
+        let t = Tokens::get(ctx);
+        // 0 = cancel, 1 = download, 2 = show the checklist.
         let response = egui::Modal::new(egui::Id::unique("cvbuilder.confirm")).show(ctx, |ui| {
-            ui.set_max_width(420.0);
-            ui.heading(i18n::t("Stemmer alt i CV-en?"));
-            ui.add(egui::Label::new(i18n::t("Les gjennom en siste gang: navn, kontaktinfo, datoer, og at alt som står der er sant – også det AI-en har skrevet.")).wrap());
+            ui.set_max_width(440.0);
+            if missing.is_empty() {
+                ui.heading(i18n::t("Stemmer alt i CV-en?"));
+            } else {
+                ui.heading(RichText::new(i18n::t("Noe viktig mangler i CV-en")).color(t.warning));
+                ui.add(egui::Label::new(i18n::t("Du kan laste ned likevel, men dette bør fylles ut først:")).wrap());
+                ui.add_space(4.0);
+                for e in missing.iter().take(6) {
+                    ui.add(egui::Label::new(RichText::new(format!("• {}", i18n::tdyn(e))).color(t.warning)).wrap());
+                }
+                if missing.len() > 6 {
+                    ui.label(RichText::new(i18n::tf("… og {n} til", &[("n", &(missing.len() - 6).to_string())])).color(t.dim));
+                }
+                ui.add_space(6.0);
+            }
+            if !self.project.approvals.facts_confirmed {
+                ui.add(egui::Label::new(i18n::t("Les gjennom en siste gang: navn, kontaktinfo, datoer, og at alt som står der er sant – også det AI-en har skrevet.")).wrap());
+            }
             ui.add_space(10.0);
             ui.horizontal(|ui| {
-                if theme::primary(ui, i18n::t("Ja, last ned"), i18n::t("Du bekrefter at alt i CV-en stemmer, og blir ikke spurt igjen for denne CV-en"), true).clicked() {
-                    return Some(true);
+                let (label, tip) = if missing.is_empty() {
+                    (i18n::t("Ja, last ned"), i18n::t("Du bekrefter at alt i CV-en stemmer, og blir ikke spurt igjen for denne CV-en"))
+                } else {
+                    (i18n::t("Last ned likevel"), i18n::t("Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant."))
+                };
+                if theme::primary(ui, label, tip, true).clicked() {
+                    return Some(1u8);
+                }
+                if !missing.is_empty() && ui.button(i18n::t("Vis sjekkliste")).on_hover_text(i18n::t("Lukk og se hva som mangler i sjekklisten")).clicked() {
+                    return Some(2);
                 }
                 if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Gå tilbake uten å laste ned (Esc)")).clicked() {
-                    return Some(false);
+                    return Some(0);
                 }
                 None
             })
             .inner
         });
-        let answer = response.inner.or(response.should_close().then_some(false));
-        if let Some(yes) = answer {
+        let answer = response.inner.or(response.should_close().then_some(0));
+        if let Some(answer) = answer {
             self.confirm = None;
-            if yes {
-                self.project.approvals.facts_confirmed = true;
-                self.start_export(ctx, kind);
-            } else {
-                self.status = i18n::t("Ingenting er lastet ned.").into();
+            match answer {
+                1 => {
+                    self.project.approvals.facts_confirmed = true;
+                    self.export_now(ctx, kind);
+                }
+                2 => {
+                    self.side = Side::Checks;
+                    self.views.side = true;
+                    self.status = i18n::t("Ingenting er lastet ned.").into();
+                }
+                _ => self.status = i18n::t("Ingenting er lastet ned.").into(),
             }
         }
     }

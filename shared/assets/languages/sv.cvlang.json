@@ -1102,6 +1102,13 @@
   "sluttdatoen": "slutdatumet",
   "punktene": "punkterna",
   "ekstra kontaktlinjer": "extra kontaktrader",
-  "rekkefølgen i kontaktlinjen": "ordningen i kontaktraden"
+  "rekkefølgen i kontaktlinjen": "ordningen i kontaktraden",
+  "Noe viktig mangler i CV-en": "Något viktigt saknas i CV:t",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Du kan ladda ner ändå, men det här bör fyllas i först:",
+  "… og {n} til": "… och {n} till",
+  "Last ned likevel": "Ladda ner ändå",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Spara filen även om något saknas. Du bekräftar också att det som står i CV:t är sant.",
+  "Vis sjekkliste": "Visa checklista",
+  "Lukk og se hva som mangler i sjekklisten": "Stäng och se vad som saknas i checklistan"
  }
 }

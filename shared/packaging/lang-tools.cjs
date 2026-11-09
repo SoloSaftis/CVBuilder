@@ -79,7 +79,9 @@ if (cmd === 'template') {
   const old = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')).strings : {};
   const strings = { ...old };
   for (const p of parts) Object.assign(strings, JSON.parse(fs.readFileSync(p, 'utf8')));
-  const order = keys().map(([k]) => k).filter((k) => typeof strings[k] === 'string');
+  // Keys this script can't read from i18n.rs (rows split over several lines) are kept, last.
+  const known = keys().map(([k]) => k).filter((k) => typeof strings[k] === 'string');
+  const order = [...known, ...Object.keys(strings).filter((k) => !known.includes(k))];
   write(file, { format: FORMAT, code, name, made_by: 'CVBuilder', strings: Object.fromEntries(order.map((k) => [k, strings[k]])) });
   const r = check(code);
   console.log(JSON.stringify(r, null, 1));

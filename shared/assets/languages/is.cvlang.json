@@ -1102,6 +1102,13 @@
   "sluttdatoen": "lokadagsetninguna",
   "punktene": "liðina",
   "ekstra kontaktlinjer": "aukatengiliðalínur",
-  "rekkefølgen i kontaktlinjen": "röð tengiliðalínunnar"
+  "rekkefølgen i kontaktlinjen": "röð tengiliðalínunnar",
+  "Noe viktig mangler i CV-en": "Eitthvað mikilvægt vantar í ferilskrána",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "Þú getur sótt hana samt, en þetta ætti að fylla út fyrst:",
+  "… og {n} til": "… og {n} í viðbót",
+  "Last ned likevel": "Sækja samt",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "Vista skrána þótt eitthvað vanti. Þú staðfestir líka að það sem stendur í ferilskránni sé satt.",
+  "Vis sjekkliste": "Sýna gátlista",
+  "Lukk og se hva som mangler i sjekklisten": "Loka og sjá hvað vantar í gátlistanum"
  }
 }

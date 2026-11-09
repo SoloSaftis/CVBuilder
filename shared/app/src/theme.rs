@@ -106,7 +106,11 @@ fn fonts() -> FontDefinitions {
     // faces for Japanese, Chinese, Korean, Arabic, Hebrew, Thai, Devanagari and Georgian (from
     // craft-fonts, see shared/assets/craft-fonts). Japanese comes first, so kana and kanji in one
     // line share a style.
-    let mut fallbacks = fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default();
+    // Phosphor's icons (MIT, private-use code points) come before egui's own emoji font, which
+    // uses some of the same code points; see `ph` below.
+    add("Phosphor", include_bytes!("../../assets/fonts/Phosphor.ttf"));
+    let mut fallbacks = vec!["Phosphor".to_string()];
+    fallbacks.extend(fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default());
     let mut bold_fallbacks = Vec::new();
     for (i, font) in wordcraft_fonts::japanese_ui_fonts(true).into_iter().filter(|f| f.style == "Bold").take(1).enumerate() {
         let name = format!("bundled-bold-{i}");
@@ -127,8 +131,91 @@ fn fonts() -> FontDefinitions {
     families.insert(medium(), with("DMSans-Medium", &[]));
     families.insert(bold(), with("DMSans-Bold", &bold_fallbacks));
     families.insert(FontFamily::Monospace, fonts.families.get(&FontFamily::Monospace).cloned().unwrap_or_default());
+    families.insert(icons(), vec!["Phosphor".to_string()]);
     fonts.families = families;
     fonts
+}
+
+pub fn icons() -> FontFamily {
+    FontFamily::Name("icons".into())
+}
+
+/// Icons from Phosphor (regular weight), by name: https://phosphoricons.com
+pub mod ph {
+    pub const FILE_PLUS: &str = "\u{e236}";
+    pub const LIGHTBULB: &str = "\u{e2dc}";
+    pub const FOLDER_OPEN: &str = "\u{e256}";
+    pub const FLOPPY_DISK: &str = "\u{e248}";
+    pub const ARROW_SQUARE_IN: &str = "\u{e5dc}";
+    pub const COPY: &str = "\u{e1ca}";
+    pub const FILE_PDF: &str = "\u{e702}";
+    pub const FILE_DOC: &str = "\u{eb1e}";
+    pub const CLIPBOARD_TEXT: &str = "\u{e198}";
+    pub const LINK: &str = "\u{e2e2}";
+    pub const FILE_ARROW_UP: &str = "\u{e61e}";
+    pub const UNDO: &str = "\u{e038}";
+    pub const TRANSLATE: &str = "\u{e4a2}";
+    pub const BRIEFCASE: &str = "\u{e0ee}";
+    pub const GRADUATION_CAP: &str = "\u{e62c}";
+    pub const CERTIFICATE: &str = "\u{e766}";
+    pub const LIST_PLUS: &str = "\u{e2f8}";
+    pub const STAR: &str = "\u{e46a}";
+    pub const HEART: &str = "\u{e2a8}";
+    pub const CHAT_TEXT: &str = "\u{e16e}";
+    pub const ADDRESS_BOOK: &str = "\u{e6f8}";
+    pub const USER_CIRCLE: &str = "\u{e4c4}";
+    pub const FRAME_CORNERS: &str = "\u{e626}";
+    pub const COLUMNS: &str = "\u{e546}";
+    pub const FILE: &str = "\u{e230}";
+    pub const ROWS: &str = "\u{e5a2}";
+    pub const TEXT_AA: &str = "\u{e6ee}";
+    pub const ARROWS_VERTICAL: &str = "\u{eb04}";
+    pub const PALETTE: &str = "\u{e6c8}";
+    pub const UPLOAD: &str = "\u{e4c0}";
+    pub const EYE: &str = "\u{e220}";
+    pub const SIDEBAR: &str = "\u{ec24}";
+    pub const SQUARES_FOUR: &str = "\u{e464}";
+    pub const ZOOM: &str = "\u{e310}";
+    pub const PLUGS_CONNECTED: &str = "\u{eb5a}";
+    pub const PLUG: &str = "\u{e946}";
+    pub const CHAT: &str = "\u{e168}";
+    pub const CHAT_DOTS: &str = "\u{e16c}";
+    pub const LIST_CHECKS: &str = "\u{eadc}";
+    pub const INFO: &str = "\u{e2ce}";
+    pub const FILE_CODE: &str = "\u{e914}";
+    pub const GEAR: &str = "\u{e270}";
+    pub const NOTEPAD: &str = "\u{e63e}";
+    pub const MINUS: &str = "\u{e32a}";
+    pub const PLUS: &str = "\u{e3d4}";
+    pub const CARET_DOWN: &str = "\u{e136}";
+
+    /// True for a character from the icon font (Unicode's private-use area).
+    pub fn is_icon(c: char) -> bool {
+        ('\u{e000}'..='\u{f8ff}').contains(&c)
+    }
+}
+
+/// A small flat button with only an icon (the caller adds the hover text).
+pub fn flat_icon(ui: &mut egui::Ui, icon: &str, enabled: bool) -> egui::Response {
+    let t = Tokens::get(ui.ctx());
+    let b = egui::Button::new(egui::RichText::new(icon).family(icons()).size(14.0).color(if enabled { t.text } else { t.border }))
+        .frame_when_inactive(false)
+        .corner_radius(CornerRadius::same(R_SM))
+        .min_size(egui::vec2(26.0, 26.0));
+    ui.add_enabled(enabled, b)
+}
+
+/// A ribbon tool: an icon in the accent colour and a label, flat until hovered, like Word's.
+pub fn tool_button<'a>(ui: &egui::Ui, icon: &str, text: &str, enabled: bool, caret: bool) -> egui::Button<'a> {
+    let t = Tokens::get(ui.ctx());
+    let icon = egui::RichText::new(icon).family(icons()).size(17.0).color(if enabled { t.accent } else { t.border });
+    let label = egui::RichText::new(text).size(13.0).color(if enabled { t.text } else { t.faint });
+    let b = if caret {
+        egui::Button::new((icon, label, egui::RichText::new(ph::CARET_DOWN).family(icons()).size(11.0).color(t.faint)))
+    } else {
+        egui::Button::new((icon, label))
+    };
+    b.wrap_mode(egui::TextWrapMode::Extend).frame_when_inactive(false).corner_radius(CornerRadius::same(R_SM)).min_size(egui::vec2(0.0, 26.0))
 }
 
 fn visuals(t: &Tokens, dark: bool) -> Visuals {

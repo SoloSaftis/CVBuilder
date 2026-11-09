@@ -1102,6 +1102,13 @@
   "sluttdatoen": "结束日期",
   "punktene": "要点",
   "ekstra kontaktlinjer": "额外的联系行",
-  "rekkefølgen i kontaktlinjen": "联系行的顺序"
+  "rekkefølgen i kontaktlinjen": "联系行的顺序",
+  "Noe viktig mangler i CV-en": "简历缺少重要信息",
+  "Du kan laste ned likevel, men dette bør fylles ut først:": "你仍然可以下载，但最好先填写以下内容：",
+  "… og {n} til": "… 还有 {n} 项",
+  "Last ned likevel": "仍然下载",
+  "Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant.": "即使有缺失也保存文件。你同时确认简历中的内容属实。",
+  "Vis sjekkliste": "显示检查清单",
+  "Lukk og se hva som mangler i sjekklisten": "关闭并在检查清单中查看缺少的内容"
  }
 }
