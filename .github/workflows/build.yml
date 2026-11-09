@@ -40,6 +40,7 @@ jobs:
     runs-on: windows-latest
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -48,6 +49,32 @@ jobs:
       - name: Package (portable zip + MSIX signed with a test certificate)
         shell: pwsh
         run: ./windows/packaging/package.ps1
+      # Signing through SignPath Foundation (see CODE_SIGNING_POLICY.md). Skipped until the
+      # repository has the variable SIGNPATH_ORGANIZATION_ID and the secret SIGNPATH_API_TOKEN.
+      - name: Unsigned program for SignPath
+        id: unsigned
+        if: vars.SIGNPATH_ORGANIZATION_ID != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: CVBuilder-windows-unsigned
+          path: windows/dist/*-windows-x64-portable.zip
+      - name: Sign CVBuilder.exe (SignPath, approved by hand)
+        if: vars.SIGNPATH_ORGANIZATION_ID != ''
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: CVBuilder
+          signing-policy-slug: release-signing
+          artifact-configuration-slug: windows
+          github-artifact-id: ${{ steps.unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 18000
+          output-artifact-directory: windows/dist/signed
+      - name: Use the signed zip
+        if: vars.SIGNPATH_ORGANIZATION_ID != ''
+        shell: bash
+        run: cp windows/dist/signed/*-windows-x64-portable.zip windows/dist/
       - uses: actions/upload-artifact@v7
         with:
           name: CVBuilder-windows

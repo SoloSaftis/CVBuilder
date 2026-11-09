@@ -30,7 +30,10 @@ One file. Right-click it → Properties → allow it to run as a program, then d
 - **Mac** says it "cannot be opened": open System Settings → Privacy & Security, scroll down and
   click **Open Anyway**.
 
-Your CV stays on your own computer. All versions and what changed: [Releases](https://github.com/SoloSaftis/CVBuilder/releases).
+Your CV stays on your own computer ([privacy policy](PRIVACY.md)). All versions and what changed:
+[Releases](https://github.com/SoloSaftis/CVBuilder/releases). [Code signing policy](CODE_SIGNING_POLICY.md):
+free code signing provided by [SignPath.io](https://about.signpath.io), certificate by
+[SignPath Foundation](https://signpath.org).
 
 ## Repository layout
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SignPath artifact configuration for the Windows build (paste into the SignPath project).
+     The GitHub artifact is a zip holding the portable zip; only CVBuilder.exe inside it is signed,
+     and only when its file details say it is CVBuilder. -->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <zip-file path="CVBuilder-*-windows-x64-portable.zip">
+      <pe-file path="CVBuilder.exe" product-name="CVBuilder" max-matches="1">
+        <authenticode-sign />
+      </pe-file>
+    </zip-file>
+  </zip-file>
+</artifact-configuration>
