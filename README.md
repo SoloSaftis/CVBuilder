@@ -7,8 +7,30 @@ a recruiter checklist, and an optional AI chat that edits the CV while you watch
 Gemini or Grok with your own API key, a local model (Ollama, LM Studio …) on your own computer, or
 your own Claude Code over MCP. Colours are chosen separately from the design, per CV or per section. CVBuilder is also an MCP
 server, so other AI apps can work on the open CV. Page layout (size, margins, columns, text size,
-spacing, page breaks and a page target) is saved with each CV, and the interface is in Norwegian or
-English (it follows the system by default).
+spacing, page breaks and a page target) is saved with each CV, and the interface is in 21 languages
+(it follows the system by default).
+
+## Download
+
+Free, ready to run, nothing to install. Click the one for your computer; it is always the newest version.
+
+### ⬇️ [Download for Windows](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-windows-x64-portable.zip)
+Windows 10 or 11. Open the downloaded folder and double-click **CVBuilder**.
+
+### ⬇️ [Download for Mac](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-macos-arm64.zip)
+Mac with an Apple chip (M1 or newer). Open the download and drag **CVBuilder** to Applications.
+
+### ⬇️ [Download for Linux](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-linux-x86_64.AppImage)
+One file. Right-click it → Properties → allow it to run as a program, then double-click it.
+([Folder version](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-linux-x86_64-portable.tar.gz) for those who prefer it.)
+
+**The first time you open it**, your computer may warn you, because the app is not signed yet:
+
+- **Windows** says "Windows protected your PC": click **More info**, then **Run anyway**.
+- **Mac** says it "cannot be opened": open System Settings → Privacy & Security, scroll down and
+  click **Open Anyway**.
+
+Your CV stays on your own computer. All versions and what changed: [Releases](https://github.com/SoloSaftis/CVBuilder/releases).
 
 ## Repository layout
 
@@ -51,5 +73,6 @@ CVBuilder's single-column layout; sidebars and columns are left out on purpose. 
 
 ## Licence
 
-MIT OR Apache-2.0. Bundled components keep their own licences (see `THIRD-PARTY.txt` in each
-package). WordCraft and the Craft AI integrations are by the ArtCraft/storytold contributors.
+Licensed under either of [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option.
+Unless you say otherwise, a contribution you submit is licensed the same way, with no additional
+terms. Bundled components keep their own licences (see `THIRD-PARTY.txt` in each package). WordCraft and the Craft AI integrations are by the ArtCraft/storytold contributors.

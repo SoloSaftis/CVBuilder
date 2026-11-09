@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Builds linux/dist/CVBuilder-<version>-linux-x86_64-portable.tar.gz: unpack anywhere and run ./CVBuilder.
+# Builds, in linux/dist/:
+#   CVBuilder-<version>-x86_64.AppImage: one file; make it executable and double-click it.
+#   CVBuilder-<version>-linux-x86_64-portable.tar.gz: unpack anywhere and run ./CVBuilder.
 # Needs Rust 1.95+ and the usual desktop development packages (see README in this folder).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -24,3 +26,27 @@ echo "Her lagrer CVBuilder utkast og innstillinger i bærbar modus." > "$stage/C
 node shared/packaging/third-party.cjs "$stage/THIRD-PARTY.txt"
 tar -C linux/dist -czf "linux/dist/${name}.tar.gz" "$name"
 echo "Linux: linux/dist/${name}.tar.gz"
+
+# AppImage: the program, its icon and desktop entry in one file. It has no CVBuilder-data folder
+# next to it, so the app keeps drafts and settings in the user's own folders.
+appdir="linux/dist/CVBuilder.AppDir"
+rm -rf "$appdir" && mkdir -p "$appdir/usr/bin"
+cp target/release/CVBuilder "$appdir/usr/bin/CVBuilder"
+cp shared/assets/cvbuilder-256.png "$appdir/cvbuilder.png"
+cp "$stage/cvbuilder.desktop" "$appdir/cvbuilder.desktop"
+cat > "$appdir/AppRun" <<'APPRUN'
+#!/bin/sh
+here="$(dirname "$(readlink -f "$0")")"
+exec "$here/usr/bin/CVBuilder" "$@"
+APPRUN
+chmod +x "$appdir/AppRun"
+# appimagetool, pinned to a release and checked against its published checksum.
+tool="linux/dist/appimagetool-1.9.1-x86_64.AppImage"
+if [ ! -x "$tool" ]; then
+  curl -fsSL -o "$tool" https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage
+  echo "ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0  $tool" | sha256sum -c -
+  chmod +x "$tool"
+fi
+appimage="linux/dist/CVBuilder-${version}-$(uname -m).AppImage"
+ARCH="$(uname -m)" APPIMAGE_EXTRACT_AND_RUN=1 "$tool" --no-appstream "$appdir" "$appimage"
+echo "Linux: $appimage"
