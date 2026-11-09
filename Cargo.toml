@@ -4,7 +4,7 @@ resolver = "3"
 members = ["shared/cv-core", "shared/cv-ai", "shared/cv-mcp", "shared/app", "windows", "linux", "macos"]
 
 [workspace.package]
-version = "2.0.0-alpha.1"
+version = "2.0.0-alpha.2"
 edition = "2024"
 rust-version = "1.95"
 license = "MIT OR Apache-2.0"
