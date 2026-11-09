@@ -3,7 +3,8 @@
 Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by
 [SignPath Foundation](https://signpath.org).
 
-The Windows program (`CVBuilder.exe`) in each release is signed with this certificate. It is built
+Once SignPath Foundation has accepted the project (applied for; until then the Windows download is
+unsigned), the Windows program (`CVBuilder.exe`) in each release is signed with this certificate. It is built
 by GitHub Actions from the source code in this repository
 ([`.github/workflows/build.yml`](.github/workflows/build.yml)), and nothing built elsewhere is
 signed. Every signing request is approved by hand.
