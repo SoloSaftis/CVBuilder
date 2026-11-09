@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds macos/dist/CVBuilder-<version>-macos-<arch>.zip containing CVBuilder.app.
-# Unsigned unless DEVELOPER_ID is set (e.g. "Developer ID Application: Name (TEAMID)").
+# Signed ad hoc unless DEVELOPER_ID is set (e.g. "Developer ID Application: Name (TEAMID)").
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
@@ -31,7 +31,15 @@ cat > "$app/Contents/Info.plist" <<PLIST
 </dict></plist>
 PLIST
 node shared/packaging/third-party.cjs "$app/Contents/Resources/THIRD-PARTY.txt"
-if [ -n "${DEVELOPER_ID:-}" ]; then codesign --force --deep --options runtime --sign "$DEVELOPER_ID" "$app"; fi
+# With a Developer ID the app is signed for Gatekeeper. Without one it is signed ad hoc ("-"):
+# that seals the bundle, so macOS offers "Open Anyway" in Privacy & Security instead of calling
+# the app damaged.
+if [ -n "${DEVELOPER_ID:-}" ]; then
+  codesign --force --deep --options runtime --sign "$DEVELOPER_ID" "$app"
+else
+  codesign --force --deep --sign - "$app"
+fi
+codesign --verify --deep --strict "$app"
 zip_name="CVBuilder-${version}-macos-$(uname -m).zip"
 (cd macos/dist && ditto -c -k --keepParent CVBuilder.app "$zip_name")
 echo "macOS: macos/dist/${zip_name}"
