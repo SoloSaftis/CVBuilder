@@ -11,8 +11,8 @@ jobs:
     name: Shared code (rules, AI, HTML app)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 22 }
       - uses: dtolnay/rust-toolchain@stable
       - name: HTML app rules
@@ -24,14 +24,14 @@ jobs:
     needs: shared
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 22 }
       - uses: dtolnay/rust-toolchain@stable
       - name: Package (portable zip + MSIX signed with a test certificate)
         shell: pwsh
         run: ./windows/packaging/package.ps1
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: CVBuilder-windows
           path: |
@@ -43,15 +43,15 @@ jobs:
     needs: shared
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 22 }
       - uses: dtolnay/rust-toolchain@stable
       - name: Desktop development packages
         run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libxkbcommon-dev libwayland-dev libx11-dev libdbus-1-dev libfontconfig-dev
       - name: Package (portable tar.gz)
         run: linux/packaging/package.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: CVBuilder-linux
           path: linux/dist/*.tar.gz
@@ -60,13 +60,13 @@ jobs:
     needs: shared
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 22 }
       - uses: dtolnay/rust-toolchain@stable
       - name: Package (CVBuilder.app in a zip, unsigned)
         run: macos/packaging/package.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: CVBuilder-macos
           path: macos/dist/*.zip
