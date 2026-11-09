@@ -23,9 +23,9 @@ pub struct Edit {
 
 impl Edit {
     pub fn open(path: &std::path::Path) -> Result<Edit, String> {
-        let image = image::open(path).map_err(|e| format!("Bildet kunne ikke åpnes: {e}"))?;
+        let image = image::open(path).map_err(|e| crate::i18n::tf("Bildet kunne ikke åpnes: {e}", &[("e", &e.to_string())]))?;
         if u64::from(image.width()) * u64::from(image.height()) > 60_000_000 {
-            return Err("Bildet er for stort. Velg et mindre bilde.".into());
+            return Err(crate::i18n::t("Bildet er for stort. Velg et mindre bilde.").into());
         }
         // Work on a copy no larger than needed.
         let image = if image.height() > 2400 { image.resize(4000, 2400, image::imageops::FilterType::Triangle) } else { image };
@@ -36,7 +36,11 @@ impl Edit {
     pub fn render(&self, height: u32) -> RgbImage {
         let (w, h) = (self.original.width() as f32, self.original.height() as f32);
         let (mut cw, mut ch) = (w, h);
-        if w / h > RATIO { cw = h * RATIO } else { ch = w / RATIO }
+        if w / h > RATIO {
+            cw = h * RATIO
+        } else {
+            ch = w / RATIO
+        }
         cw /= self.zoom.max(1.0);
         ch /= self.zoom.max(1.0);
         let cx = w / 2.0 + self.x.clamp(-1.0, 1.0) * (w - cw) / 2.0;

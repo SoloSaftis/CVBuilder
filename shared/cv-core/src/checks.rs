@@ -72,7 +72,7 @@ pub fn is_now(input: &str) -> bool {
 // ---------- release check ----------
 
 fn placeholder(value: &str) -> bool {
-    static PLACEHOLDER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)\[(?:fyll|insert|navn|name|tall|antall|number)|<[^>]+>|\b(?:lorem ipsum|todo|tbd)\b").expect("regex"));
+    static PLACEHOLDER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)\[[^\]\n]{1,30}\]|<[^>]+>|\b(?:lorem ipsum|todo|tbd)\b").expect("regex"));
     PLACEHOLDER.is_match(value)
 }
 
@@ -207,6 +207,16 @@ pub fn normal(value: &str) -> String {
     let mut out = String::with_capacity(value.len());
     let mut space = false;
     for ch in value.to_lowercase().chars() {
+        // Text pasted from a PDF or a Mac often has «å» as «a» plus a ring; the HTML builder's
+        // NFKC joins them, so join them here too. A mark we cannot join is dropped, never a
+        // word break.
+        if ('\u{300}'..='\u{36f}').contains(&ch) {
+            let base = if space { None } else { out.pop() };
+            if let Some(base) = base {
+                out.push(compose(base, ch).unwrap_or(base));
+            }
+            continue;
+        }
         if ch.is_alphanumeric() || ch == '+' || ch == '#' {
             if space && !out.is_empty() {
                 out.push(' ');
@@ -220,7 +230,21 @@ pub fn normal(value: &str) -> String {
     out
 }
 
-fn cv_text(p: &Project) -> String {
+/// A lower-case letter and a combining mark as one letter (the ones Norwegian, Swedish,
+/// Danish, German and French CVs use).
+fn compose(base: char, mark: char) -> Option<char> {
+    const TABLE: [(char, char, char); 30] = [
+        ('a', '\u{30a}', 'å'), ('a', '\u{308}', 'ä'), ('o', '\u{308}', 'ö'), ('u', '\u{308}', 'ü'), ('e', '\u{308}', 'ë'), ('i', '\u{308}', 'ï'),
+        ('a', '\u{301}', 'á'), ('e', '\u{301}', 'é'), ('i', '\u{301}', 'í'), ('o', '\u{301}', 'ó'), ('u', '\u{301}', 'ú'), ('y', '\u{301}', 'ý'),
+        ('a', '\u{300}', 'à'), ('e', '\u{300}', 'è'), ('i', '\u{300}', 'ì'), ('o', '\u{300}', 'ò'), ('u', '\u{300}', 'ù'),
+        ('a', '\u{302}', 'â'), ('e', '\u{302}', 'ê'), ('i', '\u{302}', 'î'), ('o', '\u{302}', 'ô'), ('u', '\u{302}', 'û'),
+        ('a', '\u{303}', 'ã'), ('o', '\u{303}', 'õ'), ('n', '\u{303}', 'ñ'), ('c', '\u{327}', 'ç'), ('s', '\u{30c}', 'š'), ('z', '\u{30c}', 'ž'),
+        ('c', '\u{30c}', 'č'), ('o', '\u{338}', 'ø'),
+    ];
+    TABLE.iter().find(|(b, m, _)| *b == base && *m == mark).map(|(_, _, c)| *c)
+}
+
+pub(crate) fn cv_text(p: &Project) -> String {
     let mut parts: Vec<&str> = vec![&p.candidate.headline, &p.candidate.summary];
     for s in &p.skills {
         parts.extend([s.group.as_str(), s.name.as_str()]);
@@ -235,24 +259,65 @@ fn cv_text(p: &Project) -> String {
     for c in &p.certifications {
         parts.extend([c.name.as_str(), c.issuer.as_str()]);
     }
+    // Ads often ask for «engelsk» or «tysk»; the languages section answers that.
+    for l in &p.languages {
+        parts.push(l.name.as_str());
+    }
+    for s in &p.custom_sections {
+        for i in &s.items {
+            parts.extend([i.title.as_str(), i.subtitle.as_str()]);
+            parts.extend(i.bullets.iter().map(String::as_str));
+        }
+    }
     parts.join("\n")
 }
 
+/// Whether `needle` starts a word in the normalised `haystack` (and, with `whole`, ends one).
+/// Runs every frame on the whole CV, so it searches in place instead of copying the text.
 fn starts_word(haystack: &str, needle: &str, whole: bool) -> bool {
-    let padded = format!(" {haystack} ");
-    if whole { padded.contains(&format!(" {needle} ")) } else { padded.contains(&format!(" {needle}")) }
+    if needle.is_empty() {
+        return false;
+    }
+    let bytes = haystack.as_bytes();
+    haystack.match_indices(needle).any(|(at, _)| {
+        let end = at + needle.len();
+        (at == 0 || bytes[at - 1] == b' ') && (!whole || end == bytes.len() || bytes[end] == b' ')
+    })
+}
+
+/// Norwegian and English plural and definite endings: «fremdriftsplaner» in an ad should find
+/// «fremdriftsplan» in the CV. Longest first; the stem must keep at least five letters.
+const ENDINGS: [&str; 13] = ["erne", "ene", "ne", "ere", "ers", "er", "en", "et", "es", "a", "e", "r", "s"];
+
+/// `option` without each plural or definite ending its last word may have: «kundene» may be
+/// «kunde» + «ne» or «kunden» + «e», so both are tried.
+fn stems(option: &str) -> impl Iterator<Item = &str> {
+    let last = option.rsplit(' ').next().unwrap_or(option);
+    ENDINGS.iter().filter_map(move |end| {
+        let base = last.strip_suffix(end)?;
+        (base.chars().count() >= 5 && base.chars().all(char::is_alphabetic)).then(|| &option[..option.len() - end.len()])
+    })
 }
 
 /// Whether the normalised CV text has the keyword (or one of its `/` alternatives).
-/// Short keywords (≤ 3 characters) must match a whole word; longer ones may be inflected.
+/// Short keywords (≤ 3 characters) must match a whole word; longer ones may be inflected:
+/// the CV may add to the word («plan» → «planer»), or use another ending of the same stem
+/// («planer» → «plan», «planen»). Only whole endings count, so «utvikler» does not find
+/// «utvikling».
 pub fn contains(haystack: &str, keyword: &str) -> bool {
-    keyword.split(['/', '|']).map(normal).filter(|o| !o.is_empty()).any(|o| starts_word(haystack, &o, o.chars().count() <= 3))
+    keyword.split(['/', '|']).map(normal).filter(|o| !o.is_empty()).any(|o| {
+        if o.chars().count() <= 3 {
+            return starts_word(haystack, &o, true);
+        }
+        starts_word(haystack, &o, false) || stems(&o).any(|s| std::iter::once("").chain(ENDINGS).any(|end| starts_word(haystack, &format!("{s}{end}"), true)))
+    })
 }
 
 pub fn keyword_match(p: &Project) -> KeywordMatch {
     let haystack = normal(&cv_text(p));
+    // «Excel» and «excel » are one keyword, not two.
     let mut seen = HashSet::new();
-    let keywords: Vec<String> = p.target.keywords.iter().map(|k| k.trim().to_string()).filter(|k| !k.is_empty() && seen.insert(k.clone())).collect();
+    let keywords: Vec<String> = p.target.keywords.iter().map(|k| k.trim().to_string()).filter(|k| !normal(k).is_empty() && seen.insert(normal(k))).collect();
     let (found, missing): (Vec<String>, Vec<String>) = keywords.iter().cloned().partition(|k| contains(&haystack, k));
     let coverage = (!keywords.is_empty()).then(|| ((100.0 * found.len() as f64 / keywords.len() as f64).round()) as u32);
     KeywordMatch { found, missing, coverage }
@@ -264,10 +329,14 @@ const CLICHES: [&str; 22] = [
     "go-getter", "synergi", "synergy", "think outside the box", "passionate", "brennende interessert",
 ];
 
+// «I» is weak only in English: in Norwegian it means «in» («I 2021 innførte …»).
 static WEAK_START: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?i)^(jeg|i|my|min|mitt|mine|ansvarlig for|responsible for|duties included|arbeidsoppgaver|oppgaver)\b").expect("regex"));
+    LazyLock::new(|| Regex::new(r"(?i)^(jeg|my|min|mitt|mine|ansvarlig for|responsible for|duties included|arbeidsoppgaver|oppgaver)\b").expect("regex"));
+static WEAK_START_EN: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^I\b").expect("regex"));
+// «gift» alone is also «poison» in Norwegian and «present» in English, so it counts only
+// where it is about marriage: «er gift», «gift med», «gift, to barn».
 static SENSITIVE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)\b(født|fødselsdato|fødselsnummer|personnummer|sivilstand|sivilstatus|gift|ugift|samboer|religion|date of birth|born on|marital status|social security|nationality|nasjonalitet)\b").expect("regex")
+    Regex::new(r"(?i)\b(født|fødselsdato|fødselsnummer|personnummer|sivilstand|sivilstatus|ugift|samboer|religion|date of birth|born on|marital status|social security|nationality|nasjonalitet|(?:jeg er|er) gift|gift med|gift,? (?:og )?(?:har )?(?:\d+|ett|to|tre|fire|fem) barn)\b").expect("regex")
 });
 /// A number counts as a result only when it measures something, not a version or model number.
 static RESULT: LazyLock<Regex> = LazyLock::new(|| {
@@ -282,7 +351,15 @@ fn month_index(value: &str, end: bool) -> Option<i32> {
     }
 }
 
-/// Gaps of more than six months between jobs: (after, before, months).
+/// How many pages recruiters would advise for this CV: one for a short career (under about
+/// three years and at most two jobs), otherwise two. Advice only; CVBuilder never limits pages.
+pub fn recommended_pages(p: &Project, today_index: i32) -> usize {
+    let earliest = p.experience.iter().filter_map(|j| month_index(&j.start, false)).min();
+    let years = earliest.map(|start| (today_index - start).max(0) / 12).unwrap_or(0);
+    if p.experience.len() <= 2 && years < 3 { 1 } else { 2 }
+}
+
+/// Gaps of more than six months between jobs: (after, before, months without a job).
 pub fn gaps(p: &Project, today_index: i32) -> Vec<(String, String, i32)> {
     let mut jobs: Vec<(i32, i32, &str)> = p
         .experience
@@ -301,8 +378,11 @@ pub fn gaps(p: &Project, today_index: i32) -> Vec<(String, String, i32)> {
     let mut reach: Option<(i32, &str)> = None;
     for (start, end, company) in jobs {
         if let Some((r, last)) = reach {
-            if start - r > 6 {
-                out.push((last.to_string(), company.to_string(), start - r));
+            // `r` is the last month worked and `start` the first month of the next job, so the
+            // months in between are one fewer than the difference (06.2011 → 01.2012 is six).
+            let idle = start - r - 1;
+            if idle > 6 {
+                out.push((last.to_string(), company.to_string(), idle));
             }
             if end > r {
                 reach = Some((end, company));
@@ -324,18 +404,20 @@ pub fn audit(p: &Project, pages: usize, today_index: i32) -> (Vec<Check>, Keywor
     let role = normal(&p.target.role);
     let headline = normal(&c.headline);
     let summary = c.summary.trim();
+    // A field of only spaces is as empty as no field.
+    let blank = |s: &str| s.trim().is_empty();
     check(
-        !(c.name.is_empty() || c.email.is_empty() || c.phone.is_empty() || c.city.is_empty()),
+        !(blank(&c.name) || blank(&c.email) || blank(&c.phone) || blank(&c.city)),
         "Kontaktinformasjon står som vanlig tekst øverst".into(),
         "Kontaktinformasjon mangler".into(),
         "Fyll inn navn, e-post, telefon og by. Det står som vanlig tekst øverst i CV-en, ikke i topptekst eller bilde.".into(),
         Level::Warn,
     );
-    if !c.phone.is_empty() {
+    if !blank(&c.phone) {
         let has_code = c.phone.trim_start().starts_with('+') || c.phone.trim_start().starts_with("00");
         check(has_code, "Telefonnummeret har landskode".into(), "Telefonnummeret mangler landskode".into(), "Skriv for eksempel +47 412 34 567. Utenlandske arbeidsgivere og søknadssystemer trenger landskoden.".into(), Level::Info);
     }
-    check(!c.linkedin.is_empty(), "LinkedIn-profil er oppgitt".into(), "LinkedIn-profil mangler".into(), "Rekrutterere sjekker nesten alltid LinkedIn. Legg inn full adresse, og hold profilen lik CV-en.".into(), Level::Info);
+    check(!blank(&c.linkedin), "LinkedIn-profil er oppgitt".into(), "LinkedIn-profil mangler".into(), "Rekrutterere sjekker nesten alltid LinkedIn. Legg inn full adresse, og hold profilen lik CV-en.".into(), Level::Info);
     if headline.is_empty() {
         check(false, String::new(), "Faglig overskrift mangler".into(), "Skriv en kort linje under navnet, gjerne med stillingens egne ord: for eksempel «Sykepleier | Akuttmottak | Legemiddelhåndtering».".into(), Level::Warn);
     } else {
@@ -358,7 +440,7 @@ pub fn audit(p: &Project, pages: usize, today_index: i32) -> (Vec<Check>, Keywor
     );
     let m = keyword_match(p);
     match m.coverage {
-        None => check(false, String::new(), "Ingen fagord fra annonsen er lagt inn".into(), "Lim inn annonsen under «Stillingen» og trykk «Foreslå fagord». Søknadssystemer og rekrutterere leter etter annonsens egne ord.".into(), Level::Info),
+        None => check(false, String::new(), "Ingen fagord fra annonsen er lagt inn".into(), "Lim inn annonsen øverst i skjemaet og trykk «Fyll ut fra annonsen». Søknadssystemer og rekrutterere leter etter annonsens egne ord.".into(), Level::Info),
         Some(coverage) => {
             let total = m.found.len() + m.missing.len();
             check(
@@ -370,7 +452,8 @@ pub fn audit(p: &Project, pages: usize, today_index: i32) -> (Vec<Check>, Keywor
             );
         }
     }
-    let skills = p.skills.len();
+    // A skill row without a name is not a skill (and `ready` asks for the name already).
+    let skills = p.skills.iter().filter(|s| !blank(&s.name)).count();
     check(
         skills >= 6,
         format!("{skills} kompetanser i kompetanseseksjonen"),
@@ -385,7 +468,7 @@ pub fn audit(p: &Project, pages: usize, today_index: i32) -> (Vec<Check>, Keywor
     if !bullets.is_empty() {
         let long: Vec<&str> = bullets.iter().copied().filter(|b| b.chars().count() > 220).collect();
         check(long.is_empty(), "Punktene er korte nok til å skannes".into(), format!("{} punkt er for lange", long.len()), format!("Hold hvert punkt til én–to linjer. Gjelder: {}", long.iter().take(2).map(|b| excerpt(b, 45)).collect::<Vec<_>>().join(", ")), Level::Warn);
-        let weak: Vec<&str> = bullets.iter().copied().filter(|b| WEAK_START.is_match(b.trim())).collect();
+        let weak: Vec<&str> = bullets.iter().copied().filter(|b| WEAK_START.is_match(b.trim()) || (p.is_english() && WEAK_START_EN.is_match(b.trim()))).collect();
         check(weak.is_empty(), "Punktene starter med handling".into(), format!("{} punkt starter med «Jeg» eller «Ansvarlig for»", weak.len()), format!("Start med et verb: «Ledet …», «Innførte …», «Behandlet …». Gjelder: {}", weak.iter().take(2).map(|b| excerpt(b, 40)).collect::<Vec<_>>().join(", ")), Level::Warn);
         let mut starts: BTreeMap<String, usize> = BTreeMap::new();
         for b in &bullets {
@@ -401,7 +484,10 @@ pub fn audit(p: &Project, pages: usize, today_index: i32) -> (Vec<Check>, Keywor
         check(quantified >= jobs.min(2), text.clone(), text, "Rekrutterere legger merke til resultater: «Oppnådde X, målt ved Y, ved å gjøre Z». Bruk bare tall du kan dokumentere.".into(), Level::Info);
     }
     let all = normal(&std::iter::once(summary).chain(bullets.iter().copied()).collect::<Vec<_>>().join(" "));
-    let cliches: Vec<&str> = CLICHES.iter().copied().filter(|x| all.contains(&normal(x))).collect();
+    // Whole words with their endings («motiverte»), so «arbeidsområde» is not «arbeidsom» and
+    // «termodynamisk» is not «dynamisk».
+    let cliche = |x: &str| ["", "e", "t", "te", "me", "s", "ere", "est"].iter().any(|end| starts_word(&all, &format!("{}{end}", normal(x)), true));
+    let cliches: Vec<&str> = CLICHES.iter().copied().filter(|x| cliche(x)).collect();
     check(cliches.is_empty(), "Ingen tomme moteord".into(), "Moteord som ikke beviser noe".into(), format!("Vis heller med eksempler enn å skrive: {}.", cliches.join(", ")), Level::Info);
     let personal = std::iter::once(summary).chain([c.headline.as_str()]).chain(bullets.iter().copied()).collect::<Vec<_>>().join(" ");
     check(!SENSITIVE.is_match(&personal), "Ingen unødvendige personopplysninger".into(), "Personopplysninger som ikke hører hjemme i en CV".into(), "Fjern fødselsdato, personnummer, sivilstand, religion og nasjonalitet.".into(), Level::Warn);
@@ -426,45 +512,63 @@ pub fn audit(p: &Project, pages: usize, today_index: i32) -> (Vec<Check>, Keywor
 pub fn plain_text(p: &Project) -> String {
     let labels = text::labels(p);
     let c = &p.candidate;
-    let mut lines: Vec<String> = vec![c.name.clone(), c.headline.clone(), [&c.email, &c.phone, &c.city, &c.linkedin].iter().filter(|s| !s.is_empty()).map(|s| s.as_str()).collect::<Vec<_>>().join(" | ")];
+    let contact = text::contact_order(p).iter().map(|k| text::contact_value(p, k, true)).filter(|v| !v.is_empty()).collect::<Vec<_>>().join(" | ");
+    let mut lines: Vec<String> = vec![c.name.clone(), c.headline.clone(), contact];
     let section = |lines: &mut Vec<String>, title: &str| {
         lines.push(String::new());
         lines.push(title.to_uppercase());
     };
-    if !c.summary.is_empty() {
-        section(&mut lines, labels.profile);
-        lines.push(c.summary.clone());
-    }
-    if !p.skills.is_empty() {
-        section(&mut lines, labels.skills);
-        for (group, names) in text::group_skills(&p.skills) {
-            lines.push(if group.is_empty() { names.join(", ") } else { format!("{group}: {}", names.join(", ")) });
+    for key in text::section_order(p) {
+        match key.as_str() {
+            "profile" if !c.summary.is_empty() => {
+                section(&mut lines, labels.profile);
+                lines.push(c.summary.clone());
+            }
+            "skills" if !p.skills.is_empty() => {
+                section(&mut lines, labels.skills);
+                for (group, names) in text::group_skills(&p.skills) {
+                    lines.push(if group.is_empty() { names.join(", ") } else { format!("{group}: {}", names.join(", ")) });
+                }
+            }
+            "experience" if !p.experience.is_empty() => {
+                section(&mut lines, labels.experience);
+                for job in text::sort_jobs(&p.experience) {
+                    lines.push(String::new());
+                    lines.push(if job.location.is_empty() { format!("{} | {}", job.title, job.company) } else { format!("{} | {} | {}", job.title, job.company, job.location) });
+                    lines.push(text::period(job, labels));
+                    lines.extend(job.bullets.iter().map(|b| format!("- {b}")));
+                }
+            }
+            "education" if !p.education.is_empty() => {
+                section(&mut lines, labels.education);
+                for e in text::sort_education(&p.education) {
+                    lines.push(format!("{} | {} | {}", e.qualification, e.institution, text::year_range(&e.start, &e.end)));
+                }
+            }
+            "certifications" if !p.certifications.is_empty() => {
+                section(&mut lines, labels.certifications);
+                for x in text::sort_certifications(&p.certifications) {
+                    lines.push([&x.name, &x.issuer, &x.year].iter().filter(|s| !s.is_empty()).map(|s| s.as_str()).collect::<Vec<_>>().join(" | "));
+                }
+            }
+            "languages" if !p.languages.is_empty() => {
+                section(&mut lines, labels.languages);
+                lines.push(p.languages.iter().map(|l| format!("{}: {}", l.name, l.level)).collect::<Vec<_>>().join(" | "));
+            }
+            "profile" | "skills" | "experience" | "education" | "certifications" | "languages" | "interests" => {}
+            id => {
+                let Some(s) = p.custom_sections.iter().find(|s| s.id == id) else { continue };
+                if s.title.trim().is_empty() || s.items.is_empty() {
+                    continue;
+                }
+                section(&mut lines, &s.title);
+                for i in &s.items {
+                    lines.push(String::new());
+                    lines.push([&i.title, &i.subtitle, &i.date].iter().filter(|x| !x.is_empty()).map(|x| x.as_str()).collect::<Vec<_>>().join(" | "));
+                    lines.extend(i.bullets.iter().map(|b| format!("- {b}")));
+                }
+            }
         }
-    }
-    if !p.experience.is_empty() {
-        section(&mut lines, labels.experience);
-        for job in text::sort_jobs(&p.experience) {
-            lines.push(String::new());
-            lines.push(if job.location.is_empty() { format!("{} | {}", job.title, job.company) } else { format!("{} | {} | {}", job.title, job.company, job.location) });
-            lines.push(text::period(job, labels));
-            lines.extend(job.bullets.iter().map(|b| format!("- {b}")));
-        }
-    }
-    if !p.education.is_empty() {
-        section(&mut lines, labels.education);
-        for e in text::sort_education(&p.education) {
-            lines.push(format!("{} | {} | {}", e.qualification, e.institution, text::year_range(&e.start, &e.end)));
-        }
-    }
-    if !p.certifications.is_empty() {
-        section(&mut lines, labels.certifications);
-        for x in text::sort_certifications(&p.certifications) {
-            lines.push([&x.name, &x.issuer, &x.year].iter().filter(|s| !s.is_empty()).map(|s| s.as_str()).collect::<Vec<_>>().join(" | "));
-        }
-    }
-    if !p.languages.is_empty() {
-        section(&mut lines, labels.languages);
-        lines.push(p.languages.iter().map(|l| format!("{}: {}", l.name, l.level)).collect::<Vec<_>>().join(" | "));
     }
     let mut out = lines.join("\n");
     while out.contains("\n\n\n") {

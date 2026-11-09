@@ -1,13 +1,14 @@
 //! Optional AI help for CVBuilder with the person's own API key: Claude, ChatGPT, Gemini or
 //! Grok. Keys are kept in the operating system's keychain (Windows Credential Manager, macOS
 //! Keychain, Secret Service on Linux) through `craft-ai-native`, never in the project file.
+pub mod chat;
 pub mod providers;
 pub mod tasks;
 
 use craft_ai_core::{SecretRef, SecretString};
 use craft_ai_native::secrets::{KeychainStore, SecretStore};
 
-pub use providers::{AiFailure, Endpoint, SERVICES, Service, test_connection};
+pub use providers::{AiFailure, Endpoint, LOCAL_SERVERS, SERVICES, Service, detect_local, fetch_page, is_local_address, test_connection};
 
 /// Saved API keys. Falls back to keeping the key only while the app is open when the computer
 /// has no keychain (some Linux setups); the app says so.

@@ -67,7 +67,7 @@
   return value;
  }
  const https=value=>!value||/^https:\/\/[^\s]+$/.test(value);
- const placeholder=value=>/\[(?:fyll|insert|navn|name|tall|antall|number)|<[^>]+>|\b(?:lorem ipsum|todo|tbd)\b/i.test(value);
+ const placeholder=value=>/\[[^\]\n]{1,30}\]|<[^>]+>|\b(?:lorem ipsum|todo|tbd)\b/i.test(value);
  function ready(data){
   const errors=validate(data);if(errors.length)return errors.map(friendly);
   for(const key of ['name','email','phone','city','headline'])if(!data.candidate[key].trim())errors.push(FIELD_NAMES[key]+' må fylles ut.');

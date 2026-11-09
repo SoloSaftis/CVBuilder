@@ -1,0 +1,13 @@
+[package]
+name = "cv-mcp"
+description = "SHARED: the CV editing tools, and an MCP (Model Context Protocol) server that offers them to an AI"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+cv-core = { path = "../cv-core" }
+serde.workspace = true
+serde_json.workspace = true

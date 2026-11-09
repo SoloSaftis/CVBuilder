@@ -9,6 +9,7 @@ pub struct Labels {
     pub certifications: &'static str,
     pub languages: &'static str,
     pub interests: &'static str,
+    pub contact: &'static str,
     pub present: &'static str,
 }
 
@@ -20,6 +21,7 @@ pub const NO: Labels = Labels {
     certifications: "Kurs og sertifiseringer",
     languages: "Språk",
     interests: "Interesser",
+    contact: "Kontakt",
     present: "nå",
 };
 
@@ -31,10 +33,14 @@ pub const EN: Labels = Labels {
     certifications: "Courses and certifications",
     languages: "Languages",
     interests: "Interests",
+    contact: "Contact",
     present: "Present",
 };
 
 pub fn labels(project: &Project) -> &'static Labels {
+    if let Some(h) = &project.options.headings {
+        return crate::headings::labels(h);
+    }
     if project.is_english() { &EN } else { &NO }
 }
 
@@ -102,13 +108,9 @@ pub fn linkedin_text(url: &str) -> String {
     url.trim_start_matches("https://").trim_start_matches("www.").trim_end_matches('/').to_string()
 }
 
+/// The contact line, in the person's order, without empty parts.
 pub fn contact_parts(project: &Project) -> Vec<String> {
-    let c = &project.candidate;
-    let mut parts: Vec<String> = [&c.email, &c.phone, &c.city].iter().filter(|s| !s.is_empty()).map(|s| s.to_string()).collect();
-    if !c.linkedin.is_empty() {
-        parts.push(linkedin_text(&c.linkedin));
-    }
-    parts
+    contact_order(project).iter().map(|k| contact_value(project, k, false)).filter(|v| !v.is_empty()).collect()
 }
 
 /// "Tidligere svømmer", "Former: Swimming", "Interesse for kajakk" — like the HTML builder.
@@ -136,4 +138,79 @@ pub fn selected_interests(project: &Project) -> Vec<String> {
         .filter(|i| i.confirmed && project.options.interest_ids.contains(&i.id))
         .map(|i| interest_text(i, project.is_english()))
         .collect()
+}
+
+/// The recommended order of the contact line.
+pub const CONTACT_KEYS: [&str; 4] = ["email", "phone", "city", "linkedin"];
+
+/// The recommended order of the sections: what recruiters look for first.
+pub const SECTION_KEYS: [&str; 7] = ["profile", "skills", "experience", "education", "certifications", "languages", "interests"];
+
+/// The contact line's keys in the person's order: chosen keys first, then any not placed yet.
+pub fn contact_order(project: &Project) -> Vec<String> {
+    let c = &project.candidate;
+    let known = |k: &str| CONTACT_KEYS.contains(&k) || c.extra.iter().any(|x| x.id == k);
+    let mut out: Vec<String> = Vec::new();
+    for k in &c.contact_order {
+        if known(k) && !out.contains(k) {
+            out.push(k.clone());
+        }
+    }
+    for k in CONTACT_KEYS.iter().map(|k| k.to_string()).chain(c.extra.iter().map(|x| x.id.clone())) {
+        if !out.contains(&k) {
+            out.push(k);
+        }
+    }
+    out
+}
+
+/// One contact line part. `full` keeps the LinkedIn address whole (plain text for portals).
+pub fn contact_value(project: &Project, key: &str, full: bool) -> String {
+    let c = &project.candidate;
+    match key {
+        "email" => c.email.clone(),
+        "phone" => c.phone.clone(),
+        "city" => c.city.clone(),
+        "linkedin" if full => c.linkedin.clone(),
+        "linkedin" => if c.linkedin.is_empty() { String::new() } else { linkedin_text(&c.linkedin) },
+        id => c.extra.iter().find(|x| x.id == id).map(|x| if x.value.trim().is_empty() { String::new() } else if x.label.trim().is_empty() { x.value.trim().to_string() } else { format!("{}: {}", x.label.trim(), x.value.trim()) }).unwrap_or_default(),
+    }
+}
+
+/// The section keys in the person's order. Custom sections not placed yet come last.
+pub fn section_order(project: &Project) -> Vec<String> {
+    let known = |k: &str| SECTION_KEYS.contains(&k) || project.custom_sections.iter().any(|s| s.id == k);
+    let mut out: Vec<String> = Vec::new();
+    for k in &project.options.section_order {
+        if known(k) && !out.contains(k) {
+            out.push(k.clone());
+        }
+    }
+    for k in SECTION_KEYS {
+        if !out.iter().any(|x| x == k) {
+            out.push(k.to_string());
+        }
+    }
+    // Sections the person added and has not placed go at the bottom, in the order they were added.
+    for s in &project.custom_sections {
+        if !out.contains(&s.id) {
+            out.push(s.id.clone());
+        }
+    }
+    out
+}
+
+/// A section's heading in the CV's language.
+pub fn section_title(project: &Project, key: &str) -> String {
+    let l = labels(project);
+    match key {
+        "profile" => l.profile.into(),
+        "skills" => l.skills.into(),
+        "experience" => l.experience.into(),
+        "education" => l.education.into(),
+        "certifications" => l.certifications.into(),
+        "languages" => l.languages.into(),
+        "interests" => l.interests.into(),
+        id => project.custom_sections.iter().find(|s| s.id == id).map(|s| s.title.clone()).unwrap_or_default(),
+    }
 }

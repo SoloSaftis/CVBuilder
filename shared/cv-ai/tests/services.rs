@@ -128,3 +128,24 @@ fn a_translation_that_drops_parts_is_rejected() {
     let project = Project::example();
     assert!(tasks::translate(&endpoint(Service::Claude, &url), "claude-opus-5-5", &project).is_err());
 }
+
+#[test]
+fn a_local_server_needs_no_key_and_tool_capable_models_come_first() {
+    let (url, seen) = server(200, r#"{"object":"list","data":[{"id":"phi3:mini"},{"id":"qwen3:8b"},{"id":"llama3.1:8b"}]}"#);
+    let endpoint = Endpoint { service: Service::Local, base_url: url.clone(), key: SecretString::new("") };
+    let models = test_connection(&endpoint).expect("models");
+    assert_eq!(models[0], "qwen3:8b", "models good at tools first");
+    let request = seen.lock().expect("lock")[0].clone();
+    assert_eq!(request.path, "/v1/models");
+    assert!(request.header("authorization").is_none(), "no key, no Authorization header");
+    assert!(cv_ai::is_local_address("http://localhost:11434/v1") && cv_ai::is_local_address("http://127.0.0.1:1234/v1"));
+    assert!(!cv_ai::is_local_address("http://192.168.1.20:11434/v1") && !cv_ai::is_local_address("https://api.openai.com/v1"));
+    assert!(!Service::Local.needs_key() && Service::Claude.needs_key());
+}
+
+#[test]
+fn an_unreachable_local_server_says_what_to_check() {
+    let endpoint = Endpoint { service: Service::Local, base_url: "http://127.0.0.1:1/v1".into(), key: SecretString::new("") };
+    let error = test_connection(&endpoint).expect_err("nothing listens on port 1").to_string();
+    assert!(error.contains("Ollama") && error.contains("127.0.0.1:1"), "{error}");
+}

@@ -9,6 +9,7 @@ publish = false
 
 [dependencies]
 cv-core = { path = "../cv-core" }
+cv-mcp = { path = "../cv-mcp" }
 craft-ai-core = { git = "https://github.com/storytold/craft-ai-integrations", rev = "29297b2fbe11077201edc657bff3315e93841d22" }
 craft-ai-openai = { git = "https://github.com/storytold/craft-ai-integrations", rev = "29297b2fbe11077201edc657bff3315e93841d22" }
 craft-ai-native = { git = "https://github.com/storytold/craft-ai-integrations", rev = "29297b2fbe11077201edc657bff3315e93841d22" }
