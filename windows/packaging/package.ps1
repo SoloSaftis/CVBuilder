@@ -3,12 +3,21 @@
 #   windows\dist\CVBuilder-<version>-x64.msix                   (MSIX installer)
 # Signing: pass -Pfx/-PfxPassword for a real code-signing certificate. Without one, a throwaway
 # self-signed test certificate is made; that MSIX installs only where the test certificate is trusted.
-# Microsoft Store: pass -Store with the three values Partner Center shows under Product identity
-# (-IdentityName, -Publisher "CN=…", -PublisherDisplayName). The MSIX is then left unsigned, since
+# Microsoft Store: pass -Store. It uses CVBuilder's Store identity from Partner Center (Product
+# identity); -IdentityName, -Publisher "CN=…" and -PublisherDisplayName override it. The MSIX is left unsigned, since
 # the Store signs it, and is written as CVBuilder-<version>-x64-store.msix for uploading there.
 param([string]$Pfx = "", [string]$PfxPassword = "", [string]$Publisher = "CN=CVBuilder Test",
-      [switch]$Store, [string]$IdentityName = "CVBuilder.Familie", [string]$PublisherDisplayName = "CVBuilder")
+      [switch]$Store, [string]$IdentityName = "", [string]$PublisherDisplayName = "")
 $ErrorActionPreference = "Stop"
+# CVBuilder's identity in the Microsoft Store (Partner Center → Product identity; not secret).
+if ($Store) {
+  if ($IdentityName -eq "") { $IdentityName = "SoloSaftis.CVBuilder" }
+  if ($Publisher -eq "CN=CVBuilder Test") { $Publisher = "CN=BE27F9C3-2592-4EE3-87D1-736943301DFA" }
+  if ($PublisherDisplayName -eq "") { $PublisherDisplayName = "SoloSaftis" }
+} else {
+  if ($IdentityName -eq "") { $IdentityName = "CVBuilder.Familie" }
+  if ($PublisherDisplayName -eq "") { $PublisherDisplayName = "CVBuilder" }
+}
 $root = Resolve-Path "$PSScriptRoot\..\.."
 Set-Location $root
 $version = (Select-String -Path Cargo.toml -Pattern '^version = "([^"]+)"').Matches[0].Groups[1].Value

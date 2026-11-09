@@ -391,3 +391,36 @@ fn ui_shots() {
         image.save(dir.join(format!("{i:02}-{}.png", scene.name.replace(' ', "_")))).expect("save");
     }
 }
+
+/// Store screenshots: the example CV with its preview drawn, at 1920×1080.
+/// `CVBUILDER_SHOTS=<dir> CVBUILDER_QA_LANGS=en cargo test --release -p cvbuilder-app store_shots -- --ignored`
+#[test]
+#[ignore = "writes pictures; run on purpose"]
+fn store_shots() {
+    let Ok(dir) = std::env::var("CVBUILDER_SHOTS").map(std::path::PathBuf::from) else {
+        return;
+    };
+    std::fs::create_dir_all(&dir).expect("shots folder");
+    let lang = std::env::var("CVBUILDER_QA_LANGS").unwrap_or_else(|_| "no".into());
+    private_data_folder(&lang);
+    let scenes: [(&str, fn(&mut CvApp)); 4] = [
+        ("1-skjema-og-forhandsvisning", |_| {}),
+        ("2-sjekkliste", |a| a.side = Side::Checks),
+        ("3-design", |a| a.ribbon_tab = Tab::Design),
+        ("4-sideoppsett", |a| a.ribbon_tab = Tab::Page),
+    ];
+    for (name, setup) in scenes {
+        let mut h = harness(Vec2::new(1920.0, 1080.0), setup);
+        // The preview is made on its own thread after a short pause: wait for the pages.
+        for _ in 0..200 {
+            h.step();
+            if h.state().preview.page_count > 0 {
+                break;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(50));
+        }
+        step(&mut h, 20);
+        let image = h.render().expect("render");
+        image.save(dir.join(format!("{lang}-{name}.png"))).expect("save");
+    }
+}
