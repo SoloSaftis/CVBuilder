@@ -8,7 +8,8 @@ by GitHub Actions from the source code in this repository
 ([`.github/workflows/build.yml`](.github/workflows/build.yml)), and nothing built elsewhere is
 signed. Every signing request is approved by hand.
 
-The Microsoft Store version is signed by Microsoft. The Mac version is not signed yet.
+The Microsoft Store version is signed by Microsoft. The Mac version is signed ad hoc only (no Apple
+Developer ID), so macOS asks you to allow it once under Privacy & Security.
 
 ## Team roles
 

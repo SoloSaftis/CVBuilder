@@ -27,8 +27,9 @@ One file. Right-click it → Properties → allow it to run as a program, then d
 **The first time you open it**, your computer may warn you, because the app is not signed yet:
 
 - **Windows** says "Windows protected your PC": click **More info**, then **Run anyway**.
-- **Mac** says it "cannot be opened": open System Settings → Privacy & Security, scroll down and
-  click **Open Anyway**.
+- **Mac** says Apple "could not verify" CVBuilder: click **Done**. Open System Settings →
+  Privacy & Security, scroll down and click **Open Anyway** next to CVBuilder, then confirm. You
+  only do this once.
 
 Your CV stays on your own computer ([privacy policy](PRIVACY.md)). All versions and what changed:
 [Releases](https://github.com/SoloSaftis/CVBuilder/releases). [Code signing policy](CODE_SIGNING_POLICY.md):
