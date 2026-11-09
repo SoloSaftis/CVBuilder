@@ -106,11 +106,11 @@ jobs:
       # One file each: uploaded as it is, so the download is the app itself, not a zip around it.
       - uses: actions/upload-artifact@v7
         with:
-          path: linux/dist/*.AppImage
+          path: linux/dist/CVBuilder-*.AppImage
           archive: false
       - uses: actions/upload-artifact@v7
         with:
-          path: linux/dist/*.tar.gz
+          path: linux/dist/CVBuilder-*.tar.gz
           archive: false
       - name: Add to the release
         if: env.RELEASE == 'true'
@@ -133,7 +133,7 @@ jobs:
         run: macos/packaging/package.sh
       - uses: actions/upload-artifact@v7
         with:
-          path: macos/dist/*.zip
+          path: macos/dist/CVBuilder-*.zip
           # One file: uploaded as it is, so the download is the app itself, not a zip around it.
           archive: false
       - name: Add to the release

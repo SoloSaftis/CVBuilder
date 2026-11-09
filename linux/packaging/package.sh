@@ -41,8 +41,9 @@ exec "$here/usr/bin/CVBuilder" "$@"
 APPRUN
 chmod +x "$appdir/AppRun"
 # appimagetool, pinned to a release and checked against its published checksum.
-tool="linux/dist/appimagetool-1.9.1-x86_64.AppImage"
+tool="linux/dist/tools/appimagetool-1.9.1-x86_64"
 if [ ! -x "$tool" ]; then
+  mkdir -p "$(dirname "$tool")"
   curl -fsSL -o "$tool" https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage
   echo "ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0  $tool" | sha256sum -c -
   chmod +x "$tool"
