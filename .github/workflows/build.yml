@@ -1,4 +1,4 @@
-# One job per platform folder (windows/, linux/, macos/), all built from the code in shared/.
+# One job per platform folder (platforms/windows, linux, macos), all built from the code in crates/.
 # Pushing a tag like v2.1.0 also makes a GitHub release: each platform job adds its files under
 # the fixed names the README links to, and the release is published when all of them are there.
 name: Build CVBuilder
@@ -28,7 +28,7 @@ jobs:
         with: { node-version: 22 }
       - uses: dtolnay/rust-toolchain@stable
       - name: HTML app rules
-        run: node --test shared/html-app/tests/core.cjs
+        run: node --test web/tests/core.cjs
       - name: Rust rules match the HTML app, AI layer
         run: cargo test -p cv-core -p cv-ai -p cv-mcp --release --locked
       - name: Draft release for the tag
@@ -51,7 +51,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Package (portable zip + MSIX signed with a test certificate)
         shell: pwsh
-        run: ./windows/packaging/package.ps1
+        run: ./platforms/windows/packaging/package.ps1
       # Signing through SignPath Foundation (see CODE_SIGNING_POLICY.md). Skipped until the
       # repository has the variable SIGNPATH_ORGANIZATION_ID and the secret SIGNPATH_API_TOKEN.
       - name: Unsigned program for SignPath
@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: CVBuilder-windows-unsigned
-          path: windows/dist/*-windows-x64-portable.zip
+          path: platforms/windows/dist/*-windows-x64-portable.zip
       - name: Sign CVBuilder.exe (SignPath, approved by hand)
         if: vars.SIGNPATH_ORGANIZATION_ID != ''
         uses: signpath/github-action-submit-signing-request@v3
@@ -73,24 +73,24 @@ jobs:
           github-artifact-id: ${{ steps.unsigned.outputs.artifact-id }}
           wait-for-completion: true
           wait-for-completion-timeout-in-seconds: 18000
-          output-artifact-directory: windows/dist/signed
+          output-artifact-directory: platforms/windows/dist/signed
       - name: Use the signed zip
         if: vars.SIGNPATH_ORGANIZATION_ID != ''
         shell: bash
-        run: cp windows/dist/signed/*-windows-x64-portable.zip windows/dist/
+        run: cp platforms/windows/dist/signed/*-windows-x64-portable.zip platforms/windows/dist/
       - uses: actions/upload-artifact@v7
         with:
           name: CVBuilder-windows
           path: |
-            windows/dist/*.zip
-            windows/dist/*.msix
-            windows/dist/*.cer
+            platforms/windows/dist/*.zip
+            platforms/windows/dist/*.msix
+            platforms/windows/dist/*.cer
       - name: Add to the release
         if: env.RELEASE == 'true'
         shell: bash
         run: |
-          cp windows/dist/*-windows-x64-portable.zip windows/dist/CVBuilder-windows-x64-portable.zip
-          gh release upload "$GITHUB_REF_NAME" windows/dist/CVBuilder-windows-x64-portable.zip --clobber
+          cp platforms/windows/dist/*-windows-x64-portable.zip platforms/windows/dist/CVBuilder-windows-x64-portable.zip
+          gh release upload "$GITHUB_REF_NAME" platforms/windows/dist/CVBuilder-windows-x64-portable.zip --clobber
 
   linux:
     needs: shared
@@ -105,22 +105,22 @@ jobs:
       - name: Desktop development packages
         run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libxkbcommon-dev libwayland-dev libx11-dev libdbus-1-dev libfontconfig-dev
       - name: Package (AppImage and portable tar.gz)
-        run: linux/packaging/package.sh
+        run: platforms/linux/packaging/package.sh
       # One file each: uploaded as it is, so the download is the app itself, not a zip around it.
       - uses: actions/upload-artifact@v7
         with:
-          path: linux/dist/CVBuilder-*.AppImage
+          path: platforms/linux/dist/CVBuilder-*.AppImage
           archive: false
       - uses: actions/upload-artifact@v7
         with:
-          path: linux/dist/CVBuilder-*.tar.gz
+          path: platforms/linux/dist/CVBuilder-*.tar.gz
           archive: false
       - name: Add to the release
         if: env.RELEASE == 'true'
         run: |
-          cp linux/dist/*-x86_64.AppImage linux/dist/CVBuilder-linux-x86_64.AppImage
-          cp linux/dist/*-linux-x86_64-portable.tar.gz linux/dist/CVBuilder-linux-x86_64-portable.tar.gz
-          gh release upload "$GITHUB_REF_NAME" linux/dist/CVBuilder-linux-x86_64.AppImage linux/dist/CVBuilder-linux-x86_64-portable.tar.gz --clobber
+          cp platforms/linux/dist/*-x86_64.AppImage platforms/linux/dist/CVBuilder-linux-x86_64.AppImage
+          cp platforms/linux/dist/*-linux-x86_64-portable.tar.gz platforms/linux/dist/CVBuilder-linux-x86_64-portable.tar.gz
+          gh release upload "$GITHUB_REF_NAME" platforms/linux/dist/CVBuilder-linux-x86_64.AppImage platforms/linux/dist/CVBuilder-linux-x86_64-portable.tar.gz --clobber
 
   macos:
     needs: shared
@@ -133,17 +133,17 @@ jobs:
         with: { node-version: 22 }
       - uses: dtolnay/rust-toolchain@stable
       - name: Package (CVBuilder.app in a zip, unsigned)
-        run: macos/packaging/package.sh
+        run: platforms/macos/packaging/package.sh
       - uses: actions/upload-artifact@v7
         with:
-          path: macos/dist/CVBuilder-*.zip
+          path: platforms/macos/dist/CVBuilder-*.zip
           # One file: uploaded as it is, so the download is the app itself, not a zip around it.
           archive: false
       - name: Add to the release
         if: env.RELEASE == 'true'
         run: |
-          cp macos/dist/*-macos-arm64.zip macos/dist/CVBuilder-macos-arm64.zip
-          gh release upload "$GITHUB_REF_NAME" macos/dist/CVBuilder-macos-arm64.zip --clobber
+          cp platforms/macos/dist/*-macos-arm64.zip platforms/macos/dist/CVBuilder-macos-arm64.zip
+          gh release upload "$GITHUB_REF_NAME" platforms/macos/dist/CVBuilder-macos-arm64.zip --clobber
 
   publish:
     name: Publish the release

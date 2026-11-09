@@ -40,26 +40,28 @@ free code signing provided by [SignPath.io](https://about.signpath.io), certific
 
 | Folder | What it is |
 |---|---|
-| [`shared/`](shared/) | **SHARED by all platforms.** The CV rules, layouts, Word/PDF output, AI layer, the desktop window, icons, and the HTML builder (v1). Change behaviour here. |
-| [`windows/`](windows/) | Windows only: the launcher, the exe icon and version info, portable zip and MSIX packaging. |
-| [`linux/`](linux/) | Linux only: the launcher and portable tar.gz packaging with a desktop entry. |
-| [`macos/`](macos/) | macOS only: the launcher and the `CVBuilder.app` bundle. |
-| `.github/workflows/build.yml` | Tests the shared code, then builds each platform from its own folder. |
+| [`crates/`](crates/) | **The desktop app (v2), shared by every platform.** CV rules and Word/PDF output (`cv-core`), AI tools and MCP (`cv-mcp`), AI services (`cv-ai`) and the window (`app`). Change behaviour here. |
+| [`web/`](web/) | The HTML app (v1): one offline `CVBuilder.html`, and the reference for the rules. |
+| [`assets/`](assets/) | Icons, fonts (DM Sans, Phosphor icons, `craft-fonts` for other scripts), the 19 bundled interface languages and licence texts. |
+| [`platforms/`](platforms/) | One folder each for `windows`, `linux` and `macos`: the launcher and the packaging (zip and MSIX; AppImage and tar.gz; `CVBuilder.app`). |
+| [`packaging/`](packaging/) | Scripts every platform uses: the third-party licence list and the language-pack tools. |
+| [`.github/`](.github/) | The build (`workflows/build.yml`: tests, then each platform, and releases from `v*` tags) and the release page template. |
+| [`.signpath/`](.signpath/) | The SignPath configuration for signing the Windows program. |
 
-Each platform launcher is a few lines that call `cvbuilder_app::run()` from `shared/app`. Anything
-that is the same on every platform belongs in `shared/`.
+Each platform launcher is a few lines that call `cvbuilder_app::run()` from `crates/app`. Anything
+that is the same on every platform belongs in `crates/`.
 
 ## Two apps
 
-- **v1 – HTML app** (`shared/html-app`): one self-contained `CVBuilder.html`, double-click to run
-  in Edge or Chrome, fully offline. Build: `node shared/html-app/tools/build-single.cjs`.
+- **v1 – HTML app** (`web/`): one self-contained `CVBuilder.html`, double-click to run
+  in Edge or Chrome, fully offline. Build: `node web/tools/build-single.cjs`.
 - **v2 – desktop app** (Rust): a live preview of the exact exported pages, photo crop and light
   fixes, and an AI chat beside the CV that changes it live through MCP tools (every change can be
   undone). Build for this computer: `cargo build -p cvbuilder-windows --release`
   (or `-linux`, `-macos`). Package: see each platform folder.
 
 Both apps read and write the same project files and apply the same rules; a parity test
-(`shared/cv-core/tests/parity.rs`) runs both on the same CVs and requires identical results.
+(`crates/cv-core/tests/parity.rs`) runs both on the same CVs and requires identical results.
 
 ## Privacy
 
@@ -72,8 +74,8 @@ Every design is one column of real text with standard headings, so each reads th
 applicant-tracking system. Designs from Reactive Resume (MIT, © Amruth Pillai) and RenderCV (MIT,
 © Sina Atalay and contributors) are remakes: their look (fonts, colours, header and headings) on
 CVBuilder's single-column layout; sidebars and columns are left out on purpose. Licence texts are in
-`shared/assets/licenses/`. Your own designs are `.cvdesign.json` files: see
-[`shared/cv-core/DESIGN-FORMAT.md`](shared/cv-core/DESIGN-FORMAT.md).
+`assets/licenses/`. Your own designs are `.cvdesign.json` files: see
+[`crates/cv-core/DESIGN-FORMAT.md`](crates/cv-core/DESIGN-FORMAT.md).
 
 ## Licence
 

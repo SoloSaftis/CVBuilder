@@ -1,4 +1,4 @@
 # The bundled fonts (Japanese, Chinese, Korean, Arabic and more) for the PDF and the window;
-# see shared/assets/craft-fonts/fonts/manifest.txt.
+# see assets/craft-fonts/fonts/manifest.txt.
 [env]
-CRAFT_FONTS_DIR = { value = "shared/assets/craft-fonts", relative = true }
+CRAFT_FONTS_DIR = { value = "assets/craft-fonts", relative = true }

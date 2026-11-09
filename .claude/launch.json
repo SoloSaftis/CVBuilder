@@ -4,7 +4,7 @@
     {
       "name": "cvbuilder-familie",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["work/serve_family.cjs"],
+      "runtimeArgs": ["private/arbeidsfiler/serve_family.cjs"],
       "port": 8765
     }
   ]

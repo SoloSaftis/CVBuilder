@@ -1,7 +1,7 @@
 [workspace]
 resolver = "3"
-# shared/ is used by every platform; windows/, linux/ and macos/ hold only what differs.
-members = ["shared/cv-core", "shared/cv-ai", "shared/cv-mcp", "shared/app", "windows", "linux", "macos"]
+# crates/ is used by every platform; platforms/windows, linux and macos hold only what differs.
+members = ["crates/cv-core", "crates/cv-ai", "crates/cv-mcp", "crates/app", "platforms/windows", "platforms/linux", "platforms/macos"]
 
 [workspace.package]
 version = "2.0.0-alpha.2"
