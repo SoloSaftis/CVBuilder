@@ -33,7 +33,10 @@ jobs:
         run: cargo test -p cv-core -p cv-ai -p cv-mcp --release --locked
       - name: Draft release for the tag
         if: env.RELEASE == 'true'
-        run: gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --draft --title "CVBuilder ${GITHUB_REF_NAME#v}" --generate-notes
+        # The download page from .github/release-notes.md, with what changed added under it.
+        run: |
+          sed "s/__TAG__/$GITHUB_REF_NAME/g" .github/release-notes.md > "$RUNNER_TEMP/notes.md"
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --draft --title "CVBuilder ${GITHUB_REF_NAME#v}" --notes-file "$RUNNER_TEMP/notes.md" --generate-notes
 
   windows:
     needs: shared
