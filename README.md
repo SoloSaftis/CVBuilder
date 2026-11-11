@@ -10,6 +10,8 @@ Windows · Mac · Linux · 86 languages · works offline · free and open source
 [**⬇️ Mac**](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-macos-arm64.zip) &nbsp;·&nbsp;
 [**⬇️ Linux**](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-linux-x86_64.AppImage)
 
+<a href="https://apps.microsoft.com/detail/9NCKXG5ZTL7L"><img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get it from Microsoft" width="200"></a>
+
 <img src="assets/screenshots/cvbuilder.png" alt="CVBuilder: the form on the left, the CV exactly as it will be downloaded in the middle, and the AI assistant on the right" width="900">
 
 </div>
@@ -35,7 +37,7 @@ Windows · Mac · Linux · 86 languages · works offline · free and open source
 
 | Your computer | Download | Then |
 |---|---|---|
-| **Windows** 10 or 11 | [⬇️ Download for Windows](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-windows-x64-portable.zip) | Open the folder and double-click **CVBuilder** |
+| **Windows** 10 or 11 | [⬇️ Download for Windows](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-windows-x64-portable.zip) | Open the folder and double-click **CVBuilder**. Or [get it from the Microsoft Store](https://apps.microsoft.com/detail/9NCKXG5ZTL7L): installs and updates by itself, no warning |
 | **Mac** with Apple chip (M1 or newer) | [⬇️ Download for Mac](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-macos-arm64.zip) | Open it and drag **CVBuilder** to Applications |
 | **Linux** | [⬇️ Download for Linux](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-linux-x86_64.AppImage) | Right-click → Properties → allow running as a program, then double-click it ([folder version](https://github.com/SoloSaftis/CVBuilder/releases/latest/download/CVBuilder-linux-x86_64-portable.tar.gz)) |
 
