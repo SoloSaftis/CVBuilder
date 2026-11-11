@@ -1,0 +1,15 @@
+[package]
+name = "cvbuilder-linux"
+description = "CVBuilder for Linux: starts the shared app and holds what is specific to Linux"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[[bin]]
+name = "CVBuilder"
+path = "src/main.rs"
+
+[dependencies]
+cvbuilder-app = { path = "../../crates/app" }

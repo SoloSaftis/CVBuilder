@@ -1,14 +1,25 @@
 # CVBuilder
 
+**Version 1.0** · Windows, Mac and Linux · free and open source
+
 Build a CV that recruiters and applicant-tracking systems (ATS) read correctly: one text column,
-standard headings, real text, two A4 pages recommended. 31 designs (CVBuilder's own plus single-column
-remakes of Reactive Resume and RenderCV templates) and your own imported designs, Word and PDF from one layout,
-a recruiter checklist, and an optional AI chat that edits the CV while you watch: Claude, ChatGPT,
-Gemini or Grok with your own API key, a local model (Ollama, LM Studio …) on your own computer, or
-your own Claude Code over MCP. Colours are chosen separately from the design, per CV or per section. CVBuilder is also an MCP
-server, so other AI apps can work on the open CV. Page layout (size, margins, columns, text size,
-spacing, page breaks and a page target) is saved with each CV, and the interface is in 21 languages
-(it follows the system by default).
+standard headings, real text, two A4 pages recommended.
+
+- **Import your old CV**: Word, PDF, RTF, text and more, read offline into jobs, education,
+  skills and the rest. Or start from scratch.
+- **See the real pages while you type**: the preview is exactly the PDF and Word file you download.
+- **31 designs** (CVBuilder's own plus single-column remakes of Reactive Resume and RenderCV
+  templates) and your own imported designs. Colours per CV or per section. Page layout (size,
+  margins, columns, text size, spacing, page breaks and a page target) is saved with each CV.
+- **Recruiter checklist and job match**: paste the job ad and see which keywords your CV is missing.
+- **86 languages**, for both the menus and the CV headings and dates. CVBuilder starts in your
+  computer's language and asks on first start.
+- **Saves like Word**: Ctrl+S, a reminder before you close with unsaved changes, and autosave every
+  5 minutes.
+- **Optional AI chat** that edits the CV while you watch (every change can be undone): Claude,
+  ChatGPT, Gemini or Grok with your own API key, a local model (Ollama, LM Studio …) on your own
+  computer, or your own Claude Code. CVBuilder is also an MCP server, so other AI apps can work on
+  the open CV.
 
 ## Download
 
@@ -40,26 +51,26 @@ free code signing provided by [SignPath.io](https://about.signpath.io), certific
 
 | Folder | What it is |
 |---|---|
-| [`shared/`](shared/) | **SHARED by all platforms.** The CV rules, layouts, Word/PDF output, AI layer, the desktop window, icons, and the HTML builder (v1). Change behaviour here. |
-| [`windows/`](windows/) | Windows only: the launcher, the exe icon and version info, portable zip and MSIX packaging. |
-| [`linux/`](linux/) | Linux only: the launcher and portable tar.gz packaging with a desktop entry. |
-| [`macos/`](macos/) | macOS only: the launcher and the `CVBuilder.app` bundle. |
-| `.github/workflows/build.yml` | Tests the shared code, then builds each platform from its own folder. |
+| [`crates/`](crates/) | **The app, shared by every platform.** CV rules and Word/PDF output (`cv-core`), AI tools and MCP (`cv-mcp`), AI services (`cv-ai`) and the window (`app`). Change behaviour here. |
+| [`web/`](web/) | The reference implementation of the CV rules in JavaScript; a parity test keeps the app's rules identical to it. |
+| [`assets/`](assets/) | Icons, fonts (DM Sans, Phosphor icons, `craft-fonts` for other scripts), the bundled interface languages (`languages/`), CV headings and dates per language (`cv-languages.json`) and licence texts. |
+| [`platforms/`](platforms/) | One folder each for `windows`, `linux` and `macos`: the launcher and the packaging (zip and MSIX; AppImage and tar.gz; `CVBuilder.app`). |
+| [`packaging/`](packaging/) | Scripts every platform uses: the third-party licence list and the language-pack tools. |
+| [`.github/`](.github/) | The build (`workflows/build.yml`: tests, then each platform, and releases from `v*` tags) and the release page template. |
+| [`.signpath/`](.signpath/) | The SignPath configuration for signing the Windows program. |
 
-Each platform launcher is a few lines that call `cvbuilder_app::run()` from `shared/app`. Anything
-that is the same on every platform belongs in `shared/`.
+Each platform launcher is a few lines that call `cvbuilder_app::run()` from `crates/app`. Anything
+that is the same on every platform belongs in `crates/`.
 
-## Two apps
+## Building
 
-- **v1 – HTML app** (`shared/html-app`): one self-contained `CVBuilder.html`, double-click to run
-  in Edge or Chrome, fully offline. Build: `node shared/html-app/tools/build-single.cjs`.
-- **v2 – desktop app** (Rust): a live preview of the exact exported pages, photo crop and light
-  fixes, and an AI chat beside the CV that changes it live through MCP tools (every change can be
-  undone). Build for this computer: `cargo build -p cvbuilder-windows --release`
-  (or `-linux`, `-macos`). Package: see each platform folder.
+Build for this computer: `cargo build -p cvbuilder-windows --release` (or `-linux`, `-macos`).
+Package: see each platform folder. Tests: `cargo test --workspace --release`. The parity test
+(`crates/cv-core/tests/parity.rs`) runs the app's rules and the reference rules in `web/` on the
+same CVs and requires identical results.
 
-Both apps read and write the same project files and apply the same rules; a parity test
-(`shared/cv-core/tests/parity.rs`) runs both on the same CVs and requires identical results.
+Interface languages are `assets/languages/<code>.cvlang.json`; `node packaging/lang-tools.cjs`
+makes a template, lists missing strings and checks a pack.
 
 ## Privacy
 
@@ -72,8 +83,8 @@ Every design is one column of real text with standard headings, so each reads th
 applicant-tracking system. Designs from Reactive Resume (MIT, © Amruth Pillai) and RenderCV (MIT,
 © Sina Atalay and contributors) are remakes: their look (fonts, colours, header and headings) on
 CVBuilder's single-column layout; sidebars and columns are left out on purpose. Licence texts are in
-`shared/assets/licenses/`. Your own designs are `.cvdesign.json` files: see
-[`shared/cv-core/DESIGN-FORMAT.md`](shared/cv-core/DESIGN-FORMAT.md).
+`assets/licenses/`. Your own designs are `.cvdesign.json` files: see
+[`crates/cv-core/DESIGN-FORMAT.md`](crates/cv-core/DESIGN-FORMAT.md).
 
 ## Licence
 

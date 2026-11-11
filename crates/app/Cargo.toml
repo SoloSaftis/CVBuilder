@@ -1,0 +1,33 @@
+[package]
+name = "cvbuilder-app"
+description = "SHARED: the CVBuilder desktop window (egui), started by the windows/, linux/ and macos/ launchers"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+cv-core = { path = "../cv-core" }
+cv-ai = { path = "../cv-ai" }
+cv-mcp = { path = "../cv-mcp" }
+wordcraft-layout.workspace = true
+wordcraft-render.workspace = true
+wordcraft-fonts.workspace = true
+eframe = { version = "0.37", default-features = false, features = ["default_fonts", "wgpu", "accesskit", "clipboard", "wayland", "x11"] }
+egui = "0.37"
+rfd = "0.17"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp", "bmp", "tiff", "ico"] }
+base64 = "0.22"
+dirs = "6"
+regex = "1"
+sys-locale = "0.3"
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+egui_kittest = { version = "0.37", features = ["eframe", "wgpu"] }
+ttf-parser = "0.25"
