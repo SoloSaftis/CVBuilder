@@ -132,23 +132,41 @@ pub fn valid_translation(key: &str, text: &str) -> bool {
     !text.trim().is_empty() && placeholders(key) == placeholders(text)
 }
 
-/// A language code as stored: «de», «pt-BR», «vi». Lower-case letters (2–8), optionally a
-/// two-letter region. «no», «en» and «auto» are taken by the built-in choices.
+/// A language code as stored (BCP 47): «de», «pt-BR», «zh-Hant», «sr-Cyrl-BA»,
+/// «ca-ES-valencia». The language in lower case (2–8 letters), then optionally a script (four
+/// letters, «Latn»), a region (two letters or three digits) and a variant (5–8 letters or
+/// digits), in that order. «no», «en» and «auto» are taken by the built-in choices.
 pub fn normalize_code(code: &str) -> Result<String, PackError> {
     let code = code.trim().replace('_', "-");
-    let (base, region) = match code.split_once('-') {
-        Some((b, r)) => (b.to_lowercase(), Some(r.to_uppercase())),
-        None => (code.to_lowercase(), None),
-    };
-    let base_ok = (2..=8).contains(&base.len()) && base.chars().all(|c| c.is_ascii_lowercase());
-    let region_ok = region.as_ref().is_none_or(|r| r.len() == 2 && r.chars().all(|c| c.is_ascii_uppercase()));
-    if !base_ok || !region_ok {
-        return Err(PackError::BadCode(code));
+    let bad = || PackError::BadCode(code.clone());
+    let mut parts = code.split('-');
+    let base = parts.next().unwrap_or("").to_lowercase();
+    if !(2..=8).contains(&base.len()) || !base.chars().all(|c| c.is_ascii_lowercase()) {
+        return Err(bad());
     }
-    let code = match region {
-        Some(r) => format!("{base}-{r}"),
-        None => base,
-    };
+    let mut out = base;
+    // 0: a script may come, 1: a region, 2: a variant, 3: nothing more.
+    let mut next = 0;
+    for part in parts {
+        let alpha = part.chars().all(|c| c.is_ascii_alphabetic());
+        let tag = if next <= 0 && part.len() == 4 && alpha {
+            next = 1;
+            let mut s = part.to_lowercase();
+            s[..1].make_ascii_uppercase();
+            s
+        } else if next <= 1 && ((part.len() == 2 && alpha) || (part.len() == 3 && part.chars().all(|c| c.is_ascii_digit()))) {
+            next = 2;
+            part.to_uppercase()
+        } else if next <= 2 && (5..=8).contains(&part.len()) && part.chars().all(|c| c.is_ascii_alphanumeric()) {
+            next = 3;
+            part.to_lowercase()
+        } else {
+            return Err(bad());
+        };
+        out.push('-');
+        out.push_str(&tag);
+    }
+    let code = out;
     if matches!(code.as_str(), "no" | "en" | "auto") {
         return Err(PackError::Reserved(code));
     }
@@ -240,17 +258,37 @@ pub fn choose(setting: &str, locale: &str, packs: &[Pack]) -> Choice {
 fn choose_auto(locale: &str, packs: &[Pack]) -> Choice {
     let locale = locale.split(['.', '@']).next().unwrap_or("").replace('_', "-").to_lowercase();
     let base = locale.split('-').next().unwrap_or("").to_string();
-    let lower = |p: &Pack| p.code.to_lowercase();
-    let pick = packs
-        .iter()
-        .position(|p| !locale.is_empty() && lower(p) == locale)
-        .or_else(|| packs.iter().position(|p| !base.is_empty() && lower(p) == base))
-        .or_else(|| packs.iter().position(|p| !base.is_empty() && lower(p).split('-').next() == Some(base.as_str())));
-    match pick {
+    match pack_for_locale(&locale, packs) {
         Some(i) => Choice::Pack(i),
+        // Nynorsk has its own pack; bokmål and plain «no» are the built-in Norwegian.
         None if matches!(base.as_str(), "nb" | "nn" | "no") => Choice::No,
         None => Choice::En,
     }
+}
+
+/// The pack that fits a locale best: the whole code, then shorter and shorter («sr-latn-rs» →
+/// «sr-latn» → «sr»), with Chinese regions that write Traditional Chinese counted as «zh-hant».
+/// Then any pack of the same language, except English, whose plain form is built in.
+fn pack_for_locale(locale: &str, packs: &[Pack]) -> Option<usize> {
+    let locale = match locale {
+        "zh-tw" | "zh-hk" | "zh-mo" => "zh-hant".to_string(),
+        l if l.starts_with("zh-hant") => "zh-hant".to_string(),
+        l => l.to_string(),
+    };
+    let lower = |p: &Pack| p.code.to_lowercase();
+    let mut tags: Vec<&str> = locale.split('-').filter(|t| !t.is_empty()).collect();
+    while !tags.is_empty() {
+        let want = tags.join("-");
+        if let Some(i) = packs.iter().position(|p| lower(p) == want) {
+            return Some(i);
+        }
+        tags.pop();
+    }
+    let base = locale.split('-').next().unwrap_or("");
+    if base.is_empty() || matches!(base, "en" | "nb" | "no") {
+        return None;
+    }
+    packs.iter().position(|p| lower(p).split('-').next() == Some(base))
 }
 
 /// The computer's locale, like «de-DE».
@@ -312,6 +350,38 @@ pub fn install(pack: &Pack) {
 
 fn installed() -> Option<&'static Installed> {
     PACK.read().ok().and_then(|slot| *slot)
+}
+
+/// Every language's name in every interface language, made by `node packaging/lang-tools.cjs names`.
+static LANGUAGE_NAMES: LazyLock<HashMap<String, HashMap<String, String>>> =
+    LazyLock::new(|| serde_json::from_str(include_str!("../../../assets/language-names.json")).unwrap_or_default());
+
+/// The code of the interface language now in use: "no", "en" or a pack's code.
+pub fn current_code() -> String {
+    match get() {
+        Lang::No => "no".into(),
+        Lang::En => "en".into(),
+        Lang::Pack => installed().map(|i| i.code.clone()).unwrap_or_else(|| "en".into()),
+    }
+}
+
+/// A language's name (by code, like «de» or «en-GB») in the interface language now in use:
+/// «Tysk» with Norwegian menus, «German» with English. `None` for a code with no known name.
+pub fn language_name(code: &str) -> Option<String> {
+    let find = |ui: &str| LANGUAGE_NAMES.get(ui).and_then(|names| names.get(code)).cloned();
+    find(&current_code()).or_else(|| find("en"))
+}
+
+/// An interface language ("no", "en" or a pack's code) as shown in the menu-language lists, in
+/// the interface language now in use. Built-in English is US English; `native` is the pack's own
+/// name, used for a pack whose code has no known name.
+pub fn menu_language_name(code: &str, native: &str) -> String {
+    let lookup = match code {
+        "no" => "nb",
+        "en" => "en-US",
+        c => c,
+    };
+    language_name(lookup).unwrap_or_else(|| native.to_string())
 }
 
 /// The pack in use, as (code, name), when the interface is in a pack's language.
@@ -689,6 +759,27 @@ static EN: &[(&str, &str)] = &[
     ("Åpne eksempel", "Open example"),
     ("Åpne", "Open"),
     ("Lagre som", "Save as"),
+    ("Velkommen til CVBuilder", "Welcome to CVBuilder"),
+    ("Velg språk. Språket på datamaskinen din er valgt, og du kan endre begge senere.", "Choose your languages. Your computer's language is already chosen, and you can change both later."),
+    ("Språket i menyene og knappene", "The language of the menus and buttons"),
+    ("Språket i CV-en", "The CV's language"),
+    ("Overskrifter og datoer i CV-en. Teksten skriver du selv, eller AI-en oversetter den.", "The CV's headings and dates. You write the text yourself, or the AI translates it."),
+    ("Start", "Start"),
+    ("Bruk disse språkene", "Use these languages"),
+    ("Menyer og knapper på dette språket", "Menus and buttons in this language"),
+    ("Endres under Innstillinger og i språklisten på Hjem.", "Change them in Settings and in the language list on Home."),
+    ("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor.", "Save the CV to its file (Ctrl+S). The first time, you choose where."),
+    ("Lagret automatisk i «{file}».", "Saved automatically to «{file}»."),
+    ("Vil du lagre endringene i CV-en?", "Do you want to save the changes to your CV?"),
+    ("Endringene er ikke lagret i «{file}» ennå.", "The changes are not saved to «{file}» yet."),
+    ("CV-en er ikke lagret som fil ennå.", "The CV has not been saved as a file yet."),
+    ("Utkastet huskes også på denne maskinen til neste gang.", "The draft is also remembered on this computer until next time."),
+    ("Lagre CV-en og lukk", "Save the CV and close"),
+    ("Ikke lagre", "Don't save"),
+    ("Lukk uten å lagre i fil", "Close without saving to a file"),
+    ("Fortsett å jobbe med CV-en", "Keep working on the CV"),
+    ("Lagre automatisk hvert 5. minutt", "Save automatically every 5 minutes"),
+    ("Når CV-en er lagret som fil, lagres endringene i den filen hvert 5. minutt, som i Word.", "Once the CV is saved as a file, changes are saved to that file every 5 minutes, like in Word."),
     ("Importer CV fra fil", "Import CV from file"),
     ("Last ned PDF", "Download PDF"),
     ("Last ned Word", "Download Word"),
@@ -2042,6 +2133,23 @@ mod tests {
     use std::collections::{BTreeSet, HashSet};
 
     use cv_core::Project;
+
+    #[test]
+    fn language_names_follow_the_menu_language() {
+        // Read the table directly: other tests change the language in use at the same time.
+        let name = |ui: &str, code: &str| super::LANGUAGE_NAMES.get(ui).and_then(|n| n.get(code)).cloned().unwrap_or_default();
+        assert_eq!(name("no", "de"), "Tysk");
+        assert_eq!(name("no", "en-US"), "Engelsk (USA)");
+        assert_eq!(name("no", "en-GB"), "Engelsk (Storbritannia)");
+        assert_eq!(name("en", "de"), "German");
+        assert_eq!(name("de", "nb"), "Norwegisch (Bokmål)");
+        // Every built-in CV language has a name in English, the fallback.
+        for language in cv_core::headings::built_in_languages() {
+            let code = cv_core::headings::code_of(language).expect(language);
+            assert!(!name("en", code).is_empty(), "{language} ({code})");
+        }
+    }
+
     use cv_core::model::{Certification, Education, Job, Skill, SpokenLanguage};
 
     use super::*;
@@ -2317,7 +2425,12 @@ mod tests {
         assert_eq!(normalize_code(" DE "), Ok("de".into()));
         assert_eq!(normalize_code("pt-br"), Ok("pt-BR".into()));
         assert_eq!(normalize_code("zh_TW"), Ok("zh-TW".into()));
+        assert_eq!(normalize_code("zh-hant"), Ok("zh-Hant".into()));
+        assert_eq!(normalize_code("SR-cyrl-ba"), Ok("sr-Cyrl-BA".into()));
+        assert_eq!(normalize_code("ca-ES-Valencia"), Ok("ca-ES-valencia".into()));
+        assert_eq!(normalize_code("es-419"), Ok("es-419".into()));
         assert!(normalize_code("de-DEU").is_err());
+        assert!(normalize_code("sr-BA-Cyrl").is_err(), "script after region");
         assert!(normalize_code("toolonglang").is_err());
         assert!(normalize_code("d3").is_err());
         assert!(normalize_code("").is_err());
@@ -2360,6 +2473,23 @@ mod tests {
         assert_eq!(choose("auto", "nb-NO", &packs), Choice::No);
         assert_eq!(choose("auto", "fr-FR", &packs), Choice::En);
         assert_eq!(choose("auto", "", &packs), Choice::En);
+        // Scripts and regions: the closest pack wins, and plain English stays the built-in one.
+        let pack = |code: &str| {
+            let mut p = german();
+            p.code = code.into();
+            p
+        };
+        let more = vec![pack("zh"), pack("zh-Hant"), pack("sr"), pack("sr-Latn"), pack("sr-Cyrl-BA"), pack("en-GB"), pack("ca"), pack("ca-ES-valencia")];
+        assert_eq!(choose("auto", "zh-CN", &more), Choice::Pack(0));
+        assert_eq!(choose("auto", "zh-TW", &more), Choice::Pack(1));
+        assert_eq!(choose("auto", "zh-Hant-HK", &more), Choice::Pack(1));
+        assert_eq!(choose("auto", "sr-Cyrl-RS", &more), Choice::Pack(2));
+        assert_eq!(choose("auto", "sr-Latn-RS", &more), Choice::Pack(3));
+        assert_eq!(choose("auto", "sr-Cyrl-BA", &more), Choice::Pack(4));
+        assert_eq!(choose("auto", "en-GB", &more), Choice::Pack(5));
+        assert_eq!(choose("auto", "en-US", &more), Choice::En);
+        assert_eq!(choose("auto", "ca-ES", &more), Choice::Pack(6));
+        assert_eq!(choose("auto", "ca-ES-valencia", &more), Choice::Pack(7));
         assert_eq!(choose("no", "de-DE", &packs), Choice::No);
         assert_eq!(choose("en", "de-DE", &packs), Choice::En);
         assert_eq!(choose("pt-BR", "nb-NO", &packs), Choice::Pack(1));

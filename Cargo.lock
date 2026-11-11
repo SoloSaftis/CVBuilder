@@ -1195,7 +1195,7 @@ checksum = "f27ae1dd37df86211c42e150270f82743308803d90a6f6e6651cd730d5e1732f"
 
 [[package]]
 name = "cv-ai"
-version = "2.0.0-alpha.2"
+version = "1.0.0"
 dependencies = [
  "craft-ai-core",
  "craft-ai-native",
@@ -1210,7 +1210,7 @@ dependencies = [
 
 [[package]]
 name = "cv-core"
-version = "2.0.0-alpha.2"
+version = "1.0.0"
 dependencies = [
  "base64 0.22.1",
  "pdf-extract",
@@ -1229,7 +1229,7 @@ dependencies = [
 
 [[package]]
 name = "cv-mcp"
-version = "2.0.0-alpha.2"
+version = "1.0.0"
 dependencies = [
  "cv-core",
  "serde",
@@ -1238,7 +1238,7 @@ dependencies = [
 
 [[package]]
 name = "cvbuilder-app"
-version = "2.0.0-alpha.2"
+version = "1.0.0"
 dependencies = [
  "base64 0.22.1",
  "cv-ai",
@@ -1254,6 +1254,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sys-locale",
+ "ttf-parser",
  "wordcraft-fonts",
  "wordcraft-layout",
  "wordcraft-render",
@@ -1261,21 +1262,21 @@ dependencies = [
 
 [[package]]
 name = "cvbuilder-linux"
-version = "2.0.0-alpha.2"
+version = "1.0.0"
 dependencies = [
  "cvbuilder-app",
 ]
 
 [[package]]
 name = "cvbuilder-macos"
-version = "2.0.0-alpha.2"
+version = "1.0.0"
 dependencies = [
  "cvbuilder-app",
 ]
 
 [[package]]
 name = "cvbuilder-windows"
-version = "2.0.0-alpha.2"
+version = "1.0.0"
 dependencies = [
  "cvbuilder-app",
  "winresource",

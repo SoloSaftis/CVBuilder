@@ -28,7 +28,7 @@ pub struct Headings {
 
 /// Headings shipped for common languages: (the language's own name, headings in order profile,
 /// skills, experience, education, certifications, languages, interests, contact, present).
-const TABLE: [(&str, [&str; 9]); 19] = [
+const TABLE: [(&str, [&str; 9]); 25] = [
     ("Dansk", ["Profil", "Kernekompetencer", "Erhvervserfaring", "Uddannelse", "Kurser og certificeringer", "Sprog", "Interesser", "Kontakt", "nu"]),
     ("Svenska", ["Profil", "Kärnkompetens", "Arbetslivserfarenhet", "Utbildning", "Kurser och certifieringar", "Språk", "Intressen", "Kontakt", "nu"]),
     ("Nynorsk", ["Profil", "Kjernekompetanse", "Arbeidserfaring", "Utdanning", "Kurs og sertifiseringar", "Språk", "Interesser", "Kontakt", "no"]),
@@ -45,19 +45,115 @@ const TABLE: [(&str, [&str; 9]); 19] = [
     ("Lietuvių", ["Profilis", "Pagrindinės kompetencijos", "Darbo patirtis", "Išsilavinimas", "Kursai ir sertifikatai", "Kalbos", "Pomėgiai", "Kontaktai", "dabar"]),
     ("Українська", ["Профіль", "Ключові компетенції", "Досвід роботи", "Освіта", "Курси та сертифікати", "Мови", "Інтереси", "Контакти", "дотепер"]),
     ("Română", ["Profil", "Competențe cheie", "Experiență profesională", "Educație", "Cursuri și certificări", "Limbi străine", "Interese", "Contact", "prezent"]),
+    ("Magyar", ["Profil", "Kulcskompetenciák", "Szakmai tapasztalat", "Tanulmányok", "Tanfolyamok és tanúsítványok", "Nyelvtudás", "Érdeklődési kör", "Elérhetőség", "jelenleg"]),
+    ("Türkçe", ["Profil", "Temel yetkinlikler", "İş deneyimi", "Eğitim", "Kurslar ve sertifikalar", "Diller", "İlgi alanları", "İletişim", "halen"]),
+    ("Ελληνικά", ["Προφίλ", "Βασικές δεξιότητες", "Επαγγελματική εμπειρία", "Εκπαίδευση", "Σεμινάρια και πιστοποιήσεις", "Γλώσσες", "Ενδιαφέροντα", "Επικοινωνία", "σήμερα"]),
+    ("Русский", ["Профиль", "Ключевые навыки", "Опыт работы", "Образование", "Курсы и сертификаты", "Языки", "Интересы", "Контакты", "по настоящее время"]),
+    ("Bahasa Indonesia", ["Profil", "Keahlian utama", "Pengalaman kerja", "Pendidikan", "Kursus dan sertifikasi", "Bahasa", "Minat", "Kontak", "sekarang"]),
+    ("Tiếng Việt", ["Giới thiệu", "Kỹ năng chính", "Kinh nghiệm làm việc", "Học vấn", "Khóa học và chứng chỉ", "Ngôn ngữ", "Sở thích", "Liên hệ", "hiện tại"]),
     ("日本語", ["プロフィール", "スキル", "職歴", "学歴", "研修・資格", "語学", "趣味・関心", "連絡先", "現在"]),
     ("简体中文", ["个人简介", "核心技能", "工作经历", "教育背景", "培训与证书", "语言能力", "兴趣爱好", "联系方式", "至今"]),
     ("한국어", ["프로필", "핵심 역량", "경력", "학력", "교육 및 자격증", "어학", "관심사", "연락처", "현재"]),
 ];
 
+/// The language codes (BCP 47) of [`TABLE`], in the same order.
+const TABLE_CODES: [&str; 25] = ["da", "sv", "nn", "is", "fi", "de", "nl", "fr", "es", "pt", "it", "pl", "cs", "lt", "uk", "ro", "hu", "tr", "el", "ru", "id", "vi", "ja", "zh", "ko"];
+
+/// A CV language from assets/cv-languages.json: its headings, and the words the CV reader needs
+/// to read an old CV written in it.
+#[derive(Debug, Clone, Deserialize)]
+pub struct CvLanguage {
+    /// BCP 47, e.g. «sr-Latn».
+    pub code: String,
+    /// Its own name, e.g. «Srpski».
+    pub name: String,
+    #[serde(default)]
+    pub english_name: String,
+    /// Profile, skills, experience, education, certifications, languages, interests, contact, present.
+    pub headings: [String; 9],
+    /// Lower-case section headings by part: profile, skills, experience, education,
+    /// certifications, languages, interests, projects, volunteering, skip.
+    #[serde(default)]
+    pub import: HashMap<String, Vec<String>>,
+    /// Twelve lists of lower-case month names and abbreviations, January first.
+    #[serde(default)]
+    pub months: Vec<Vec<String>>,
+    /// Lower-case words for «present» in a date range.
+    #[serde(default)]
+    pub now: Vec<String>,
+}
+
+/// The languages in assets/cv-languages.json (the ones not in [`TABLE`]).
+pub static MORE: LazyLock<Vec<CvLanguage>> = LazyLock::new(|| {
+    let list: Vec<CvLanguage> = serde_json::from_str(include_str!("../../../assets/cv-languages.json")).unwrap_or_default();
+    // A name already in the table keeps the table's headings.
+    list.into_iter().filter(|l| !TABLE.iter().any(|(n, _)| n.eq_ignore_ascii_case(&l.name))).collect()
+});
+
 /// The languages with built-in headings, by their own names.
 pub fn built_in_languages() -> Vec<&'static str> {
-    TABLE.iter().map(|(name, _)| *name).collect()
+    TABLE.iter().map(|(name, _)| *name).chain(MORE.iter().map(|l| l.name.as_str())).collect()
+}
+
+/// The code of a built-in CV language («Deutsch» → «de»), including «Bokmål» (nb) and «English» (en).
+pub fn code_of(language: &str) -> Option<&'static str> {
+    let wanted = language.trim().to_lowercase();
+    match wanted.as_str() {
+        "bokmål" | "norsk" | "norsk (bokmål)" => return Some("nb"),
+        "english" => return Some("en"),
+        _ => {}
+    }
+    TABLE.iter().position(|(n, _)| n.to_lowercase() == wanted).map(|i| TABLE_CODES[i]).or_else(|| MORE.iter().find(|l| l.name.to_lowercase() == wanted).map(|l| l.code.as_str()))
+}
+
+/// The built-in CV language that fits a computer's locale best («de-AT» → «Deutsch»,
+/// «sr-Latn-RS» → «Srpski», «zh-TW» → Traditional Chinese, «nb-NO» → «Bokmål», «en-US» →
+/// «English»), or `None` when there is none for it.
+pub fn for_locale(locale: &str) -> Option<&'static str> {
+    let locale = locale.split(['.', '@']).next().unwrap_or("").replace('_', "-").to_lowercase();
+    let locale = match locale.as_str() {
+        "zh-tw" | "zh-hk" | "zh-mo" => "zh-hant".to_string(),
+        l if l.starts_with("zh-hant") => "zh-hant".to_string(),
+        l => l.to_string(),
+    };
+    let base = locale.split('-').next().unwrap_or("").to_string();
+    match base.as_str() {
+        "nb" | "no" => return Some("Bokmål"),
+        "en" => return Some("English"),
+        "" => return None,
+        _ => {}
+    }
+    let all: Vec<(&'static str, &'static str)> =
+        TABLE.iter().zip(TABLE_CODES).map(|((n, _), c)| (c, *n)).chain(MORE.iter().map(|l| (l.code.as_str(), l.name.as_str()))).collect();
+    let mut tags: Vec<&str> = locale.split('-').collect();
+    while !tags.is_empty() {
+        let want = tags.join("-");
+        if let Some((_, name)) = all.iter().find(|(c, _)| c.to_lowercase() == want) {
+            return Some(name);
+        }
+        tags.pop();
+    }
+    all.iter().find(|(c, _)| c.to_lowercase().split('-').next() == Some(base.as_str())).map(|(_, n)| *n)
 }
 
 /// Built-in headings for a language, matched by its own name (case-insensitive).
 pub fn built_in(language: &str) -> Option<Headings> {
     let wanted = language.trim().to_lowercase();
+    if let Some(l) = MORE.iter().find(|l| l.name.to_lowercase() == wanted) {
+        let h = &l.headings;
+        return Some(Headings {
+            language: l.name.clone(),
+            profile: h[0].clone(),
+            skills: h[1].clone(),
+            experience: h[2].clone(),
+            education: h[3].clone(),
+            certifications: h[4].clone(),
+            languages: h[5].clone(),
+            interests: h[6].clone(),
+            contact: h[7].clone(),
+            present: h[8].clone(),
+        });
+    }
     TABLE.iter().find(|(name, _)| name.to_lowercase() == wanted).map(|(name, h)| Headings {
         language: name.to_string(),
         profile: h[0].into(),

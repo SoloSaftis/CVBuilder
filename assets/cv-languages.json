@@ -1,0 +1,9145 @@
+[
+ {
+  "code": "af",
+  "name": "Afrikaans",
+  "english_name": "Afrikaans",
+  "headings": [
+   "Profiel",
+   "Kernvaardighede",
+   "Werkservaring",
+   "Opleiding",
+   "Kursusse en sertifiserings",
+   "Tale",
+   "Belangstellings",
+   "Kontak",
+   "hede"
+  ],
+  "import": {
+   "profile": [
+    "profiel",
+    "persoonlike profiel",
+    "professionele profiel",
+    "opsomming",
+    "oor my",
+    "loopbaandoelwit",
+    "loopbaanoogmerk"
+   ],
+   "skills": [
+    "kernvaardighede",
+    "vaardighede",
+    "bevoegdhede",
+    "kernbevoegdhede",
+    "kundigheid",
+    "rekenaarvaardighede",
+    "sleutelvaardighede"
+   ],
+   "experience": [
+    "werkservaring",
+    "ervaring",
+    "loopbaangeskiedenis",
+    "beroepservaring",
+    "indiensnemingsgeskiedenis",
+    "werksgeskiedenis",
+    "professionele ervaring"
+   ],
+   "education": [
+    "opleiding",
+    "opvoeding",
+    "kwalifikasies",
+    "akademiese kwalifikasies",
+    "tersiêre opleiding",
+    "skoolopleiding",
+    "onderwys"
+   ],
+   "certifications": [
+    "kursusse en sertifiserings",
+    "kursusse",
+    "sertifiserings",
+    "sertifikate",
+    "verdere opleiding",
+    "kortkursusse"
+   ],
+   "languages": [
+    "tale",
+    "taalvaardigheid",
+    "taalvaardighede"
+   ],
+   "interests": [
+    "belangstellings",
+    "stokperdjies",
+    "ontspanning",
+    "vryetydsbesteding"
+   ],
+   "projects": [
+    "projekte"
+   ],
+   "volunteering": [
+    "vrywillige werk",
+    "vrywilligerswerk",
+    "gemeenskapsdiens"
+   ],
+   "skip": [
+    "persoonlike besonderhede",
+    "persoonlike inligting",
+    "kontakbesonderhede",
+    "verwysings",
+    "referente"
+   ]
+  },
+  "months": [
+   [
+    "januarie",
+    "jan"
+   ],
+   [
+    "februarie",
+    "feb",
+    "febr"
+   ],
+   [
+    "maart",
+    "mrt",
+    "mar"
+   ],
+   [
+    "april",
+    "apr"
+   ],
+   [
+    "mei"
+   ],
+   [
+    "junie",
+    "jun"
+   ],
+   [
+    "julie",
+    "jul"
+   ],
+   [
+    "augustus",
+    "aug"
+   ],
+   [
+    "september",
+    "sep",
+    "sept"
+   ],
+   [
+    "oktober",
+    "okt"
+   ],
+   [
+    "november",
+    "nov"
+   ],
+   [
+    "desember",
+    "des"
+   ]
+  ],
+  "now": [
+   "hede",
+   "tot hede",
+   "tans",
+   "huidig",
+   "teenswoordig",
+   "nou"
+  ]
+ },
+ {
+  "code": "am",
+  "name": "አማርኛ",
+  "english_name": "Amharic",
+  "headings": [
+   "መግለጫ",
+   "ዋና ክህሎቶች",
+   "የሥራ ልምድ",
+   "ትምህርት",
+   "ስልጠናዎችና የምስክር ወረቀቶች",
+   "ቋንቋዎች",
+   "ፍላጎቶች",
+   "አድራሻ",
+   "እስካሁን"
+  ],
+  "import": {
+   "profile": [
+    "መግለጫ",
+    "የግል መግለጫ",
+    "ማጠቃለያ",
+    "ስለ እኔ",
+    "የሙያ መግለጫ",
+    "ሙያዊ ማጠቃለያ",
+    "ዓላማ",
+    "የሥራ ዓላማ"
+   ],
+   "skills": [
+    "ዋና ክህሎቶች",
+    "ክህሎቶች",
+    "ክህሎት",
+    "ችሎታዎች",
+    "ሙያዊ ክህሎቶች",
+    "ብቃቶች",
+    "የኮምፒውተር ክህሎቶች"
+   ],
+   "experience": [
+    "የሥራ ልምድ",
+    "የስራ ልምድ",
+    "ልምድ",
+    "ሙያዊ ልምድ",
+    "የሥራ ታሪክ",
+    "የስራ ታሪክ"
+   ],
+   "education": [
+    "ትምህርት",
+    "የትምህርት ደረጃ",
+    "የትምህርት ዝግጅት",
+    "የትምህርት ታሪክ",
+    "ትምህርታዊ ዝግጅት"
+   ],
+   "certifications": [
+    "ስልጠናዎችና የምስክር ወረቀቶች",
+    "ስልጠናዎች",
+    "ሥልጠናዎች",
+    "ስልጠና",
+    "የምስክር ወረቀቶች",
+    "ኮርሶች",
+    "ሰርተፊኬቶች"
+   ],
+   "languages": [
+    "ቋንቋዎች",
+    "ቋንቋ",
+    "የቋንቋ ችሎታ",
+    "የቋንቋ ክህሎት"
+   ],
+   "interests": [
+    "ፍላጎቶች",
+    "የትርፍ ጊዜ ማሳለፊያዎች",
+    "ዝንባሌዎች",
+    "የግል ፍላጎቶች"
+   ],
+   "projects": [
+    "ፕሮጀክቶች",
+    "ፕሮጀክት"
+   ],
+   "volunteering": [
+    "የበጎ ፈቃድ ሥራ",
+    "የበጎ ፈቃድ ስራ",
+    "በጎ ፈቃደኝነት",
+    "የበጎ አድራጎት ሥራ"
+   ],
+   "skip": [
+    "የግል መረጃ",
+    "የግል ዝርዝር",
+    "የመገናኛ መረጃ",
+    "አድራሻ",
+    "ዋቢዎች",
+    "ማጣቀሻዎች",
+    "ምስክሮች"
+   ]
+  },
+  "months": [
+   [
+    "ጃንዩወሪ",
+    "ጃንዋሪ",
+    "ጃኑዋሪ",
+    "ጃን"
+   ],
+   [
+    "ፌብሩወሪ",
+    "ፌብሯሪ",
+    "ፌብሩዋሪ",
+    "ፌብ"
+   ],
+   [
+    "ማርች",
+    "ማርቸ"
+   ],
+   [
+    "ኤፕሪል",
+    "ኤፕሪ"
+   ],
+   [
+    "ሜይ"
+   ],
+   [
+    "ጁን"
+   ],
+   [
+    "ጁላይ"
+   ],
+   [
+    "ኦገስት",
+    "ኦጋስት",
+    "ኦገ"
+   ],
+   [
+    "ሴፕቴምበር",
+    "ሴፕተምበር",
+    "ሴፕ"
+   ],
+   [
+    "ኦክቶበር",
+    "ኦክቶ"
+   ],
+   [
+    "ኖቬምበር",
+    "ኖቨምበር",
+    "ኖቬ"
+   ],
+   [
+    "ዲሴምበር",
+    "ዲሴ"
+   ]
+  ],
+  "now": [
+   "እስካሁን",
+   "እስከ አሁን",
+   "አሁን",
+   "በአሁኑ ጊዜ",
+   "እስከዛሬ",
+   "እስከ ዛሬ",
+   "በመካሄድ ላይ"
+  ]
+ },
+ {
+  "code": "ar",
+  "name": "العربية",
+  "english_name": "Arabic",
+  "headings": [
+   "النبذة الشخصية",
+   "المهارات الأساسية",
+   "الخبرة العملية",
+   "التعليم",
+   "الدورات والشهادات",
+   "اللغات",
+   "الاهتمامات",
+   "معلومات التواصل",
+   "حتى الآن"
+  ],
+  "import": {
+   "profile": [
+    "النبذة الشخصية",
+    "نبذة شخصية",
+    "نبذة عني",
+    "الملف الشخصي",
+    "الملخص المهني",
+    "ملخص",
+    "الهدف الوظيفي",
+    "نبذة مختصرة"
+   ],
+   "skills": [
+    "المهارات الأساسية",
+    "المهارات",
+    "الكفاءات",
+    "المهارات التقنية",
+    "المهارات الشخصية",
+    "الكفاءات الأساسية",
+    "القدرات"
+   ],
+   "experience": [
+    "الخبرة العملية",
+    "الخبرات العملية",
+    "الخبرات",
+    "الخبرة المهنية",
+    "الخبرات المهنية",
+    "المسيرة المهنية",
+    "الخبرة"
+   ],
+   "education": [
+    "التعليم",
+    "المؤهلات العلمية",
+    "المؤهلات الأكاديمية",
+    "التحصيل العلمي",
+    "المؤهل العلمي",
+    "الدراسة",
+    "التعليم والمؤهلات"
+   ],
+   "certifications": [
+    "الدورات والشهادات",
+    "الدورات التدريبية",
+    "الشهادات",
+    "الدورات",
+    "الشهادات المهنية",
+    "التدريب",
+    "الشهادات والدورات"
+   ],
+   "languages": [
+    "اللغات",
+    "المهارات اللغوية",
+    "اللغة"
+   ],
+   "interests": [
+    "الاهتمامات",
+    "الهوايات",
+    "الهوايات والاهتمامات",
+    "الأنشطة"
+   ],
+   "projects": [
+    "المشاريع",
+    "المشروعات"
+   ],
+   "volunteering": [
+    "العمل التطوعي",
+    "الأعمال التطوعية",
+    "التطوع"
+   ],
+   "skip": [
+    "البيانات الشخصية",
+    "المعلومات الشخصية",
+    "بيانات الاتصال",
+    "المعرفون",
+    "المراجع"
+   ]
+  },
+  "months": [
+   [
+    "يناير",
+    "كانون الثاني",
+    "جانفي"
+   ],
+   [
+    "فبراير",
+    "شباط",
+    "فيفري"
+   ],
+   [
+    "مارس",
+    "آذار"
+   ],
+   [
+    "أبريل",
+    "ابريل",
+    "نيسان",
+    "أفريل"
+   ],
+   [
+    "مايو",
+    "أيار",
+    "ماي"
+   ],
+   [
+    "يونيو",
+    "حزيران",
+    "جوان"
+   ],
+   [
+    "يوليو",
+    "تموز",
+    "جويلية"
+   ],
+   [
+    "أغسطس",
+    "اغسطس",
+    "آب",
+    "أوت"
+   ],
+   [
+    "سبتمبر",
+    "أيلول"
+   ],
+   [
+    "أكتوبر",
+    "اكتوبر",
+    "تشرين الأول"
+   ],
+   [
+    "نوفمبر",
+    "تشرين الثاني"
+   ],
+   [
+    "ديسمبر",
+    "كانون الأول"
+   ]
+  ],
+  "now": [
+   "حتى الآن",
+   "الآن",
+   "حاليًا",
+   "حاليا",
+   "حتى تاريخه",
+   "إلى الآن",
+   "مستمر",
+   "حتى اليوم"
+  ]
+ },
+ {
+  "code": "as",
+  "name": "অসমীয়া",
+  "english_name": "Assamese",
+  "headings": [
+   "প্ৰ'ফাইল",
+   "মূল দক্ষতা",
+   "কৰ্ম-অভিজ্ঞতা",
+   "শিক্ষা",
+   "পাঠ্যক্ৰম আৰু প্ৰমাণপত্ৰ",
+   "ভাষা",
+   "আগ্ৰহ",
+   "যোগাযোগ",
+   "বৰ্তমান"
+  ],
+  "import": {
+   "profile": [
+    "প্ৰ'ফাইল",
+    "প্ৰফাইল",
+    "সাৰাংশ",
+    "মোৰ বিষয়ে",
+    "উদ্দেশ্য",
+    "কেৰিয়াৰৰ উদ্দেশ্য",
+    "ব্যক্তিগত প্ৰ'ফাইল"
+   ],
+   "skills": [
+    "মূল দক্ষতা",
+    "দক্ষতা",
+    "দক্ষতাসমূহ",
+    "কাৰিকৰী দক্ষতা",
+    "কম্পিউটাৰ দক্ষতা",
+    "যোগ্যতা",
+    "পাৰদৰ্শিতা"
+   ],
+   "experience": [
+    "কৰ্ম-অভিজ্ঞতা",
+    "কৰ্ম অভিজ্ঞতা",
+    "কৰ্মৰ অভিজ্ঞতা",
+    "অভিজ্ঞতা",
+    "পেছাদাৰী অভিজ্ঞতা",
+    "চাকৰিৰ অভিজ্ঞতা",
+    "কৰ্মজীৱন"
+   ],
+   "education": [
+    "শিক্ষা",
+    "শৈক্ষিক যোগ্যতা",
+    "শিক্ষাগত যোগ্যতা",
+    "শিক্ষাগত অৰ্হতা",
+    "শৈক্ষিক অৰ্হতা"
+   ],
+   "certifications": [
+    "পাঠ্যক্ৰম আৰু প্ৰমাণপত্ৰ",
+    "প্ৰমাণপত্ৰ",
+    "প্ৰশিক্ষণ",
+    "পাঠ্যক্ৰম",
+    "প্ৰমাণপত্ৰসমূহ",
+    "অতিৰিক্ত যোগ্যতা"
+   ],
+   "languages": [
+    "ভাষা",
+    "ভাষাসমূহ",
+    "জনা ভাষা",
+    "ভাষাজ্ঞান"
+   ],
+   "interests": [
+    "আগ্ৰহ",
+    "আগ্ৰহসমূহ",
+    "চখ",
+    "চখসমূহ",
+    "অৱসৰ বিনোদন"
+   ],
+   "projects": [
+    "প্ৰকল্প",
+    "প্ৰকল্পসমূহ"
+   ],
+   "volunteering": [
+    "স্বেচ্ছাসেৱা",
+    "সমাজসেৱা",
+    "স্বেচ্ছাসেৱী কাম"
+   ],
+   "skip": [
+    "ব্যক্তিগত তথ্য",
+    "ব্যক্তিগত বিৱৰণ",
+    "প্ৰসংগ",
+    "ঘোষণা",
+    "যোগাযোগৰ তথ্য"
+   ]
+  },
+  "months": [
+   [
+    "জানুৱাৰী",
+    "জানু",
+    "জানুৱাৰি"
+   ],
+   [
+    "ফেব্ৰুৱাৰী",
+    "ফেব্ৰু",
+    "ফেব্ৰুৱাৰি"
+   ],
+   [
+    "মাৰ্চ"
+   ],
+   [
+    "এপ্ৰিল"
+   ],
+   [
+    "মে'",
+    "মে"
+   ],
+   [
+    "জুন"
+   ],
+   [
+    "জুলাই"
+   ],
+   [
+    "আগষ্ট",
+    "আগ",
+    "আগষ্ট্"
+   ],
+   [
+    "ছেপ্টেম্বৰ",
+    "ছেপ্টে",
+    "চেপ্টেম্বৰ"
+   ],
+   [
+    "অক্টোবৰ",
+    "অক্টো"
+   ],
+   [
+    "নৱেম্বৰ",
+    "নৱে",
+    "নভেম্বৰ"
+   ],
+   [
+    "ডিচেম্বৰ",
+    "ডিচে",
+    "ডিচেম্বৰ্"
+   ]
+  ],
+  "now": [
+   "বৰ্তমান",
+   "বৰ্তমানলৈ",
+   "আজিলৈকে",
+   "এতিয়ালৈকে",
+   "চলি আছে",
+   "বৰ্তমানে"
+  ]
+ },
+ {
+  "code": "az",
+  "name": "Azərbaycan dili",
+  "english_name": "Azerbaijani (Latin)",
+  "headings": [
+   "Profil",
+   "Əsas bacarıqlar",
+   "İş təcrübəsi",
+   "Təhsil",
+   "Kurslar və sertifikatlar",
+   "Dillər",
+   "Maraqlar",
+   "Əlaqə",
+   "hal-hazırda"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "haqqımda",
+    "özüm haqqında",
+    "xülasə",
+    "qısa məlumat",
+    "peşəkar xülasə",
+    "məqsəd"
+   ],
+   "skills": [
+    "əsas bacarıqlar",
+    "bacarıqlar",
+    "peşəkar bacarıqlar",
+    "səriştələr",
+    "kompetensiyalar",
+    "kompüter bilikləri",
+    "texniki bacarıqlar"
+   ],
+   "experience": [
+    "iş təcrübəsi",
+    "təcrübə",
+    "peşəkar təcrübə",
+    "əmək fəaliyyəti",
+    "iş yerləri"
+   ],
+   "education": [
+    "təhsil",
+    "təhsil məlumatları",
+    "ali təhsil"
+   ],
+   "certifications": [
+    "kurslar və sertifikatlar",
+    "kurslar",
+    "sertifikatlar",
+    "treninqlər",
+    "təlimlər",
+    "əlavə təhsil"
+   ],
+   "languages": [
+    "dillər",
+    "dil bilikləri",
+    "xarici dillər"
+   ],
+   "interests": [
+    "maraqlar",
+    "hobbilər",
+    "hobbi",
+    "maraq dairəsi"
+   ],
+   "projects": [
+    "layihələr"
+   ],
+   "volunteering": [
+    "könüllü fəaliyyət",
+    "könüllülük",
+    "ictimai fəaliyyət"
+   ],
+   "skip": [
+    "şəxsi məlumatlar",
+    "əlaqə məlumatları",
+    "tövsiyələr",
+    "referanslar",
+    "zəmanətçilər"
+   ]
+  },
+  "months": [
+   [
+    "yanvar",
+    "yan"
+   ],
+   [
+    "fevral",
+    "fev"
+   ],
+   [
+    "mart",
+    "mar"
+   ],
+   [
+    "aprel",
+    "apr"
+   ],
+   [
+    "may"
+   ],
+   [
+    "iyun",
+    "iyn"
+   ],
+   [
+    "iyul",
+    "iyl"
+   ],
+   [
+    "avqust",
+    "avq"
+   ],
+   [
+    "sentyabr",
+    "sen",
+    "sent"
+   ],
+   [
+    "oktyabr",
+    "okt"
+   ],
+   [
+    "noyabr",
+    "noy"
+   ],
+   [
+    "dekabr",
+    "dek"
+   ]
+  ],
+  "now": [
+   "hal-hazırda",
+   "hazırda",
+   "indiyədək",
+   "bu günə qədər",
+   "davam edir",
+   "indi",
+   "hazırkı"
+  ]
+ },
+ {
+  "code": "be",
+  "name": "Беларуская",
+  "english_name": "Belarusian",
+  "headings": [
+   "Профіль",
+   "Ключавыя навыкі",
+   "Досвед працы",
+   "Адукацыя",
+   "Курсы і сертыфікаты",
+   "Мовы",
+   "Інтарэсы",
+   "Кантакты",
+   "цяпер"
+  ],
+  "import": {
+   "profile": [
+    "профіль",
+    "пра мяне",
+    "кароткі профіль",
+    "рэзюмэ",
+    "агульныя звесткі",
+    "мэта",
+    "прафесійны профіль"
+   ],
+   "skills": [
+    "ключавыя навыкі",
+    "навыкі",
+    "прафесійныя навыкі",
+    "кампетэнцыі",
+    "уменні",
+    "кваліфікацыя",
+    "веды і навыкі"
+   ],
+   "experience": [
+    "досвед працы",
+    "працоўны досвед",
+    "прафесійны досвед",
+    "досвед",
+    "месцы працы",
+    "праца"
+   ],
+   "education": [
+    "адукацыя",
+    "асноўная адукацыя",
+    "навучанне"
+   ],
+   "certifications": [
+    "курсы і сертыфікаты",
+    "курсы",
+    "сертыфікаты",
+    "дадатковая адукацыя",
+    "павышэнне кваліфікацыі",
+    "трэнінгі"
+   ],
+   "languages": [
+    "мовы",
+    "веданне моў",
+    "замежныя мовы",
+    "моўныя навыкі"
+   ],
+   "interests": [
+    "інтарэсы",
+    "хобі",
+    "захапленні",
+    "асабістыя інтарэсы"
+   ],
+   "projects": [
+    "праекты",
+    "асноўныя праекты"
+   ],
+   "volunteering": [
+    "валанцёрства",
+    "валанцёрская дзейнасць",
+    "грамадская дзейнасць"
+   ],
+   "skip": [
+    "асабістыя даныя",
+    "асабістая інфармацыя",
+    "кантакты",
+    "кантактная інфармацыя",
+    "рэкамендацыі"
+   ]
+  },
+  "months": [
+   [
+    "студзень",
+    "студзеня",
+    "студзені",
+    "студз"
+   ],
+   [
+    "люты",
+    "лютага",
+    "лютым",
+    "лют"
+   ],
+   [
+    "сакавік",
+    "сакавіка",
+    "сакавіку",
+    "сак"
+   ],
+   [
+    "красавік",
+    "красавіка",
+    "красавіку",
+    "крас"
+   ],
+   [
+    "май",
+    "мая",
+    "маі"
+   ],
+   [
+    "чэрвень",
+    "чэрвеня",
+    "чэрвені",
+    "чэрв"
+   ],
+   [
+    "ліпень",
+    "ліпеня",
+    "ліпені",
+    "ліп"
+   ],
+   [
+    "жнівень",
+    "жніўня",
+    "жніўні",
+    "жн"
+   ],
+   [
+    "верасень",
+    "верасня",
+    "верасні",
+    "вер"
+   ],
+   [
+    "кастрычнік",
+    "кастрычніка",
+    "кастрычніку",
+    "кастр",
+    "каст"
+   ],
+   [
+    "лістапад",
+    "лістапада",
+    "лістападзе",
+    "ліст"
+   ],
+   [
+    "снежань",
+    "снежня",
+    "снежні",
+    "снеж"
+   ]
+  ],
+  "now": [
+   "цяпер",
+   "па цяперашні час",
+   "да цяперашняга часу",
+   "па сённяшні дзень",
+   "дагэтуль",
+   "зараз",
+   "працягваецца"
+  ]
+ },
+ {
+  "code": "bg",
+  "name": "Български",
+  "english_name": "Bulgarian",
+  "headings": [
+   "Профил",
+   "Ключови умения",
+   "Професионален опит",
+   "Образование",
+   "Курсове и сертификати",
+   "Езици",
+   "Интереси",
+   "Контакт",
+   "до момента"
+  ],
+  "import": {
+   "profile": [
+    "профил",
+    "професионален профил",
+    "резюме",
+    "за мен",
+    "обобщение",
+    "кратко представяне"
+   ],
+   "skills": [
+    "ключови умения",
+    "умения",
+    "компетенции",
+    "професионални умения",
+    "технически умения",
+    "компютърни умения",
+    "лични умения и компетенции"
+   ],
+   "experience": [
+    "професионален опит",
+    "трудов опит",
+    "опит",
+    "работен опит",
+    "трудов стаж"
+   ],
+   "education": [
+    "образование",
+    "образование и обучение",
+    "образование и квалификация"
+   ],
+   "certifications": [
+    "курсове и сертификати",
+    "сертификати",
+    "курсове",
+    "квалификации",
+    "допълнително обучение",
+    "обучения"
+   ],
+   "languages": [
+    "езици",
+    "чужди езици",
+    "езикови умения",
+    "езикови познания"
+   ],
+   "interests": [
+    "интереси",
+    "хобита",
+    "хоби",
+    "лични интереси"
+   ],
+   "projects": [
+    "проекти"
+   ],
+   "volunteering": [
+    "доброволчество",
+    "доброволческа дейност",
+    "обществена дейност"
+   ],
+   "skip": [
+    "лична информация",
+    "лични данни",
+    "препоръки",
+    "референции",
+    "свидетелство за управление на мпс"
+   ]
+  },
+  "months": [
+   [
+    "януари",
+    "ян",
+    "яну"
+   ],
+   [
+    "февруари",
+    "фев"
+   ],
+   [
+    "март",
+    "мар"
+   ],
+   [
+    "април",
+    "апр"
+   ],
+   [
+    "май"
+   ],
+   [
+    "юни"
+   ],
+   [
+    "юли"
+   ],
+   [
+    "август",
+    "авг"
+   ],
+   [
+    "септември",
+    "сеп",
+    "септ"
+   ],
+   [
+    "октомври",
+    "окт"
+   ],
+   [
+    "ноември",
+    "ное",
+    "ноем"
+   ],
+   [
+    "декември",
+    "дек"
+   ]
+  ],
+  "now": [
+   "до момента",
+   "досега",
+   "понастоящем",
+   "настоящ",
+   "в момента",
+   "до днес",
+   "сега"
+  ]
+ },
+ {
+  "code": "bn",
+  "name": "বাংলা",
+  "english_name": "Bangla (India)",
+  "headings": [
+   "প্রোফাইল",
+   "মূল দক্ষতা",
+   "কাজের অভিজ্ঞতা",
+   "শিক্ষাগত যোগ্যতা",
+   "কোর্স ও সার্টিফিকেশন",
+   "ভাষা",
+   "আগ্রহ",
+   "যোগাযোগ",
+   "বর্তমান"
+  ],
+  "import": {
+   "profile": [
+    "প্রোফাইল",
+    "পেশাগত প্রোফাইল",
+    "সারসংক্ষেপ",
+    "পেশাগত সারসংক্ষেপ",
+    "আমার সম্পর্কে",
+    "নিজের সম্পর্কে",
+    "কর্মজীবনের লক্ষ্য",
+    "উদ্দেশ্য"
+   ],
+   "skills": [
+    "মূল দক্ষতা",
+    "দক্ষতা",
+    "দক্ষতাসমূহ",
+    "পেশাগত দক্ষতা",
+    "কারিগরি দক্ষতা",
+    "কম্পিউটার দক্ষতা",
+    "যোগ্যতা"
+   ],
+   "experience": [
+    "কাজের অভিজ্ঞতা",
+    "কর্ম অভিজ্ঞতা",
+    "পেশাগত অভিজ্ঞতা",
+    "অভিজ্ঞতা",
+    "কর্মজীবন",
+    "চাকরির অভিজ্ঞতা"
+   ],
+   "education": [
+    "শিক্ষাগত যোগ্যতা",
+    "শিক্ষা",
+    "শিক্ষাগত বিবরণ",
+    "শিক্ষাগত তথ্য",
+    "পড়াশোনা"
+   ],
+   "certifications": [
+    "কোর্স ও সার্টিফিকেশন",
+    "সার্টিফিকেশন",
+    "সার্টিফিকেট",
+    "কোর্স",
+    "প্রশিক্ষণ",
+    "প্রশিক্ষণ ও সার্টিফিকেশন",
+    "অতিরিক্ত যোগ্যতা"
+   ],
+   "languages": [
+    "ভাষা",
+    "ভাষাজ্ঞান",
+    "ভাষাগত দক্ষতা",
+    "জানা ভাষা"
+   ],
+   "interests": [
+    "আগ্রহ",
+    "শখ",
+    "আগ্রহের বিষয়",
+    "শখ ও আগ্রহ",
+    "অবসর বিনোদন"
+   ],
+   "projects": [
+    "প্রকল্প",
+    "প্রজেক্ট",
+    "প্রকল্পসমূহ"
+   ],
+   "volunteering": [
+    "স্বেচ্ছাসেবা",
+    "স্বেচ্ছাসেবী কাজ",
+    "সমাজসেবা"
+   ],
+   "skip": [
+    "ব্যক্তিগত তথ্য",
+    "ব্যক্তিগত বিবরণ",
+    "রেফারেন্স",
+    "ঘোষণা",
+    "স্বীকারোক্তি",
+    "যোগাযোগের ঠিকানা"
+   ]
+  },
+  "months": [
+   [
+    "জানুয়ারি",
+    "জানুয়ারী",
+    "জানু"
+   ],
+   [
+    "ফেব্রুয়ারি",
+    "ফেব্রুয়ারী",
+    "ফেব্রু"
+   ],
+   [
+    "মার্চ"
+   ],
+   [
+    "এপ্রিল"
+   ],
+   [
+    "মে"
+   ],
+   [
+    "জুন"
+   ],
+   [
+    "জুলাই"
+   ],
+   [
+    "আগস্ট",
+    "অগাস্ট",
+    "আগষ্ট",
+    "অগস্ট"
+   ],
+   [
+    "সেপ্টেম্বর",
+    "সেপ্টে"
+   ],
+   [
+    "অক্টোবর",
+    "অক্টো"
+   ],
+   [
+    "নভেম্বর",
+    "নভে"
+   ],
+   [
+    "ডিসেম্বর",
+    "ডিসে"
+   ]
+  ],
+  "now": [
+   "বর্তমান",
+   "বর্তমানে",
+   "এখন পর্যন্ত",
+   "আজ পর্যন্ত",
+   "এখনও",
+   "চলছে",
+   "চলমান"
+  ]
+ },
+ {
+  "code": "bs",
+  "name": "Bosanski",
+  "english_name": "Bosnian (Latin)",
+  "headings": [
+   "Profil",
+   "Ključne vještine",
+   "Radno iskustvo",
+   "Obrazovanje",
+   "Kursevi i certifikati",
+   "Jezici",
+   "Interesi",
+   "Kontakt",
+   "danas"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "o meni",
+    "sažetak",
+    "profesionalni profil",
+    "lični profil",
+    "kratki profil",
+    "kratka biografija"
+   ],
+   "skills": [
+    "ključne vještine",
+    "vještine",
+    "kompetencije",
+    "stručne kompetencije",
+    "znanja i vještine",
+    "računarske vještine",
+    "lične vještine"
+   ],
+   "experience": [
+    "radno iskustvo",
+    "profesionalno iskustvo",
+    "iskustvo",
+    "dosadašnje iskustvo",
+    "radni staž"
+   ],
+   "education": [
+    "obrazovanje",
+    "školovanje",
+    "akademsko obrazovanje",
+    "formalno obrazovanje"
+   ],
+   "certifications": [
+    "kursevi i certifikati",
+    "certifikati",
+    "certifikacije",
+    "kursevi",
+    "dodatno obrazovanje",
+    "seminari",
+    "edukacije",
+    "usavršavanje"
+   ],
+   "languages": [
+    "jezici",
+    "strani jezici",
+    "poznavanje jezika",
+    "poznavanje stranih jezika",
+    "jezičke vještine"
+   ],
+   "interests": [
+    "interesi",
+    "hobiji",
+    "slobodno vrijeme",
+    "aktivnosti u slobodno vrijeme"
+   ],
+   "projects": [
+    "projekti"
+   ],
+   "volunteering": [
+    "volontiranje",
+    "volonterski rad",
+    "volontersko iskustvo"
+   ],
+   "skip": [
+    "lični podaci",
+    "osobni podaci",
+    "kontakt podaci",
+    "kontakt informacije",
+    "preporuke",
+    "reference"
+   ]
+  },
+  "months": [
+   [
+    "januar",
+    "januara",
+    "jan",
+    "siječanj",
+    "siječnja"
+   ],
+   [
+    "februar",
+    "februara",
+    "feb",
+    "veljača",
+    "veljače"
+   ],
+   [
+    "mart",
+    "marta",
+    "mar",
+    "ožujak",
+    "ožujka"
+   ],
+   [
+    "april",
+    "aprila",
+    "apr",
+    "travanj",
+    "travnja"
+   ],
+   [
+    "maj",
+    "maja",
+    "svibanj",
+    "svibnja"
+   ],
+   [
+    "juni",
+    "juna",
+    "jun",
+    "lipanj",
+    "lipnja"
+   ],
+   [
+    "juli",
+    "jula",
+    "jul",
+    "srpanj",
+    "srpnja"
+   ],
+   [
+    "august",
+    "augusta",
+    "aug",
+    "avgust",
+    "avgusta",
+    "kolovoz",
+    "kolovoza"
+   ],
+   [
+    "septembar",
+    "septembra",
+    "sep",
+    "sept",
+    "rujan",
+    "rujna"
+   ],
+   [
+    "oktobar",
+    "oktobra",
+    "okt",
+    "listopad",
+    "listopada"
+   ],
+   [
+    "novembar",
+    "novembra",
+    "nov",
+    "studeni",
+    "studenog"
+   ],
+   [
+    "decembar",
+    "decembra",
+    "dec",
+    "prosinac",
+    "prosinca"
+   ]
+  ],
+  "now": [
+   "danas",
+   "do danas",
+   "sada",
+   "trenutno",
+   "u toku",
+   "i dalje"
+  ]
+ },
+ {
+  "code": "ca",
+  "name": "Català",
+  "english_name": "Catalan",
+  "headings": [
+   "Perfil",
+   "Competències clau",
+   "Experiència laboral",
+   "Formació",
+   "Cursos i certificacions",
+   "Idiomes",
+   "Interessos",
+   "Contacte",
+   "actualitat"
+  ],
+  "import": {
+   "profile": [
+    "perfil",
+    "perfil professional",
+    "sobre mi",
+    "resum",
+    "resum professional",
+    "presentació",
+    "objectiu professional"
+   ],
+   "skills": [
+    "competències clau",
+    "competències",
+    "habilitats",
+    "coneixements",
+    "aptituds",
+    "competències professionals",
+    "coneixements informàtics"
+   ],
+   "experience": [
+    "experiència laboral",
+    "experiència professional",
+    "experiència",
+    "trajectòria professional",
+    "historial laboral"
+   ],
+   "education": [
+    "formació",
+    "formació acadèmica",
+    "estudis",
+    "educació",
+    "titulacions"
+   ],
+   "certifications": [
+    "cursos i certificacions",
+    "formació complementària",
+    "cursos",
+    "certificacions",
+    "certificats",
+    "altra formació"
+   ],
+   "languages": [
+    "idiomes",
+    "llengües",
+    "coneixements d'idiomes",
+    "coneixements lingüístics"
+   ],
+   "interests": [
+    "interessos",
+    "aficions",
+    "lleure",
+    "hobbies"
+   ],
+   "projects": [
+    "projectes",
+    "projectes destacats"
+   ],
+   "volunteering": [
+    "voluntariat",
+    "activitats de voluntariat",
+    "experiència de voluntariat"
+   ],
+   "skip": [
+    "dades personals",
+    "dades de contacte",
+    "referències",
+    "altres dades",
+    "informació addicional"
+   ]
+  },
+  "months": [
+   [
+    "gener",
+    "gen",
+    "de gener"
+   ],
+   [
+    "febrer",
+    "febr",
+    "feb",
+    "de febrer"
+   ],
+   [
+    "març",
+    "mar",
+    "de març"
+   ],
+   [
+    "abril",
+    "abr",
+    "d'abril"
+   ],
+   [
+    "maig",
+    "de maig"
+   ],
+   [
+    "juny",
+    "jun",
+    "de juny"
+   ],
+   [
+    "juliol",
+    "jul",
+    "de juliol"
+   ],
+   [
+    "agost",
+    "ag",
+    "ago",
+    "d'agost"
+   ],
+   [
+    "setembre",
+    "set",
+    "de setembre"
+   ],
+   [
+    "octubre",
+    "oct",
+    "d'octubre"
+   ],
+   [
+    "novembre",
+    "nov",
+    "de novembre"
+   ],
+   [
+    "desembre",
+    "des",
+    "de desembre"
+   ]
+  ],
+  "now": [
+   "actualitat",
+   "l'actualitat",
+   "fins a l'actualitat",
+   "fins ara",
+   "actualment",
+   "avui",
+   "present",
+   "en curs"
+  ]
+ },
+ {
+  "code": "ca-ES-valencia",
+  "name": "Valencià",
+  "english_name": "Valencian",
+  "headings": [
+   "Perfil",
+   "Competències clau",
+   "Experiència laboral",
+   "Formació",
+   "Cursos i certificacions",
+   "Idiomes",
+   "Interessos",
+   "Contacte",
+   "actualitat"
+  ],
+  "import": {
+   "profile": [
+    "perfil",
+    "perfil professional",
+    "sobre mi",
+    "resum",
+    "resum professional",
+    "presentació",
+    "objectiu professional"
+   ],
+   "skills": [
+    "competències clau",
+    "competències",
+    "habilitats",
+    "coneixements",
+    "aptituds",
+    "competències professionals",
+    "coneixements informàtics"
+   ],
+   "experience": [
+    "experiència laboral",
+    "experiència professional",
+    "experiència",
+    "trajectòria professional",
+    "historial laboral"
+   ],
+   "education": [
+    "formació",
+    "formació acadèmica",
+    "estudis",
+    "educació",
+    "titulacions"
+   ],
+   "certifications": [
+    "cursos i certificacions",
+    "formació complementària",
+    "cursos",
+    "certificacions",
+    "certificats",
+    "altra formació"
+   ],
+   "languages": [
+    "idiomes",
+    "llengües",
+    "coneixements d'idiomes",
+    "coneixements lingüístics"
+   ],
+   "interests": [
+    "interessos",
+    "aficions",
+    "oci",
+    "temps lliure"
+   ],
+   "projects": [
+    "projectes",
+    "projectes destacats"
+   ],
+   "volunteering": [
+    "voluntariat",
+    "activitats de voluntariat",
+    "experiència de voluntariat"
+   ],
+   "skip": [
+    "dades personals",
+    "dades de contacte",
+    "referències",
+    "altres dades",
+    "informació addicional"
+   ]
+  },
+  "months": [
+   [
+    "gener",
+    "gen",
+    "de gener"
+   ],
+   [
+    "febrer",
+    "febr",
+    "feb",
+    "de febrer"
+   ],
+   [
+    "març",
+    "mar",
+    "de març"
+   ],
+   [
+    "abril",
+    "abr",
+    "d'abril"
+   ],
+   [
+    "maig",
+    "de maig"
+   ],
+   [
+    "juny",
+    "jun",
+    "de juny"
+   ],
+   [
+    "juliol",
+    "jul",
+    "de juliol"
+   ],
+   [
+    "agost",
+    "ag",
+    "ago",
+    "d'agost"
+   ],
+   [
+    "setembre",
+    "set",
+    "de setembre"
+   ],
+   [
+    "octubre",
+    "oct",
+    "d'octubre"
+   ],
+   [
+    "novembre",
+    "nov",
+    "de novembre"
+   ],
+   [
+    "desembre",
+    "des",
+    "de desembre"
+   ]
+  ],
+  "now": [
+   "actualitat",
+   "l'actualitat",
+   "fins a l'actualitat",
+   "fins ara",
+   "actualment",
+   "hui",
+   "present",
+   "en curs"
+  ]
+ },
+ {
+  "code": "cy",
+  "name": "Cymraeg",
+  "english_name": "Welsh",
+  "headings": [
+   "Proffil",
+   "Sgiliau craidd",
+   "Profiad gwaith",
+   "Addysg",
+   "Cyrsiau ac ardystiadau",
+   "Ieithoedd",
+   "Diddordebau",
+   "Cyswllt",
+   "presennol"
+  ],
+  "import": {
+   "profile": [
+    "proffil",
+    "proffil personol",
+    "datganiad personol",
+    "crynodeb",
+    "amdanaf i",
+    "proffil proffesiynol"
+   ],
+   "skills": [
+    "sgiliau craidd",
+    "sgiliau",
+    "sgiliau allweddol",
+    "cymwyseddau",
+    "cymwysterau a sgiliau",
+    "sgiliau technegol"
+   ],
+   "experience": [
+    "profiad gwaith",
+    "profiad",
+    "hanes cyflogaeth",
+    "cyflogaeth",
+    "profiad proffesiynol",
+    "gyrfa"
+   ],
+   "education": [
+    "addysg",
+    "addysg a hyfforddiant",
+    "cymwysterau",
+    "cymwysterau academaidd"
+   ],
+   "certifications": [
+    "cyrsiau ac ardystiadau",
+    "cyrsiau",
+    "ardystiadau",
+    "hyfforddiant",
+    "tystysgrifau",
+    "datblygiad proffesiynol"
+   ],
+   "languages": [
+    "ieithoedd",
+    "sgiliau iaith"
+   ],
+   "interests": [
+    "diddordebau",
+    "diddordebau a hobïau",
+    "hobïau",
+    "diddordebau personol"
+   ],
+   "projects": [
+    "prosiectau"
+   ],
+   "volunteering": [
+    "gwirfoddoli",
+    "gwaith gwirfoddol",
+    "profiad gwirfoddol"
+   ],
+   "skip": [
+    "manylion personol",
+    "manylion cyswllt",
+    "canolwyr",
+    "geirda"
+   ]
+  },
+  "months": [
+   [
+    "ionawr",
+    "ion"
+   ],
+   [
+    "chwefror",
+    "chwef"
+   ],
+   [
+    "mawrth",
+    "maw",
+    "fawrth"
+   ],
+   [
+    "ebrill",
+    "ebr"
+   ],
+   [
+    "mai",
+    "fai"
+   ],
+   [
+    "mehefin",
+    "meh",
+    "fehefin"
+   ],
+   [
+    "gorffennaf",
+    "gorff",
+    "gorf",
+    "orffennaf"
+   ],
+   [
+    "awst"
+   ],
+   [
+    "medi",
+    "fedi"
+   ],
+   [
+    "hydref",
+    "hydr"
+   ],
+   [
+    "tachwedd",
+    "tach",
+    "dachwedd"
+   ],
+   [
+    "rhagfyr",
+    "rhag",
+    "ragfyr"
+   ]
+  ],
+  "now": [
+   "presennol",
+   "hyd heddiw",
+   "hyd yn hyn",
+   "ar hyn o bryd",
+   "cyfredol",
+   "heddiw",
+   "hyd y presennol"
+  ]
+ },
+ {
+  "code": "en-GB",
+  "name": "English (UK)",
+  "english_name": "English (United Kingdom)",
+  "headings": [
+   "Profile",
+   "Key skills",
+   "Work experience",
+   "Education",
+   "Courses and certifications",
+   "Languages",
+   "Interests",
+   "Contact",
+   "present"
+  ],
+  "import": {
+   "profile": [
+    "profile",
+    "personal profile",
+    "personal statement",
+    "professional profile",
+    "summary",
+    "professional summary",
+    "about me",
+    "career objective"
+   ],
+   "skills": [
+    "key skills",
+    "skills",
+    "core skills",
+    "core competencies",
+    "competencies",
+    "technical skills",
+    "skills and abilities",
+    "qualifications"
+   ],
+   "experience": [
+    "work experience",
+    "employment history",
+    "career history",
+    "professional experience",
+    "experience",
+    "employment",
+    "work history"
+   ],
+   "education": [
+    "education",
+    "education and qualifications",
+    "academic qualifications",
+    "qualifications and education",
+    "academic background"
+   ],
+   "certifications": [
+    "courses and certifications",
+    "certifications",
+    "courses",
+    "training",
+    "professional development",
+    "certificates",
+    "licences and certifications",
+    "professional qualifications"
+   ],
+   "languages": [
+    "languages",
+    "language skills",
+    "foreign languages"
+   ],
+   "interests": [
+    "interests",
+    "hobbies and interests",
+    "hobbies",
+    "personal interests",
+    "interests and activities"
+   ],
+   "projects": [
+    "projects",
+    "key projects",
+    "selected projects"
+   ],
+   "volunteering": [
+    "volunteering",
+    "voluntary work",
+    "volunteer experience",
+    "voluntary experience"
+   ],
+   "skip": [
+    "references",
+    "personal details",
+    "personal information",
+    "contact details",
+    "referees"
+   ]
+  },
+  "months": [
+   [
+    "january",
+    "jan"
+   ],
+   [
+    "february",
+    "feb"
+   ],
+   [
+    "march",
+    "mar"
+   ],
+   [
+    "april",
+    "apr"
+   ],
+   [
+    "may"
+   ],
+   [
+    "june",
+    "jun"
+   ],
+   [
+    "july",
+    "jul"
+   ],
+   [
+    "august",
+    "aug"
+   ],
+   [
+    "september",
+    "sep",
+    "sept"
+   ],
+   [
+    "october",
+    "oct"
+   ],
+   [
+    "november",
+    "nov"
+   ],
+   [
+    "december",
+    "dec"
+   ]
+  ],
+  "now": [
+   "present",
+   "to date",
+   "current",
+   "currently",
+   "now",
+   "ongoing",
+   "till date"
+  ]
+ },
+ {
+  "code": "es-MX",
+  "name": "Español (México)",
+  "english_name": "Spanish (Mexico)",
+  "headings": [
+   "Perfil profesional",
+   "Habilidades clave",
+   "Experiencia laboral",
+   "Formación académica",
+   "Cursos y certificaciones",
+   "Idiomas",
+   "Intereses",
+   "Contacto",
+   "actualidad"
+  ],
+  "import": {
+   "profile": [
+    "perfil profesional",
+    "perfil",
+    "resumen profesional",
+    "resumen",
+    "acerca de mí",
+    "sobre mí",
+    "objetivo profesional",
+    "objetivo"
+   ],
+   "skills": [
+    "habilidades clave",
+    "habilidades",
+    "competencias",
+    "aptitudes",
+    "conocimientos",
+    "habilidades técnicas",
+    "competencias profesionales",
+    "conocimientos técnicos"
+   ],
+   "experience": [
+    "experiencia laboral",
+    "experiencia profesional",
+    "experiencia",
+    "trayectoria profesional",
+    "historial laboral",
+    "empleos anteriores"
+   ],
+   "education": [
+    "formación académica",
+    "educación",
+    "escolaridad",
+    "estudios",
+    "formación",
+    "preparación académica"
+   ],
+   "certifications": [
+    "cursos y certificaciones",
+    "certificaciones",
+    "cursos",
+    "diplomados",
+    "capacitación",
+    "formación complementaria",
+    "talleres"
+   ],
+   "languages": [
+    "idiomas",
+    "lenguas",
+    "manejo de idiomas"
+   ],
+   "interests": [
+    "intereses",
+    "pasatiempos",
+    "aficiones",
+    "hobbies"
+   ],
+   "projects": [
+    "proyectos",
+    "proyectos destacados"
+   ],
+   "volunteering": [
+    "voluntariado",
+    "trabajo voluntario",
+    "servicio social"
+   ],
+   "skip": [
+    "datos personales",
+    "información personal",
+    "datos de contacto",
+    "referencias",
+    "referencias personales",
+    "referencias laborales"
+   ]
+  },
+  "months": [
+   [
+    "enero",
+    "ene"
+   ],
+   [
+    "febrero",
+    "feb"
+   ],
+   [
+    "marzo",
+    "mar"
+   ],
+   [
+    "abril",
+    "abr"
+   ],
+   [
+    "mayo",
+    "may"
+   ],
+   [
+    "junio",
+    "jun"
+   ],
+   [
+    "julio",
+    "jul"
+   ],
+   [
+    "agosto",
+    "ago"
+   ],
+   [
+    "septiembre",
+    "sep",
+    "sept",
+    "setiembre",
+    "set"
+   ],
+   [
+    "octubre",
+    "oct"
+   ],
+   [
+    "noviembre",
+    "nov"
+   ],
+   [
+    "diciembre",
+    "dic"
+   ]
+  ],
+  "now": [
+   "actualidad",
+   "a la fecha",
+   "presente",
+   "actual",
+   "actualmente",
+   "hasta la fecha",
+   "a la actualidad",
+   "en curso"
+  ]
+ },
+ {
+  "code": "et",
+  "name": "Eesti",
+  "english_name": "Estonian",
+  "headings": [
+   "Profiil",
+   "Põhioskused",
+   "Töökogemus",
+   "Haridus",
+   "Koolitused ja sertifikaadid",
+   "Keeled",
+   "Huvid",
+   "Kontakt",
+   "praegu"
+  ],
+  "import": {
+   "profile": [
+    "profiil",
+    "minust",
+    "lühitutvustus",
+    "kokkuvõte",
+    "isikuomadused",
+    "enesetutvustus"
+   ],
+   "skills": [
+    "põhioskused",
+    "oskused",
+    "pädevused",
+    "kompetentsid",
+    "teadmised ja oskused",
+    "arvutioskus",
+    "tehnilised oskused",
+    "muud oskused"
+   ],
+   "experience": [
+    "töökogemus",
+    "töökogemused",
+    "erialane kogemus",
+    "varasem töökogemus",
+    "töökäik",
+    "kogemus"
+   ],
+   "education": [
+    "haridus",
+    "hariduskäik",
+    "haridustee",
+    "õpingud"
+   ],
+   "certifications": [
+    "koolitused ja sertifikaadid",
+    "koolitused",
+    "täiendkoolitused",
+    "täienduskoolitused",
+    "sertifikaadid",
+    "kursused"
+   ],
+   "languages": [
+    "keeled",
+    "keeleoskus",
+    "keelteoskus",
+    "võõrkeeled"
+   ],
+   "interests": [
+    "huvid",
+    "hobid",
+    "huvialad",
+    "vaba aeg"
+   ],
+   "projects": [
+    "projektid"
+   ],
+   "volunteering": [
+    "vabatahtlik töö",
+    "vabatahtlik tegevus",
+    "ühiskondlik tegevus"
+   ],
+   "skip": [
+    "isikuandmed",
+    "kontaktandmed",
+    "soovitajad",
+    "soovitused",
+    "viited"
+   ]
+  },
+  "months": [
+   [
+    "jaanuar",
+    "jaan",
+    "jaanuaril",
+    "jaanuarist",
+    "jaanuarini"
+   ],
+   [
+    "veebruar",
+    "veebr",
+    "veeb",
+    "veebruaril",
+    "veebruarist",
+    "veebruarini"
+   ],
+   [
+    "märts",
+    "märtsil",
+    "märtsist",
+    "märtsini"
+   ],
+   [
+    "aprill",
+    "apr",
+    "aprillil",
+    "aprillist",
+    "aprillini"
+   ],
+   [
+    "mai",
+    "mail",
+    "maist",
+    "maini"
+   ],
+   [
+    "juuni",
+    "juunil",
+    "juunist",
+    "juunini"
+   ],
+   [
+    "juuli",
+    "juulil",
+    "juulist",
+    "juulini"
+   ],
+   [
+    "august",
+    "aug",
+    "augustil",
+    "augustist",
+    "augustini"
+   ],
+   [
+    "september",
+    "sept",
+    "sep",
+    "septembril",
+    "septembrist",
+    "septembrini"
+   ],
+   [
+    "oktoober",
+    "okt",
+    "oktoobril",
+    "oktoobrist",
+    "oktoobrini"
+   ],
+   [
+    "november",
+    "nov",
+    "novembril",
+    "novembrist",
+    "novembrini"
+   ],
+   [
+    "detsember",
+    "dets",
+    "detsembril",
+    "detsembrist",
+    "detsembrini"
+   ]
+  ],
+  "now": [
+   "praegu",
+   "tänaseni",
+   "käesolevani",
+   "kuni praeguseni",
+   "hetkel",
+   "jätkub",
+   "senini"
+  ]
+ },
+ {
+  "code": "eu",
+  "name": "Euskara",
+  "english_name": "Basque",
+  "headings": [
+   "Profila",
+   "Gaitasun nagusiak",
+   "Lan-esperientzia",
+   "Prestakuntza",
+   "Ikastaroak eta ziurtagiriak",
+   "Hizkuntzak",
+   "Interesak",
+   "Harremanetarako datuak",
+   "gaur egun"
+  ],
+  "import": {
+   "profile": [
+    "profila",
+    "profil profesionala",
+    "nire buruaz",
+    "laburpena",
+    "aurkezpena",
+    "helburu profesionala"
+   ],
+   "skills": [
+    "gaitasun nagusiak",
+    "gaitasunak",
+    "trebetasunak",
+    "konpetentziak",
+    "ezagutzak",
+    "gaitasun teknikoak",
+    "informatika"
+   ],
+   "experience": [
+    "lan-esperientzia",
+    "lan esperientzia",
+    "esperientzia profesionala",
+    "esperientzia",
+    "ibilbide profesionala"
+   ],
+   "education": [
+    "prestakuntza",
+    "prestakuntza akademikoa",
+    "ikasketak",
+    "hezkuntza",
+    "titulazioak"
+   ],
+   "certifications": [
+    "ikastaroak eta ziurtagiriak",
+    "ikastaroak",
+    "ziurtagiriak",
+    "prestakuntza osagarria",
+    "egiaztagiriak"
+   ],
+   "languages": [
+    "hizkuntzak",
+    "hizkuntza-gaitasunak",
+    "hizkuntza gaitasunak"
+   ],
+   "interests": [
+    "interesak",
+    "zaletasunak",
+    "afizioak",
+    "aisialdia"
+   ],
+   "projects": [
+    "proiektuak"
+   ],
+   "volunteering": [
+    "boluntariotza",
+    "borondatezko lana"
+   ],
+   "skip": [
+    "datu pertsonalak",
+    "harremanetarako datuak",
+    "erreferentziak",
+    "beste datu batzuk"
+   ]
+  },
+  "months": [
+   [
+    "urtarrila",
+    "urt",
+    "urtarrilaren",
+    "urtarrilean"
+   ],
+   [
+    "otsaila",
+    "ots",
+    "otsailaren",
+    "otsailean"
+   ],
+   [
+    "martxoa",
+    "mar",
+    "martxoaren",
+    "martxoan"
+   ],
+   [
+    "apirila",
+    "api",
+    "apirilaren",
+    "apirilean"
+   ],
+   [
+    "maiatza",
+    "mai",
+    "maiatzaren",
+    "maiatzean"
+   ],
+   [
+    "ekaina",
+    "eka",
+    "ekainaren",
+    "ekainean"
+   ],
+   [
+    "uztaila",
+    "uzt",
+    "uztailaren",
+    "uztailean"
+   ],
+   [
+    "abuztua",
+    "abu",
+    "abuztuaren",
+    "abuztuan"
+   ],
+   [
+    "iraila",
+    "ira",
+    "irailaren",
+    "irailean"
+   ],
+   [
+    "urria",
+    "urr",
+    "urriaren",
+    "urrian"
+   ],
+   [
+    "azaroa",
+    "aza",
+    "azaroaren",
+    "azaroan"
+   ],
+   [
+    "abendua",
+    "abe",
+    "abenduaren",
+    "abenduan"
+   ]
+  ],
+  "now": [
+   "gaur egun",
+   "gaur arte",
+   "orain",
+   "egun",
+   "oraindik",
+   "orain arte"
+  ]
+ },
+ {
+  "code": "fa",
+  "name": "فارسی",
+  "english_name": "Persian (Farsi)",
+  "headings": [
+   "خلاصهٔ حرفه‌ای",
+   "مهارت‌های کلیدی",
+   "سوابق کاری",
+   "تحصیلات",
+   "دوره‌ها و گواهی‌نامه‌ها",
+   "زبان‌ها",
+   "علاقه‌مندی‌ها",
+   "اطلاعات تماس",
+   "تاکنون"
+  ],
+  "import": {
+   "profile": [
+    "خلاصهٔ حرفه‌ای",
+    "خلاصه حرفه ای",
+    "خلاصه",
+    "درباره من",
+    "دربارهٔ من",
+    "معرفی",
+    "پروفایل",
+    "هدف شغلی"
+   ],
+   "skills": [
+    "مهارت‌های کلیدی",
+    "مهارت ها",
+    "مهارت‌ها",
+    "مهارت‌های فنی",
+    "توانمندی‌ها",
+    "شایستگی‌ها",
+    "مهارت‌های نرم‌افزاری"
+   ],
+   "experience": [
+    "سوابق کاری",
+    "سوابق شغلی",
+    "سابقه کار",
+    "سابقهٔ کاری",
+    "تجربه کاری",
+    "تجربیات کاری",
+    "سوابق حرفه‌ای"
+   ],
+   "education": [
+    "تحصیلات",
+    "سوابق تحصیلی",
+    "تحصیلات دانشگاهی",
+    "مدارک تحصیلی",
+    "آموزش"
+   ],
+   "certifications": [
+    "دوره‌ها و گواهی‌نامه‌ها",
+    "دوره های آموزشی",
+    "دوره‌های آموزشی",
+    "گواهی‌نامه‌ها",
+    "گواهینامه ها",
+    "مدارک و گواهینامه‌ها"
+   ],
+   "languages": [
+    "زبان‌ها",
+    "زبان ها",
+    "مهارت‌های زبانی",
+    "زبان‌های خارجی",
+    "تسلط به زبان"
+   ],
+   "interests": [
+    "علاقه‌مندی‌ها",
+    "علایق",
+    "علاقه مندی ها",
+    "سرگرمی‌ها"
+   ],
+   "projects": [
+    "پروژه‌ها",
+    "پروژه ها",
+    "نمونه کارها"
+   ],
+   "volunteering": [
+    "فعالیت‌های داوطلبانه",
+    "کار داوطلبانه",
+    "فعالیت های داوطلبانه"
+   ],
+   "skip": [
+    "اطلاعات شخصی",
+    "اطلاعات تماس",
+    "معرف‌ها",
+    "معرفین",
+    "افتخارات"
+   ]
+  },
+  "months": [
+   [
+    "ژانویه",
+    "ژانویهٔ",
+    "ژانویه‌ی"
+   ],
+   [
+    "فوریه",
+    "فوریهٔ",
+    "فوریه‌ی"
+   ],
+   [
+    "مارس"
+   ],
+   [
+    "آوریل",
+    "آپریل"
+   ],
+   [
+    "مه",
+    "می"
+   ],
+   [
+    "ژوئن",
+    "جون"
+   ],
+   [
+    "ژوئیه",
+    "ژوییه",
+    "جولای",
+    "ژوئیهٔ"
+   ],
+   [
+    "اوت",
+    "اگوست",
+    "آگوست"
+   ],
+   [
+    "سپتامبر"
+   ],
+   [
+    "اکتبر"
+   ],
+   [
+    "نوامبر"
+   ],
+   [
+    "دسامبر"
+   ]
+  ],
+  "now": [
+   "تاکنون",
+   "تا کنون",
+   "اکنون",
+   "تا امروز",
+   "تا به حال",
+   "در حال حاضر",
+   "ادامه دارد",
+   "هم‌اکنون"
+  ]
+ },
+ {
+  "code": "fil",
+  "name": "Filipino",
+  "english_name": "Filipino",
+  "headings": [
+   "Profile",
+   "Pangunahing Kasanayan",
+   "Karanasan sa Trabaho",
+   "Edukasyon",
+   "Mga Kurso at Sertipikasyon",
+   "Mga Wika",
+   "Mga Interes",
+   "Contact",
+   "kasalukuyan"
+  ],
+  "import": {
+   "profile": [
+    "profile",
+    "propesyonal na profile",
+    "buod",
+    "tungkol sa akin",
+    "layunin",
+    "career objective",
+    "objective",
+    "summary"
+   ],
+   "skills": [
+    "pangunahing kasanayan",
+    "mga kasanayan",
+    "kasanayan",
+    "kakayahan",
+    "mga kakayahan",
+    "skills",
+    "core skills"
+   ],
+   "experience": [
+    "karanasan sa trabaho",
+    "karanasan",
+    "kasaysayan ng trabaho",
+    "propesyonal na karanasan",
+    "work experience",
+    "employment history"
+   ],
+   "education": [
+    "edukasyon",
+    "pinag-aralan",
+    "background sa edukasyon",
+    "educational background",
+    "education"
+   ],
+   "certifications": [
+    "mga kurso at sertipikasyon",
+    "mga sertipikasyon",
+    "sertipikasyon",
+    "mga pagsasanay",
+    "pagsasanay",
+    "seminars and trainings",
+    "trainings"
+   ],
+   "languages": [
+    "mga wika",
+    "wika",
+    "mga wikang alam",
+    "languages"
+   ],
+   "interests": [
+    "mga interes",
+    "interes",
+    "mga libangan",
+    "libangan",
+    "hobbies"
+   ],
+   "projects": [
+    "mga proyekto",
+    "proyekto",
+    "projects"
+   ],
+   "volunteering": [
+    "boluntaryong gawain",
+    "pagboboluntaryo",
+    "volunteer work"
+   ],
+   "skip": [
+    "personal na impormasyon",
+    "personal na datos",
+    "personal data",
+    "mga sanggunian",
+    "character references",
+    "references"
+   ]
+  },
+  "months": [
+   [
+    "enero",
+    "ene",
+    "january",
+    "jan"
+   ],
+   [
+    "pebrero",
+    "peb",
+    "february",
+    "feb"
+   ],
+   [
+    "marso",
+    "mar",
+    "march"
+   ],
+   [
+    "abril",
+    "abr",
+    "april",
+    "apr"
+   ],
+   [
+    "mayo",
+    "may"
+   ],
+   [
+    "hunyo",
+    "hun",
+    "june",
+    "jun"
+   ],
+   [
+    "hulyo",
+    "hul",
+    "july",
+    "jul"
+   ],
+   [
+    "agosto",
+    "ago",
+    "august",
+    "aug"
+   ],
+   [
+    "setyembre",
+    "set",
+    "septiyembre",
+    "september",
+    "sep",
+    "sept"
+   ],
+   [
+    "oktubre",
+    "okt",
+    "october",
+    "oct"
+   ],
+   [
+    "nobyembre",
+    "nob",
+    "november",
+    "nov"
+   ],
+   [
+    "disyembre",
+    "dis",
+    "december",
+    "dec"
+   ]
+  ],
+  "now": [
+   "kasalukuyan",
+   "hanggang ngayon",
+   "ngayon",
+   "sa kasalukuyan",
+   "present",
+   "kasalukuyang trabaho"
+  ]
+ },
+ {
+  "code": "fr-CA",
+  "name": "Français (Canada)",
+  "english_name": "French (Canada)",
+  "headings": [
+   "Profil",
+   "Compétences clés",
+   "Expérience professionnelle",
+   "Formation",
+   "Perfectionnement et certifications",
+   "Langues",
+   "Intérêts",
+   "Coordonnées",
+   "aujourd'hui"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "profil professionnel",
+    "sommaire",
+    "résumé",
+    "à propos de moi",
+    "objectif",
+    "objectif de carrière"
+   ],
+   "skills": [
+    "compétences clés",
+    "compétences",
+    "compétences techniques",
+    "habiletés",
+    "aptitudes",
+    "connaissances",
+    "qualifications"
+   ],
+   "experience": [
+    "expérience professionnelle",
+    "expériences professionnelles",
+    "expérience de travail",
+    "expérience",
+    "expériences",
+    "parcours professionnel",
+    "emplois"
+   ],
+   "education": [
+    "formation",
+    "scolarité",
+    "formation académique",
+    "études",
+    "diplômes",
+    "éducation"
+   ],
+   "certifications": [
+    "perfectionnement et certifications",
+    "perfectionnement professionnel",
+    "perfectionnement",
+    "formation continue",
+    "certifications",
+    "certificats",
+    "formations complémentaires"
+   ],
+   "languages": [
+    "langues",
+    "langues parlées",
+    "compétences linguistiques",
+    "connaissances linguistiques"
+   ],
+   "interests": [
+    "intérêts",
+    "champs d'intérêt",
+    "champs d’intérêt",
+    "centres d'intérêt",
+    "centres d’intérêt",
+    "loisirs",
+    "activités"
+   ],
+   "projects": [
+    "projets",
+    "réalisations"
+   ],
+   "volunteering": [
+    "bénévolat",
+    "implication bénévole",
+    "engagement communautaire",
+    "implication sociale"
+   ],
+   "skip": [
+    "coordonnées",
+    "références",
+    "renseignements personnels",
+    "références sur demande"
+   ]
+  },
+  "months": [
+   [
+    "janvier",
+    "janv",
+    "jan"
+   ],
+   [
+    "février",
+    "févr",
+    "fév",
+    "fevrier"
+   ],
+   [
+    "mars",
+    "mar"
+   ],
+   [
+    "avril",
+    "avr"
+   ],
+   [
+    "mai"
+   ],
+   [
+    "juin"
+   ],
+   [
+    "juillet",
+    "juil"
+   ],
+   [
+    "août",
+    "aout",
+    "aoû"
+   ],
+   [
+    "septembre",
+    "sept",
+    "sep"
+   ],
+   [
+    "octobre",
+    "oct"
+   ],
+   [
+    "novembre",
+    "nov"
+   ],
+   [
+    "décembre",
+    "déc",
+    "dec"
+   ]
+  ],
+  "now": [
+   "aujourd'hui",
+   "aujourd’hui",
+   "à ce jour",
+   "présent",
+   "en cours",
+   "actuellement",
+   "maintenant"
+  ]
+ },
+ {
+  "code": "ga",
+  "name": "Gaeilge",
+  "english_name": "Irish Gaelic",
+  "headings": [
+   "Próifíl",
+   "Príomhscileanna",
+   "Taithí oibre",
+   "Oideachas",
+   "Cúrsaí agus deimhnithe",
+   "Teangacha",
+   "Spéiseanna",
+   "Teagmháil",
+   "anois"
+  ],
+  "import": {
+   "profile": [
+    "próifíl",
+    "próifíl ghairmiúil",
+    "achoimre",
+    "achoimre ghairmiúil",
+    "fúm féin",
+    "ráiteas pearsanta"
+   ],
+   "skills": [
+    "príomhscileanna",
+    "scileanna",
+    "inniúlachtaí",
+    "scileanna gairmiúla",
+    "cáilíochtaí",
+    "scileanna teicniúla"
+   ],
+   "experience": [
+    "taithí oibre",
+    "taithí",
+    "taithí ghairmiúil",
+    "fostaíocht",
+    "stair fostaíochta",
+    "gairmréim"
+   ],
+   "education": [
+    "oideachas",
+    "oideachas agus cáilíochtaí",
+    "cáilíochtaí acadúla",
+    "staidéar"
+   ],
+   "certifications": [
+    "cúrsaí agus deimhnithe",
+    "cúrsaí",
+    "deimhnithe",
+    "oiliúint",
+    "forbairt ghairmiúil",
+    "teastais"
+   ],
+   "languages": [
+    "teangacha",
+    "scileanna teanga",
+    "eolas teanga"
+   ],
+   "interests": [
+    "spéiseanna",
+    "caitheamh aimsire",
+    "spéiseanna agus caitheamh aimsire",
+    "suimeanna"
+   ],
+   "projects": [
+    "tionscadail"
+   ],
+   "volunteering": [
+    "obair dheonach",
+    "obair shaorálach",
+    "taithí dheonach"
+   ],
+   "skip": [
+    "sonraí pearsanta",
+    "sonraí teagmhála",
+    "teistiméirí",
+    "moltóirí"
+   ]
+  },
+  "months": [
+   [
+    "eanáir",
+    "ean",
+    "eanair"
+   ],
+   [
+    "feabhra",
+    "feabh",
+    "feab"
+   ],
+   [
+    "márta",
+    "mhárta",
+    "márt",
+    "marta"
+   ],
+   [
+    "aibreán",
+    "aibreáin",
+    "aib",
+    "aibrean"
+   ],
+   [
+    "bealtaine",
+    "beal",
+    "bealt"
+   ],
+   [
+    "meitheamh",
+    "mheithimh",
+    "meithimh",
+    "meith"
+   ],
+   [
+    "iúil",
+    "iúi",
+    "iuil"
+   ],
+   [
+    "lúnasa",
+    "lún",
+    "lunasa"
+   ],
+   [
+    "meán fómhair",
+    "mheán fómhair",
+    "mfómh",
+    "m.fómh",
+    "mean fomhair"
+   ],
+   [
+    "deireadh fómhair",
+    "dheireadh fómhair",
+    "dfómh",
+    "d.fómh",
+    "deireadh fomhair"
+   ],
+   [
+    "samhain",
+    "samhna",
+    "samh"
+   ],
+   [
+    "nollaig",
+    "nollag",
+    "noll"
+   ]
+  ],
+  "now": [
+   "anois",
+   "go dtí seo",
+   "faoi láthair",
+   "i láthair",
+   "go dtí an lá inniu",
+   "ar siúl"
+  ]
+ },
+ {
+  "code": "gd",
+  "name": "Gàidhlig",
+  "english_name": "Scottish Gaelic",
+  "headings": [
+   "Pròifil",
+   "Prìomh sgilean",
+   "Eòlas-obrach",
+   "Foghlam",
+   "Cùrsaichean is teisteanasan",
+   "Cànanan",
+   "Ùidhean",
+   "Conaltradh",
+   "an-diugh"
+  ],
+  "import": {
+   "profile": [
+    "pròifil",
+    "geàrr-chunntas",
+    "mu mo dheidhinn",
+    "mu dheidhinn",
+    "pròifil phroifeiseanta"
+   ],
+   "skills": [
+    "prìomh sgilean",
+    "sgilean",
+    "comasan",
+    "sgilean is comasan"
+   ],
+   "experience": [
+    "eòlas-obrach",
+    "eòlas obrach",
+    "eòlas",
+    "eachdraidh obrach",
+    "obair",
+    "eòlas proifeiseanta"
+   ],
+   "education": [
+    "foghlam",
+    "foghlam is trèanadh",
+    "teisteanasan foghlaim",
+    "oilthigh"
+   ],
+   "certifications": [
+    "cùrsaichean is teisteanasan",
+    "cùrsaichean agus teisteanasan",
+    "cùrsaichean",
+    "teisteanasan",
+    "trèanadh",
+    "leasachadh proifeiseanta"
+   ],
+   "languages": [
+    "cànanan",
+    "cànain",
+    "sgilean cànain"
+   ],
+   "interests": [
+    "ùidhean",
+    "cur-seachadan",
+    "ùidhean is cur-seachadan"
+   ],
+   "projects": [
+    "pròiseactan"
+   ],
+   "volunteering": [
+    "obair shaor-thoileach",
+    "saor-thoileachas"
+   ],
+   "skip": [
+    "fiosrachadh pearsanta",
+    "fiosrachadh conaltraidh",
+    "luchd-teisteanais",
+    "fianaisean"
+   ]
+  },
+  "months": [
+   [
+    "am faoilleach",
+    "faoilleach",
+    "fhaoilleach",
+    "an fhaoillich",
+    "faoilteach",
+    "fhaoilteach",
+    "faoi"
+   ],
+   [
+    "an gearran",
+    "gearran",
+    "ghearran",
+    "a’ ghearrain",
+    "gearr"
+   ],
+   [
+    "am màrt",
+    "màrt",
+    "mhàrt",
+    "a’ mhàirt"
+   ],
+   [
+    "an giblean",
+    "giblean",
+    "ghiblean",
+    "a’ ghiblein",
+    "gibl"
+   ],
+   [
+    "an cèitean",
+    "cèitean",
+    "chèitean",
+    "a’ chèitein",
+    "cèit"
+   ],
+   [
+    "an t-ògmhios",
+    "ògmhios",
+    "t-ògmhios",
+    "an ògmhios",
+    "ògmh"
+   ],
+   [
+    "an t-iuchar",
+    "iuchar",
+    "t-iuchar",
+    "an iuchair",
+    "iuch"
+   ],
+   [
+    "an lùnastal",
+    "lùnastal",
+    "an lùnastail",
+    "lùna",
+    "lùn"
+   ],
+   [
+    "an t-sultain",
+    "sultain",
+    "t-sultain",
+    "na sultain",
+    "sult"
+   ],
+   [
+    "an dàmhair",
+    "dàmhair",
+    "na dàmhair",
+    "dàmh"
+   ],
+   [
+    "an t-samhain",
+    "samhain",
+    "t-samhain",
+    "na samhna",
+    "samh"
+   ],
+   [
+    "an dùbhlachd",
+    "dùbhlachd",
+    "na dùbhlachd",
+    "dùbh"
+   ]
+  ],
+  "now": [
+   "an-diugh",
+   "an diugh",
+   "gu ruige seo",
+   "gu ruige an-diugh",
+   "an-dràsta",
+   "an dràsta",
+   "fhathast",
+   "gu làithreach",
+   "a’ leantainn"
+  ]
+ },
+ {
+  "code": "gl",
+  "name": "Galego",
+  "english_name": "Galician",
+  "headings": [
+   "Perfil",
+   "Competencias clave",
+   "Experiencia laboral",
+   "Formación",
+   "Cursos e certificacións",
+   "Idiomas",
+   "Intereses",
+   "Contacto",
+   "actualidade"
+  ],
+  "import": {
+   "profile": [
+    "perfil",
+    "perfil profesional",
+    "sobre min",
+    "resumo",
+    "resumo profesional",
+    "presentación",
+    "obxectivo profesional"
+   ],
+   "skills": [
+    "competencias clave",
+    "competencias",
+    "habilidades",
+    "aptitudes",
+    "coñecementos",
+    "competencias técnicas",
+    "capacidades"
+   ],
+   "experience": [
+    "experiencia laboral",
+    "experiencia profesional",
+    "experiencia",
+    "traxectoria profesional",
+    "historial laboral"
+   ],
+   "education": [
+    "formación",
+    "formación académica",
+    "educación",
+    "estudos",
+    "titulación"
+   ],
+   "certifications": [
+    "cursos e certificacións",
+    "cursos",
+    "certificacións",
+    "formación complementaria",
+    "certificados"
+   ],
+   "languages": [
+    "idiomas",
+    "linguas",
+    "coñecemento de idiomas",
+    "competencias lingüísticas"
+   ],
+   "interests": [
+    "intereses",
+    "afeccións",
+    "zalezas",
+    "tempo libre"
+   ],
+   "projects": [
+    "proxectos"
+   ],
+   "volunteering": [
+    "voluntariado",
+    "experiencia de voluntariado"
+   ],
+   "skip": [
+    "datos persoais",
+    "datos de contacto",
+    "referencias",
+    "outros datos"
+   ]
+  },
+  "months": [
+   [
+    "xaneiro",
+    "xan"
+   ],
+   [
+    "febreiro",
+    "feb"
+   ],
+   [
+    "marzo",
+    "mar"
+   ],
+   [
+    "abril",
+    "abr"
+   ],
+   [
+    "maio",
+    "mai"
+   ],
+   [
+    "xuño",
+    "xuñ"
+   ],
+   [
+    "xullo",
+    "xul"
+   ],
+   [
+    "agosto",
+    "ago"
+   ],
+   [
+    "setembro",
+    "set"
+   ],
+   [
+    "outubro",
+    "out"
+   ],
+   [
+    "novembro",
+    "nov"
+   ],
+   [
+    "decembro",
+    "dec"
+   ]
+  ],
+  "now": [
+   "actualidade",
+   "na actualidade",
+   "ata a actualidade",
+   "actualmente",
+   "presente",
+   "ata hoxe",
+   "hoxe"
+  ]
+ },
+ {
+  "code": "gu",
+  "name": "ગુજરાતી",
+  "english_name": "Gujarati",
+  "headings": [
+   "પ્રોફાઇલ",
+   "મુખ્ય કૌશલ્યો",
+   "કાર્ય અનુભવ",
+   "શિક્ષણ",
+   "કોર્સ અને પ્રમાણપત્રો",
+   "ભાષાઓ",
+   "રુચિઓ",
+   "સંપર્ક",
+   "હાલ સુધી"
+  ],
+  "import": {
+   "profile": [
+    "પ્રોફાઇલ",
+    "સારાંશ",
+    "મારા વિશે",
+    "પરિચય",
+    "કારકિર્દી ઉદ્દેશ",
+    "ઉદ્દેશ",
+    "વ્યાવસાયિક સારાંશ"
+   ],
+   "skills": [
+    "મુખ્ય કૌશલ્યો",
+    "કૌશલ્યો",
+    "કુશળતા",
+    "આવડત",
+    "ક્ષમતાઓ",
+    "તકનીકી કૌશલ્યો",
+    "નિપુણતા"
+   ],
+   "experience": [
+    "કાર્ય અનુભવ",
+    "અનુભવ",
+    "વ્યાવસાયિક અનુભવ",
+    "નોકરીનો અનુભવ",
+    "કારકિર્દી",
+    "રોજગાર ઇતિહાસ"
+   ],
+   "education": [
+    "શિક્ષણ",
+    "શૈક્ષણિક લાયકાત",
+    "લાયકાત",
+    "અભ્યાસ",
+    "શૈક્ષણિક વિગતો"
+   ],
+   "certifications": [
+    "કોર્સ અને પ્રમાણપત્રો",
+    "પ્રમાણપત્રો",
+    "કોર્સ",
+    "તાલીમ",
+    "અભ્યાસક્રમો",
+    "પ્રમાણપત્ર"
+   ],
+   "languages": [
+    "ભાષાઓ",
+    "ભાષા જ્ઞાન",
+    "ભાષાકીય જ્ઞાન",
+    "જાણીતી ભાષાઓ"
+   ],
+   "interests": [
+    "રુચિઓ",
+    "શોખ",
+    "રસના વિષયો",
+    "રસ"
+   ],
+   "projects": [
+    "પ્રોજેક્ટ",
+    "પ્રોજેક્ટ્સ",
+    "પરિયોજનાઓ"
+   ],
+   "volunteering": [
+    "સ્વયંસેવા",
+    "સ્વયંસેવક કાર્ય",
+    "સામાજિક કાર્ય"
+   ],
+   "skip": [
+    "વ્યક્તિગત વિગતો",
+    "અંગત માહિતી",
+    "સંદર્ભ",
+    "ઘોષણા",
+    "સંપર્ક વિગતો"
+   ]
+  },
+  "months": [
+   [
+    "જાન્યુઆરી",
+    "જાન્યુ"
+   ],
+   [
+    "ફેબ્રુઆરી",
+    "ફેબ્રુ"
+   ],
+   [
+    "માર્ચ"
+   ],
+   [
+    "એપ્રિલ"
+   ],
+   [
+    "મે"
+   ],
+   [
+    "જૂન"
+   ],
+   [
+    "જુલાઈ",
+    "જુલાઇ"
+   ],
+   [
+    "ઑગસ્ટ",
+    "ઓગસ્ટ",
+    "ઑગ",
+    "ઓગ"
+   ],
+   [
+    "સપ્ટેમ્બર",
+    "સપ્ટે"
+   ],
+   [
+    "ઑક્ટોબર",
+    "ઓક્ટોબર",
+    "ઑક્ટો",
+    "ઓક્ટો"
+   ],
+   [
+    "નવેમ્બર",
+    "નવે"
+   ],
+   [
+    "ડિસેમ્બર",
+    "ડિસે"
+   ]
+  ],
+  "now": [
+   "હાલ સુધી",
+   "હાલ",
+   "અત્યાર સુધી",
+   "આજ સુધી",
+   "હાલમાં",
+   "ચાલુ",
+   "વર્તમાન"
+  ]
+ },
+ {
+  "code": "he",
+  "name": "עברית",
+  "english_name": "Hebrew",
+  "headings": [
+   "פרופיל",
+   "כישורים מרכזיים",
+   "ניסיון תעסוקתי",
+   "השכלה",
+   "קורסים והסמכות",
+   "שפות",
+   "תחומי עניין",
+   "פרטי קשר",
+   "היום"
+  ],
+  "import": {
+   "profile": [
+    "פרופיל",
+    "פרופיל אישי",
+    "פרופיל מקצועי",
+    "תקציר",
+    "על עצמי",
+    "קצת עליי",
+    "תמצית"
+   ],
+   "skills": [
+    "כישורים מרכזיים",
+    "כישורים",
+    "מיומנויות",
+    "כישורים מקצועיים",
+    "כלים וטכנולוגיות",
+    "יכולות",
+    "כישורי מחשב"
+   ],
+   "experience": [
+    "ניסיון תעסוקתי",
+    "ניסיון מקצועי",
+    "ניסיון",
+    "ניסיון בעבודה",
+    "היסטוריה תעסוקתית",
+    "תעסוקה"
+   ],
+   "education": [
+    "השכלה",
+    "השכלה אקדמית",
+    "לימודים",
+    "השכלה ולימודים"
+   ],
+   "certifications": [
+    "קורסים והסמכות",
+    "קורסים",
+    "הסמכות",
+    "השתלמויות",
+    "תעודות",
+    "הכשרות",
+    "הכשרה מקצועית"
+   ],
+   "languages": [
+    "שפות",
+    "ידיעת שפות"
+   ],
+   "interests": [
+    "תחומי עניין",
+    "תחביבים",
+    "עניין אישי"
+   ],
+   "projects": [
+    "פרויקטים",
+    "פרויקטים נבחרים"
+   ],
+   "volunteering": [
+    "התנדבות",
+    "פעילות התנדבותית"
+   ],
+   "skip": [
+    "פרטים אישיים",
+    "פרטי קשר",
+    "ממליצים",
+    "המלצות"
+   ]
+  },
+  "months": [
+   [
+    "ינואר",
+    "ינו׳",
+    "ינו"
+   ],
+   [
+    "פברואר",
+    "פבר׳",
+    "פבר"
+   ],
+   [
+    "מרץ",
+    "מרס"
+   ],
+   [
+    "אפריל",
+    "אפר׳",
+    "אפר"
+   ],
+   [
+    "מאי"
+   ],
+   [
+    "יוני"
+   ],
+   [
+    "יולי"
+   ],
+   [
+    "אוגוסט",
+    "אוג׳",
+    "אוג"
+   ],
+   [
+    "ספטמבר",
+    "ספט׳",
+    "ספט"
+   ],
+   [
+    "אוקטובר",
+    "אוק׳",
+    "אוק"
+   ],
+   [
+    "נובמבר",
+    "נוב׳",
+    "נוב"
+   ],
+   [
+    "דצמבר",
+    "דצמ׳",
+    "דצמ"
+   ]
+  ],
+  "now": [
+   "היום",
+   "עד היום",
+   "כיום",
+   "הווה",
+   "עד כה",
+   "נוכחי"
+  ]
+ },
+ {
+  "code": "hi",
+  "name": "हिन्दी",
+  "english_name": "Hindi",
+  "headings": [
+   "प्रोफ़ाइल",
+   "मुख्य कौशल",
+   "कार्य अनुभव",
+   "शिक्षा",
+   "कोर्स और प्रमाणपत्र",
+   "भाषाएँ",
+   "रुचियाँ",
+   "संपर्क",
+   "वर्तमान"
+  ],
+  "import": {
+   "profile": [
+    "प्रोफ़ाइल",
+    "प्रोफाइल",
+    "सारांश",
+    "पेशेवर सारांश",
+    "मेरे बारे में",
+    "परिचय",
+    "करियर उद्देश्य",
+    "उद्देश्य"
+   ],
+   "skills": [
+    "मुख्य कौशल",
+    "कौशल",
+    "प्रमुख कौशल",
+    "तकनीकी कौशल",
+    "दक्षताएँ",
+    "योग्यताएँ",
+    "विशेषज्ञता"
+   ],
+   "experience": [
+    "कार्य अनुभव",
+    "अनुभव",
+    "पेशेवर अनुभव",
+    "रोज़गार इतिहास",
+    "रोजगार इतिहास",
+    "कार्य इतिहास",
+    "नौकरी का अनुभव"
+   ],
+   "education": [
+    "शिक्षा",
+    "शैक्षिक योग्यता",
+    "शैक्षणिक योग्यता",
+    "शैक्षिक पृष्ठभूमि",
+    "अध्ययन"
+   ],
+   "certifications": [
+    "कोर्स और प्रमाणपत्र",
+    "प्रमाणपत्र",
+    "प्रमाण पत्र",
+    "कोर्स",
+    "पाठ्यक्रम",
+    "प्रशिक्षण",
+    "व्यावसायिक योग्यता"
+   ],
+   "languages": [
+    "भाषाएँ",
+    "भाषाएं",
+    "भाषा ज्ञान",
+    "ज्ञात भाषाएँ",
+    "भाषा"
+   ],
+   "interests": [
+    "रुचियाँ",
+    "रुचियां",
+    "शौक",
+    "अभिरुचियाँ",
+    "रुचि"
+   ],
+   "projects": [
+    "प्रोजेक्ट",
+    "परियोजनाएँ",
+    "परियोजनाएं"
+   ],
+   "volunteering": [
+    "स्वयंसेवा",
+    "स्वयंसेवी कार्य",
+    "सामाजिक कार्य"
+   ],
+   "skip": [
+    "व्यक्तिगत विवरण",
+    "व्यक्तिगत जानकारी",
+    "संदर्भ",
+    "घोषणा",
+    "संपर्क विवरण"
+   ]
+  },
+  "months": [
+   [
+    "जनवरी",
+    "जन",
+    "जन."
+   ],
+   [
+    "फ़रवरी",
+    "फरवरी",
+    "फ़र",
+    "फर",
+    "फ़र."
+   ],
+   [
+    "मार्च"
+   ],
+   [
+    "अप्रैल",
+    "अप्र"
+   ],
+   [
+    "मई"
+   ],
+   [
+    "जून"
+   ],
+   [
+    "जुलाई",
+    "जुल"
+   ],
+   [
+    "अगस्त",
+    "अग"
+   ],
+   [
+    "सितंबर",
+    "सितम्बर",
+    "सित"
+   ],
+   [
+    "अक्टूबर",
+    "अक्तूबर",
+    "अक्टू"
+   ],
+   [
+    "नवंबर",
+    "नवम्बर",
+    "नव"
+   ],
+   [
+    "दिसंबर",
+    "दिसम्बर",
+    "दिस"
+   ]
+  ],
+  "now": [
+   "वर्तमान",
+   "अब तक",
+   "आज तक",
+   "अभी तक",
+   "वर्तमान में",
+   "जारी",
+   "अभी"
+  ]
+ },
+ {
+  "code": "hr",
+  "name": "Hrvatski",
+  "english_name": "Croatian",
+  "headings": [
+   "Profil",
+   "Ključne vještine",
+   "Radno iskustvo",
+   "Obrazovanje",
+   "Tečajevi i certifikati",
+   "Jezici",
+   "Interesi",
+   "Kontakt",
+   "danas"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "o meni",
+    "sažetak",
+    "profesionalni profil",
+    "osobni profil",
+    "kratki profil"
+   ],
+   "skills": [
+    "ključne vještine",
+    "vještine",
+    "kompetencije",
+    "stručne kompetencije",
+    "znanja i vještine",
+    "računalne vještine",
+    "osobne vještine"
+   ],
+   "experience": [
+    "radno iskustvo",
+    "profesionalno iskustvo",
+    "iskustvo",
+    "radni staž",
+    "dosadašnje iskustvo"
+   ],
+   "education": [
+    "obrazovanje",
+    "školovanje",
+    "izobrazba",
+    "akademsko obrazovanje"
+   ],
+   "certifications": [
+    "tečajevi i certifikati",
+    "certifikati",
+    "tečajevi",
+    "dodatno obrazovanje",
+    "seminari",
+    "edukacije",
+    "usavršavanje"
+   ],
+   "languages": [
+    "jezici",
+    "strani jezici",
+    "poznavanje jezika",
+    "poznavanje stranih jezika",
+    "jezične vještine"
+   ],
+   "interests": [
+    "interesi",
+    "hobiji",
+    "slobodno vrijeme",
+    "aktivnosti u slobodno vrijeme"
+   ],
+   "projects": [
+    "projekti"
+   ],
+   "volunteering": [
+    "volontiranje",
+    "volonterski rad",
+    "volontersko iskustvo"
+   ],
+   "skip": [
+    "osobni podaci",
+    "kontakt podaci",
+    "kontaktni podaci",
+    "preporuke",
+    "reference"
+   ]
+  },
+  "months": [
+   [
+    "siječanj",
+    "siječnja",
+    "sij",
+    "januar",
+    "januara"
+   ],
+   [
+    "veljača",
+    "veljače",
+    "velj",
+    "februar",
+    "februara"
+   ],
+   [
+    "ožujak",
+    "ožujka",
+    "ožu",
+    "ož",
+    "mart",
+    "marta"
+   ],
+   [
+    "travanj",
+    "travnja",
+    "tra",
+    "april",
+    "aprila"
+   ],
+   [
+    "svibanj",
+    "svibnja",
+    "svi",
+    "maj",
+    "maja"
+   ],
+   [
+    "lipanj",
+    "lipnja",
+    "lip",
+    "juni",
+    "jun",
+    "juna"
+   ],
+   [
+    "srpanj",
+    "srpnja",
+    "srp",
+    "juli",
+    "jul",
+    "jula"
+   ],
+   [
+    "kolovoz",
+    "kolovoza",
+    "kol",
+    "august",
+    "augusta"
+   ],
+   [
+    "rujan",
+    "rujna",
+    "ruj",
+    "septembar",
+    "septembra"
+   ],
+   [
+    "listopad",
+    "listopada",
+    "lis",
+    "oktobar",
+    "oktobra"
+   ],
+   [
+    "studeni",
+    "studenoga",
+    "studenog",
+    "stu",
+    "novembar",
+    "novembra"
+   ],
+   [
+    "prosinac",
+    "prosinca",
+    "pro",
+    "decembar",
+    "decembra"
+   ]
+  ],
+  "now": [
+   "danas",
+   "do danas",
+   "sada",
+   "trenutačno",
+   "trenutno",
+   "u tijeku"
+  ]
+ },
+ {
+  "code": "hy",
+  "name": "Հայերեն",
+  "english_name": "Armenian",
+  "headings": [
+   "Պրոֆիլ",
+   "Հիմնական հմտություններ",
+   "Աշխատանքային փորձ",
+   "Կրթություն",
+   "Դասընթացներ և հավաստագրեր",
+   "Լեզուներ",
+   "Հետաքրքրություններ",
+   "Կոնտակտներ",
+   "առ այսօր"
+  ],
+  "import": {
+   "profile": [
+    "պրոֆիլ",
+    "ամփոփում",
+    "իմ մասին",
+    "անձնական ամփոփում",
+    "մասնագիտական ամփոփում",
+    "նպատակ"
+   ],
+   "skills": [
+    "հիմնական հմտություններ",
+    "հմտություններ",
+    "մասնագիտական հմտություններ",
+    "կարողություններ",
+    "կոմպետենցիաներ",
+    "գիտելիքներ",
+    "համակարգչային հմտություններ"
+   ],
+   "experience": [
+    "աշխատանքային փորձ",
+    "փորձ",
+    "մասնագիտական փորձ",
+    "աշխատանքային գործունեություն",
+    "աշխատանքային պատմություն"
+   ],
+   "education": [
+    "կրթություն",
+    "կրթական տվյալներ",
+    "ուսում",
+    "կրթական պատմություն"
+   ],
+   "certifications": [
+    "դասընթացներ և հավաստագրեր",
+    "դասընթացներ",
+    "հավաստագրեր",
+    "վերապատրաստումներ",
+    "սերտիֆիկատներ",
+    "լրացուցիչ կրթություն"
+   ],
+   "languages": [
+    "լեզուներ",
+    "լեզվական հմտություններ",
+    "լեզուների իմացություն",
+    "օտար լեզուներ"
+   ],
+   "interests": [
+    "հետաքրքրություններ",
+    "հոբբիներ",
+    "հոբբի",
+    "նախասիրություններ",
+    "ազատ ժամանց"
+   ],
+   "projects": [
+    "նախագծեր",
+    "ծրագրեր"
+   ],
+   "volunteering": [
+    "կամավորական աշխատանք",
+    "կամավորություն",
+    "հասարակական գործունեություն"
+   ],
+   "skip": [
+    "անձնական տվյալներ",
+    "կոնտակտներ",
+    "կոնտակտային տվյալներ",
+    "երաշխավորություններ",
+    "երաշխավորներ"
+   ]
+  },
+  "months": [
+   [
+    "հունվար",
+    "հունվարի",
+    "հունվ",
+    "հնվ"
+   ],
+   [
+    "փետրվար",
+    "փետրվարի",
+    "փետր",
+    "փտր"
+   ],
+   [
+    "մարտ",
+    "մարտի",
+    "մրտ"
+   ],
+   [
+    "ապրիլ",
+    "ապրիլի",
+    "ապր"
+   ],
+   [
+    "մայիս",
+    "մայիսի",
+    "մյս"
+   ],
+   [
+    "հունիս",
+    "հունիսի",
+    "հուն",
+    "հնս"
+   ],
+   [
+    "հուլիս",
+    "հուլիսի",
+    "հուլ",
+    "հլս"
+   ],
+   [
+    "օգոստոս",
+    "օգոստոսի",
+    "օգոս",
+    "օգս"
+   ],
+   [
+    "սեպտեմբեր",
+    "սեպտեմբերի",
+    "սեպտ",
+    "սեպ"
+   ],
+   [
+    "հոկտեմբեր",
+    "հոկտեմբերի",
+    "հոկտ",
+    "հոկ"
+   ],
+   [
+    "նոյեմբեր",
+    "նոյեմբերի",
+    "նոյ"
+   ],
+   [
+    "դեկտեմբեր",
+    "դեկտեմբերի",
+    "դեկտ",
+    "դեկ"
+   ]
+  ],
+  "now": [
+   "առ այսօր",
+   "մինչ այժմ",
+   "մինչև այժմ",
+   "այժմ",
+   "ներկայումս",
+   "մինչ օրս",
+   "մինչև օրս",
+   "շարունակվում է"
+  ]
+ },
+ {
+  "code": "ka",
+  "name": "ქართული",
+  "english_name": "Georgian",
+  "headings": [
+   "პროფილი",
+   "ძირითადი უნარები",
+   "სამუშაო გამოცდილება",
+   "განათლება",
+   "კურსები და სერტიფიკატები",
+   "ენები",
+   "ინტერესები",
+   "კონტაქტი",
+   "დღემდე"
+  ],
+  "import": {
+   "profile": [
+    "პროფილი",
+    "ჩემ შესახებ",
+    "ჩემს შესახებ",
+    "მოკლე ინფორმაცია",
+    "პროფესიული პროფილი",
+    "შეჯამება",
+    "რეზიუმე"
+   ],
+   "skills": [
+    "ძირითადი უნარები",
+    "უნარები",
+    "უნარ-ჩვევები",
+    "კომპეტენციები",
+    "პროფესიული უნარები",
+    "კომპიუტერული უნარები",
+    "ტექნიკური უნარები",
+    "კვალიფიკაცია"
+   ],
+   "experience": [
+    "სამუშაო გამოცდილება",
+    "გამოცდილება",
+    "პროფესიული გამოცდილება",
+    "სამუშაო ისტორია",
+    "დასაქმება"
+   ],
+   "education": [
+    "განათლება",
+    "აკადემიური განათლება",
+    "უმაღლესი განათლება",
+    "სწავლა"
+   ],
+   "certifications": [
+    "კურსები და სერტიფიკატები",
+    "კურსები",
+    "სერტიფიკატები",
+    "ტრენინგები",
+    "ტრენინგები და სერტიფიკატები",
+    "კვალიფიკაციის ამაღლება",
+    "დამატებითი განათლება"
+   ],
+   "languages": [
+    "ენები",
+    "ენების ცოდნა",
+    "უცხო ენები",
+    "ენობრივი უნარები"
+   ],
+   "interests": [
+    "ინტერესები",
+    "ჰობი",
+    "ჰობები",
+    "გატაცებები",
+    "თავისუფალი დრო"
+   ],
+   "projects": [
+    "პროექტები",
+    "პროექტი"
+   ],
+   "volunteering": [
+    "მოხალისეობა",
+    "მოხალისეობრივი საქმიანობა",
+    "მოხალისეობრივი გამოცდილება"
+   ],
+   "skip": [
+    "პირადი ინფორმაცია",
+    "პირადი მონაცემები",
+    "საკონტაქტო ინფორმაცია",
+    "რეკომენდაციები",
+    "რეკომენდატორები"
+   ]
+  },
+  "months": [
+   [
+    "იანვარი",
+    "იან",
+    "იანვრის",
+    "იანვარს",
+    "იანვრიდან",
+    "იანვრამდე"
+   ],
+   [
+    "თებერვალი",
+    "თებ",
+    "თებერვლის",
+    "თებერვალს",
+    "თებერვლიდან",
+    "თებერვლამდე"
+   ],
+   [
+    "მარტი",
+    "მარ",
+    "მარტის",
+    "მარტს",
+    "მარტიდან",
+    "მარტამდე"
+   ],
+   [
+    "აპრილი",
+    "აპრ",
+    "აპრილის",
+    "აპრილს",
+    "აპრილიდან",
+    "აპრილამდე"
+   ],
+   [
+    "მაისი",
+    "მაი",
+    "მაისის",
+    "მაისს",
+    "მაისიდან",
+    "მაისამდე"
+   ],
+   [
+    "ივნისი",
+    "ივნ",
+    "ივნისის",
+    "ივნისს",
+    "ივნისიდან",
+    "ივნისამდე"
+   ],
+   [
+    "ივლისი",
+    "ივლ",
+    "ივლისის",
+    "ივლისს",
+    "ივლისიდან",
+    "ივლისამდე"
+   ],
+   [
+    "აგვისტო",
+    "აგვ",
+    "აგვისტოს",
+    "აგვისტოდან",
+    "აგვისტომდე"
+   ],
+   [
+    "სექტემბერი",
+    "სექ",
+    "სექტ",
+    "სექტემბრის",
+    "სექტემბერს",
+    "სექტემბრიდან",
+    "სექტემბრამდე"
+   ],
+   [
+    "ოქტომბერი",
+    "ოქტ",
+    "ოქტომბრის",
+    "ოქტომბერს",
+    "ოქტომბრიდან",
+    "ოქტომბრამდე"
+   ],
+   [
+    "ნოემბერი",
+    "ნოე",
+    "ნოემ",
+    "ნოემბრის",
+    "ნოემბერს",
+    "ნოემბრიდან",
+    "ნოემბრამდე"
+   ],
+   [
+    "დეკემბერი",
+    "დეკ",
+    "დეკემბრის",
+    "დეკემბერს",
+    "დეკემბრიდან",
+    "დეკემბრამდე"
+   ]
+  ],
+  "now": [
+   "დღემდე",
+   "ამ დრომდე",
+   "ამჟამად",
+   "დღეისთვის",
+   "მიმდინარე",
+   "ახლა",
+   "აქამდე"
+  ]
+ },
+ {
+  "code": "kk",
+  "name": "Қазақ тілі",
+  "english_name": "Kazakh",
+  "headings": [
+   "Профиль",
+   "Негізгі дағдылар",
+   "Жұмыс тәжірибесі",
+   "Білімі",
+   "Курстар мен сертификаттар",
+   "Тілдер",
+   "Қызығушылықтар",
+   "Байланыс",
+   "қазіргі уақытқа дейін"
+  ],
+  "import": {
+   "profile": [
+    "профиль",
+    "өзім туралы",
+    "қысқаша мәлімет",
+    "түйін",
+    "мақсат",
+    "кәсіби профиль",
+    "жалпы мәлімет"
+   ],
+   "skills": [
+    "негізгі дағдылар",
+    "дағдылар",
+    "кәсіби дағдылар",
+    "біліктілік",
+    "құзыреттер",
+    "негізгі құзыреттер",
+    "қабілеттер",
+    "компьютерлік дағдылар"
+   ],
+   "experience": [
+    "жұмыс тәжірибесі",
+    "тәжірибе",
+    "еңбек тәжірибесі",
+    "кәсіби тәжірибе",
+    "жұмыс орындары",
+    "еңбек жолы"
+   ],
+   "education": [
+    "білімі",
+    "білім",
+    "білім беру",
+    "оқу орны",
+    "біліктілігі"
+   ],
+   "certifications": [
+    "курстар мен сертификаттар",
+    "курстар",
+    "сертификаттар",
+    "біліктілікті арттыру",
+    "қосымша білім",
+    "тренингтер"
+   ],
+   "languages": [
+    "тілдер",
+    "тілдерді білуі",
+    "тіл білуі",
+    "шет тілдері"
+   ],
+   "interests": [
+    "қызығушылықтар",
+    "хобби",
+    "бос уақыт",
+    "қызығушылықтарым"
+   ],
+   "projects": [
+    "жобалар",
+    "жобалар тізімі"
+   ],
+   "volunteering": [
+    "волонтерлік",
+    "еріктілік",
+    "волонтерлік қызмет",
+    "қоғамдық жұмыс"
+   ],
+   "skip": [
+    "жеке мәліметтер",
+    "байланыс деректері",
+    "байланыс",
+    "ұсынымдар",
+    "кепілдемелер",
+    "ұсыныс хаттар"
+   ]
+  },
+  "months": [
+   [
+    "қаңтар",
+    "қаң",
+    "қаңтарда",
+    "қаңтардан",
+    "қаңтарға"
+   ],
+   [
+    "ақпан",
+    "ақп",
+    "ақпанда",
+    "ақпаннан",
+    "ақпанға"
+   ],
+   [
+    "наурыз",
+    "нау",
+    "наурызда",
+    "наурыздан",
+    "наурызға"
+   ],
+   [
+    "сәуір",
+    "сәу",
+    "сәуірде",
+    "сәуірден",
+    "сәуірге"
+   ],
+   [
+    "мамыр",
+    "мам",
+    "мамырда",
+    "мамырдан",
+    "мамырға"
+   ],
+   [
+    "маусым",
+    "мау",
+    "маусымда",
+    "маусымнан",
+    "маусымға"
+   ],
+   [
+    "шілде",
+    "шіл",
+    "шілдеде",
+    "шілдеден",
+    "шілдеге"
+   ],
+   [
+    "тамыз",
+    "там",
+    "тамызда",
+    "тамыздан",
+    "тамызға"
+   ],
+   [
+    "қыркүйек",
+    "қыр",
+    "қыркүйекте",
+    "қыркүйектен",
+    "қыркүйекке"
+   ],
+   [
+    "қазан",
+    "қаз",
+    "қазанда",
+    "қазаннан",
+    "қазанға"
+   ],
+   [
+    "қараша",
+    "қар",
+    "қарашада",
+    "қарашадан",
+    "қарашаға"
+   ],
+   [
+    "желтоқсан",
+    "жел",
+    "желтоқсанда",
+    "желтоқсаннан",
+    "желтоқсанға"
+   ]
+  ],
+  "now": [
+   "қазіргі уақытқа дейін",
+   "қазіргі уақытқа",
+   "қазір",
+   "бүгінге дейін",
+   "осы күнге дейін",
+   "қазіргі уақытта",
+   "әлі күнге дейін",
+   "қазірге дейін"
+  ]
+ },
+ {
+  "code": "km",
+  "name": "ខ្មែរ",
+  "english_name": "Khmer",
+  "headings": [
+   "ប្រវត្តិសង្ខេប",
+   "ជំនាញស្នូល",
+   "បទពិសោធន៍ការងារ",
+   "ការសិក្សា",
+   "វគ្គសិក្សា និងវិញ្ញាបនបត្រ",
+   "ភាសា",
+   "ចំណាប់អារម្មណ៍",
+   "ទំនាក់ទំនង",
+   "បច្ចុប្បន្ន"
+  ],
+  "import": {
+   "profile": [
+    "ប្រវត្តិសង្ខេប",
+    "សេចក្ដីសង្ខេប",
+    "អំពីខ្ញុំ",
+    "ប្រវត្តិរូបសង្ខេប",
+    "គោលបំណង",
+    "គោលបំណងអាជីព",
+    "កម្រងព័ត៌មាន"
+   ],
+   "skills": [
+    "ជំនាញស្នូល",
+    "ជំនាញ",
+    "សមត្ថភាព",
+    "ជំនាញ និងសមត្ថភាព",
+    "ជំនាញវិជ្ជាជីវៈ",
+    "ជំនាញកុំព្យូទ័រ",
+    "លក្ខណៈសម្បត្តិ"
+   ],
+   "experience": [
+    "បទពិសោធន៍ការងារ",
+    "បទពិសោធន៍",
+    "ប្រវត្តិការងារ",
+    "បទពិសោធន៍វិជ្ជាជីវៈ",
+    "ការងារ"
+   ],
+   "education": [
+    "ការសិក្សា",
+    "ប្រវត្តិការសិក្សា",
+    "កម្រិតវប្បធម៌",
+    "កម្រិតការសិក្សា",
+    "សញ្ញាបត្រ"
+   ],
+   "certifications": [
+    "វគ្គសិក្សា និងវិញ្ញាបនបត្រ",
+    "វគ្គបណ្ដុះបណ្ដាល",
+    "វិញ្ញាបនបត្រ",
+    "វគ្គសិក្សា",
+    "ការបណ្ដុះបណ្ដាល",
+    "សញ្ញាបត្រ និងវិញ្ញាបនបត្រ"
+   ],
+   "languages": [
+    "ភាសា",
+    "ចំណេះដឹងភាសា",
+    "ជំនាញភាសា",
+    "សមត្ថភាពភាសា"
+   ],
+   "interests": [
+    "ចំណាប់អារម្មណ៍",
+    "ចំណង់ចំណូលចិត្ត",
+    "ចំណូលចិត្ត",
+    "សកម្មភាពកម្សាន្ត"
+   ],
+   "projects": [
+    "គម្រោង",
+    "គម្រោងការងារ",
+    "ស្នាដៃ"
+   ],
+   "volunteering": [
+    "ការងារស្ម័គ្រចិត្ត",
+    "សកម្មភាពស្ម័គ្រចិត្ត",
+    "សកម្មភាពសង្គម"
+   ],
+   "skip": [
+    "ព័ត៌មានផ្ទាល់ខ្លួន",
+    "ព័ត៌មានទំនាក់ទំនង",
+    "អ្នកធានា",
+    "ឯកសារយោង"
+   ]
+  },
+  "months": [
+   [
+    "មករា",
+    "ខែមករា"
+   ],
+   [
+    "កុម្ភៈ",
+    "ខែកុម្ភៈ",
+    "កុម្ភះ"
+   ],
+   [
+    "មីនា",
+    "ខែមីនា"
+   ],
+   [
+    "មេសា",
+    "ខែមេសា"
+   ],
+   [
+    "ឧសភា",
+    "ខែឧសភា"
+   ],
+   [
+    "មិថុនា",
+    "ខែមិថុនា"
+   ],
+   [
+    "កក្កដា",
+    "ខែកក្កដា"
+   ],
+   [
+    "សីហា",
+    "ខែសីហា"
+   ],
+   [
+    "កញ្ញា",
+    "ខែកញ្ញា"
+   ],
+   [
+    "តុលា",
+    "ខែតុលា"
+   ],
+   [
+    "វិច្ឆិកា",
+    "ខែវិច្ឆិកា"
+   ],
+   [
+    "ធ្នូ",
+    "ខែធ្នូ"
+   ]
+  ],
+  "now": [
+   "បច្ចុប្បន្ន",
+   "ដល់បច្ចុប្បន្ន",
+   "រហូតដល់បច្ចុប្បន្ន",
+   "សព្វថ្ងៃ",
+   "រហូតមកដល់សព្វថ្ងៃ",
+   "កំពុងបន្ត"
+  ]
+ },
+ {
+  "code": "kn",
+  "name": "ಕನ್ನಡ",
+  "english_name": "Kannada",
+  "headings": [
+   "ಪ್ರೊಫೈಲ್",
+   "ಪ್ರಮುಖ ಕೌಶಲ್ಯಗಳು",
+   "ಕೆಲಸದ ಅನುಭವ",
+   "ಶಿಕ್ಷಣ",
+   "ಕೋರ್ಸ್‌ಗಳು ಮತ್ತು ಪ್ರಮಾಣಪತ್ರಗಳು",
+   "ಭಾಷೆಗಳು",
+   "ಆಸಕ್ತಿಗಳು",
+   "ಸಂಪರ್ಕ",
+   "ಇಂದಿನವರೆಗೆ"
+  ],
+  "import": {
+   "profile": [
+    "ಪ್ರೊಫೈಲ್",
+    "ವೃತ್ತಿಪರ ಸಾರಾಂಶ",
+    "ಸಾರಾಂಶ",
+    "ನನ್ನ ಬಗ್ಗೆ",
+    "ವೃತ್ತಿ ಉದ್ದೇಶ",
+    "ಉದ್ದೇಶ",
+    "ಪರಿಚಯ"
+   ],
+   "skills": [
+    "ಪ್ರಮುಖ ಕೌಶಲ್ಯಗಳು",
+    "ಕೌಶಲ್ಯಗಳು",
+    "ಕೌಶಲಗಳು",
+    "ತಾಂತ್ರಿಕ ಕೌಶಲ್ಯಗಳು",
+    "ಸಾಮರ್ಥ್ಯಗಳು",
+    "ಪರಿಣತಿ"
+   ],
+   "experience": [
+    "ಕೆಲಸದ ಅನುಭವ",
+    "ವೃತ್ತಿ ಅನುಭವ",
+    "ವೃತ್ತಿಪರ ಅನುಭವ",
+    "ಉದ್ಯೋಗ ಅನುಭವ",
+    "ಅನುಭವ",
+    "ಉದ್ಯೋಗ ಇತಿಹಾಸ"
+   ],
+   "education": [
+    "ಶಿಕ್ಷಣ",
+    "ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ",
+    "ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆಗಳು",
+    "ವಿದ್ಯಾರ್ಹತೆ",
+    "ಶೈಕ್ಷಣಿಕ ವಿವರಗಳು"
+   ],
+   "certifications": [
+    "ಕೋರ್ಸ್‌ಗಳು ಮತ್ತು ಪ್ರಮಾಣಪತ್ರಗಳು",
+    "ಪ್ರಮಾಣಪತ್ರಗಳು",
+    "ಕೋರ್ಸ್‌ಗಳು",
+    "ತರಬೇತಿ",
+    "ತರಬೇತಿಗಳು",
+    "ಪ್ರಮಾಣೀಕರಣಗಳು"
+   ],
+   "languages": [
+    "ಭಾಷೆಗಳು",
+    "ಭಾಷಾ ಜ್ಞಾನ",
+    "ತಿಳಿದಿರುವ ಭಾಷೆಗಳು"
+   ],
+   "interests": [
+    "ಆಸಕ್ತಿಗಳು",
+    "ಹವ್ಯಾಸಗಳು",
+    "ಹವ್ಯಾಸಗಳು ಮತ್ತು ಆಸಕ್ತಿಗಳು"
+   ],
+   "projects": [
+    "ಯೋಜನೆಗಳು",
+    "ಪ್ರಾಜೆಕ್ಟ್‌ಗಳು"
+   ],
+   "volunteering": [
+    "ಸ್ವಯಂಸೇವೆ",
+    "ಸ್ವಯಂಸೇವಾ ಕಾರ್ಯ",
+    "ಸಮಾಜ ಸೇವೆ"
+   ],
+   "skip": [
+    "ವೈಯಕ್ತಿಕ ವಿವರಗಳು",
+    "ವೈಯಕ್ತಿಕ ಮಾಹಿತಿ",
+    "ಘೋಷಣೆ",
+    "ಉಲ್ಲೇಖಗಳು",
+    "ಶಿಫಾರಸುದಾರರು"
+   ]
+  },
+  "months": [
+   [
+    "ಜನವರಿ",
+    "ಜನ"
+   ],
+   [
+    "ಫೆಬ್ರವರಿ",
+    "ಫೆಬ್ರುವರಿ",
+    "ಫೆಬ್ರ",
+    "ಫೆ"
+   ],
+   [
+    "ಮಾರ್ಚ್",
+    "ಮಾರ್ಚ"
+   ],
+   [
+    "ಏಪ್ರಿಲ್",
+    "ಏಪ್ರಿ"
+   ],
+   [
+    "ಮೇ"
+   ],
+   [
+    "ಜೂನ್"
+   ],
+   [
+    "ಜುಲೈ"
+   ],
+   [
+    "ಆಗಸ್ಟ್",
+    "ಆಗ"
+   ],
+   [
+    "ಸೆಪ್ಟೆಂಬರ್",
+    "ಸೆಪ್ಟೆಂ",
+    "ಸೆಪ್ಟ"
+   ],
+   [
+    "ಅಕ್ಟೋಬರ್",
+    "ಅಕ್ಟೋ"
+   ],
+   [
+    "ನವೆಂಬರ್",
+    "ನವೆಂ"
+   ],
+   [
+    "ಡಿಸೆಂಬರ್",
+    "ಡಿಸೆಂ"
+   ]
+  ],
+  "now": [
+   "ಇಂದಿನವರೆಗೆ",
+   "ಇಲ್ಲಿಯವರೆಗೆ",
+   "ಈವರೆಗೆ",
+   "ಪ್ರಸ್ತುತ",
+   "ಈಗ",
+   "ಇಂದಿನವರೆಗೂ"
+  ]
+ },
+ {
+  "code": "kok",
+  "name": "कोंकणी",
+  "english_name": "Konkani",
+  "headings": [
+   "प्रोफायल",
+   "मुखेल कुशळटाय",
+   "कामाचो अणभव",
+   "शिक्षण",
+   "कोर्स आनी प्रमाणपत्रां",
+   "भासो",
+   "आवडी",
+   "संपर्क",
+   "आतां मेरेन"
+  ],
+  "import": {
+   "profile": [
+    "प्रोफायल",
+    "स्वता विशीं",
+    "म्हजे विशीं",
+    "सारांश",
+    "वेवसायीक सारांश",
+    "उद्देश"
+   ],
+   "skills": [
+    "मुखेल कुशळटाय",
+    "कुशळटाय",
+    "कौशल्यां",
+    "कौशल्य",
+    "क्षमताय",
+    "तांत्रीक कुशळटाय"
+   ],
+   "experience": [
+    "कामाचो अणभव",
+    "अणभव",
+    "वेवसायीक अणभव",
+    "नोकरेचो अणभव",
+    "रोजगार इतिहास"
+   ],
+   "education": [
+    "शिक्षण",
+    "शैक्षणीक पात्रता",
+    "शैक्षणीक माहिती",
+    "पात्रता"
+   ],
+   "certifications": [
+    "कोर्स आनी प्रमाणपत्रां",
+    "प्रमाणपत्रां",
+    "कोर्स",
+    "प्रशिक्षण",
+    "अभ्यासक्रम"
+   ],
+   "languages": [
+    "भासो",
+    "भास",
+    "भास ज्ञान",
+    "येवपी भासो"
+   ],
+   "interests": [
+    "आवडी",
+    "छंद",
+    "आवडी आनी छंद"
+   ],
+   "projects": [
+    "प्रकल्प"
+   ],
+   "volunteering": [
+    "स्वयंसेवा",
+    "समाजसेवा",
+    "स्वयंसेवी काम"
+   ],
+   "skip": [
+    "वैयक्तीक माहिती",
+    "संदर्भ",
+    "घोशणा",
+    "संपर्क माहिती"
+   ]
+  },
+  "months": [
+   [
+    "जानेवारी",
+    "जाने"
+   ],
+   [
+    "फेब्रुवारी",
+    "फेब्रु"
+   ],
+   [
+    "मार्च"
+   ],
+   [
+    "एप्रील",
+    "एप्रिल"
+   ],
+   [
+    "मे"
+   ],
+   [
+    "जून"
+   ],
+   [
+    "जुलय",
+    "जुलै"
+   ],
+   [
+    "ऑगस्ट",
+    "ऑग"
+   ],
+   [
+    "सप्टेंबर",
+    "सप्टें"
+   ],
+   [
+    "ऑक्टोबर",
+    "ऑक्टो"
+   ],
+   [
+    "नोव्हेंबर",
+    "नोव्हें"
+   ],
+   [
+    "डिसेंबर",
+    "डिसें"
+   ]
+  ],
+  "now": [
+   "आतां मेरेन",
+   "आतां",
+   "सद्या",
+   "चालू",
+   "आयज मेरेन"
+  ]
+ },
+ {
+  "code": "lb",
+  "name": "Lëtzebuergesch",
+  "english_name": "Luxembourgish",
+  "headings": [
+   "Profil",
+   "Kärkompetenzen",
+   "Beruffserfarung",
+   "Ausbildung",
+   "Weiderbildungen an Zertifikater",
+   "Sproochen",
+   "Interessen",
+   "Kontakt",
+   "haut"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "iwwer mech",
+    "kuerzprofil",
+    "resumé",
+    "zesummefassung"
+   ],
+   "skills": [
+    "kärkompetenzen",
+    "kompetenzen",
+    "fäegkeeten",
+    "kenntnisser",
+    "qualifikatiounen"
+   ],
+   "experience": [
+    "beruffserfarung",
+    "berufflechen eegang",
+    "beruffleche wee",
+    "erfarung",
+    "aarbechtserfarung"
+   ],
+   "education": [
+    "ausbildung",
+    "schoulausbildung",
+    "studium",
+    "studien"
+   ],
+   "certifications": [
+    "weiderbildungen an zertifikater",
+    "weiderbildung",
+    "weiderbildungen",
+    "zertifikater",
+    "coursen",
+    "formatiounen"
+   ],
+   "languages": [
+    "sproochen",
+    "sproochkenntnisser",
+    "friemsproochen"
+   ],
+   "interests": [
+    "interessen",
+    "hobbyen",
+    "fräizäit",
+    "fräizäitaktivitéiten"
+   ],
+   "projects": [
+    "projeten",
+    "projekter"
+   ],
+   "volunteering": [
+    "benevolat",
+    "éierenamt",
+    "fräiwëlleg engagement"
+   ],
+   "skip": [
+    "perséinlech donnéeën",
+    "kontaktdonnéeën",
+    "referenzen"
+   ]
+  },
+  "months": [
+   [
+    "januar",
+    "jan",
+    "jannuar"
+   ],
+   [
+    "februar",
+    "feb",
+    "feber"
+   ],
+   [
+    "mäerz",
+    "mäe",
+    "mär"
+   ],
+   [
+    "abrëll",
+    "abr",
+    "apr"
+   ],
+   [
+    "mee",
+    "mai"
+   ],
+   [
+    "juni",
+    "jun"
+   ],
+   [
+    "juli",
+    "jul"
+   ],
+   [
+    "august",
+    "aug"
+   ],
+   [
+    "september",
+    "sep",
+    "sept"
+   ],
+   [
+    "oktober",
+    "okt"
+   ],
+   [
+    "november",
+    "nov"
+   ],
+   [
+    "dezember",
+    "dez"
+   ]
+  ],
+  "now": [
+   "haut",
+   "bis haut",
+   "aktuell",
+   "momentan",
+   "lafend"
+  ]
+ },
+ {
+  "code": "lv",
+  "name": "Latviešu",
+  "english_name": "Latvian",
+  "headings": [
+   "Profils",
+   "Galvenās prasmes",
+   "Darba pieredze",
+   "Izglītība",
+   "Kursi un sertifikāti",
+   "Valodas",
+   "Intereses",
+   "Kontakti",
+   "šobrīd"
+  ],
+  "import": {
+   "profile": [
+    "profils",
+    "par mani",
+    "kopsavilkums",
+    "profesionālais profils",
+    "īsumā par mani",
+    "mērķis"
+   ],
+   "skills": [
+    "galvenās prasmes",
+    "prasmes",
+    "kompetences",
+    "profesionālās prasmes",
+    "zināšanas un prasmes",
+    "datorprasmes",
+    "kvalifikācija"
+   ],
+   "experience": [
+    "darba pieredze",
+    "profesionālā pieredze",
+    "pieredze",
+    "darba vieta"
+   ],
+   "education": [
+    "izglītība",
+    "studijas",
+    "akadēmiskā izglītība"
+   ],
+   "certifications": [
+    "kursi un sertifikāti",
+    "kursi",
+    "sertifikāti",
+    "papildizglītība",
+    "apmācības",
+    "tālākizglītība"
+   ],
+   "languages": [
+    "valodas",
+    "valodu zināšanas",
+    "valodu prasmes"
+   ],
+   "interests": [
+    "intereses",
+    "hobiji",
+    "vaļasprieki",
+    "brīvais laiks"
+   ],
+   "projects": [
+    "projekti"
+   ],
+   "volunteering": [
+    "brīvprātīgais darbs",
+    "brīvprātīgā pieredze",
+    "sabiedriskā darbība"
+   ],
+   "skip": [
+    "personas dati",
+    "personīgā informācija",
+    "kontaktinformācija",
+    "atsauksmes",
+    "rekomendācijas"
+   ]
+  },
+  "months": [
+   [
+    "janvāris",
+    "janvārī",
+    "janvāra",
+    "janv",
+    "jan"
+   ],
+   [
+    "februāris",
+    "februārī",
+    "februāra",
+    "febr",
+    "feb"
+   ],
+   [
+    "marts",
+    "martā",
+    "marta",
+    "mar"
+   ],
+   [
+    "aprīlis",
+    "aprīlī",
+    "aprīļa",
+    "apr"
+   ],
+   [
+    "maijs",
+    "maijā",
+    "maija",
+    "mai"
+   ],
+   [
+    "jūnijs",
+    "jūnijā",
+    "jūnija",
+    "jūn"
+   ],
+   [
+    "jūlijs",
+    "jūlijā",
+    "jūlija",
+    "jūl"
+   ],
+   [
+    "augusts",
+    "augustā",
+    "augusta",
+    "aug"
+   ],
+   [
+    "septembris",
+    "septembrī",
+    "septembra",
+    "sept",
+    "sep"
+   ],
+   [
+    "oktobris",
+    "oktobrī",
+    "oktobra",
+    "okt"
+   ],
+   [
+    "novembris",
+    "novembrī",
+    "novembra",
+    "nov"
+   ],
+   [
+    "decembris",
+    "decembrī",
+    "decembra",
+    "dec"
+   ]
+  ],
+  "now": [
+   "šobrīd",
+   "patlaban",
+   "pašlaik",
+   "līdz šim",
+   "līdz šodienai",
+   "tagad",
+   "joprojām"
+  ]
+ },
+ {
+  "code": "mi",
+  "name": "Māori",
+  "english_name": "Māori",
+  "headings": [
+   "Kōtaha",
+   "Pūkenga matua",
+   "Wheako mahi",
+   "Mātauranga",
+   "Akoranga me ngā tiwhikete",
+   "Ngā reo",
+   "Ngā aronga",
+   "Whakapā",
+   "ināianei"
+  ],
+  "import": {
+   "profile": [
+    "kōtaha",
+    "kōtaha ngaio",
+    "mōku",
+    "ko wai au",
+    "whakarāpopototanga",
+    "tirohanga whānui"
+   ],
+   "skills": [
+    "pūkenga matua",
+    "pūkenga",
+    "ngā pūkenga",
+    "ngā pūkenga matua",
+    "āheinga",
+    "ngā āheinga",
+    "kaha"
+   ],
+   "experience": [
+    "wheako mahi",
+    "ngā wheako mahi",
+    "wheako",
+    "hītori mahi",
+    "mahi o mua",
+    "ngā mahi"
+   ],
+   "education": [
+    "mātauranga",
+    "akoranga ā-mātauranga",
+    "ngā tohu",
+    "tohu mātauranga",
+    "ngā tohu mātauranga"
+   ],
+   "certifications": [
+    "akoranga me ngā tiwhikete",
+    "ngā akoranga",
+    "akoranga",
+    "ngā tiwhikete",
+    "tiwhikete",
+    "whakangungu"
+   ],
+   "languages": [
+    "ngā reo",
+    "reo",
+    "ngā reo kōrero",
+    "pūkenga reo"
+   ],
+   "interests": [
+    "ngā aronga",
+    "aronga",
+    "ngā pārekareka",
+    "ngā mahi ngahau",
+    "ngā ngākau nui"
+   ],
+   "projects": [
+    "ngā kaupapa",
+    "kaupapa"
+   ],
+   "volunteering": [
+    "mahi tūao",
+    "ngā mahi tūao",
+    "tūao"
+   ],
+   "skip": [
+    "taipitopito whaiaro",
+    "ngā taipitopito whaiaro",
+    "ngā kaitautoko",
+    "kaitautoko",
+    "pepehā"
+   ]
+  },
+  "months": [
+   [
+    "kohitātea",
+    "kohitatea",
+    "hānuere",
+    "hanuere"
+   ],
+   [
+    "huitanguru",
+    "pēpuere",
+    "pepuere"
+   ],
+   [
+    "poutūterangi",
+    "pouterangi",
+    "poututerangi",
+    "māehe",
+    "maehe"
+   ],
+   [
+    "paengawhāwhā",
+    "paengawhawha",
+    "āperira",
+    "aperira"
+   ],
+   [
+    "haratua",
+    "mei"
+   ],
+   [
+    "pipiri",
+    "hune"
+   ],
+   [
+    "hōngongoi",
+    "hongongoi",
+    "hūrae",
+    "hurae"
+   ],
+   [
+    "hereturikōkā",
+    "hereturikoka",
+    "ākuhata",
+    "akuhata"
+   ],
+   [
+    "mahuru",
+    "hepetema"
+   ],
+   [
+    "whiringa-ā-nuku",
+    "whiringa a nuku",
+    "whiringa-a-nuku",
+    "oketopa"
+   ],
+   [
+    "whiringa-ā-rangi",
+    "whiringa a rangi",
+    "whiringa-a-rangi",
+    "noema"
+   ],
+   [
+    "hakihea",
+    "tīhema",
+    "tihema"
+   ]
+  ],
+  "now": [
+   "ināianei",
+   "inaianei",
+   "tae noa mai ki nāianei",
+   "tae noa ki nāianei",
+   "o nāianei",
+   "kei te haere tonu"
+  ]
+ },
+ {
+  "code": "mk",
+  "name": "Македонски",
+  "english_name": "Macedonian (North Macedonia)",
+  "headings": [
+   "Профил",
+   "Клучни вештини",
+   "Работно искуство",
+   "Образование",
+   "Курсеви и сертификати",
+   "Јазици",
+   "Интереси",
+   "Контакт",
+   "денес"
+  ],
+  "import": {
+   "profile": [
+    "профил",
+    "професионален профил",
+    "за мене",
+    "резиме",
+    "краток опис",
+    "лично претставување"
+   ],
+   "skills": [
+    "клучни вештини",
+    "вештини",
+    "компетенции",
+    "стручни вештини",
+    "технички вештини",
+    "компјутерски вештини",
+    "лични вештини и компетенции",
+    "знаења и вештини"
+   ],
+   "experience": [
+    "работно искуство",
+    "професионално искуство",
+    "искуство",
+    "работен стаж"
+   ],
+   "education": [
+    "образование",
+    "образование и обука",
+    "образование и оспособување",
+    "школување"
+   ],
+   "certifications": [
+    "курсеви и сертификати",
+    "сертификати",
+    "курсеви",
+    "обуки",
+    "дополнително образование",
+    "семинари и обуки"
+   ],
+   "languages": [
+    "јазици",
+    "странски јазици",
+    "познавање јазици",
+    "јазични вештини",
+    "познавање на странски јазици"
+   ],
+   "interests": [
+    "интереси",
+    "хоби",
+    "хобија",
+    "слободно време"
+   ],
+   "projects": [
+    "проекти"
+   ],
+   "volunteering": [
+    "волонтирање",
+    "волонтерско искуство",
+    "волонтерска работа"
+   ],
+   "skip": [
+    "лични податоци",
+    "контакт податоци",
+    "контакт-податоци",
+    "препораки",
+    "референци"
+   ]
+  },
+  "months": [
+   [
+    "јануари",
+    "јан"
+   ],
+   [
+    "февруари",
+    "фев",
+    "февр"
+   ],
+   [
+    "март",
+    "мар"
+   ],
+   [
+    "април",
+    "апр"
+   ],
+   [
+    "мај"
+   ],
+   [
+    "јуни",
+    "јун"
+   ],
+   [
+    "јули",
+    "јул"
+   ],
+   [
+    "август",
+    "авг"
+   ],
+   [
+    "септември",
+    "сеп",
+    "септ"
+   ],
+   [
+    "октомври",
+    "окт"
+   ],
+   [
+    "ноември",
+    "ное",
+    "ноем"
+   ],
+   [
+    "декември",
+    "дек"
+   ]
+  ],
+  "now": [
+   "денес",
+   "до денес",
+   "сега",
+   "моментално",
+   "тековно",
+   "во тек",
+   "до сега"
+  ]
+ },
+ {
+  "code": "ml",
+  "name": "മലയാളം",
+  "english_name": "Malayalam",
+  "headings": [
+   "പ്രൊഫൈൽ",
+   "പ്രധാന കഴിവുകൾ",
+   "പ്രവൃത്തിപരിചയം",
+   "വിദ്യാഭ്യാസം",
+   "കോഴ്സുകളും സർട്ടിഫിക്കേഷനുകളും",
+   "ഭാഷകൾ",
+   "താൽപ്പര്യങ്ങൾ",
+   "ബന്ധപ്പെടുക",
+   "ഇതുവരെ"
+  ],
+  "import": {
+   "profile": [
+    "പ്രൊഫൈൽ",
+    "സംഗ്രഹം",
+    "എന്നെക്കുറിച്ച്",
+    "കരിയർ ലക്ഷ്യം",
+    "ലക്ഷ്യം",
+    "പ്രൊഫഷണൽ സംഗ്രഹം"
+   ],
+   "skills": [
+    "പ്രധാന കഴിവുകൾ",
+    "കഴിവുകൾ",
+    "നൈപുണ്യങ്ങൾ",
+    "സാങ്കേതിക കഴിവുകൾ",
+    "പ്രാവീണ്യം",
+    "കമ്പ്യൂട്ടർ പരിജ്ഞാനം"
+   ],
+   "experience": [
+    "പ്രവൃത്തിപരിചയം",
+    "തൊഴിൽ പരിചയം",
+    "അനുഭവപരിചയം",
+    "ജോലി പരിചയം",
+    "പ്രവൃത്തി പരിചയം",
+    "തൊഴിൽ ചരിത്രം"
+   ],
+   "education": [
+    "വിദ്യാഭ്യാസം",
+    "വിദ്യാഭ്യാസ യോഗ്യത",
+    "വിദ്യാഭ്യാസ യോഗ്യതകൾ",
+    "അക്കാദമിക് യോഗ്യത",
+    "യോഗ്യതകൾ"
+   ],
+   "certifications": [
+    "കോഴ്സുകളും സർട്ടിഫിക്കേഷനുകളും",
+    "സർട്ടിഫിക്കേഷനുകൾ",
+    "സർട്ടിഫിക്കറ്റുകൾ",
+    "കോഴ്സുകൾ",
+    "പരിശീലനം",
+    "അധിക യോഗ്യതകൾ"
+   ],
+   "languages": [
+    "ഭാഷകൾ",
+    "ഭാഷാ പരിജ്ഞാനം",
+    "അറിയാവുന്ന ഭാഷകൾ"
+   ],
+   "interests": [
+    "താൽപ്പര്യങ്ങൾ",
+    "താത്പര്യങ്ങൾ",
+    "ഹോബികൾ",
+    "വിനോദങ്ങൾ"
+   ],
+   "projects": [
+    "പ്രോജക്റ്റുകൾ",
+    "പ്രോജക്ടുകൾ",
+    "പദ്ധതികൾ"
+   ],
+   "volunteering": [
+    "സന്നദ്ധ പ്രവർത്തനം",
+    "സന്നദ്ധ സേവനം",
+    "സാമൂഹിക സേവനം"
+   ],
+   "skip": [
+    "വ്യക്തിഗത വിവരങ്ങൾ",
+    "സ്വകാര്യ വിവരങ്ങൾ",
+    "റഫറൻസുകൾ",
+    "പ്രഖ്യാപനം",
+    "സത്യപ്രസ്താവന"
+   ]
+  },
+  "months": [
+   [
+    "ജനുവരി",
+    "ജനു"
+   ],
+   [
+    "ഫെബ്രുവരി",
+    "ഫെബ്രു"
+   ],
+   [
+    "മാർച്ച്",
+    "മാർ"
+   ],
+   [
+    "ഏപ്രിൽ",
+    "ഏപ്രി"
+   ],
+   [
+    "മേയ്",
+    "മെയ്"
+   ],
+   [
+    "ജൂൺ"
+   ],
+   [
+    "ജൂലൈ"
+   ],
+   [
+    "ഓഗസ്റ്റ്",
+    "ആഗസ്റ്റ്",
+    "ഓഗ"
+   ],
+   [
+    "സെപ്റ്റംബർ",
+    "സെപ്തംബർ",
+    "സെപ്റ്റ"
+   ],
+   [
+    "ഒക്ടോബർ",
+    "ഒക്ടോ"
+   ],
+   [
+    "നവംബർ",
+    "നവം"
+   ],
+   [
+    "ഡിസംബർ",
+    "ഡിസം"
+   ]
+  ],
+  "now": [
+   "ഇതുവരെ",
+   "ഇപ്പോൾ",
+   "നിലവിൽ",
+   "ഇന്നുവരെ",
+   "തുടരുന്നു"
+  ]
+ },
+ {
+  "code": "mr",
+  "name": "मराठी",
+  "english_name": "Marathi",
+  "headings": [
+   "प्रोफाइल",
+   "मुख्य कौशल्ये",
+   "कामाचा अनुभव",
+   "शिक्षण",
+   "अभ्यासक्रम आणि प्रमाणपत्रे",
+   "भाषा",
+   "आवडी",
+   "संपर्क",
+   "सध्या"
+  ],
+  "import": {
+   "profile": [
+    "प्रोफाइल",
+    "व्यावसायिक सारांश",
+    "सारांश",
+    "माझ्याविषयी",
+    "स्वपरिचय",
+    "परिचय",
+    "उद्दिष्ट",
+    "करिअर उद्दिष्ट"
+   ],
+   "skills": [
+    "मुख्य कौशल्ये",
+    "कौशल्ये",
+    "कौशल्य",
+    "तांत्रिक कौशल्ये",
+    "क्षमता",
+    "पात्रता",
+    "संगणक ज्ञान"
+   ],
+   "experience": [
+    "कामाचा अनुभव",
+    "अनुभव",
+    "व्यावसायिक अनुभव",
+    "नोकरीचा अनुभव",
+    "कार्यानुभव",
+    "कारकीर्द"
+   ],
+   "education": [
+    "शिक्षण",
+    "शैक्षणिक पात्रता",
+    "शैक्षणिक माहिती",
+    "शैक्षणिक तपशील",
+    "शिक्षण व पात्रता"
+   ],
+   "certifications": [
+    "अभ्यासक्रम आणि प्रमाणपत्रे",
+    "अभ्यासक्रम",
+    "प्रमाणपत्रे",
+    "प्रशिक्षण",
+    "प्रमाणपत्र अभ्यासक्रम"
+   ],
+   "languages": [
+    "भाषा",
+    "भाषा ज्ञान",
+    "ज्ञात भाषा",
+    "अवगत भाषा"
+   ],
+   "interests": [
+    "आवडी",
+    "छंद",
+    "आवडी व छंद",
+    "आवडी आणि छंद"
+   ],
+   "projects": [
+    "प्रकल्प",
+    "प्रकल्प कार्य"
+   ],
+   "volunteering": [
+    "स्वयंसेवा",
+    "सामाजिक कार्य",
+    "स्वयंसेवी कार्य"
+   ],
+   "skip": [
+    "वैयक्तिक माहिती",
+    "वैयक्तिक तपशील",
+    "संदर्भ",
+    "घोषणा",
+    "प्रतिज्ञापत्र"
+   ]
+  },
+  "months": [
+   [
+    "जानेवारी",
+    "जाने",
+    "जाने."
+   ],
+   [
+    "फेब्रुवारी",
+    "फेब्रु",
+    "फेब्रु."
+   ],
+   [
+    "मार्च"
+   ],
+   [
+    "एप्रिल",
+    "एप्रि",
+    "एप्रि."
+   ],
+   [
+    "मे"
+   ],
+   [
+    "जून"
+   ],
+   [
+    "जुलै"
+   ],
+   [
+    "ऑगस्ट",
+    "ऑग",
+    "ऑग."
+   ],
+   [
+    "सप्टेंबर",
+    "सप्टें",
+    "सप्टें."
+   ],
+   [
+    "ऑक्टोबर",
+    "ऑक्टो",
+    "ऑक्टो."
+   ],
+   [
+    "नोव्हेंबर",
+    "नोव्हें",
+    "नोव्हें."
+   ],
+   [
+    "डिसेंबर",
+    "डिसें",
+    "डिसें."
+   ]
+  ],
+  "now": [
+   "सध्या",
+   "आजपर्यंत",
+   "आतापर्यंत",
+   "चालू",
+   "सद्यस्थितीत",
+   "वर्तमान"
+  ]
+ },
+ {
+  "code": "ms",
+  "name": "Bahasa Melayu",
+  "english_name": "Malay",
+  "headings": [
+   "Profil",
+   "Kemahiran Utama",
+   "Pengalaman Kerja",
+   "Pendidikan",
+   "Kursus dan Pensijilan",
+   "Bahasa",
+   "Minat",
+   "Hubungi",
+   "kini"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "profil peribadi",
+    "ringkasan",
+    "ringkasan profesional",
+    "tentang saya",
+    "objektif",
+    "objektif kerjaya"
+   ],
+   "skills": [
+    "kemahiran utama",
+    "kemahiran",
+    "kemahiran teknikal",
+    "kecekapan",
+    "kompetensi",
+    "kebolehan"
+   ],
+   "experience": [
+    "pengalaman kerja",
+    "pengalaman",
+    "pengalaman profesional",
+    "sejarah pekerjaan",
+    "pekerjaan"
+   ],
+   "education": [
+    "pendidikan",
+    "latar belakang pendidikan",
+    "kelayakan akademik",
+    "akademik",
+    "kelulusan akademik"
+   ],
+   "certifications": [
+    "kursus dan pensijilan",
+    "pensijilan",
+    "sijil",
+    "kursus",
+    "latihan",
+    "sijil profesional"
+   ],
+   "languages": [
+    "bahasa",
+    "kemahiran bahasa",
+    "penguasaan bahasa"
+   ],
+   "interests": [
+    "minat",
+    "hobi",
+    "minat dan hobi",
+    "aktiviti"
+   ],
+   "projects": [
+    "projek",
+    "projek utama"
+   ],
+   "volunteering": [
+    "kerja sukarela",
+    "sukarelawan",
+    "aktiviti sukarela",
+    "khidmat masyarakat"
+   ],
+   "skip": [
+    "maklumat peribadi",
+    "butiran peribadi",
+    "maklumat hubungan",
+    "rujukan",
+    "perujuk"
+   ]
+  },
+  "months": [
+   [
+    "januari",
+    "jan"
+   ],
+   [
+    "februari",
+    "feb"
+   ],
+   [
+    "mac"
+   ],
+   [
+    "april",
+    "apr"
+   ],
+   [
+    "mei"
+   ],
+   [
+    "jun"
+   ],
+   [
+    "julai",
+    "jul"
+   ],
+   [
+    "ogos",
+    "ogo",
+    "ogs"
+   ],
+   [
+    "september",
+    "sep",
+    "sept"
+   ],
+   [
+    "oktober",
+    "okt"
+   ],
+   [
+    "november",
+    "nov"
+   ],
+   [
+    "disember",
+    "dis"
+   ]
+  ],
+  "now": [
+   "kini",
+   "sekarang",
+   "hingga kini",
+   "sehingga kini",
+   "masih bekerja",
+   "semasa"
+  ]
+ },
+ {
+  "code": "mt",
+  "name": "Malti",
+  "english_name": "Maltese",
+  "headings": [
+   "Profil",
+   "Ħiliet ewlenin",
+   "Esperjenza tax-xogħol",
+   "Edukazzjoni",
+   "Korsijiet u ċertifikati",
+   "Lingwi",
+   "Interessi",
+   "Kuntatt",
+   "sal-lum"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "profil personali",
+    "profil professjonali",
+    "sommarju",
+    "dwari",
+    "għan tal-karriera"
+   ],
+   "skills": [
+    "ħiliet ewlenin",
+    "ħiliet",
+    "kompetenzi",
+    "kwalifiki",
+    "ħiliet tekniċi",
+    "ħiliet personali"
+   ],
+   "experience": [
+    "esperjenza tax-xogħol",
+    "esperjenza professjonali",
+    "esperjenza",
+    "impjiegi",
+    "storja tal-impjieg",
+    "karriera"
+   ],
+   "education": [
+    "edukazzjoni",
+    "edukazzjoni u taħriġ",
+    "kwalifiki akkademiċi",
+    "studji",
+    "taħriġ"
+   ],
+   "certifications": [
+    "korsijiet u ċertifikati",
+    "korsijiet",
+    "ċertifikati",
+    "ċertifikazzjonijiet",
+    "taħriġ professjonali"
+   ],
+   "languages": [
+    "lingwi",
+    "ħiliet lingwistiċi",
+    "għarfien tal-lingwi"
+   ],
+   "interests": [
+    "interessi",
+    "passatempi",
+    "ħobbies",
+    "attivitajiet oħra"
+   ],
+   "projects": [
+    "proġetti"
+   ],
+   "volunteering": [
+    "volontarjat",
+    "xogħol volontarju",
+    "esperjenza ta’ volontarjat"
+   ],
+   "skip": [
+    "dettalji personali",
+    "informazzjoni personali",
+    "dettalji ta’ kuntatt",
+    "referenzi"
+   ]
+  },
+  "months": [
+   [
+    "jannar",
+    "jan"
+   ],
+   [
+    "frar",
+    "fra"
+   ],
+   [
+    "marzu",
+    "mar"
+   ],
+   [
+    "april",
+    "apr"
+   ],
+   [
+    "mejju",
+    "mej"
+   ],
+   [
+    "ġunju",
+    "ġun",
+    "gunju"
+   ],
+   [
+    "lulju",
+    "lul"
+   ],
+   [
+    "awwissu",
+    "aww"
+   ],
+   [
+    "settembru",
+    "set"
+   ],
+   [
+    "ottubru",
+    "ott"
+   ],
+   [
+    "novembru",
+    "nov"
+   ],
+   [
+    "diċembru",
+    "diċ",
+    "dicembru"
+   ]
+  ],
+  "now": [
+   "sal-lum",
+   "preżent",
+   "illum",
+   "attwalment",
+   "għaddej",
+   "sa issa"
+  ]
+ },
+ {
+  "code": "ne",
+  "name": "नेपाली",
+  "english_name": "Nepali",
+  "headings": [
+   "प्रोफाइल",
+   "मुख्य सीप",
+   "कार्य अनुभव",
+   "शिक्षा",
+   "कोर्स र प्रमाणपत्र",
+   "भाषाहरू",
+   "रुचिहरू",
+   "सम्पर्क",
+   "हालसम्म"
+  ],
+  "import": {
+   "profile": [
+    "प्रोफाइल",
+    "सारांश",
+    "व्यक्तिगत सारांश",
+    "पेशागत सारांश",
+    "मेरो बारेमा",
+    "परिचय",
+    "उद्देश्य",
+    "करियर उद्देश्य"
+   ],
+   "skills": [
+    "मुख्य सीप",
+    "सीप",
+    "सीपहरू",
+    "दक्षता",
+    "दक्षताहरू",
+    "प्राविधिक सीप",
+    "क्षमता",
+    "योग्यता"
+   ],
+   "experience": [
+    "कार्य अनुभव",
+    "अनुभव",
+    "पेशागत अनुभव",
+    "कामको अनुभव",
+    "रोजगारीको विवरण",
+    "रोजगार इतिहास"
+   ],
+   "education": [
+    "शिक्षा",
+    "शैक्षिक योग्यता",
+    "शैक्षिक विवरण",
+    "शैक्षिक पृष्ठभूमि",
+    "अध्ययन"
+   ],
+   "certifications": [
+    "कोर्स र प्रमाणपत्र",
+    "प्रमाणपत्र",
+    "प्रमाणपत्रहरू",
+    "तालिम",
+    "तालिमहरू",
+    "कोर्स",
+    "पाठ्यक्रम"
+   ],
+   "languages": [
+    "भाषाहरू",
+    "भाषा",
+    "भाषा ज्ञान",
+    "भाषिक दक्षता"
+   ],
+   "interests": [
+    "रुचिहरू",
+    "रुचि",
+    "सोख",
+    "शौक",
+    "अभिरुचि"
+   ],
+   "projects": [
+    "परियोजना",
+    "परियोजनाहरू",
+    "प्रोजेक्ट",
+    "प्रोजेक्टहरू"
+   ],
+   "volunteering": [
+    "स्वयंसेवा",
+    "स्वयंसेवी कार्य",
+    "सामाजिक कार्य"
+   ],
+   "skip": [
+    "व्यक्तिगत विवरण",
+    "व्यक्तिगत जानकारी",
+    "सन्दर्भ",
+    "सन्दर्भ व्यक्ति",
+    "घोषणा",
+    "सम्पर्क विवरण"
+   ]
+  },
+  "months": [
+   [
+    "जनवरी",
+    "जन"
+   ],
+   [
+    "फेब्रुअरी",
+    "फेब्रुवरी",
+    "फेब"
+   ],
+   [
+    "मार्च"
+   ],
+   [
+    "अप्रिल",
+    "अप्रि"
+   ],
+   [
+    "मे",
+    "मई"
+   ],
+   [
+    "जुन",
+    "जून"
+   ],
+   [
+    "जुलाई",
+    "जुला"
+   ],
+   [
+    "अगस्ट",
+    "अगस्त",
+    "अग"
+   ],
+   [
+    "सेप्टेम्बर",
+    "सेप्टेम्वर",
+    "सेप",
+    "सेप्ट"
+   ],
+   [
+    "अक्टोबर",
+    "अक्टुबर",
+    "अक्टो"
+   ],
+   [
+    "नोभेम्बर",
+    "नोभे"
+   ],
+   [
+    "डिसेम्बर",
+    "डिसे"
+   ]
+  ],
+  "now": [
+   "हालसम्म",
+   "हाल",
+   "अहिलेसम्म",
+   "हालै",
+   "वर्तमान",
+   "जारी",
+   "आजसम्म",
+   "हाल कार्यरत"
+  ]
+ },
+ {
+  "code": "or",
+  "name": "ଓଡ଼ିଆ",
+  "english_name": "Odia",
+  "headings": [
+   "ପ୍ରୋଫାଇଲ୍",
+   "ମୁଖ୍ୟ ଦକ୍ଷତା",
+   "କାର୍ଯ୍ୟ ଅଭିଜ୍ଞତା",
+   "ଶିକ୍ଷା",
+   "ପାଠ୍ୟକ୍ରମ ଓ ପ୍ରମାଣପତ୍ର",
+   "ଭାଷା",
+   "ଆଗ୍ରହ",
+   "ଯୋଗାଯୋଗ",
+   "ବର୍ତ୍ତମାନ"
+  ],
+  "import": {
+   "profile": [
+    "ପ୍ରୋଫାଇଲ୍",
+    "ପ୍ରୋଫାଇଲ",
+    "ସାରାଂଶ",
+    "ବୃତ୍ତିଗତ ସାରାଂଶ",
+    "ମୋ ବିଷୟରେ",
+    "ଉଦ୍ଦେଶ୍ୟ",
+    "କ୍ୟାରିୟର ଉଦ୍ଦେଶ୍ୟ"
+   ],
+   "skills": [
+    "ମୁଖ୍ୟ ଦକ୍ଷତା",
+    "ଦକ୍ଷତା",
+    "କୌଶଳ",
+    "ବୈଷୟିକ ଦକ୍ଷତା",
+    "ଯୋଗ୍ୟତା",
+    "ଦକ୍ଷତା ଓ କୌଶଳ"
+   ],
+   "experience": [
+    "କାର୍ଯ୍ୟ ଅଭିଜ୍ଞତା",
+    "ଅଭିଜ୍ଞତା",
+    "ବୃତ୍ତିଗତ ଅଭିଜ୍ଞତା",
+    "ଚାକିରି ଅଭିଜ୍ଞତା",
+    "କର୍ମ ଅଭିଜ୍ଞତା"
+   ],
+   "education": [
+    "ଶିକ୍ଷା",
+    "ଶିକ୍ଷାଗତ ଯୋଗ୍ୟତା",
+    "ଶୈକ୍ଷିକ ଯୋଗ୍ୟତା",
+    "ଶିକ୍ଷାଗତ ବିବରଣୀ"
+   ],
+   "certifications": [
+    "ପାଠ୍ୟକ୍ରମ ଓ ପ୍ରମାଣପତ୍ର",
+    "ପ୍ରମାଣପତ୍ର",
+    "ପାଠ୍ୟକ୍ରମ",
+    "ପ୍ରଶିକ୍ଷଣ",
+    "ତାଲିମ"
+   ],
+   "languages": [
+    "ଭାଷା",
+    "ଭାଷା ଜ୍ଞାନ",
+    "ଜଣାଥିବା ଭାଷା"
+   ],
+   "interests": [
+    "ଆଗ୍ରହ",
+    "ରୁଚି",
+    "ଶଉକ",
+    "ସଉକ"
+   ],
+   "projects": [
+    "ପ୍ରକଳ୍ପ",
+    "ପ୍ରୋଜେକ୍ଟ"
+   ],
+   "volunteering": [
+    "ସ୍ୱେଚ୍ଛାସେବା",
+    "ସ୍ୱେଚ୍ଛାସେବୀ କାର୍ଯ୍ୟ",
+    "ସାମାଜିକ ସେବା"
+   ],
+   "skip": [
+    "ବ୍ୟକ୍ତିଗତ ବିବରଣୀ",
+    "ବ୍ୟକ୍ତିଗତ ତଥ୍ୟ",
+    "ଘୋଷଣା",
+    "ରେଫରେନ୍ସ"
+   ]
+  },
+  "months": [
+   [
+    "ଜାନୁଆରୀ",
+    "ଜାନୁୟାରୀ",
+    "ଜାନୁ"
+   ],
+   [
+    "ଫେବୃଆରୀ",
+    "ଫେବୃୟାରୀ",
+    "ଫେବ୍ରୁଆରୀ",
+    "ଫେବ"
+   ],
+   [
+    "ମାର୍ଚ୍ଚ",
+    "ମାର୍ଚ"
+   ],
+   [
+    "ଅପ୍ରେଲ",
+    "ଏପ୍ରିଲ",
+    "ଅପ୍ରେଲ୍"
+   ],
+   [
+    "ମଇ",
+    "ମେ"
+   ],
+   [
+    "ଜୁନ",
+    "ଜୁନ୍"
+   ],
+   [
+    "ଜୁଲାଇ"
+   ],
+   [
+    "ଅଗଷ୍ଟ",
+    "ଅଗଷ୍ଟ୍",
+    "ଅଗ"
+   ],
+   [
+    "ସେପ୍ଟେମ୍ବର",
+    "ସେପ୍ଟେ"
+   ],
+   [
+    "ଅକ୍ଟୋବର",
+    "ଅକ୍ଟୋ"
+   ],
+   [
+    "ନଭେମ୍ବର",
+    "ନଭେ"
+   ],
+   [
+    "ଡିସେମ୍ବର",
+    "ଡିସେ"
+   ]
+  ],
+  "now": [
+   "ବର୍ତ୍ତମାନ",
+   "ବର୍ତ୍ତମାନ ପର୍ଯ୍ୟନ୍ତ",
+   "ଆଜି ପର୍ଯ୍ୟନ୍ତ",
+   "ଏପର୍ଯ୍ୟନ୍ତ",
+   "ଚାଲୁ ଅଛି",
+   "ଜାରି ଅଛି"
+  ]
+ },
+ {
+  "code": "pa",
+  "name": "ਪੰਜਾਬੀ",
+  "english_name": "Punjabi (India)",
+  "headings": [
+   "ਪ੍ਰੋਫ਼ਾਈਲ",
+   "ਮੁੱਖ ਹੁਨਰ",
+   "ਕੰਮ ਦਾ ਤਜਰਬਾ",
+   "ਸਿੱਖਿਆ",
+   "ਕੋਰਸ ਅਤੇ ਪ੍ਰਮਾਣ-ਪੱਤਰ",
+   "ਭਾਸ਼ਾਵਾਂ",
+   "ਰੁਚੀਆਂ",
+   "ਸੰਪਰਕ",
+   "ਹੁਣ ਤੱਕ"
+  ],
+  "import": {
+   "profile": [
+    "ਪ੍ਰੋਫ਼ਾਈਲ",
+    "ਪ੍ਰੋਫਾਈਲ",
+    "ਸਾਰ",
+    "ਸੰਖੇਪ",
+    "ਮੇਰੇ ਬਾਰੇ",
+    "ਪੇਸ਼ੇਵਰ ਸਾਰ",
+    "ਉਦੇਸ਼",
+    "ਕਰੀਅਰ ਉਦੇਸ਼"
+   ],
+   "skills": [
+    "ਮੁੱਖ ਹੁਨਰ",
+    "ਹੁਨਰ",
+    "ਯੋਗਤਾਵਾਂ",
+    "ਮੁਹਾਰਤ",
+    "ਤਕਨੀਕੀ ਹੁਨਰ",
+    "ਕੁਸ਼ਲਤਾਵਾਂ"
+   ],
+   "experience": [
+    "ਕੰਮ ਦਾ ਤਜਰਬਾ",
+    "ਤਜਰਬਾ",
+    "ਪੇਸ਼ੇਵਰ ਤਜਰਬਾ",
+    "ਕਾਰਜ ਅਨੁਭਵ",
+    "ਅਨੁਭਵ",
+    "ਰੁਜ਼ਗਾਰ ਇਤਿਹਾਸ",
+    "ਨੌਕਰੀ ਦਾ ਤਜਰਬਾ"
+   ],
+   "education": [
+    "ਸਿੱਖਿਆ",
+    "ਵਿੱਦਿਅਕ ਯੋਗਤਾ",
+    "ਵਿਦਿਅਕ ਯੋਗਤਾ",
+    "ਵਿੱਦਿਆ",
+    "ਪੜ੍ਹਾਈ",
+    "ਅਕਾਦਮਿਕ ਯੋਗਤਾ"
+   ],
+   "certifications": [
+    "ਕੋਰਸ ਅਤੇ ਪ੍ਰਮਾਣ-ਪੱਤਰ",
+    "ਪ੍ਰਮਾਣ-ਪੱਤਰ",
+    "ਪ੍ਰਮਾਣ ਪੱਤਰ",
+    "ਸਰਟੀਫ਼ਿਕੇਟ",
+    "ਕੋਰਸ",
+    "ਸਿਖਲਾਈ"
+   ],
+   "languages": [
+    "ਭਾਸ਼ਾਵਾਂ",
+    "ਭਾਸ਼ਾ",
+    "ਭਾਸ਼ਾ ਗਿਆਨ",
+    "ਜਾਣੀਆਂ ਭਾਸ਼ਾਵਾਂ"
+   ],
+   "interests": [
+    "ਰੁਚੀਆਂ",
+    "ਸ਼ੌਕ",
+    "ਦਿਲਚਸਪੀਆਂ",
+    "ਰੁਚੀਆਂ ਅਤੇ ਸ਼ੌਕ"
+   ],
+   "projects": [
+    "ਪ੍ਰੋਜੈਕਟ",
+    "ਪ੍ਰਾਜੈਕਟ"
+   ],
+   "volunteering": [
+    "ਸਵੈ-ਸੇਵਾ",
+    "ਸਵੈ ਸੇਵਾ",
+    "ਸਮਾਜ ਸੇਵਾ",
+    "ਸੇਵਾ"
+   ],
+   "skip": [
+    "ਨਿੱਜੀ ਵੇਰਵੇ",
+    "ਨਿੱਜੀ ਜਾਣਕਾਰੀ",
+    "ਹਵਾਲੇ",
+    "ਘੋਸ਼ਣਾ",
+    "ਐਲਾਨ"
+   ]
+  },
+  "months": [
+   [
+    "ਜਨਵਰੀ",
+    "ਜਨ"
+   ],
+   [
+    "ਫ਼ਰਵਰੀ",
+    "ਫਰਵਰੀ",
+    "ਫ਼ਰ",
+    "ਫਰ"
+   ],
+   [
+    "ਮਾਰਚ"
+   ],
+   [
+    "ਅਪ੍ਰੈਲ",
+    "ਅਪਰੈਲ",
+    "ਅਪ੍ਰੈ"
+   ],
+   [
+    "ਮਈ"
+   ],
+   [
+    "ਜੂਨ"
+   ],
+   [
+    "ਜੁਲਾਈ"
+   ],
+   [
+    "ਅਗਸਤ",
+    "ਅਗ"
+   ],
+   [
+    "ਸਤੰਬਰ",
+    "ਸਤੰ"
+   ],
+   [
+    "ਅਕਤੂਬਰ",
+    "ਅਕਤੂ"
+   ],
+   [
+    "ਨਵੰਬਰ",
+    "ਨਵੰ"
+   ],
+   [
+    "ਦਸੰਬਰ",
+    "ਦਸੰ"
+   ]
+  ],
+  "now": [
+   "ਹੁਣ ਤੱਕ",
+   "ਹੁਣ",
+   "ਮੌਜੂਦਾ",
+   "ਜਾਰੀ",
+   "ਵਰਤਮਾਨ",
+   "ਅੱਜ ਤੱਕ"
+  ]
+ },
+ {
+  "code": "pt-BR",
+  "name": "Português (Brasil)",
+  "english_name": "Portuguese (Brazil)",
+  "headings": [
+   "Perfil",
+   "Principais competências",
+   "Experiência profissional",
+   "Formação acadêmica",
+   "Cursos e certificações",
+   "Idiomas",
+   "Interesses",
+   "Contato",
+   "atual"
+  ],
+  "import": {
+   "profile": [
+    "perfil",
+    "perfil profissional",
+    "resumo",
+    "resumo profissional",
+    "sobre mim",
+    "objetivo",
+    "objetivo profissional",
+    "apresentação"
+   ],
+   "skills": [
+    "principais competências",
+    "competências",
+    "habilidades",
+    "conhecimentos",
+    "qualificações",
+    "habilidades técnicas",
+    "competências técnicas",
+    "conhecimentos técnicos"
+   ],
+   "experience": [
+    "experiência profissional",
+    "experiências profissionais",
+    "experiência",
+    "histórico profissional",
+    "trajetória profissional",
+    "carreira"
+   ],
+   "education": [
+    "formação acadêmica",
+    "formação",
+    "escolaridade",
+    "educação",
+    "formação escolar"
+   ],
+   "certifications": [
+    "cursos e certificações",
+    "cursos",
+    "certificações",
+    "cursos complementares",
+    "formação complementar",
+    "certificados",
+    "cursos extracurriculares"
+   ],
+   "languages": [
+    "idiomas",
+    "línguas",
+    "conhecimento de idiomas",
+    "línguas estrangeiras"
+   ],
+   "interests": [
+    "interesses",
+    "hobbies",
+    "atividades",
+    "passatempos"
+   ],
+   "projects": [
+    "projetos",
+    "projetos relevantes"
+   ],
+   "volunteering": [
+    "voluntariado",
+    "trabalho voluntário",
+    "atividades voluntárias"
+   ],
+   "skip": [
+    "dados pessoais",
+    "informações pessoais",
+    "contato",
+    "referências",
+    "informações adicionais"
+   ]
+  },
+  "months": [
+   [
+    "janeiro",
+    "jan"
+   ],
+   [
+    "fevereiro",
+    "fev"
+   ],
+   [
+    "março",
+    "mar",
+    "marco"
+   ],
+   [
+    "abril",
+    "abr"
+   ],
+   [
+    "maio",
+    "mai"
+   ],
+   [
+    "junho",
+    "jun"
+   ],
+   [
+    "julho",
+    "jul"
+   ],
+   [
+    "agosto",
+    "ago"
+   ],
+   [
+    "setembro",
+    "set"
+   ],
+   [
+    "outubro",
+    "out"
+   ],
+   [
+    "novembro",
+    "nov"
+   ],
+   [
+    "dezembro",
+    "dez"
+   ]
+  ],
+  "now": [
+   "atual",
+   "atualmente",
+   "o momento",
+   "até o momento",
+   "até hoje",
+   "presente",
+   "hoje",
+   "em andamento",
+   "cursando"
+  ]
+ },
+ {
+  "code": "qu",
+  "name": "Runasimi",
+  "english_name": "Quechua (Peru)",
+  "headings": [
+   "Perfil",
+   "Hatun atiykuna",
+   "Llamk'asqakuna",
+   "Yachakusqakuna",
+   "Cursokuna certificacionkunapas",
+   "Simikuna",
+   "Munasqakuna",
+   "Willanakunapaq",
+   "kunankama"
+  ],
+  "import": {
+   "profile": [
+    "perfil",
+    "pin kani",
+    "ñuqamanta",
+    "pisi perfil",
+    "perfil profesional"
+   ],
+   "skills": [
+    "hatun atiykuna",
+    "atiykuna",
+    "yachasqakuna",
+    "habilidadkuna",
+    "competenciakuna"
+   ],
+   "experience": [
+    "llamk'asqakuna",
+    "llamk'aypi experiencia",
+    "llamk'aykuna",
+    "llamk'ay experiencia",
+    "experiencia laboral"
+   ],
+   "education": [
+    "yachakusqakuna",
+    "yachakuykuna",
+    "yachaykuna",
+    "formación académica"
+   ],
+   "certifications": [
+    "cursokuna certificacionkunapas",
+    "cursokuna",
+    "certificacionkuna",
+    "yapa yachakuykuna"
+   ],
+   "languages": [
+    "simikuna",
+    "rimasqay simikuna",
+    "idiomakuna"
+   ],
+   "interests": [
+    "munasqakuna",
+    "munasqaykuna",
+    "kusikuykuna"
+   ],
+   "projects": [
+    "proyectokuna",
+    "ruwasqakuna"
+   ],
+   "volunteering": [
+    "voluntariado",
+    "yanapakuykuna"
+   ],
+   "skip": [
+    "sapan willakuykuna",
+    "willanakunapaq",
+    "referenciakuna"
+   ]
+  },
+  "months": [
+   [
+    "qhapaq raymi",
+    "iniru",
+    "enero",
+    "ene"
+   ],
+   [
+    "hatun puquy",
+    "phiwriru",
+    "febrero",
+    "feb"
+   ],
+   [
+    "pawqar waray",
+    "marsu",
+    "marzo",
+    "mar"
+   ],
+   [
+    "ayriway",
+    "awril",
+    "abril",
+    "abr"
+   ],
+   [
+    "aymuray",
+    "mayu",
+    "mayo",
+    "may"
+   ],
+   [
+    "inti raymi",
+    "huniyu",
+    "junio",
+    "jun"
+   ],
+   [
+    "anta situwa",
+    "huliyu",
+    "julio",
+    "jul"
+   ],
+   [
+    "qhapaq situwa",
+    "agustu",
+    "agosto",
+    "ago"
+   ],
+   [
+    "quya raymi",
+    "siptiyimbri",
+    "septiembre",
+    "setiembre",
+    "sep",
+    "set"
+   ],
+   [
+    "uma raymi",
+    "uktubri",
+    "octubre",
+    "oct"
+   ],
+   [
+    "aya marq'ay",
+    "nuwimbri",
+    "noviembre",
+    "nov"
+   ],
+   [
+    "qhapaq inti raymi",
+    "disimbri",
+    "diciembre",
+    "dic"
+   ]
+  ],
+  "now": [
+   "kunankama",
+   "kunan",
+   "kunankamaraq",
+   "kunanpas",
+   "a la fecha",
+   "actualidad",
+   "presente"
+  ]
+ },
+ {
+  "code": "sk",
+  "name": "Slovenčina",
+  "english_name": "Slovak",
+  "headings": [
+   "Profil",
+   "Kľúčové zručnosti",
+   "Pracovné skúsenosti",
+   "Vzdelanie",
+   "Kurzy a certifikáty",
+   "Jazyky",
+   "Záujmy",
+   "Kontakt",
+   "súčasnosť"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "o mne",
+    "zhrnutie",
+    "osobný profil",
+    "profesijný profil",
+    "stručne o mne"
+   ],
+   "skills": [
+    "kľúčové zručnosti",
+    "zručnosti",
+    "schopnosti",
+    "kompetencie",
+    "znalosti",
+    "odborné znalosti",
+    "počítačové zručnosti",
+    "ďalšie zručnosti"
+   ],
+   "experience": [
+    "pracovné skúsenosti",
+    "pracovná prax",
+    "prax",
+    "skúsenosti",
+    "zamestnanie",
+    "profesijné skúsenosti",
+    "odborná prax"
+   ],
+   "education": [
+    "vzdelanie",
+    "vzdelávanie",
+    "štúdium",
+    "dosiahnuté vzdelanie"
+   ],
+   "certifications": [
+    "kurzy a certifikáty",
+    "kurzy",
+    "certifikáty",
+    "školenia",
+    "ďalšie vzdelávanie",
+    "certifikácie",
+    "kurzy a školenia"
+   ],
+   "languages": [
+    "jazyky",
+    "jazykové znalosti",
+    "jazykové zručnosti",
+    "cudzie jazyky"
+   ],
+   "interests": [
+    "záujmy",
+    "koníčky",
+    "záľuby",
+    "voľný čas",
+    "hobby"
+   ],
+   "projects": [
+    "projekty",
+    "vybrané projekty"
+   ],
+   "volunteering": [
+    "dobrovoľníctvo",
+    "dobrovoľnícka činnosť",
+    "dobrovoľnícka práca"
+   ],
+   "skip": [
+    "osobné údaje",
+    "kontaktné údaje",
+    "referencie",
+    "vodičský preukaz"
+   ]
+  },
+  "months": [
+   [
+    "január",
+    "jan",
+    "januára",
+    "januári"
+   ],
+   [
+    "február",
+    "feb",
+    "februára",
+    "februári"
+   ],
+   [
+    "marec",
+    "mar",
+    "marca",
+    "marci"
+   ],
+   [
+    "apríl",
+    "apr",
+    "apríla",
+    "apríli"
+   ],
+   [
+    "máj",
+    "mája",
+    "máji"
+   ],
+   [
+    "jún",
+    "júna",
+    "júni"
+   ],
+   [
+    "júl",
+    "júla",
+    "júli"
+   ],
+   [
+    "august",
+    "aug",
+    "augusta",
+    "auguste"
+   ],
+   [
+    "september",
+    "sep",
+    "sept",
+    "septembra",
+    "septembri"
+   ],
+   [
+    "október",
+    "okt",
+    "októbra",
+    "októbri"
+   ],
+   [
+    "november",
+    "nov",
+    "novembra",
+    "novembri"
+   ],
+   [
+    "december",
+    "dec",
+    "decembra",
+    "decembri"
+   ]
+  ],
+  "now": [
+   "súčasnosť",
+   "doteraz",
+   "do súčasnosti",
+   "dodnes",
+   "teraz",
+   "aktuálne",
+   "trvá",
+   "súčasne"
+  ]
+ },
+ {
+  "code": "sl",
+  "name": "Slovenščina",
+  "english_name": "Slovenian",
+  "headings": [
+   "Profil",
+   "Ključna znanja",
+   "Delovne izkušnje",
+   "Izobrazba",
+   "Tečaji in certifikati",
+   "Jeziki",
+   "Interesi",
+   "Kontakt",
+   "danes"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "o meni",
+    "povzetek",
+    "osebni profil",
+    "strokovni profil",
+    "kratka predstavitev"
+   ],
+   "skills": [
+    "ključna znanja",
+    "znanja",
+    "kompetence",
+    "veščine",
+    "spretnosti",
+    "znanja in kompetence",
+    "strokovna znanja",
+    "računalniška znanja"
+   ],
+   "experience": [
+    "delovne izkušnje",
+    "izkušnje",
+    "zaposlitve",
+    "poklicne izkušnje",
+    "delovna doba",
+    "dosedanje zaposlitve"
+   ],
+   "education": [
+    "izobrazba",
+    "izobraževanje",
+    "šolanje",
+    "formalna izobrazba"
+   ],
+   "certifications": [
+    "tečaji in certifikati",
+    "tečaji",
+    "certifikati",
+    "dodatna izobraževanja",
+    "usposabljanja",
+    "neformalno izobraževanje"
+   ],
+   "languages": [
+    "jeziki",
+    "znanje jezikov",
+    "tuji jeziki",
+    "jezikovna znanja"
+   ],
+   "interests": [
+    "interesi",
+    "hobiji",
+    "prosti čas",
+    "konjički"
+   ],
+   "projects": [
+    "projekti"
+   ],
+   "volunteering": [
+    "prostovoljstvo",
+    "prostovoljno delo"
+   ],
+   "skip": [
+    "osebni podatki",
+    "kontaktni podatki",
+    "reference",
+    "priporočila"
+   ]
+  },
+  "months": [
+   [
+    "januar",
+    "januarja",
+    "jan"
+   ],
+   [
+    "februar",
+    "februarja",
+    "feb"
+   ],
+   [
+    "marec",
+    "marca",
+    "mar"
+   ],
+   [
+    "april",
+    "aprila",
+    "apr"
+   ],
+   [
+    "maj",
+    "maja"
+   ],
+   [
+    "junij",
+    "junija",
+    "jun"
+   ],
+   [
+    "julij",
+    "julija",
+    "jul"
+   ],
+   [
+    "avgust",
+    "avgusta",
+    "avg"
+   ],
+   [
+    "september",
+    "septembra",
+    "sep",
+    "sept"
+   ],
+   [
+    "oktober",
+    "oktobra",
+    "okt"
+   ],
+   [
+    "november",
+    "novembra",
+    "nov"
+   ],
+   [
+    "december",
+    "decembra",
+    "dec"
+   ]
+  ],
+  "now": [
+   "danes",
+   "do danes",
+   "zdaj",
+   "trenutno",
+   "sedaj",
+   "še vedno"
+  ]
+ },
+ {
+  "code": "sq",
+  "name": "Shqip",
+  "english_name": "Albanian",
+  "headings": [
+   "Profili",
+   "Aftësitë kryesore",
+   "Përvoja e punës",
+   "Arsimimi",
+   "Kurse dhe certifikime",
+   "Gjuhët",
+   "Interesat",
+   "Kontakti",
+   "në vazhdim"
+  ],
+  "import": {
+   "profile": [
+    "profili",
+    "profili profesional",
+    "rreth meje",
+    "përmbledhje",
+    "përmbledhje profesionale",
+    "objektivi"
+   ],
+   "skills": [
+    "aftësitë kryesore",
+    "aftësitë",
+    "aftësi",
+    "kompetencat",
+    "aftësi profesionale",
+    "aftësi teknike",
+    "njohuri kompjuterike"
+   ],
+   "experience": [
+    "përvoja e punës",
+    "përvoja profesionale",
+    "eksperienca e punës",
+    "eksperienca",
+    "përvoja",
+    "historiku i punës"
+   ],
+   "education": [
+    "arsimimi",
+    "arsimi",
+    "edukimi",
+    "shkollimi",
+    "formimi akademik",
+    "arsimimi dhe trajnimi"
+   ],
+   "certifications": [
+    "kurse dhe certifikime",
+    "certifikime",
+    "certifikata",
+    "kurse",
+    "trajnime",
+    "kualifikime"
+   ],
+   "languages": [
+    "gjuhët",
+    "gjuhë të huaja",
+    "njohuri gjuhësore",
+    "aftësi gjuhësore"
+   ],
+   "interests": [
+    "interesat",
+    "hobi",
+    "hobet",
+    "interesa personale"
+   ],
+   "projects": [
+    "projekte",
+    "projektet"
+   ],
+   "volunteering": [
+    "vullnetarizëm",
+    "punë vullnetare",
+    "aktivitete vullnetare"
+   ],
+   "skip": [
+    "të dhëna personale",
+    "informacione personale",
+    "referenca",
+    "referencat"
+   ]
+  },
+  "months": [
+   [
+    "janar",
+    "jan",
+    "janarit"
+   ],
+   [
+    "shkurt",
+    "shk",
+    "shkurtit"
+   ],
+   [
+    "mars",
+    "mar",
+    "marsit"
+   ],
+   [
+    "prill",
+    "pri",
+    "prillit"
+   ],
+   [
+    "maj",
+    "majit"
+   ],
+   [
+    "qershor",
+    "qer",
+    "qershorit"
+   ],
+   [
+    "korrik",
+    "kor",
+    "korrikut"
+   ],
+   [
+    "gusht",
+    "gush",
+    "gushtit"
+   ],
+   [
+    "shtator",
+    "sht",
+    "shtatorit"
+   ],
+   [
+    "tetor",
+    "tet",
+    "tetorit"
+   ],
+   [
+    "nëntor",
+    "nën",
+    "nëntorit",
+    "nentor"
+   ],
+   [
+    "dhjetor",
+    "dhj",
+    "dhjetorit"
+   ]
+  ],
+  "now": [
+   "në vazhdim",
+   "aktualisht",
+   "deri më sot",
+   "deri tani",
+   "sot",
+   "tani",
+   "në vijim"
+  ]
+ },
+ {
+  "code": "sr",
+  "name": "Српски",
+  "english_name": "Serbian (Cyrillic)",
+  "headings": [
+   "Профил",
+   "Кључне вештине",
+   "Радно искуство",
+   "Образовање",
+   "Курсеви и сертификати",
+   "Језици",
+   "Интересовања",
+   "Контакт",
+   "данас"
+  ],
+  "import": {
+   "profile": [
+    "профил",
+    "о мени",
+    "резиме",
+    "лични профил",
+    "професионални профил",
+    "сажетак",
+    "кратак опис"
+   ],
+   "skills": [
+    "кључне вештине",
+    "вештине",
+    "компетенције",
+    "знања и вештине",
+    "стручне вештине",
+    "квалификације",
+    "рачунарске вештине",
+    "техничке вештине"
+   ],
+   "experience": [
+    "радно искуство",
+    "искуство",
+    "професионално искуство",
+    "досадашње искуство",
+    "запослење",
+    "радна историја"
+   ],
+   "education": [
+    "образовање",
+    "школовање",
+    "академско образовање",
+    "формално образовање"
+   ],
+   "certifications": [
+    "курсеви и сертификати",
+    "курсеви",
+    "сертификати",
+    "обуке",
+    "додатно образовање",
+    "стручно усавршавање",
+    "лиценце"
+   ],
+   "languages": [
+    "језици",
+    "познавање језика",
+    "страни језици",
+    "знање језика",
+    "знање страних језика"
+   ],
+   "interests": [
+    "интересовања",
+    "хобији",
+    "слободно време",
+    "слободне активности"
+   ],
+   "projects": [
+    "пројекти",
+    "пројекат"
+   ],
+   "volunteering": [
+    "волонтирање",
+    "волонтерски рад",
+    "волонтерско искуство"
+   ],
+   "skip": [
+    "лични подаци",
+    "контакт подаци",
+    "препоруке",
+    "референце"
+   ]
+  },
+  "months": [
+   [
+    "јануар",
+    "јануара",
+    "јан"
+   ],
+   [
+    "фебруар",
+    "фебруара",
+    "феб"
+   ],
+   [
+    "март",
+    "марта",
+    "мар"
+   ],
+   [
+    "април",
+    "априла",
+    "апр"
+   ],
+   [
+    "мај",
+    "маја"
+   ],
+   [
+    "јун",
+    "јуни",
+    "јуна"
+   ],
+   [
+    "јул",
+    "јули",
+    "јула"
+   ],
+   [
+    "август",
+    "августа",
+    "авг"
+   ],
+   [
+    "септембар",
+    "септембра",
+    "сеп",
+    "септ"
+   ],
+   [
+    "октобар",
+    "октобра",
+    "окт"
+   ],
+   [
+    "новембар",
+    "новембра",
+    "нов"
+   ],
+   [
+    "децембар",
+    "децембра",
+    "дец"
+   ]
+  ],
+  "now": [
+   "данас",
+   "до данас",
+   "тренутно",
+   "сада",
+   "у току",
+   "и даље"
+  ]
+ },
+ {
+  "code": "sr-Cyrl-BA",
+  "name": "Српски (Босна и Херцеговина)",
+  "english_name": "Serbian (Cyrillic, Bosnia and Herzegovina)",
+  "headings": [
+   "Профил",
+   "Кључне вјештине",
+   "Радно искуство",
+   "Образовање",
+   "Курсеви и сертификати",
+   "Језици",
+   "Интересовања",
+   "Контакт",
+   "данас"
+  ],
+  "import": {
+   "profile": [
+    "профил",
+    "о мени",
+    "резиме",
+    "лични профил",
+    "професионални профил",
+    "сажетак",
+    "кратак опис"
+   ],
+   "skills": [
+    "кључне вјештине",
+    "вјештине",
+    "компетенције",
+    "знања и вјештине",
+    "стручне вјештине",
+    "квалификације",
+    "рачунарске вјештине",
+    "техничке вјештине"
+   ],
+   "experience": [
+    "радно искуство",
+    "искуство",
+    "професионално искуство",
+    "досадашње искуство",
+    "запослење",
+    "радна историја"
+   ],
+   "education": [
+    "образовање",
+    "школовање",
+    "академско образовање",
+    "формално образовање"
+   ],
+   "certifications": [
+    "курсеви и сертификати",
+    "курсеви",
+    "сертификати",
+    "обуке",
+    "додатно образовање",
+    "стручно усавршавање",
+    "лиценце"
+   ],
+   "languages": [
+    "језици",
+    "познавање језика",
+    "страни језици",
+    "знање језика",
+    "знање страних језика"
+   ],
+   "interests": [
+    "интересовања",
+    "хобији",
+    "слободно вријеме",
+    "слободне активности"
+   ],
+   "projects": [
+    "пројекти",
+    "пројекат"
+   ],
+   "volunteering": [
+    "волонтирање",
+    "волонтерски рад",
+    "волонтерско искуство"
+   ],
+   "skip": [
+    "лични подаци",
+    "контакт подаци",
+    "препоруке",
+    "референце"
+   ]
+  },
+  "months": [
+   [
+    "јануар",
+    "јануара",
+    "јан"
+   ],
+   [
+    "фебруар",
+    "фебруара",
+    "феб"
+   ],
+   [
+    "март",
+    "марта",
+    "мар"
+   ],
+   [
+    "април",
+    "априла",
+    "апр"
+   ],
+   [
+    "мај",
+    "маја"
+   ],
+   [
+    "јун",
+    "јуни",
+    "јуна"
+   ],
+   [
+    "јул",
+    "јули",
+    "јула"
+   ],
+   [
+    "август",
+    "августа",
+    "авг"
+   ],
+   [
+    "септембар",
+    "септембра",
+    "сеп",
+    "септ"
+   ],
+   [
+    "октобар",
+    "октобра",
+    "окт"
+   ],
+   [
+    "новембар",
+    "новембра",
+    "нов"
+   ],
+   [
+    "децембар",
+    "децембра",
+    "дец"
+   ]
+  ],
+  "now": [
+   "данас",
+   "до данас",
+   "тренутно",
+   "сада",
+   "у току",
+   "и даље"
+  ]
+ },
+ {
+  "code": "sr-Latn",
+  "name": "Srpski",
+  "english_name": "Serbian (Latin)",
+  "headings": [
+   "Profil",
+   "Ključne veštine",
+   "Radno iskustvo",
+   "Obrazovanje",
+   "Kursevi i sertifikati",
+   "Jezici",
+   "Interesovanja",
+   "Kontakt",
+   "danas"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "o meni",
+    "rezime",
+    "lični profil",
+    "profesionalni profil",
+    "sažetak",
+    "kratak opis"
+   ],
+   "skills": [
+    "ključne veštine",
+    "veštine",
+    "kompetencije",
+    "znanja i veštine",
+    "stručne veštine",
+    "kvalifikacije",
+    "računarske veštine",
+    "tehničke veštine"
+   ],
+   "experience": [
+    "radno iskustvo",
+    "iskustvo",
+    "profesionalno iskustvo",
+    "dosadašnje iskustvo",
+    "zaposlenje",
+    "radna istorija"
+   ],
+   "education": [
+    "obrazovanje",
+    "školovanje",
+    "akademsko obrazovanje",
+    "formalno obrazovanje"
+   ],
+   "certifications": [
+    "kursevi i sertifikati",
+    "kursevi",
+    "sertifikati",
+    "obuke",
+    "dodatno obrazovanje",
+    "stručno usavršavanje",
+    "licence"
+   ],
+   "languages": [
+    "jezici",
+    "poznavanje jezika",
+    "strani jezici",
+    "znanje jezika",
+    "znanje stranih jezika"
+   ],
+   "interests": [
+    "interesovanja",
+    "hobiji",
+    "slobodno vreme",
+    "slobodne aktivnosti"
+   ],
+   "projects": [
+    "projekti",
+    "projekat"
+   ],
+   "volunteering": [
+    "volontiranje",
+    "volonterski rad",
+    "volontersko iskustvo"
+   ],
+   "skip": [
+    "lični podaci",
+    "kontakt podaci",
+    "preporuke",
+    "reference"
+   ]
+  },
+  "months": [
+   [
+    "januar",
+    "januara",
+    "jan"
+   ],
+   [
+    "februar",
+    "februara",
+    "feb"
+   ],
+   [
+    "mart",
+    "marta",
+    "mar"
+   ],
+   [
+    "april",
+    "aprila",
+    "apr"
+   ],
+   [
+    "maj",
+    "maja"
+   ],
+   [
+    "jun",
+    "juni",
+    "juna"
+   ],
+   [
+    "jul",
+    "juli",
+    "jula"
+   ],
+   [
+    "avgust",
+    "avgusta",
+    "avg"
+   ],
+   [
+    "septembar",
+    "septembra",
+    "sep",
+    "sept"
+   ],
+   [
+    "oktobar",
+    "oktobra",
+    "okt"
+   ],
+   [
+    "novembar",
+    "novembra",
+    "nov"
+   ],
+   [
+    "decembar",
+    "decembra",
+    "dec"
+   ]
+  ],
+  "now": [
+   "danas",
+   "do danas",
+   "trenutno",
+   "sada",
+   "u toku",
+   "i dalje"
+  ]
+ },
+ {
+  "code": "ta",
+  "name": "தமிழ்",
+  "english_name": "Tamil (India)",
+  "headings": [
+   "சுயவிவரம்",
+   "முக்கியத் திறன்கள்",
+   "பணி அனுபவம்",
+   "கல்வித் தகுதி",
+   "பயிற்சிகள் மற்றும் சான்றிதழ்கள்",
+   "மொழிகள்",
+   "ஆர்வங்கள்",
+   "தொடர்புக்கு",
+   "தற்போது"
+  ],
+  "import": {
+   "profile": [
+    "சுயவிவரம்",
+    "சுயவிவரச் சுருக்கம்",
+    "தொழில்முறைச் சுருக்கம்",
+    "என்னைப் பற்றி",
+    "சுருக்கம்",
+    "தொழில் நோக்கம்",
+    "நோக்கம்"
+   ],
+   "skills": [
+    "முக்கியத் திறன்கள்",
+    "திறன்கள்",
+    "திறமைகள்",
+    "தொழில்நுட்பத் திறன்கள்",
+    "முக்கியத் திறமைகள்",
+    "தகுதிகள்"
+   ],
+   "experience": [
+    "பணி அனுபவம்",
+    "அனுபவம்",
+    "தொழில் அனுபவம்",
+    "வேலை அனுபவம்",
+    "தொழில்முறை அனுபவம்",
+    "பணி வரலாறு"
+   ],
+   "education": [
+    "கல்வித் தகுதி",
+    "கல்வித் தகுதிகள்",
+    "கல்வி",
+    "கல்விப் பின்னணி",
+    "கல்வி விவரங்கள்"
+   ],
+   "certifications": [
+    "பயிற்சிகள் மற்றும் சான்றிதழ்கள்",
+    "சான்றிதழ்கள்",
+    "பயிற்சிகள்",
+    "சான்றிதழ் படிப்புகள்",
+    "படிப்புகள்"
+   ],
+   "languages": [
+    "மொழிகள்",
+    "மொழித் திறன்",
+    "தெரிந்த மொழிகள்",
+    "மொழி அறிவு"
+   ],
+   "interests": [
+    "ஆர்வங்கள்",
+    "பொழுதுபோக்குகள்",
+    "விருப்பங்கள்",
+    "பொழுதுபோக்கு"
+   ],
+   "projects": [
+    "திட்டப்பணிகள்",
+    "திட்டங்கள்",
+    "செயல்திட்டங்கள்"
+   ],
+   "volunteering": [
+    "தன்னார்வப் பணி",
+    "தன்னார்வத் தொண்டு",
+    "சமூக சேவை"
+   ],
+   "skip": [
+    "தனிப்பட்ட விவரங்கள்",
+    "தொடர்பு விவரங்கள்",
+    "பரிந்துரையாளர்கள்",
+    "உறுதிமொழி",
+    "சுய விவரங்கள்"
+   ]
+  },
+  "months": [
+   [
+    "ஜனவரி",
+    "ஜன",
+    "சனவரி"
+   ],
+   [
+    "பிப்ரவரி",
+    "பிப்",
+    "பெப்ரவரி"
+   ],
+   [
+    "மார்ச்",
+    "மார்"
+   ],
+   [
+    "ஏப்ரல்",
+    "ஏப்"
+   ],
+   [
+    "மே"
+   ],
+   [
+    "ஜூன்",
+    "சூன்"
+   ],
+   [
+    "ஜூலை",
+    "சூலை"
+   ],
+   [
+    "ஆகஸ்ட்",
+    "ஆக",
+    "ஆகத்து"
+   ],
+   [
+    "செப்டம்பர்",
+    "செப்",
+    "செப்டெம்பர்"
+   ],
+   [
+    "அக்டோபர்",
+    "அக்"
+   ],
+   [
+    "நவம்பர்",
+    "நவ"
+   ],
+   [
+    "டிசம்பர்",
+    "டிச",
+    "திசம்பர்"
+   ]
+  ],
+  "now": [
+   "தற்போது",
+   "இன்று வரை",
+   "தற்போது வரை",
+   "இதுவரை",
+   "நடப்பு",
+   "தொடர்கிறது"
+  ]
+ },
+ {
+  "code": "te",
+  "name": "తెలుగు",
+  "english_name": "Telugu",
+  "headings": [
+   "ప్రొఫైల్",
+   "ప్రధాన నైపుణ్యాలు",
+   "పని అనుభవం",
+   "విద్యార్హతలు",
+   "కోర్సులు మరియు సర్టిఫికేషన్‌లు",
+   "భాషలు",
+   "ఆసక్తులు",
+   "సంప్రదించండి",
+   "ప్రస్తుతం"
+  ],
+  "import": {
+   "profile": [
+    "ప్రొఫైల్",
+    "వృత్తిపరమైన సారాంశం",
+    "సారాంశం",
+    "నా గురించి",
+    "లక్ష్యం",
+    "కెరీర్ లక్ష్యం",
+    "పరిచయం"
+   ],
+   "skills": [
+    "ప్రధాన నైపుణ్యాలు",
+    "నైపుణ్యాలు",
+    "సాంకేతిక నైపుణ్యాలు",
+    "నైపుణ్యం",
+    "సామర్థ్యాలు",
+    "అర్హతలు"
+   ],
+   "experience": [
+    "పని అనుభవం",
+    "అనుభవం",
+    "వృత్తి అనుభవం",
+    "ఉద్యోగ అనుభవం",
+    "వృత్తిపరమైన అనుభవం",
+    "ఉద్యోగ చరిత్ర"
+   ],
+   "education": [
+    "విద్యార్హతలు",
+    "విద్య",
+    "విద్యా అర్హతలు",
+    "విద్యా నేపథ్యం",
+    "చదువు"
+   ],
+   "certifications": [
+    "కోర్సులు మరియు సర్టిఫికేషన్‌లు",
+    "సర్టిఫికేషన్‌లు",
+    "సర్టిఫికెట్‌లు",
+    "కోర్సులు",
+    "శిక్షణ",
+    "ధృవపత్రాలు"
+   ],
+   "languages": [
+    "భాషలు",
+    "భాషా పరిజ్ఞానం",
+    "తెలిసిన భాషలు"
+   ],
+   "interests": [
+    "ఆసక్తులు",
+    "అభిరుచులు",
+    "హాబీలు"
+   ],
+   "projects": [
+    "ప్రాజెక్టులు",
+    "ప్రాజెక్ట్‌లు"
+   ],
+   "volunteering": [
+    "స్వచ్ఛంద సేవ",
+    "సామాజిక సేవ",
+    "వాలంటీర్ అనుభవం"
+   ],
+   "skip": [
+    "వ్యక్తిగత వివరాలు",
+    "సంప్రదింపు వివరాలు",
+    "రెఫరెన్సులు",
+    "ప్రకటన",
+    "డిక్లరేషన్"
+   ]
+  },
+  "months": [
+   [
+    "జనవరి",
+    "జన"
+   ],
+   [
+    "ఫిబ్రవరి",
+    "ఫిబ్ర",
+    "ఫిబ"
+   ],
+   [
+    "మార్చి",
+    "మార్చ్",
+    "మార్"
+   ],
+   [
+    "ఏప్రిల్",
+    "ఏప్రి"
+   ],
+   [
+    "మే"
+   ],
+   [
+    "జూన్"
+   ],
+   [
+    "జూలై",
+    "జులై"
+   ],
+   [
+    "ఆగస్టు",
+    "ఆగష్టు",
+    "ఆగ"
+   ],
+   [
+    "సెప్టెంబర్",
+    "సెప్టెంబరు",
+    "సెప్టె"
+   ],
+   [
+    "అక్టోబర్",
+    "అక్టోబరు",
+    "అక్టో"
+   ],
+   [
+    "నవంబర్",
+    "నవంబరు",
+    "నవం"
+   ],
+   [
+    "డిసెంబర్",
+    "డిసెంబరు",
+    "డిసెం"
+   ]
+  ],
+  "now": [
+   "ప్రస్తుతం",
+   "ఇప్పటి వరకు",
+   "ఇప్పటివరకు",
+   "నేటి వరకు",
+   "కొనసాగుతోంది",
+   "ఇప్పుడు"
+  ]
+ },
+ {
+  "code": "th",
+  "name": "ไทย",
+  "english_name": "Thai",
+  "headings": [
+   "ประวัติย่อ",
+   "ทักษะหลัก",
+   "ประสบการณ์ทำงาน",
+   "การศึกษา",
+   "หลักสูตรและใบรับรอง",
+   "ภาษา",
+   "ความสนใจ",
+   "ข้อมูลติดต่อ",
+   "ปัจจุบัน"
+  ],
+  "import": {
+   "profile": [
+    "ประวัติย่อ",
+    "เกี่ยวกับฉัน",
+    "เกี่ยวกับตัวฉัน",
+    "สรุปโดยย่อ",
+    "สรุปคุณสมบัติ",
+    "โปรไฟล์",
+    "จุดมุ่งหมายในการทำงาน",
+    "วัตถุประสงค์"
+   ],
+   "skills": [
+    "ทักษะหลัก",
+    "ทักษะ",
+    "ความสามารถ",
+    "ความสามารถพิเศษ",
+    "ทักษะและความสามารถ",
+    "ความเชี่ยวชาญ",
+    "คุณสมบัติ"
+   ],
+   "experience": [
+    "ประสบการณ์ทำงาน",
+    "ประสบการณ์การทำงาน",
+    "ประวัติการทำงาน",
+    "ประสบการณ์",
+    "ประวัติการทำงานที่ผ่านมา"
+   ],
+   "education": [
+    "การศึกษา",
+    "ประวัติการศึกษา",
+    "วุฒิการศึกษา",
+    "ระดับการศึกษา"
+   ],
+   "certifications": [
+    "หลักสูตรและใบรับรอง",
+    "การฝึกอบรม",
+    "ประวัติการฝึกอบรม",
+    "ใบรับรอง",
+    "ใบประกาศนียบัตร",
+    "หลักสูตรอบรม",
+    "การอบรมและสัมมนา"
+   ],
+   "languages": [
+    "ภาษา",
+    "ทักษะทางภาษา",
+    "ความสามารถทางภาษา"
+   ],
+   "interests": [
+    "ความสนใจ",
+    "งานอดิเรก",
+    "สิ่งที่สนใจ"
+   ],
+   "projects": [
+    "โครงการ",
+    "โปรเจกต์",
+    "ผลงาน"
+   ],
+   "volunteering": [
+    "งานอาสาสมัคร",
+    "กิจกรรมอาสา",
+    "กิจกรรม"
+   ],
+   "skip": [
+    "ข้อมูลส่วนตัว",
+    "ข้อมูลติดต่อ",
+    "บุคคลอ้างอิง"
+   ]
+  },
+  "months": [
+   [
+    "มกราคม",
+    "ม.ค.",
+    "มค"
+   ],
+   [
+    "กุมภาพันธ์",
+    "ก.พ.",
+    "กพ"
+   ],
+   [
+    "มีนาคม",
+    "มี.ค.",
+    "มีค"
+   ],
+   [
+    "เมษายน",
+    "เม.ย.",
+    "เมย"
+   ],
+   [
+    "พฤษภาคม",
+    "พ.ค.",
+    "พค"
+   ],
+   [
+    "มิถุนายน",
+    "มิ.ย.",
+    "มิย"
+   ],
+   [
+    "กรกฎาคม",
+    "ก.ค.",
+    "กค"
+   ],
+   [
+    "สิงหาคม",
+    "ส.ค.",
+    "สค"
+   ],
+   [
+    "กันยายน",
+    "ก.ย.",
+    "กย"
+   ],
+   [
+    "ตุลาคม",
+    "ต.ค.",
+    "ตค"
+   ],
+   [
+    "พฤศจิกายน",
+    "พ.ย.",
+    "พย"
+   ],
+   [
+    "ธันวาคม",
+    "ธ.ค.",
+    "ธค"
+   ]
+  ],
+  "now": [
+   "ปัจจุบัน",
+   "จนถึงปัจจุบัน",
+   "ถึงปัจจุบัน",
+   "ยังทำงานอยู่",
+   "ขณะนี้"
+  ]
+ },
+ {
+  "code": "tt",
+  "name": "Татар теле",
+  "english_name": "Tatar",
+  "headings": [
+   "Профиль",
+   "Төп күнекмәләр",
+   "Эш тәҗрибәсе",
+   "Белем",
+   "Курслар һәм сертификатлар",
+   "Телләр",
+   "Кызыксынулар",
+   "Элемтә",
+   "хәзерге вакытта"
+  ],
+  "import": {
+   "profile": [
+    "профиль",
+    "үзем турында",
+    "минем турында",
+    "кыскача мәгълүмат",
+    "кыска профиль",
+    "максат"
+   ],
+   "skills": [
+    "төп күнекмәләр",
+    "күнекмәләр",
+    "һөнәри күнекмәләр",
+    "компетенцияләр",
+    "осталыклар",
+    "белемнәр һәм күнекмәләр"
+   ],
+   "experience": [
+    "эш тәҗрибәсе",
+    "тәҗрибә",
+    "һөнәри тәҗрибә",
+    "хезмәт тәҗрибәсе",
+    "эш урыннары"
+   ],
+   "education": [
+    "белем",
+    "белеме",
+    "белем алу",
+    "укыган урыннар"
+   ],
+   "certifications": [
+    "курслар һәм сертификатлар",
+    "курслар",
+    "сертификатлар",
+    "өстәмә белем",
+    "квалификацияне күтәрү"
+   ],
+   "languages": [
+    "телләр",
+    "тел белү",
+    "чит телләр"
+   ],
+   "interests": [
+    "кызыксынулар",
+    "хоббилар",
+    "мавыгулар",
+    "шөгыльләр"
+   ],
+   "projects": [
+    "проектлар"
+   ],
+   "volunteering": [
+    "волонтерлык",
+    "иҗтимагый эшчәнлек",
+    "ирекле эш"
+   ],
+   "skip": [
+    "шәхси мәгълүматлар",
+    "элемтә мәгълүматлары",
+    "тәкъдимнамәләр",
+    "рекомендацияләр"
+   ]
+  },
+  "months": [
+   [
+    "гыйнвар",
+    "гыйнварда",
+    "гыйн"
+   ],
+   [
+    "февраль",
+    "февральдә",
+    "фев"
+   ],
+   [
+    "март",
+    "мартта",
+    "мар"
+   ],
+   [
+    "апрель",
+    "апрельдә",
+    "апр"
+   ],
+   [
+    "май",
+    "майда"
+   ],
+   [
+    "июнь",
+    "июньдә",
+    "июн"
+   ],
+   [
+    "июль",
+    "июльдә",
+    "июл"
+   ],
+   [
+    "август",
+    "августта",
+    "авг"
+   ],
+   [
+    "сентябрь",
+    "сентябрьдә",
+    "сен",
+    "сент"
+   ],
+   [
+    "октябрь",
+    "октябрьдә",
+    "окт"
+   ],
+   [
+    "ноябрь",
+    "ноябрьдә",
+    "ноя"
+   ],
+   [
+    "декабрь",
+    "декабрьдә",
+    "дек"
+   ]
+  ],
+  "now": [
+   "хәзерге вакытта",
+   "хәзер",
+   "бүгенгә кадәр",
+   "әлегә кадәр",
+   "хәзергәчә",
+   "дәвам итә"
+  ]
+ },
+ {
+  "code": "ug",
+  "name": "ئۇيغۇرچە",
+  "english_name": "Uyghur",
+  "headings": [
+   "قىسقىچە تونۇشتۇرۇش",
+   "ئاساسلىق ماھارەتلەر",
+   "خىزمەت تەجرىبىسى",
+   "مائارىپ",
+   "كۇرس ۋە گۇۋاھنامىلەر",
+   "تىللار",
+   "قىزىقىشلار",
+   "ئالاقە",
+   "ھازىرغىچە"
+  ],
+  "import": {
+   "profile": [
+    "قىسقىچە تونۇشتۇرۇش",
+    "شەخسىي تونۇشتۇرۇش",
+    "ئۆزۈم ھەققىدە",
+    "ئارخىپ",
+    "قىسقىچە مەزمۇن",
+    "تونۇشتۇرۇش"
+   ],
+   "skills": [
+    "ئاساسلىق ماھارەتلەر",
+    "ماھارەتلەر",
+    "ماھارەت",
+    "ئىقتىدارلار",
+    "كەسپىي ماھارەت",
+    "بىلىم ۋە ماھارەت"
+   ],
+   "experience": [
+    "خىزمەت تەجرىبىسى",
+    "خىزمەت تارىخى",
+    "ئىش تەجرىبىسى",
+    "تەجرىبە",
+    "خىزمەت كەچۈرمىشى",
+    "كەسپىي تەجرىبە"
+   ],
+   "education": [
+    "مائارىپ",
+    "ئوقۇش تارىخى",
+    "مائارىپ تارىخى",
+    "ئوقۇش كەچۈرمىشى",
+    "ئوقۇش"
+   ],
+   "certifications": [
+    "كۇرس ۋە گۇۋاھنامىلەر",
+    "كۇرسلار",
+    "گۇۋاھنامىلەر",
+    "تەربىيەلىنىش",
+    "كەسپىي تەربىيە",
+    "ئىجازەتنامىلەر"
+   ],
+   "languages": [
+    "تىللار",
+    "تىل",
+    "تىل ئىقتىدارى",
+    "چەت تىلى"
+   ],
+   "interests": [
+    "قىزىقىشلار",
+    "قىزىقىش",
+    "ھەۋەسلەر",
+    "قىزىقىش-ھەۋەس"
+   ],
+   "projects": [
+    "تۈرلەر",
+    "تۈر تەجرىبىسى",
+    "پروجېكتلار"
+   ],
+   "volunteering": [
+    "پىدائىي خىزمەت",
+    "پىدائىيلىق",
+    "ئىختىيارى خىزمەت"
+   ],
+   "skip": [
+    "شەخسىي ئۇچۇر",
+    "ئالاقە ئۇچۇرى",
+    "پايدىلىنىش كىشىلىرى",
+    "تەۋسىيەچىلەر"
+   ]
+  },
+  "months": [
+   [
+    "يانۋار",
+    "يانۋاردا",
+    "يانۋارىدىن"
+   ],
+   [
+    "فېۋرال",
+    "فېۋرالدا",
+    "فىۋرال"
+   ],
+   [
+    "مارت",
+    "مارتتا"
+   ],
+   [
+    "ئاپرېل",
+    "ئاپرېلدا",
+    "ئاپرىل"
+   ],
+   [
+    "ماي",
+    "مايدا"
+   ],
+   [
+    "ئىيۇن",
+    "ئىيۇندا"
+   ],
+   [
+    "ئىيۇل",
+    "ئىيۇلدا"
+   ],
+   [
+    "ئاۋغۇست",
+    "ئاۋغۇستتا"
+   ],
+   [
+    "سېنتەبىر",
+    "سېنتەبىردە",
+    "سېنتەبر"
+   ],
+   [
+    "ئۆكتەبىر",
+    "ئۆكتەبىردە",
+    "ئۆكتەبر"
+   ],
+   [
+    "نويابىر",
+    "نويابىردە",
+    "نويابر"
+   ],
+   [
+    "دېكابىر",
+    "دېكابىردا",
+    "دېكابر"
+   ]
+  ],
+  "now": [
+   "ھازىرغىچە",
+   "ھازىر",
+   "ھازىرغا قەدەر",
+   "بۈگۈنگىچە",
+   "داۋاملىشىۋاتىدۇ",
+   "ھازىرقى"
+  ]
+ },
+ {
+  "code": "ur",
+  "name": "اردو",
+  "english_name": "Urdu",
+  "headings": [
+   "پروفائل",
+   "بنیادی مہارتیں",
+   "پیشہ ورانہ تجربہ",
+   "تعلیم",
+   "کورسز اور سرٹیفیکیشنز",
+   "زبانیں",
+   "دلچسپیاں",
+   "رابطہ",
+   "تاحال"
+  ],
+  "import": {
+   "profile": [
+    "پروفائل",
+    "تعارف",
+    "خلاصہ",
+    "پیشہ ورانہ خلاصہ",
+    "میرے بارے میں",
+    "مقصد",
+    "کیریئر کا مقصد"
+   ],
+   "skills": [
+    "بنیادی مہارتیں",
+    "مہارتیں",
+    "صلاحیتیں",
+    "مہارت",
+    "قابلیتیں",
+    "تکنیکی مہارتیں"
+   ],
+   "experience": [
+    "پیشہ ورانہ تجربہ",
+    "تجربہ",
+    "کام کا تجربہ",
+    "ملازمت کا تجربہ",
+    "ملازمتیں"
+   ],
+   "education": [
+    "تعلیم",
+    "تعلیمی قابلیت",
+    "تعلیمی پس منظر",
+    "تعلیمی کوائف"
+   ],
+   "certifications": [
+    "کورسز اور سرٹیفیکیشنز",
+    "سرٹیفیکیشنز",
+    "کورسز",
+    "تربیت",
+    "اسناد",
+    "پیشہ ورانہ تربیت"
+   ],
+   "languages": [
+    "زبانیں",
+    "زبان دانی",
+    "لسانی مہارتیں"
+   ],
+   "interests": [
+    "دلچسپیاں",
+    "مشاغل",
+    "شوق"
+   ],
+   "projects": [
+    "منصوبے",
+    "پراجیکٹس"
+   ],
+   "volunteering": [
+    "رضاکارانہ کام",
+    "رضاکارانہ خدمات",
+    "سماجی خدمات"
+   ],
+   "skip": [
+    "ذاتی معلومات",
+    "ذاتی کوائف",
+    "رابطہ",
+    "رابطے کی تفصیلات",
+    "حوالہ جات",
+    "حوالے"
+   ]
+  },
+  "months": [
+   [
+    "جنوری"
+   ],
+   [
+    "فروری"
+   ],
+   [
+    "مارچ"
+   ],
+   [
+    "اپریل"
+   ],
+   [
+    "مئی",
+    "مئ"
+   ],
+   [
+    "جون"
+   ],
+   [
+    "جولائی",
+    "جولائ"
+   ],
+   [
+    "اگست"
+   ],
+   [
+    "ستمبر"
+   ],
+   [
+    "اکتوبر"
+   ],
+   [
+    "نومبر"
+   ],
+   [
+    "دسمبر"
+   ]
+  ],
+  "now": [
+   "تاحال",
+   "تا حال",
+   "اب تک",
+   "حال",
+   "موجودہ",
+   "جاری",
+   "آج تک"
+  ]
+ },
+ {
+  "code": "uz",
+  "name": "Oʻzbekcha",
+  "english_name": "Uzbek (Latin)",
+  "headings": [
+   "Profil",
+   "Asosiy koʻnikmalar",
+   "Ish tajribasi",
+   "Taʼlim",
+   "Kurslar va sertifikatlar",
+   "Tillar",
+   "Qiziqishlar",
+   "Aloqa",
+   "hozirgacha"
+  ],
+  "import": {
+   "profile": [
+    "profil",
+    "oʻzim haqimda",
+    "men haqimda",
+    "qisqacha maʼlumot",
+    "umumiy maʼlumot",
+    "kasbiy profil",
+    "maqsad"
+   ],
+   "skills": [
+    "asosiy koʻnikmalar",
+    "koʻnikmalar",
+    "kasbiy koʻnikmalar",
+    "malakalar",
+    "kompetensiyalar",
+    "bilim va koʻnikmalar",
+    "texnik koʻnikmalar",
+    "kompyuter bilimlari"
+   ],
+   "experience": [
+    "ish tajribasi",
+    "tajriba",
+    "kasbiy tajriba",
+    "mehnat faoliyati",
+    "ish joylari"
+   ],
+   "education": [
+    "taʼlim",
+    "maʼlumoti",
+    "maʼlumot",
+    "oliy taʼlim",
+    "oʻqish"
+   ],
+   "certifications": [
+    "kurslar va sertifikatlar",
+    "kurslar",
+    "sertifikatlar",
+    "treninglar",
+    "malaka oshirish",
+    "qoʻshimcha taʼlim"
+   ],
+   "languages": [
+    "tillar",
+    "til bilimlari",
+    "chet tillari",
+    "tillarni bilishi"
+   ],
+   "interests": [
+    "qiziqishlar",
+    "xobbi",
+    "xobbilar",
+    "sevimli mashgʻulotlar"
+   ],
+   "projects": [
+    "loyihalar"
+   ],
+   "volunteering": [
+    "koʻngillilik",
+    "koʻngillilik faoliyati",
+    "jamoat ishlari",
+    "ijtimoiy faoliyat"
+   ],
+   "skip": [
+    "shaxsiy maʼlumotlar",
+    "aloqa maʼlumotlari",
+    "tavsiyanomalar",
+    "tavsiyalar",
+    "referenslar"
+   ]
+  },
+  "months": [
+   [
+    "yanvar",
+    "yan"
+   ],
+   [
+    "fevral",
+    "fev"
+   ],
+   [
+    "mart",
+    "mar"
+   ],
+   [
+    "aprel",
+    "apr"
+   ],
+   [
+    "may"
+   ],
+   [
+    "iyun",
+    "iyn"
+   ],
+   [
+    "iyul",
+    "iyl"
+   ],
+   [
+    "avgust",
+    "avg"
+   ],
+   [
+    "sentyabr",
+    "sentabr",
+    "sen",
+    "sent"
+   ],
+   [
+    "oktyabr",
+    "oktabr",
+    "okt"
+   ],
+   [
+    "noyabr",
+    "noy"
+   ],
+   [
+    "dekabr",
+    "dek"
+   ]
+  ],
+  "now": [
+   "hozirgacha",
+   "hozirgi kungacha",
+   "hozirgi vaqtgacha",
+   "shu kungacha",
+   "hozir",
+   "hozirda",
+   "hozirgi vaqtda",
+   "davom etmoqda"
+  ]
+ },
+ {
+  "code": "zh-Hant",
+  "name": "繁體中文",
+  "english_name": "Chinese (Traditional)",
+  "headings": [
+   "個人簡介",
+   "核心能力",
+   "工作經歷",
+   "學歷",
+   "進修與證照",
+   "語言能力",
+   "興趣",
+   "聯絡方式",
+   "至今"
+  ],
+  "import": {
+   "profile": [
+    "個人簡介",
+    "自我介紹",
+    "簡介",
+    "個人摘要",
+    "關於我",
+    "自傳",
+    "專業摘要",
+    "求職目標"
+   ],
+   "skills": [
+    "核心能力",
+    "專業能力",
+    "專長",
+    "技能",
+    "專業技能",
+    "工作技能",
+    "能力專長"
+   ],
+   "experience": [
+    "工作經歷",
+    "工作經驗",
+    "經歷",
+    "相關經歷",
+    "職涯經歷",
+    "實習經歷"
+   ],
+   "education": [
+    "學歷",
+    "教育背景",
+    "教育程度",
+    "學經歷"
+   ],
+   "certifications": [
+    "進修與證照",
+    "證照",
+    "專業證照",
+    "證書",
+    "進修課程",
+    "培訓",
+    "訓練課程",
+    "認證"
+   ],
+   "languages": [
+    "語言能力",
+    "語言",
+    "外語能力"
+   ],
+   "interests": [
+    "興趣",
+    "興趣愛好",
+    "個人興趣",
+    "嗜好"
+   ],
+   "projects": [
+    "專案經歷",
+    "專案",
+    "作品集",
+    "專題"
+   ],
+   "volunteering": [
+    "志工經歷",
+    "志願服務",
+    "社團經歷",
+    "社團與志工"
+   ],
+   "skip": [
+    "個人資料",
+    "基本資料",
+    "聯絡方式",
+    "聯絡資訊",
+    "推薦人"
+   ]
+  },
+  "months": [
+   [
+    "1月",
+    "一月",
+    "01月"
+   ],
+   [
+    "2月",
+    "二月",
+    "02月"
+   ],
+   [
+    "3月",
+    "三月",
+    "03月"
+   ],
+   [
+    "4月",
+    "四月",
+    "04月"
+   ],
+   [
+    "5月",
+    "五月",
+    "05月"
+   ],
+   [
+    "6月",
+    "六月",
+    "06月"
+   ],
+   [
+    "7月",
+    "七月",
+    "07月"
+   ],
+   [
+    "8月",
+    "八月",
+    "08月"
+   ],
+   [
+    "9月",
+    "九月",
+    "09月"
+   ],
+   [
+    "10月",
+    "十月"
+   ],
+   [
+    "11月",
+    "十一月"
+   ],
+   [
+    "12月",
+    "十二月"
+   ]
+  ],
+  "now": [
+   "至今",
+   "迄今",
+   "現在",
+   "目前",
+   "現職",
+   "在職中",
+   "仍在職"
+  ]
+ }
+]

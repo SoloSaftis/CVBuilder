@@ -117,29 +117,44 @@ impl Bridge {
         Ok(())
     }
 
-    fn send(&mut self, name: &str, arguments: &Value) -> Result<Outcome, String> {
-        self.connect()?;
+    /// Sends one call. The error says whether the call may have reached the window: then it must
+    /// not be sent again, or a change could happen twice.
+    fn send(&mut self, name: &str, arguments: &Value) -> Result<Outcome, (String, bool)> {
+        self.connect().map_err(|e| (e, false))?;
         let Some((reader, writer, token)) = self.connection.as_mut() else {
-            return Err(NOT_OPEN.into());
+            return Err((NOT_OPEN.into(), false));
         };
-        writeln!(writer, "{}", json!({"token": token, "name": name, "arguments": arguments})).map_err(|e| e.to_string())?;
+        writeln!(writer, "{}", json!({"token": token, "name": name, "arguments": arguments})).and_then(|()| writer.flush()).map_err(|e| (e.to_string(), false))?;
         let mut line = String::new();
-        if reader.read_line(&mut line).map_err(|e| e.to_string())? == 0 {
-            return Err(NOT_OPEN.into());
+        match reader.read_line(&mut line) {
+            // The connection was to a window that has closed since (a restarted CVBuilder): that
+            // window never ran the call, so it may go to the new one.
+            Ok(0) => return Err((NOT_OPEN.into(), false)),
+            Ok(_) => {}
+            Err(e) if matches!(e.kind(), std::io::ErrorKind::ConnectionReset | std::io::ErrorKind::ConnectionAborted | std::io::ErrorKind::BrokenPipe) => {
+                return Err((NOT_OPEN.into(), false));
+            }
+            Err(_) => return Err(("CVBuilder did not answer in time. Call cv_read to see whether the change was made before trying again.".into(), true)),
         }
-        let v: Value = serde_json::from_str(&line).map_err(|e| e.to_string())?;
+        let v: Value = serde_json::from_str(&line).map_err(|e| (e.to_string(), true))?;
         Ok(Outcome { text: v["text"].as_str().unwrap_or_default().to_string(), is_error: v["is_error"].as_bool().unwrap_or(true), change: None })
     }
 }
 
 impl cv_mcp::Host for Bridge {
     fn call(&mut self, name: &str, arguments: &Value) -> Outcome {
+        let failed = |text: String| Outcome { text, is_error: true, change: None };
         match self.send(name, arguments) {
             Ok(o) => o,
-            Err(_) => {
+            // A late answer would be read as the next call's: start the next call on a new connection.
+            Err((e, true)) => {
+                self.connection = None;
+                failed(e)
+            }
+            Err((_, false)) => {
                 // The window may have been restarted: try once more with a fresh connection.
                 self.connection = None;
-                self.send(name, arguments).unwrap_or_else(|e| Outcome { text: e, is_error: true, change: None })
+                self.send(name, arguments).unwrap_or_else(|(e, _)| failed(e))
             }
         }
     }

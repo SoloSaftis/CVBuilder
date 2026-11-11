@@ -103,7 +103,8 @@ fn fonts() -> FontDefinitions {
     add("DMSans-Medium", include_bytes!("../../../assets/fonts/DMSans-Medium.ttf"));
     add("DMSans-Bold", include_bytes!("../../../assets/fonts/DMSans-Bold.ttf"));
     // egui's own fonts stay as fallbacks for symbols DM Sans doesn't have, then the bundled
-    // faces for Japanese, Chinese, Korean, Arabic, Hebrew, Thai, Devanagari and Georgian (from
+    // faces for Japanese, Chinese, Korean, Arabic, Hebrew, Thai, the Indian scripts, Georgian,
+    // Armenian, Ethiopic and Khmer (from
     // craft-fonts, see assets/craft-fonts). Japanese comes first, so kana and kanji in one
     // line share a style.
     // Phosphor's icons (MIT, private-use code points) come before egui's own emoji font, which
@@ -117,7 +118,7 @@ fn fonts() -> FontDefinitions {
         fonts.font_data.insert(name.clone(), Arc::new(FontData::from_static(font.bytes)));
         bold_fallbacks.push(name);
     }
-    let others = ["Arab", "Hebr", "Thai", "Deva", "Geor", "Zsym"];
+    let others = ["Arab", "Hebr", "Thai", "Deva", "Geor", "Armn", "Ethi", "Beng", "Gujr", "Guru", "Taml", "Telu", "Knda", "Mlym", "Orya", "Khmr", "Zsym"];
     let extra = wordcraft_fonts::ui_cjk_fonts(false).into_iter().chain(wordcraft_fonts::CRAFT_FONTS.iter().filter(|f| f.style == "Regular" && f.scripts.iter().any(|s| others.contains(s))));
     for (i, font) in extra.enumerate() {
         let name = format!("bundled-{i}");
@@ -129,7 +130,15 @@ fn fonts() -> FontDefinitions {
     let mut families = BTreeMap::new();
     families.insert(FontFamily::Proportional, with("DMSans-Regular", &[]));
     families.insert(medium(), with("DMSans-Medium", &[]));
-    families.insert(bold(), with("DMSans-Bold", &bold_fallbacks));
+    // Bold: Greek and Cyrillic from egui's own fonts come before the Japanese bold face, which
+    // has Greek and Cyrillic too but in full width («Α ρ χ ι κ ή»).
+    let latin_greek_cyrillic = 1 + fonts.families.get(&FontFamily::Proportional).map(Vec::len).unwrap_or(0);
+    let bold_list: Vec<String> = std::iter::once("DMSans-Bold".to_string())
+        .chain(fallbacks.iter().take(latin_greek_cyrillic).cloned())
+        .chain(bold_fallbacks.iter().cloned())
+        .chain(fallbacks.iter().skip(latin_greek_cyrillic).cloned())
+        .collect();
+    families.insert(bold(), bold_list);
     families.insert(FontFamily::Monospace, fonts.families.get(&FontFamily::Monospace).cloned().unwrap_or_default());
     families.insert(icons(), vec!["Phosphor".to_string()]);
     fonts.families = families;
@@ -190,9 +199,35 @@ pub mod ph {
     pub const CARET_DOWN: &str = "\u{e136}";
 
     /// True for a character from the icon font (Unicode's private-use area).
+    #[cfg(test)]
     pub fn is_icon(c: char) -> bool {
         ('\u{e000}'..='\u{f8ff}').contains(&c)
     }
+}
+
+/// The key that puts names in A-to-Z order the way people read them: accented Latin letters
+/// with their base letter (Čeština with C, Íslenska with I), other scripts after Latin.
+pub fn sort_key(name: &str) -> String {
+    name.chars()
+        .flat_map(char::to_lowercase)
+        .map(|c| match c {
+            'á' | 'à' | 'â' | 'ä' | 'ã' | 'å' | 'ā' | 'ą' => 'a',
+            'č' | 'ć' | 'ç' => 'c',
+            'ď' => 'd',
+            'é' | 'è' | 'ê' | 'ë' | 'ě' | 'ē' | 'ę' => 'e',
+            'í' | 'ì' | 'î' | 'ï' | 'ī' => 'i',
+            'ł' | 'ľ' => 'l',
+            'ñ' | 'ń' | 'ň' => 'n',
+            'ó' | 'ò' | 'ô' | 'ö' | 'õ' | 'ø' | 'ō' => 'o',
+            'ř' => 'r',
+            'š' | 'ś' | 'ş' => 's',
+            'ť' => 't',
+            'ú' | 'ù' | 'û' | 'ü' | 'ů' | 'ū' => 'u',
+            'ý' | 'ÿ' => 'y',
+            'ž' | 'ź' | 'ż' => 'z',
+            c => c,
+        })
+        .collect()
 }
 
 /// A small flat button with only an icon (the caller adds the hover text).
@@ -427,4 +462,34 @@ pub fn pill_wrapped(ui: &mut egui::Ui, text: &str, fill: Color32, color: Color32
         ui.end_row();
     }
     pill(ui, text, fill, color)
+}
+
+#[cfg(test)]
+mod tests {
+    /// Every letter of every bundled interface language is in one of the window's fonts, so no
+    /// language shows boxes instead of letters.
+    #[test]
+    fn every_language_has_its_letters() {
+        let defs = super::fonts();
+        let faces: Vec<ttf_parser::Face<'_>> = defs.font_data.values().filter_map(|d| ttf_parser::Face::parse((*d.font).as_ref(), d.index).ok()).collect();
+        let covered = |c: char| faces.iter().any(|f| f.glyph_index(c).is_some());
+        // Joiners, direction marks and variation selectors are not drawn.
+        let invisible = |c: char| c.is_whitespace() || c.is_control() || matches!(c, '\u{200b}'..='\u{200f}' | '\u{2028}'..='\u{202e}' | '\u{2060}'..='\u{206f}' | '\u{fe00}'..='\u{fe0f}' | '\u{feff}');
+        let mut problems = Vec::new();
+        for (code, text) in crate::langpack_ui::BUNDLED_LANGUAGES.iter().copied() {
+            let pack = crate::i18n::parse_pack(text).expect("pack").pack;
+            let mut missing: Vec<char> = pack.strings.values().chain(std::iter::once(&pack.name)).flat_map(|s| s.chars()).filter(|c| !invisible(*c) && !covered(*c)).collect();
+            missing.sort_unstable();
+            missing.dedup();
+            if !missing.is_empty() {
+                problems.push(format!("{code}: {}", missing.iter().map(|c| format!("{c} U+{:04X}", *c as u32)).collect::<Vec<_>>().join(", ")));
+            }
+        }
+        for name in cv_core::headings::built_in_languages() {
+            if let Some(c) = name.chars().find(|c| !invisible(*c) && !covered(*c)) {
+                problems.push(format!("CV language «{name}»: {c}"));
+            }
+        }
+        assert!(problems.is_empty(), "letters no font has:\n{}", problems.join("\n"));
+    }
 }

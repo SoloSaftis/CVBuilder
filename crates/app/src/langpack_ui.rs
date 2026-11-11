@@ -148,7 +148,7 @@ fn load_packs() -> Vec<Pack> {
             }
         }
     }
-    packs.sort_by_key(|p| p.name.to_lowercase());
+    packs.sort_by_key(|p| theme::sort_key(&p.name));
     packs
 }
 
@@ -298,32 +298,31 @@ impl CvApp {
         let mut choose: Option<String> = None;
         let mut add: Option<&'static str> = None;
         let busy = self.langs.job.is_some();
-        let fixed = [
-            ("auto", i18n::t("Følg systemet"), i18n::t("Samme språk som datamaskinen: norsk hvis den er på norsk, et tilleggsspråk hvis du har lagt til datamaskinens språk, ellers engelsk")),
-            ("no", "Norsk (bokmål)", i18n::t("Menyer og knapper på norsk bokmål")),
-            ("en", "English", i18n::t("Menyer og knapper på engelsk")),
+        // One list A to Z, each language named in the menu language now in use («Tysk» with
+        // Norwegian menus); the hover text gives its own name.
+        let mut all: Vec<(String, String, String)> = vec![
+            ("no".into(), i18n::menu_language_name("no", "Norsk (bokmål)"), format!("Norsk (bokmål) · {}", i18n::t("Menyer og knapper på norsk bokmål"))),
+            ("en".into(), i18n::menu_language_name("en", "English (US)"), format!("English (US) · {}", i18n::t("Menyer og knapper på engelsk"))),
         ];
-        let current = fixed
-            .iter()
-            .find(|(v, _, _)| *v == self.settings.ui_language)
-            .map(|(_, n, _)| n.to_string())
-            .or_else(|| self.langs.packs.iter().find(|p| p.code == self.settings.ui_language).map(|p| p.name.clone()))
-            .unwrap_or_else(|| i18n::t("Følg systemet").to_string());
+        all.extend(self.langs.packs.iter().map(|p| {
+            let tip = i18n::tf("Menyer og knapper på {name} ({code}). Laget av {who}.", &[("name", &p.name), ("code", &p.code), ("who", if p.made_by.is_empty() { "?" } else { &p.made_by })]);
+            (p.code.clone(), i18n::menu_language_name(&p.code, &p.name), tip)
+        }));
+        all.sort_by_key(|(_, name, _)| theme::sort_key(name));
+        let current = all.iter().find(|(c, _, _)| *c == self.settings.ui_language).map(|(_, n, _)| n.clone()).unwrap_or_else(|| i18n::t("Følg systemet").to_string());
         egui::ComboBox::from_id_salt("ui-language")
             .selected_text(current)
             .width(240.0)
-            .height(460.0)
+            .height(2000.0)
             .show_ui(ui, |ui| {
-                for (value, name, tip) in fixed {
-                    if ui.selectable_label(self.settings.ui_language == value, name).on_hover_text(tip).clicked() {
-                        choose = Some(value.to_string());
-                    }
+                let auto_tip = i18n::t("Samme språk som datamaskinen: norsk hvis den er på norsk, et tilleggsspråk hvis du har lagt til datamaskinens språk, ellers engelsk");
+                if ui.selectable_label(self.settings.ui_language == "auto", i18n::t("Følg systemet")).on_hover_text(auto_tip).clicked() {
+                    choose = Some("auto".into());
                 }
                 ui.separator();
-                for p in &self.langs.packs {
-                    let tip = i18n::tf("Menyer og knapper på {name} ({code}). Laget av {who}.", &[("name", &p.name), ("code", &p.code), ("who", if p.made_by.is_empty() { "?" } else { &p.made_by })]);
-                    if ui.selectable_label(self.settings.ui_language == p.code, p.name.as_str()).on_hover_text(tip).clicked() {
-                        choose = Some(p.code.clone());
+                for (code, name, tip) in &all {
+                    if ui.selectable_label(self.settings.ui_language == *code, name.as_str()).on_hover_text(tip.as_str()).clicked() {
+                        choose = Some(code.clone());
                     }
                 }
                 ui.separator();
@@ -577,7 +576,7 @@ impl CvApp {
                 if !pack.strings.is_empty() {
                     self.langs.packs.retain(|p| p.code != pack.code);
                     self.langs.packs.push(pack);
-                    self.langs.packs.sort_by_key(|p| p.name.to_lowercase());
+                    self.langs.packs.sort_by_key(|p| theme::sort_key(&p.name));
                     self.settings.ui_language = code;
                     storage::save_settings(&self.settings);
                     i18n::apply(&self.settings.ui_language, &self.langs.packs);
@@ -876,7 +875,7 @@ impl CvApp {
         let code = pack.code.clone();
         self.langs.packs.retain(|p| p.code != code);
         self.langs.packs.push(pack);
-        self.langs.packs.sort_by_key(|p| p.name.to_lowercase());
+        self.langs.packs.sort_by_key(|p| theme::sort_key(&p.name));
         self.settings.ui_language = code;
         storage::save_settings(&self.settings);
         i18n::apply(&self.settings.ui_language, &self.langs.packs);

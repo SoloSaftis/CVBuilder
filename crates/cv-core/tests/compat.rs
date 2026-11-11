@@ -1,4 +1,4 @@
-//! Project files move between the HTML builder (v1 app) and this app without loss.
+//! Project files move between the HTML builder and this app without loss.
 use cv_core::Project;
 
 // Fictional data only (the shared example), never a real person's CV.
@@ -21,7 +21,7 @@ fn version_1_files_get_new_fields_and_lose_approval() {
     for key in ["linkedin"] { value["candidate"].as_object_mut().expect("object").remove(key); }
     value.as_object_mut().expect("object").remove("certifications");
     value["options"].as_object_mut().expect("object").remove("layout");
-    let project = Project::from_json(&value.to_string()).expect("v1 parses");
+    let project = Project::from_json(&value.to_string()).expect("HTML builder file parses");
     assert_eq!(project.version, 2);
     assert!(project.certifications.is_empty());
     assert!(!project.approvals.facts_confirmed);

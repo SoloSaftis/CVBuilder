@@ -204,7 +204,7 @@ fn opens_popup(c: &Ctl) -> bool {
     // Ribbon tools start with an icon from the icon font, and the ones with a menu end with ▾.
     let label = c.label.trim_start_matches(|ch: char| crate::theme::ph::is_icon(ch) || ch.is_whitespace());
     let caret = c.label.trim_end().ends_with(crate::theme::ph::CARET_DOWN);
-    c.control && (c.role == Role::ComboBox || caret || MENUS.iter().any(|m| label.starts_with(m)))
+    c.control && (c.role == Role::ComboBox || caret || MENUS.iter().any(|m| label.strip_prefix(m).is_some_and(|rest| rest.is_empty() || rest.starts_with(char::is_whitespace))))
 }
 
 struct Scene {
@@ -227,6 +227,14 @@ const SCENES: &[Scene] = &[
     Scene { name: "Ny seksjon", setup: |a| a.new_section = Some(String::new()) },
     Scene { name: "Sjekklisteredigering", setup: |a| a.checklist.editing = Some(cv_core::checklist::Checklist::starter()) },
     Scene { name: "Om CVBuilder", setup: |a| a.about_open = true },
+    Scene {
+        name: "Lagre før lukking",
+        setup: |a| {
+            a.is_example = false;
+            a.closing = true;
+        },
+    },
+    Scene { name: "Velkommen", setup: |a| a.welcome = Some(crate::welcome_ui::Welcome::for_this_computer(&a.langs.packs)) },
     Scene { name: "Importer CV", setup: |a| a.import.cv_open = true },
     Scene { name: "Importrest", setup: |a| a.import.rest = Some("ERFARING
 Som koordinator i Fjellvegg Bygg AS 2021 – nå".into()) },
@@ -260,7 +268,7 @@ fn private_data_folder(lang: &str) {
     let dir = std::env::current_exe().ok().and_then(|e| e.parent().map(|p| p.join("CVBuilder-data"))).expect("test exe folder");
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir).expect("data folder");
-    std::fs::write(dir.join("settings.json"), format!("{{\"ui_language\": {lang:?}, \"remember\": false}}")).expect("settings");
+    std::fs::write(dir.join("settings.json"), format!("{{\"ui_language\": {lang:?}, \"remember\": false, \"welcomed\": true}}")).expect("settings");
 }
 
 #[test]
@@ -375,6 +383,102 @@ fn dialog_buttons_take_real_clicks() {
     h.event(egui::Event::PointerButton { pos: cancel.center(), button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
     step(&mut h, 3);
     assert!(h.state().translate.is_none(), "the click on «Avbryt» did not close the window");
+}
+
+/// A real click in the middle of the control with this label.
+fn click(h: &mut Harness<'_, CvApp>, label: &str) {
+    let at = h.query_all(by().include_labels().predicate(|n| n.label().as_deref() == Some(label))).last().map(|n| n.rect().center()).unwrap_or_else(|| panic!("no «{label}»"));
+    h.hover_at(at);
+    step(h, 2);
+    h.event(egui::Event::PointerButton { pos: at, button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(h, 1);
+    h.event(egui::Event::PointerButton { pos: at, button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(h, 3);
+}
+
+/// Saving like Word: Ctrl+S into the CV's file, the question on close, the autosave every five
+/// minutes, and the file coming back after a restart.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn save_close_and_autosave() {
+    private_data_folder("no");
+    let file = std::env::temp_dir().join(format!("cvbuilder-save-test-{}.json", std::process::id()));
+    let _ = std::fs::remove_file(&file);
+    let on_disk = |f: &std::path::Path| cv_core::Project::from_json(&std::fs::read_to_string(f).expect("the CV file")).expect("a CV");
+
+    // The example has nothing to save; an edit makes it the person's own, unsaved CV.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    assert!(!h.state().unsaved(), "the example asks to be saved");
+    h.state_mut().project.candidate.name = "Kari Test".into();
+    h.state_mut().touched();
+    step(&mut h, 2);
+    assert!(h.state().unsaved());
+
+    // The window's close button asks first; «Avbryt» keeps the window and the changes.
+    h.input_mut().viewports.entry(egui::ViewportId::ROOT).or_default().events.push(egui::ViewportEvent::Close);
+    h.step();
+    assert!(h.state().closing, "closing with unsaved changes did not ask");
+    step(&mut h, 2);
+    click(&mut h, "Avbryt");
+    assert!(!h.state().closing && !h.state().may_close, "«Avbryt» did not keep the window open");
+    h.state_mut().closing = true;
+    step(&mut h, 2);
+    click(&mut h, "Ikke lagre");
+    assert!(!h.state().closing && h.state().may_close, "«Ikke lagre» did not let the window close");
+
+    // «Lagre» in the question writes the CV's file and then lets the window close.
+    h.state_mut().may_close = false;
+    h.state_mut().file = Some(file.clone());
+    h.state_mut().closing = true;
+    step(&mut h, 2);
+    click(&mut h, "Lagre");
+    assert!(h.state().may_close, "«Lagre» did not close after saving");
+    assert_eq!(on_disk(&file).candidate.name, "Kari Test");
+    assert!(!h.state().unsaved());
+
+    // Ctrl+S saves straight into the same file.
+    h.state_mut().may_close = false;
+    h.state_mut().project.candidate.name = "Kari Ctrl".into();
+    h.state_mut().touched();
+    h.key_press_modifiers(egui::Modifiers::COMMAND, egui::Key::S);
+    step(&mut h, 3);
+    assert_eq!(on_disk(&file).candidate.name, "Kari Ctrl", "Ctrl+S did not save");
+    assert!(!h.state().may_close, "Ctrl+S closed the window");
+
+    // Nothing is written before five minutes have gone; after that, the changes are.
+    h.state_mut().project.candidate.name = "Kari Auto".into();
+    h.state_mut().touched();
+    step(&mut h, 3);
+    assert_eq!(on_disk(&file).candidate.name, "Kari Ctrl", "autosaved too soon");
+    h.state_mut().last_autosave = std::time::Instant::now() - std::time::Duration::from_secs(5 * 60 + 1);
+    step(&mut h, 3);
+    assert_eq!(on_disk(&file).candidate.name, "Kari Auto", "no autosave after five minutes");
+    assert!(h.state().status.contains("automatisk"), "status: {}", h.state().status);
+
+    // Turned off in the settings: no autosave.
+    h.state_mut().settings.autosave = false;
+    h.state_mut().project.candidate.name = "Kari Av".into();
+    h.state_mut().touched();
+    h.state_mut().last_autosave = std::time::Instant::now() - std::time::Duration::from_secs(10 * 60);
+    step(&mut h, 3);
+    assert_eq!(on_disk(&file).candidate.name, "Kari Auto", "autosaved while turned off");
+
+    // A new CV forgets the file, so «Lagre» cannot write it over the old one.
+    h.state_mut().replace(cv_core::Project::example(), false, "");
+    assert!(h.state().file.is_none(), "a new CV kept the old CV's file");
+
+    // After a restart the draft comes back with its file, and nothing is unsaved.
+    h.state_mut().settings.autosave = true;
+    h.state_mut().settings.remember = true;
+    h.state_mut().project.candidate.name = "Kari Auto".into();
+    h.state_mut().set_file(Some(file.clone()));
+    h.state_mut().persist();
+    drop(h);
+    let mut h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    step(&mut h, 2);
+    assert_eq!(h.state().file.as_deref(), Some(file.as_path()), "the file was not remembered");
+    assert!(!h.state().unsaved(), "a fresh start counts as unsaved");
+    let _ = std::fs::remove_file(&file);
 }
 
 /// Pictures of every scene, for looking at the layout by eye:

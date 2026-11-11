@@ -35,6 +35,51 @@ fn initialize_list_and_call_over_json_rpc() {
 }
 
 #[test]
+fn broken_requests_get_an_answer_and_tools_say_what_they_do() {
+    let mut p = Project::example();
+    // A batch or a request without a method must be answered, or the client waits forever.
+    assert_eq!(rpc(&mut p, json!([{"jsonrpc": "2.0", "id": 1, "method": "ping"}]))["error"]["code"], -32600);
+    assert_eq!(rpc(&mut p, json!({"jsonrpc": "2.0", "id": 2}))["error"]["code"], -32600);
+    // A reply to something we never sent is not answered.
+    assert!(handle(&mut p, &json!({"jsonrpc": "2.0", "id": 3, "result": {}}).to_string()).is_none());
+    let list = rpc(&mut p, json!({"jsonrpc": "2.0", "id": 4, "method": "tools/list"}));
+    let tool = |name: &str| list["result"]["tools"].as_array().expect("tools").iter().find(|t| t["name"] == name).cloned().expect(name);
+    assert_eq!(tool("cv_read")["annotations"]["readOnlyHint"], true);
+    assert_eq!(tool("cv_job_save")["annotations"]["readOnlyHint"], false);
+    assert_eq!(tool("cv_job_remove")["annotations"]["destructiveHint"], true);
+    // JSON answers come as structured content too.
+    let check = rpc(&mut p, json!({"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "cv_check", "arguments": {}}}));
+    assert!(check["result"]["structuredContent"]["pages"].as_u64().is_some());
+    let done = rpc(&mut p, json!({"jsonrpc": "2.0", "id": 6, "method": "tools/call", "params": {"name": "cv_update_profile", "arguments": {"summary": "X."}}}));
+    assert!(done["result"].get("structuredContent").is_none());
+}
+
+#[test]
+fn every_built_in_language_by_code_or_name() {
+    let mut p = Project::example();
+    let list: Value = serde_json::from_str(&cv_mcp::call(&mut p, "cv_list_languages", &json!({})).text).expect("json");
+    let list = list.as_array().expect("list");
+    assert!(list.len() >= 80, "{}", list.len());
+    for l in list {
+        let code = l["code"].as_str().expect("code");
+        let out = cv_mcp::call(&mut p, "cv_set_language", &json!({"language": code}));
+        assert!(!out.is_error, "{code}: {}", out.text);
+        let read: Value = serde_json::from_str(&cv_mcp::call(&mut p, "cv_read", &json!({})).text).expect("json");
+        assert_eq!(read["cv_language"], l["name"], "{code}");
+    }
+    assert!(!cv_mcp::call(&mut p, "cv_set_language", &json!({"language": "deutsch"})).is_error);
+    assert_eq!(p.options.headings.as_ref().expect("headings").language, "Deutsch");
+    assert!(p.options.headings.as_ref().expect("headings").is_complete(), "built-in headings, not empty ones");
+    // Back to Norwegian clears the German headings.
+    cv_mcp::call(&mut p, "cv_set_language", &json!({"language": "no"}));
+    assert!(p.options.headings.is_none() && !p.is_english());
+    assert!(cv_mcp::call(&mut p, "cv_set_language", &json!({"language": "Klingon"})).is_error);
+    // cv_set_headings takes a code too.
+    cv_mcp::call(&mut p, "cv_set_headings", &json!({"language": "pt-BR"}));
+    assert!(p.options.headings.as_ref().expect("headings").is_complete());
+}
+
+#[test]
 fn read_leaves_out_the_portrait_and_approval() {
     let mut p = Project::example();
     p.candidate.photo = "data:image/jpeg;base64,AAAA".into();

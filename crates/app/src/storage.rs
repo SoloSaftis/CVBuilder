@@ -41,6 +41,15 @@ pub struct Settings {
     pub theme: String,
     /// Use the person's own checklist instead of the built-in recruiter check.
     pub own_checklist: bool,
+    /// Save the CV to its file every five minutes while it has changes, like Word.
+    pub autosave: bool,
+    /// The file the CV was last opened from or saved to (empty: none), so «Lagre» and the
+    /// autosave keep using it after a restart.
+    pub cv_file: String,
+    /// The first start's language question has been answered.
+    pub welcomed: bool,
+    /// The language a new CV starts in (its own name); empty: the computer's.
+    pub cv_language: String,
 }
 
 impl Default for Settings {
@@ -54,6 +63,10 @@ impl Default for Settings {
             ui_language: "auto".into(),
             theme: "system".into(),
             own_checklist: false,
+            autosave: true,
+            cv_file: String::new(),
+            welcomed: false,
+            cv_language: String::new(),
         }
     }
 }

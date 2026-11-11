@@ -121,17 +121,333 @@ fn unspace(line: &str) -> String {
     }
 }
 
+/// Headings of CVs in the other languages the app knows, by the language's own name (as in
+/// `headings`), so a German CV is read as German and gets German headings.
+const FOREIGN: &[(&str, Part, &[&str])] = &[
+    // Deutsch
+    ("Deutsch", Part::Profile, &["profil", "kurzprofil", "über mich", "zusammenfassung", "persönliches profil", "berufliches profil"]),
+    ("Deutsch", Part::Skills, &["kernkompetenzen", "kompetenzen", "kenntnisse", "fähigkeiten", "fachkenntnisse", "it-kenntnisse", "edv-kenntnisse", "fähigkeiten und kenntnisse", "qualifikationen"]),
+    ("Deutsch", Part::Languages, &["sprachen", "sprachkenntnisse", "fremdsprachen"]),
+    ("Deutsch", Part::Experience, &["berufserfahrung", "beruflicher werdegang", "werdegang", "erfahrung", "praktische erfahrung", "berufspraxis"]),
+    ("Deutsch", Part::Education, &["ausbildung", "bildungsweg", "schulbildung", "studium", "akademischer werdegang", "aus- und weiterbildung"]),
+    ("Deutsch", Part::Certifications, &["weiterbildungen und zertifikate", "weiterbildung", "weiterbildungen", "zertifikate", "zertifizierungen", "fortbildungen", "kurse"]),
+    ("Deutsch", Part::Interests, &["interessen", "hobbys", "hobbies", "freizeit", "freizeitinteressen"]),
+    ("Deutsch", Part::Custom("Prosjekter", "Projects"), &["projekte", "projekterfahrung"]),
+    ("Deutsch", Part::Custom("Frivillig arbeid", "Volunteering"), &["ehrenamt", "ehrenamtliches engagement", "engagement"]),
+    ("Deutsch", Part::Skip, &["persönliche daten", "kontaktdaten", "referenzen"]),
+    // Français
+    ("Français", Part::Profile, &["profil", "à propos", "résumé", "profil professionnel", "objectif"]),
+    ("Français", Part::Skills, &["compétences", "compétences clés", "compétences techniques", "savoir-faire", "outils"]),
+    ("Français", Part::Languages, &["langues", "langues étrangères", "compétences linguistiques"]),
+    ("Français", Part::Experience, &["expérience professionnelle", "expériences professionnelles", "expérience", "expériences", "parcours professionnel"]),
+    ("Français", Part::Education, &["formation", "formations", "éducation", "parcours académique", "études", "diplômes"]),
+    ("Français", Part::Certifications, &["formations et certifications", "certifications", "certificats"]),
+    ("Français", Part::Interests, &["centres d'intérêt", "centres d’intérêt", "loisirs", "intérêts", "activités"]),
+    ("Français", Part::Custom("Prosjekter", "Projects"), &["projets"]),
+    ("Français", Part::Custom("Frivillig arbeid", "Volunteering"), &["bénévolat", "engagement associatif"]),
+    ("Français", Part::Skip, &["coordonnées", "références", "informations personnelles"]),
+    // Español
+    ("Español", Part::Profile, &["perfil", "perfil profesional", "sobre mí", "resumen", "extracto", "objetivo"]),
+    ("Español", Part::Skills, &["competencias clave", "competencias", "habilidades", "aptitudes", "conocimientos", "herramientas"]),
+    ("Español", Part::Languages, &["idiomas", "lenguas"]),
+    ("Español", Part::Experience, &["experiencia profesional", "experiencia laboral", "experiencia", "trayectoria profesional"]),
+    ("Español", Part::Education, &["formación", "formación académica", "educación", "estudios"]),
+    ("Español", Part::Certifications, &["cursos y certificaciones", "cursos", "certificaciones", "formación complementaria"]),
+    ("Español", Part::Interests, &["intereses", "aficiones", "pasatiempos"]),
+    ("Español", Part::Custom("Prosjekter", "Projects"), &["proyectos"]),
+    ("Español", Part::Custom("Frivillig arbeid", "Volunteering"), &["voluntariado"]),
+    ("Español", Part::Skip, &["datos personales", "datos de contacto", "referencias"]),
+    // Português
+    ("Português", Part::Profile, &["perfil", "perfil profissional", "sobre mim", "resumo", "objetivo"]),
+    ("Português", Part::Skills, &["competências principais", "competências", "habilidades", "conhecimentos", "ferramentas"]),
+    ("Português", Part::Languages, &["idiomas", "línguas"]),
+    ("Português", Part::Experience, &["experiência profissional", "experiência", "percurso profissional"]),
+    ("Português", Part::Education, &["formação", "formação académica", "formação acadêmica", "educação", "escolaridade"]),
+    ("Português", Part::Certifications, &["cursos e certificações", "cursos", "certificações"]),
+    ("Português", Part::Interests, &["interesses", "passatempos", "hobbies"]),
+    ("Português", Part::Custom("Prosjekter", "Projects"), &["projetos", "projectos"]),
+    ("Português", Part::Custom("Frivillig arbeid", "Volunteering"), &["voluntariado"]),
+    ("Português", Part::Skip, &["dados pessoais", "contactos", "referências"]),
+    // Italiano
+    ("Italiano", Part::Profile, &["profilo", "profilo professionale", "chi sono", "sommario", "obiettivo"]),
+    ("Italiano", Part::Skills, &["competenze chiave", "competenze", "capacità", "conoscenze", "competenze tecniche", "strumenti"]),
+    ("Italiano", Part::Languages, &["lingue", "conoscenze linguistiche", "lingue straniere"]),
+    ("Italiano", Part::Experience, &["esperienza professionale", "esperienze professionali", "esperienza lavorativa", "esperienze lavorative", "esperienza"]),
+    ("Italiano", Part::Education, &["istruzione", "formazione", "istruzione e formazione", "studi"]),
+    ("Italiano", Part::Certifications, &["corsi e certificazioni", "corsi", "certificazioni"]),
+    ("Italiano", Part::Interests, &["interessi", "hobby", "passioni"]),
+    ("Italiano", Part::Custom("Prosjekter", "Projects"), &["progetti"]),
+    ("Italiano", Part::Custom("Frivillig arbeid", "Volunteering"), &["volontariato"]),
+    ("Italiano", Part::Skip, &["dati personali", "contatti", "referenze"]),
+    // Nederlands
+    ("Nederlands", Part::Profile, &["profiel", "over mij", "samenvatting", "persoonlijk profiel"]),
+    ("Nederlands", Part::Skills, &["kerncompetenties", "competenties", "vaardigheden", "kennis", "tools"]),
+    ("Nederlands", Part::Languages, &["talen", "talenkennis"]),
+    ("Nederlands", Part::Experience, &["werkervaring", "ervaring", "loopbaan", "relevante ervaring"]),
+    ("Nederlands", Part::Education, &["opleiding", "opleidingen", "onderwijs"]),
+    ("Nederlands", Part::Certifications, &["cursussen en certificaten", "cursussen", "certificaten", "trainingen"]),
+    ("Nederlands", Part::Interests, &["interesses", "hobby's", "hobbies"]),
+    ("Nederlands", Part::Custom("Prosjekter", "Projects"), &["projecten"]),
+    ("Nederlands", Part::Custom("Frivillig arbeid", "Volunteering"), &["vrijwilligerswerk"]),
+    ("Nederlands", Part::Skip, &["personalia", "persoonlijke gegevens", "referenties"]),
+    // Svenska
+    ("Svenska", Part::Profile, &["profil", "om mig", "sammanfattning"]),
+    ("Svenska", Part::Skills, &["kärnkompetens", "kompetenser", "kompetens", "färdigheter", "kunskaper", "verktyg"]),
+    ("Svenska", Part::Languages, &["språk", "språkkunskaper"]),
+    ("Svenska", Part::Experience, &["arbetslivserfarenhet", "erfarenhet", "yrkeserfarenhet", "anställningar"]),
+    ("Svenska", Part::Education, &["utbildning", "utbildningar"]),
+    ("Svenska", Part::Certifications, &["kurser och certifieringar", "kurser", "certifieringar", "certifikat"]),
+    ("Svenska", Part::Interests, &["intressen", "fritidsintressen"]),
+    ("Svenska", Part::Custom("Prosjekter", "Projects"), &["projekt"]),
+    ("Svenska", Part::Custom("Frivillig arbeid", "Volunteering"), &["ideellt arbete", "föreningsliv"]),
+    ("Svenska", Part::Skip, &["personuppgifter", "kontaktuppgifter", "referenser"]),
+    // Dansk
+    ("Dansk", Part::Profile, &["profil", "om mig", "resumé"]),
+    ("Dansk", Part::Skills, &["kernekompetencer", "kompetencer", "færdigheder", "kvalifikationer", "værktøjer"]),
+    ("Dansk", Part::Languages, &["sprog", "sprogkundskaber"]),
+    ("Dansk", Part::Experience, &["erhvervserfaring", "erfaring", "arbejdserfaring", "beskæftigelse"]),
+    ("Dansk", Part::Education, &["uddannelse", "uddannelser"]),
+    ("Dansk", Part::Certifications, &["kurser og certificeringer", "kurser", "certificeringer", "efteruddannelse"]),
+    ("Dansk", Part::Interests, &["interesser", "fritidsinteresser", "fritid"]),
+    ("Dansk", Part::Custom("Prosjekter", "Projects"), &["projekter"]),
+    ("Dansk", Part::Custom("Frivillig arbeid", "Volunteering"), &["frivilligt arbejde"]),
+    ("Dansk", Part::Skip, &["personlige oplysninger", "kontaktoplysninger", "referencer"]),
+    // Suomi
+    ("Suomi", Part::Profile, &["profiili", "tietoa minusta", "yhteenveto"]),
+    ("Suomi", Part::Skills, &["ydinosaaminen", "osaaminen", "taidot", "erityisosaaminen", "työkalut"]),
+    ("Suomi", Part::Languages, &["kielitaito", "kielet"]),
+    ("Suomi", Part::Experience, &["työkokemus", "työhistoria", "kokemus"]),
+    ("Suomi", Part::Education, &["koulutus", "opinnot"]),
+    ("Suomi", Part::Certifications, &["kurssit ja sertifikaatit", "kurssit", "sertifikaatit", "lisäkoulutus"]),
+    ("Suomi", Part::Interests, &["kiinnostuksen kohteet", "harrastukset"]),
+    ("Suomi", Part::Custom("Prosjekter", "Projects"), &["projektit"]),
+    ("Suomi", Part::Custom("Frivillig arbeid", "Volunteering"), &["vapaaehtoistyö", "luottamustoimet"]),
+    ("Suomi", Part::Skip, &["henkilötiedot", "yhteystiedot", "suosittelijat"]),
+    // Polski
+    ("Polski", Part::Profile, &["profil", "o mnie", "podsumowanie", "profil zawodowy"]),
+    ("Polski", Part::Skills, &["kluczowe kompetencje", "kompetencje", "umiejętności", "znajomość narzędzi"]),
+    ("Polski", Part::Languages, &["języki", "języki obce", "znajomość języków"]),
+    ("Polski", Part::Experience, &["doświadczenie zawodowe", "doświadczenie", "przebieg kariery"]),
+    ("Polski", Part::Education, &["wykształcenie", "edukacja"]),
+    ("Polski", Part::Certifications, &["kursy i certyfikaty", "kursy", "certyfikaty", "szkolenia"]),
+    ("Polski", Part::Interests, &["zainteresowania", "hobby"]),
+    ("Polski", Part::Custom("Prosjekter", "Projects"), &["projekty"]),
+    ("Polski", Part::Custom("Frivillig arbeid", "Volunteering"), &["wolontariat"]),
+    ("Polski", Part::Skip, &["dane osobowe", "dane kontaktowe", "referencje"]),
+    // Čeština
+    ("Čeština", Part::Profile, &["profil", "o mně", "shrnutí"]),
+    ("Čeština", Part::Skills, &["klíčové kompetence", "dovednosti", "znalosti", "kompetence"]),
+    ("Čeština", Part::Languages, &["jazyky", "jazykové znalosti"]),
+    ("Čeština", Part::Experience, &["pracovní zkušenosti", "praxe", "zkušenosti"]),
+    ("Čeština", Part::Education, &["vzdělání", "studium"]),
+    ("Čeština", Part::Certifications, &["kurzy a certifikáty", "kurzy", "certifikáty", "školení"]),
+    ("Čeština", Part::Interests, &["zájmy", "koníčky"]),
+    ("Čeština", Part::Custom("Prosjekter", "Projects"), &["projekty"]),
+    ("Čeština", Part::Skip, &["osobní údaje", "kontakt", "reference"]),
+    // Română
+    ("Română", Part::Profile, &["profil", "despre mine", "rezumat", "obiectiv"]),
+    ("Română", Part::Skills, &["competențe cheie", "competențe", "abilități", "aptitudini", "cunoștințe"]),
+    ("Română", Part::Languages, &["limbi străine", "limbi", "competențe lingvistice"]),
+    ("Română", Part::Experience, &["experiență profesională", "experiență", "experiența profesională"]),
+    ("Română", Part::Education, &["educație", "studii", "educație și formare"]),
+    ("Română", Part::Certifications, &["cursuri și certificări", "cursuri", "certificări"]),
+    ("Română", Part::Interests, &["interese", "hobby-uri"]),
+    ("Română", Part::Custom("Prosjekter", "Projects"), &["proiecte"]),
+    ("Română", Part::Custom("Frivillig arbeid", "Volunteering"), &["voluntariat"]),
+    ("Română", Part::Skip, &["date personale", "informații personale", "referințe"]),
+    // Magyar
+    ("Magyar", Part::Profile, &["profil", "bemutatkozás", "összefoglaló", "rólam"]),
+    ("Magyar", Part::Skills, &["kulcskompetenciák", "kompetenciák", "készségek", "szakmai ismeretek", "ismeretek"]),
+    ("Magyar", Part::Languages, &["nyelvtudás", "nyelvismeret", "nyelvek"]),
+    ("Magyar", Part::Experience, &["szakmai tapasztalat", "munkatapasztalat", "tapasztalat"]),
+    ("Magyar", Part::Education, &["tanulmányok", "végzettség", "iskolai végzettség", "oktatás"]),
+    ("Magyar", Part::Certifications, &["tanfolyamok és tanúsítványok", "tanfolyamok", "tanúsítványok", "képzések"]),
+    ("Magyar", Part::Interests, &["érdeklődési kör", "hobbi", "hobbik"]),
+    ("Magyar", Part::Custom("Prosjekter", "Projects"), &["projektek"]),
+    ("Magyar", Part::Skip, &["személyes adatok", "elérhetőség", "referenciák"]),
+    // Türkçe
+    ("Türkçe", Part::Profile, &["profil", "hakkımda", "özet", "kariyer hedefi"]),
+    ("Türkçe", Part::Skills, &["temel yetkinlikler", "yetkinlikler", "yetenekler", "beceriler", "bilgisayar becerileri"]),
+    ("Türkçe", Part::Languages, &["diller", "yabancı diller", "yabancı dil"]),
+    ("Türkçe", Part::Experience, &["iş deneyimi", "deneyim", "iş tecrübesi", "tecrübe", "profesyonel deneyim"]),
+    ("Türkçe", Part::Education, &["eğitim", "eğitim bilgileri", "öğrenim"]),
+    ("Türkçe", Part::Certifications, &["kurslar ve sertifikalar", "kurslar", "sertifikalar", "eğitimler ve sertifikalar"]),
+    ("Türkçe", Part::Interests, &["ilgi alanları", "hobiler"]),
+    ("Türkçe", Part::Custom("Prosjekter", "Projects"), &["projeler"]),
+    ("Türkçe", Part::Custom("Frivillig arbeid", "Volunteering"), &["gönüllülük", "gönüllü çalışmalar"]),
+    ("Türkçe", Part::Skip, &["kişisel bilgiler", "iletişim bilgileri", "referanslar"]),
+    // Русский
+    ("Русский", Part::Profile, &["профиль", "о себе", "резюме", "цель"]),
+    ("Русский", Part::Skills, &["ключевые навыки", "навыки", "профессиональные навыки", "компетенции"]),
+    ("Русский", Part::Languages, &["языки", "знание языков", "иностранные языки"]),
+    ("Русский", Part::Experience, &["опыт работы", "опыт", "трудовая деятельность"]),
+    ("Русский", Part::Education, &["образование"]),
+    ("Русский", Part::Certifications, &["курсы и сертификаты", "курсы", "сертификаты", "повышение квалификации"]),
+    ("Русский", Part::Interests, &["интересы", "хобби", "увлечения"]),
+    ("Русский", Part::Custom("Prosjekter", "Projects"), &["проекты"]),
+    ("Русский", Part::Skip, &["личные данные", "контакты", "рекомендации"]),
+    // Українська
+    ("Українська", Part::Profile, &["профіль", "про себе", "резюме", "мета"]),
+    ("Українська", Part::Skills, &["ключові компетенції", "навички", "ключові навички", "компетенції"]),
+    ("Українська", Part::Languages, &["мови", "знання мов", "іноземні мови"]),
+    ("Українська", Part::Experience, &["досвід роботи", "досвід"]),
+    ("Українська", Part::Education, &["освіта"]),
+    ("Українська", Part::Certifications, &["курси та сертифікати", "курси", "сертифікати"]),
+    ("Українська", Part::Interests, &["інтереси", "хобі", "захоплення"]),
+    ("Українська", Part::Custom("Prosjekter", "Projects"), &["проєкти", "проекти"]),
+    ("Українська", Part::Skip, &["особисті дані", "контакти", "рекомендації"]),
+    // Ελληνικά
+    ("Ελληνικά", Part::Profile, &["προφίλ", "σχετικά με εμένα", "περίληψη"]),
+    ("Ελληνικά", Part::Skills, &["βασικές δεξιότητες", "δεξιότητες", "ικανότητες", "γνώσεις"]),
+    ("Ελληνικά", Part::Languages, &["γλώσσες", "ξένες γλώσσες"]),
+    ("Ελληνικά", Part::Experience, &["επαγγελματική εμπειρία", "εμπειρία", "εργασιακή εμπειρία"]),
+    ("Ελληνικά", Part::Education, &["εκπαίδευση", "σπουδές"]),
+    ("Ελληνικά", Part::Certifications, &["σεμινάρια και πιστοποιήσεις", "σεμινάρια", "πιστοποιήσεις"]),
+    ("Ελληνικά", Part::Interests, &["ενδιαφέροντα", "χόμπι"]),
+    ("Ελληνικά", Part::Skip, &["προσωπικά στοιχεία", "στοιχεία επικοινωνίας"]),
+    // Bahasa Indonesia
+    ("Bahasa Indonesia", Part::Profile, &["profil", "tentang saya", "ringkasan"]),
+    ("Bahasa Indonesia", Part::Skills, &["keahlian utama", "keahlian", "keterampilan", "kompetensi"]),
+    ("Bahasa Indonesia", Part::Languages, &["bahasa", "kemampuan bahasa"]),
+    ("Bahasa Indonesia", Part::Experience, &["pengalaman kerja", "pengalaman"]),
+    ("Bahasa Indonesia", Part::Education, &["pendidikan", "riwayat pendidikan"]),
+    ("Bahasa Indonesia", Part::Certifications, &["kursus dan sertifikasi", "sertifikasi", "pelatihan", "kursus"]),
+    ("Bahasa Indonesia", Part::Interests, &["minat", "hobi"]),
+    ("Bahasa Indonesia", Part::Custom("Prosjekter", "Projects"), &["proyek"]),
+    ("Bahasa Indonesia", Part::Skip, &["data pribadi", "kontak", "referensi"]),
+    // Tiếng Việt
+    ("Tiếng Việt", Part::Profile, &["giới thiệu", "giới thiệu bản thân", "mục tiêu nghề nghiệp", "tóm tắt"]),
+    ("Tiếng Việt", Part::Skills, &["kỹ năng chính", "kỹ năng"]),
+    ("Tiếng Việt", Part::Languages, &["ngôn ngữ", "ngoại ngữ"]),
+    ("Tiếng Việt", Part::Experience, &["kinh nghiệm làm việc", "kinh nghiệm"]),
+    ("Tiếng Việt", Part::Education, &["học vấn", "trình độ học vấn"]),
+    ("Tiếng Việt", Part::Certifications, &["khóa học và chứng chỉ", "chứng chỉ", "khóa học"]),
+    ("Tiếng Việt", Part::Interests, &["sở thích"]),
+    ("Tiếng Việt", Part::Custom("Prosjekter", "Projects"), &["dự án"]),
+    ("Tiếng Việt", Part::Skip, &["thông tin cá nhân", "liên hệ", "người tham chiếu"]),
+    // Íslenska, Lietuvių
+    ("Íslenska", Part::Profile, &["prófíll", "um mig"]),
+    ("Íslenska", Part::Skills, &["kjarnahæfni", "hæfni", "færni"]),
+    ("Íslenska", Part::Languages, &["tungumál", "tungumálakunnátta"]),
+    ("Íslenska", Part::Experience, &["starfsreynsla", "reynsla"]),
+    ("Íslenska", Part::Education, &["menntun"]),
+    ("Íslenska", Part::Certifications, &["námskeið og vottanir", "námskeið"]),
+    ("Íslenska", Part::Interests, &["áhugamál"]),
+    ("Lietuvių", Part::Profile, &["profilis", "apie mane"]),
+    ("Lietuvių", Part::Skills, &["pagrindinės kompetencijos", "kompetencijos", "įgūdžiai"]),
+    ("Lietuvių", Part::Languages, &["kalbos", "kalbų žinios"]),
+    ("Lietuvių", Part::Experience, &["darbo patirtis", "patirtis"]),
+    ("Lietuvių", Part::Education, &["išsilavinimas"]),
+    ("Lietuvių", Part::Certifications, &["kursai ir sertifikatai", "kursai", "sertifikatai"]),
+    ("Lietuvių", Part::Interests, &["pomėgiai", "interesai"]),
+    // 日本語, 简体中文, 한국어
+    ("日本語", Part::Profile, &["プロフィール", "自己pr", "職務要約"]),
+    ("日本語", Part::Skills, &["スキル", "活かせる経験・知識・技術"]),
+    ("日本語", Part::Languages, &["語学", "語学力"]),
+    ("日本語", Part::Experience, &["職歴", "職務経歴"]),
+    ("日本語", Part::Education, &["学歴"]),
+    ("日本語", Part::Certifications, &["研修・資格", "資格", "免許・資格"]),
+    ("日本語", Part::Interests, &["趣味・関心", "趣味"]),
+    ("简体中文", Part::Profile, &["个人简介", "自我评价", "个人总结"]),
+    ("简体中文", Part::Skills, &["核心技能", "专业技能", "技能"]),
+    ("简体中文", Part::Languages, &["语言能力", "语言"]),
+    ("简体中文", Part::Experience, &["工作经历", "工作经验"]),
+    ("简体中文", Part::Education, &["教育背景", "教育经历"]),
+    ("简体中文", Part::Certifications, &["培训与证书", "证书", "资格证书"]),
+    ("简体中文", Part::Interests, &["兴趣爱好"]),
+    ("简体中文", Part::Custom("Prosjekter", "Projects"), &["项目经历", "项目经验"]),
+    ("한국어", Part::Profile, &["프로필", "자기소개", "요약"]),
+    ("한국어", Part::Skills, &["핵심 역량", "역량", "기술", "보유 기술"]),
+    ("한국어", Part::Languages, &["어학", "외국어"]),
+    ("한국어", Part::Experience, &["경력", "경력 사항"]),
+    ("한국어", Part::Education, &["학력", "학력 사항"]),
+    ("한국어", Part::Certifications, &["교육 및 자격증", "자격증"]),
+    ("한국어", Part::Interests, &["관심사", "취미"]),
+];
+
 /// A CV section heading such as «Arbeidserfaring» or «Skills» (for the job-ad reader, which skips them).
 pub(crate) fn is_heading(text: &str) -> bool {
     heading_of(text).is_some()
 }
 
-fn heading_of(text: &str) -> Option<Part> {
-    let l = text.trim().trim_end_matches(':').trim().to_lowercase();
-    if l.is_empty() || l.chars().count() > 40 {
-        return None;
+fn heading_key(text: &str) -> Option<String> {
+    let l = text.trim().trim_end_matches([':', '：']).trim().to_lowercase();
+    (!l.is_empty() && l.chars().count() <= 40).then_some(l)
+}
+
+/// [`FOREIGN`] and the languages of assets/cv-languages.json together.
+static ALL_FOREIGN: LazyLock<Vec<(&'static str, Part, Vec<&'static str>)>> = LazyLock::new(|| {
+    let mut all: Vec<(&'static str, Part, Vec<&'static str>)> = FOREIGN.iter().map(|(l, p, w)| (*l, *p, w.to_vec())).collect();
+    let more: &'static [crate::headings::CvLanguage] = &crate::headings::MORE;
+    for lang in more {
+        for (key, part) in [
+            ("profile", Part::Profile),
+            ("skills", Part::Skills),
+            ("languages", Part::Languages),
+            ("experience", Part::Experience),
+            ("education", Part::Education),
+            ("certifications", Part::Certifications),
+            ("interests", Part::Interests),
+            ("projects", Part::Custom("Prosjekter", "Projects")),
+            ("volunteering", Part::Custom("Frivillig arbeid", "Volunteering")),
+            ("skip", Part::Skip),
+        ] {
+            // The CV's own heading first: «heading_line» lets the first word share its line.
+            let own = match part {
+                Part::Profile => Some(0),
+                Part::Skills => Some(1),
+                Part::Experience => Some(2),
+                Part::Education => Some(3),
+                Part::Certifications => Some(4),
+                Part::Languages => Some(5),
+                Part::Interests => Some(6),
+                _ => None,
+            };
+            let mut words: Vec<&'static str> = Vec::new();
+            let mut add = |w: &'static str| {
+                let w = w.trim();
+                if !w.is_empty() && !words.iter().any(|x| x.to_lowercase() == w.to_lowercase()) {
+                    words.push(w);
+                }
+            };
+            if let Some(i) = own {
+                add(leak_lower(&lang.headings[i]));
+            }
+            for w in lang.import.get(key).into_iter().flatten() {
+                add(leak_lower(w));
+            }
+            if !words.is_empty() {
+                all.push((lang.name.as_str(), part, words));
+            }
+        }
     }
-    HEADINGS.iter().find(|(words, _)| words.contains(&l.as_str())).map(|(_, part)| *part)
+    all
+});
+
+/// Lower case, kept for the rest of the run (the data is read once).
+fn leak_lower(s: &str) -> &'static str {
+    Box::leak(s.trim().to_lowercase().into_boxed_str())
+}
+
+fn heading_of(text: &str) -> Option<Part> {
+    let l = heading_key(text)?;
+    HEADINGS.iter().find(|(words, _)| words.contains(&l.as_str())).map(|(_, part)| *part).or_else(|| ALL_FOREIGN.iter().find(|(_, _, words)| words.contains(&l.as_str())).map(|(_, part, _)| *part))
+}
+
+/// The languages a heading is written in, when it is one of the others (not Norwegian or
+/// English). Related languages share words («obrazovanje»), so every match counts.
+fn heading_languages(text: &str) -> Vec<&'static str> {
+    let Some(l) = heading_key(text) else { return Vec::new() };
+    if HEADINGS.iter().any(|(words, _)| words.contains(&l.as_str())) {
+        return Vec::new();
+    }
+    let mut out: Vec<&'static str> = Vec::new();
+    for (lang, _, words) in ALL_FOREIGN.iter() {
+        if words.contains(&l.as_str()) && !out.contains(lang) {
+            out.push(lang);
+        }
+    }
+    out
 }
 
 /// A heading alone on its line, or at the start of a line with the section's first words after
@@ -148,7 +464,12 @@ fn heading_line(line: &str) -> Option<(Part, String)> {
             continue;
         }
         let head = words[..n].join(" ").to_lowercase();
-        if !PREFIX_HEADINGS.contains(&head.trim_end_matches(':')) {
+        let head_key = head.trim_end_matches(':');
+        // The main sections in the other languages may share their line too («Berufserfahrung Siemens AG …»).
+        let foreign_main = ALL_FOREIGN.iter().any(|(_, part, words)| {
+            matches!(part, Part::Profile | Part::Skills | Part::Languages | Part::Experience | Part::Education | Part::Certifications | Part::Interests) && words.first() == Some(&head_key)
+        });
+        if !PREFIX_HEADINGS.contains(&head_key) && !foreign_main {
             continue;
         }
         if let Some(part) = heading_of(&head) {
@@ -186,26 +507,122 @@ const PREFIX_HEADINGS: &[&str] = &[
 
 // ---------- dates ----------
 
-const DATE: &str = r"(?:\d{1,2}\s*[./-]\s*(?:19|20)\d{2}|(?:19|20)\d{2}\s*[./-]\s*\d{1,2}|\b(?:jan(?:uar|uary)?|feb(?:ruar|ruary)?|mar(?:s|ch)?|apr(?:il)?|mai|may|jun(?:i|e)?|jul(?:i|y)?|aug(?:ust)?|sep(?:t|tember)?|okt(?:ober)?|oct(?:ober)?|nov(?:ember)?|des(?:ember)?|dec(?:ember)?)\.?\s+(?:19|20)\d{2}|(?:19|20)\d{2})";
-const NOW: &str = r"(?:present|current|now|today|ongoing|nå|naa|d\.\s?d\.?|dd|pågående|i dag|dags dato)";
+/// Month names CVs use, in the app's languages, with the month they stand for.
+const MONTH_NAMES: &[(&str, u32)] = &[
+    // Norwegian, English, Danish, Swedish
+    ("jan", 1), ("januar", 1), ("january", 1), ("januari", 1), ("feb", 2), ("februar", 2), ("february", 2), ("februari", 2), ("mar", 3), ("mars", 3), ("march", 3), ("marts", 3),
+    ("apr", 4), ("april", 4), ("mai", 5), ("may", 5), ("maj", 5), ("jun", 6), ("juni", 6), ("june", 6), ("jul", 7), ("juli", 7), ("july", 7), ("aug", 8), ("august", 8), ("augusti", 8),
+    ("sep", 9), ("sept", 9), ("september", 9), ("okt", 10), ("oktober", 10), ("oct", 10), ("october", 10), ("nov", 11), ("november", 11), ("des", 12), ("desember", 12), ("dec", 12), ("december", 12),
+    // German
+    ("jänner", 1), ("märz", 3), ("mär", 3), ("mrz", 3), ("dez", 12), ("dezember", 12),
+    // French
+    ("janv", 1), ("janvier", 1), ("févr", 2), ("février", 2), ("fevrier", 2), ("avr", 4), ("avril", 4), ("juin", 6), ("juil", 7), ("juillet", 7), ("août", 8), ("aout", 8),
+    ("septembre", 9), ("octobre", 10), ("novembre", 11), ("déc", 12), ("décembre", 12),
+    // Spanish
+    ("ene", 1), ("enero", 1), ("febrero", 2), ("marzo", 3), ("abr", 4), ("abril", 4), ("mayo", 5), ("junio", 6), ("julio", 7), ("ago", 8), ("agosto", 8), ("septiembre", 9), ("setiembre", 9),
+    ("octubre", 10), ("noviembre", 11), ("dic", 12), ("diciembre", 12),
+    // Italian
+    ("gen", 1), ("gennaio", 1), ("febbraio", 2), ("aprile", 4), ("mag", 5), ("maggio", 5), ("giu", 6), ("giugno", 6), ("lug", 7), ("luglio", 7), ("set", 9), ("settembre", 9), ("ott", 10), ("ottobre", 10),
+    ("dicembre", 12),
+    // Portuguese
+    ("janeiro", 1), ("fev", 2), ("fevereiro", 2), ("março", 3), ("maio", 5), ("junho", 6), ("julho", 7), ("setembro", 9), ("out", 10), ("outubro", 10), ("novembro", 11), ("dezembro", 12),
+    // Dutch
+    ("maart", 3), ("mrt", 3), ("mei", 5), ("augustus", 8),
+    // Polish
+    ("styczeń", 1), ("stycznia", 1), ("luty", 2), ("lutego", 2), ("marzec", 3), ("marca", 3), ("kwiecień", 4), ("kwietnia", 4), ("maja", 5), ("czerwiec", 6), ("czerwca", 6), ("lipiec", 7), ("lipca", 7),
+    ("sierpień", 8), ("sierpnia", 8), ("wrzesień", 9), ("września", 9), ("październik", 10), ("października", 10), ("listopad", 11), ("listopada", 11), ("grudzień", 12), ("grudnia", 12),
+    // Turkish
+    ("ocak", 1), ("şubat", 2), ("mart", 3), ("nisan", 4), ("mayıs", 5), ("haziran", 6), ("temmuz", 7), ("ağustos", 8), ("eylül", 9), ("ekim", 10), ("kasım", 11), ("aralık", 12),
+    // Russian (nominative and genitive)
+    ("январь", 1), ("января", 1), ("февраль", 2), ("февраля", 2), ("март", 3), ("марта", 3), ("апрель", 4), ("апреля", 4), ("май", 5), ("мая", 5), ("июнь", 6), ("июня", 6), ("июль", 7), ("июля", 7),
+    ("август", 8), ("августа", 8), ("сентябрь", 9), ("сентября", 9), ("октябрь", 10), ("октября", 10), ("ноябрь", 11), ("ноября", 11), ("декабрь", 12), ("декабря", 12),
+];
 
-/// A date range at the end of a line: «2019 – 2022», «03.2021 – nå», «Jan 2020 - Present».
-static RANGE: LazyLock<Regex> = LazyLock::new(|| Regex::new(&format!(r"(?i)\(?\s*({DATE})\s*(?:–|—|-|−|to|til)\s*({DATE}|{NOW})\s*\)?\s*$")).expect("regex"));
+/// «present», «heute», «aujourd'hui», «по настоящее время»: a job that has not ended.
+const NOW_WORDS: &[&str] = &[
+    "present", "current", "now", "today", "ongoing", "nå", "naa", "d.d.", "d.d", "dd", "pågående", "i dag", "dags dato", "heute", "aktuell", "jetzt", "bis heute", "laufend", "derzeit", "nu", "idag",
+    "pågår", "nuværende", "nyt", "nykyhetki", "aujourd'hui", "aujourd’hui", "à ce jour", "actuel", "présent", "en cours", "actualidad", "actual", "presente", "hoy", "la fecha", "atual", "atualmente",
+    "oggi", "attuale", "in corso", "heden", "huidig", "nu", "obecnie", "teraz", "do dziś", "současnost", "dosud", "nyní", "dabar", "prezent", "jelenleg", "napjainkig", "halen", "günümüz",
+    "devam ediyor", "σήμερα", "по настоящее время", "по н.в.", "наст. время", "настоящее время", "сейчас", "н.в.", "дотепер", "тепер", "теперішній час", "sekarang", "saat ini", "hiện tại", "nay",
+    "現在", "至今", "现在", "현재",
+];
+
+/// [`MONTH_NAMES`] and the months of assets/cv-languages.json.
+static ALL_MONTHS: LazyLock<Vec<(&'static str, u32)>> = LazyLock::new(|| {
+    let mut all = MONTH_NAMES.to_vec();
+    let more: &'static [crate::headings::CvLanguage] = &crate::headings::MORE;
+    for lang in more {
+        for (i, names) in lang.months.iter().take(12).enumerate() {
+            for n in names {
+                let n = leak_lower(n.trim_end_matches('.'));
+                // Very short or numeric forms («1», «m1») would read ordinary words as months.
+                if n.chars().count() >= 2 && !n.chars().all(|c| c.is_ascii_digit()) && !all.iter().any(|(x, _)| *x == n) {
+                    all.push((n, i as u32 + 1));
+                }
+            }
+        }
+    }
+    all
+});
+
+/// [`NOW_WORDS`] and the «present» words of assets/cv-languages.json.
+static ALL_NOW: LazyLock<Vec<&'static str>> = LazyLock::new(|| {
+    let mut all = NOW_WORDS.to_vec();
+    let more: &'static [crate::headings::CvLanguage] = &crate::headings::MORE;
+    for lang in more {
+        for w in lang.now.iter().chain(std::iter::once(&lang.headings[8])) {
+            let w = leak_lower(w);
+            if !w.is_empty() && !all.contains(&w) {
+                all.push(w);
+            }
+        }
+    }
+    all
+});
+
+fn alternation(words: impl Iterator<Item = &'static str>) -> String {
+    let mut v: Vec<&str> = words.collect();
+    // Longest first, so «september» wins over «sep».
+    v.sort_by_key(|w| std::cmp::Reverse(w.chars().count()));
+    v.iter().map(|w| regex::escape(w)).collect::<Vec<_>>().join("|")
+}
+
+/// A date: 03.2021, 2021-03, «März 2021», «Jan 2020», or a year.
+static DATE: LazyLock<String> = LazyLock::new(|| {
+    format!(r"(?:\d{{1,2}}\s*[./-]\s*(?:19|20)\d{{2}}|(?:19|20)\d{{2}}\s*[./-]\s*\d{{1,2}}|\b(?:{})\.?\s+(?:19|20)\d{{2}}|(?:19|20)\d{{2}})", alternation(ALL_MONTHS.iter().map(|(n, _)| *n)))
+});
+static NOW: LazyLock<String> = LazyLock::new(|| format!("(?:{})", alternation(ALL_NOW.iter().copied())));
+
+/// A date range at the end of a line: «2019 – 2022», «03.2021 – nå», «Jan 2020 - Present», «2018 bis heute».
+static RANGE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(r"(?i)\(?\s*({date})\s*(?:–|—|-|−|to|til|till|bis|tot|à|au|a|al|hasta|até|ao|do|по|-)\s*({date}|{now})\s*\)?\s*$", date = *DATE, now = *NOW)).expect("regex")
+});
+/// «seit 03/2020», «since 2021», «depuis 2019»: a start and no end.
+static SINCE: LazyLock<Regex> = LazyLock::new(|| Regex::new(&format!(r"(?i)\(?\s*(?:seit|since|depuis|desde|dal|dall'|vanaf|sedan|siden|fra|od|с|от)\s+({})\s*\)?\s*$", *DATE)).expect("regex"));
 /// One date or year at the end of a line: «… 2024».
-static SINGLE: LazyLock<Regex> = LazyLock::new(|| Regex::new(&format!(r"(?i)(?:^|[\s,·|(])({DATE})\)?\s*$")).expect("regex"));
+static SINGLE: LazyLock<Regex> = LazyLock::new(|| Regex::new(&format!(r"(?i)(?:^|[\s,·|(])({})\)?\s*$", *DATE)).expect("regex"));
+static NOW_ALONE: LazyLock<Regex> = LazyLock::new(|| Regex::new(&format!("(?i)^{}$", *NOW)).expect("regex"));
 
 /// The text before a date range at the end of the line, the start, and the end (`None` = now).
 fn split_range(line: &str) -> Option<(String, String, Option<String>)> {
-    let c = RANGE.captures(line)?;
+    if let Some(c) = RANGE.captures(line) {
+        let whole = c.get(0)?;
+        let before = clean_field(&line[..whole.start()]);
+        let start = month_or_year(&c[1])?;
+        let end = if checks::is_now(&c[2].replace('.', "")) || NOW_ALONE.is_match(c[2].trim()) { None } else { Some(month_or_year(&c[2])?) };
+        return Some((before, start, end));
+    }
+    let c = SINCE.captures(line)?;
     let whole = c.get(0)?;
-    let before = clean_field(&line[..whole.start()]);
-    let start = month_or_year(&c[1])?;
-    let end = if checks::is_now(&c[2].replace('.', "")) || Regex::new(&format!("(?i)^{NOW}$")).ok()?.is_match(c[2].trim()) { None } else { Some(month_or_year(&c[2])?) };
-    Some((before, start, end))
+    Some((clean_field(&line[..whole.start()]), month_or_year(&c[1])?, None))
 }
 
 fn month_or_year(text: &str) -> Option<String> {
     let t = text.trim().trim_end_matches('.');
+    // «März 2021» → «03.2021», which the form's date reader knows.
+    let lower = t.to_lowercase();
+    let named = lower.split_once(char::is_whitespace).and_then(|(m, y)| ALL_MONTHS.iter().find(|(n, _)| *n == m.trim_end_matches('.')).map(|(_, num)| format!("{num:02}.{}", y.trim())));
+    let t = named.as_deref().unwrap_or(t);
     checks::parse_month(t).filter(|m| !m.is_empty()).or_else(|| checks::parse_year(t).filter(|y| !y.is_empty()))
 }
 
@@ -229,7 +646,7 @@ fn unbullet(line: &str) -> &str {
 fn is_label(line: &str) -> bool {
     let t = line.trim();
     let words = t.split_whitespace().count();
-    !t.is_empty() && !is_bullet(t) && (1..=if t.contains(" | ") { 18 } else { 9 }).contains(&words) && !t.ends_with(['.', '!', '?', ';']) && heading_line(t).is_none()
+    !t.is_empty() && !is_bullet(t) && (1..=if t.contains(" | ") { 18 } else { 9 }).contains(&words) && (!t.ends_with(['.', '!', '?', ';']) || is_company(t)) && heading_line(t).is_none()
 }
 
 /// A trailing place on an employer line: «Northstar Health London, UK», «Fjellvegg Bygg AS\tTrondheim».
@@ -380,11 +797,30 @@ fn entries(lines: &[&str], max_above: usize) -> (Vec<Entry>, Vec<String>) {
     (out, before_first)
 }
 
+/// A line that names a company by its legal form: «Fjellvegg Bygg AS», «Beispiel GmbH», «Acme Ltd».
+fn is_company(line: &str) -> bool {
+    const FORMS: &[&str] = &[
+        "as", "asa", "ab", "aps", "a/s", "oy", "oyj", "gmbh", "ag", "kg", "se", "sas", "sa", "sarl", "s.a.", "s.l.", "sl", "srl", "s.r.l.", "spa", "s.p.a.", "bv", "b.v.", "nv", "ltd", "ltd.", "limited",
+        "inc", "inc.", "llc", "plc", "corp", "corp.", "co.", "lda", "ltda", "sp.", "z", "o.o.", "s.r.o.", "kft", "zrt", "a.ş.", "ooo", "ооо", "pt", "tbk", "kk", "株式会社", "有限公司",
+    ];
+    let lower = line.to_lowercase();
+    let first_part = lower.split(',').next().unwrap_or("");
+    first_part.split_whitespace().any(|w| FORMS.contains(&w.trim_matches(|c: char| c == ',' || c == '(' || c == ')')))
+}
+
 /// Splits «Senior Designer, Acme» or «Konsulent hos Acme» into title and employer.
 fn title_and_employer(text: &str) -> (String, String) {
-    for sep in [" hos ", " at ", " @ ", " – ", " — ", " | ", ", ", " - "] {
+    for sep in [" hos ", " at ", " @ ", " bei ", " chez ", " presso ", " bij ", " på ", " – ", " — ", " | ", ", ", " - "] {
         if let Some((a, b)) = text.split_once(sep) {
             if !a.trim().is_empty() && !b.trim().is_empty() {
+                return (a.trim().to_string(), b.trim().to_string());
+            }
+        }
+    }
+    // «Analista de datos en Ejemplo S.L.»: words that also mean other things split only before a company.
+    for sep in [" en ", " em ", " na ", " no ", " w ", " в ", " в компании ", " di ", " tại "] {
+        if let Some((a, b)) = text.rsplit_once(sep) {
+            if !a.trim().is_empty() && is_company(b) {
                 return (a.trim().to_string(), b.trim().to_string());
             }
         }
@@ -400,6 +836,10 @@ fn read_jobs(lines: &[&str], home: &str) -> (Vec<Job>, Vec<String>) {
         let mut employer_line = String::new();
         let mut labels = e.labels.clone();
         if title.is_empty() && !labels.is_empty() {
+            // Two lines over a date: the one that names a company («… GmbH», «… SAS») is the employer.
+            if labels.len() == 2 && is_company(&labels[1]) && !is_company(&labels[0]) {
+                labels.swap(0, 1);
+            }
             title = labels.pop().unwrap_or_default();
         }
         if let Some(l) = labels.first() {
@@ -457,13 +897,29 @@ const DEGREES: &[&str] =
 
 /// A line that is a degree, or starts with one: «MA», «BSc Computer Science».
 fn is_degree(text: &str) -> bool {
-    text.split_whitespace().next().is_some_and(|w| DEGREES.iter().any(|d| d.eq_ignore_ascii_case(w.trim_end_matches([',', '.']))))
+    text.split_whitespace()
+        .next()
+        .is_some_and(|w| DEGREES.iter().chain(MORE_DEGREES).any(|d| d.to_lowercase() == w.trim_end_matches([',']).to_lowercase() || d.eq_ignore_ascii_case(w.trim_end_matches([',', '.']))))
 }
 
 fn is_school(text: &str) -> bool {
     let l = format!("{} ", text.to_lowercase());
-    SCHOOL_WORDS.iter().any(|w| l.contains(w))
+    SCHOOL_WORDS.iter().chain(MORE_SCHOOL_WORDS).any(|w| l.contains(w))
 }
+
+/// Schools and degrees in the other languages.
+const MORE_SCHOOL_WORDS: &[&str] = &[
+    "fachhochschule", "schule", "gymnasium", "berufsschule", "akademie", "école", "lycée", "institut", "escuela", "instituto", "colegio", "facultad", "scuola", "istituto", "politecnico", "liceo",
+    "escola", "faculdade", "hogeschool", "school", "gymnasie", "högskola", "folkhögskola", "gymnasiet", "skole", "erhvervsakademi", "seminarium", "lukio", "ammattikorkeakoulu", "yliopisto", "opisto",
+    "szkoła", "politechnika", "akademia", "liceum", "škola", "vysoká", "gimnázium", "egyetem", "főiskola", "iskola", "üniversite", "lise", "okul", "yüksekokul", "fakülte", "университет", "институт",
+    "колледж", "школа", "академия", "техникум", "університет", "коледж", "πανεπιστήμιο", "σχολή", "ίδρυμα", "universitas", "institut teknologi", "politeknik", "sekolah", "đại học", "trường", "học viện",
+    "大学", "学院", "大學", "대학교", "大学院",
+];
+const MORE_DEGREES: &[&str] = &[
+    "Diplom", "Dipl.-Ing.", "B.Sc.", "M.Sc.", "B.A.", "M.A.", "Magister", "Staatsexamen", "Ausbildung", "Licence", "Maîtrise", "BTS", "DUT", "Grado", "Licenciatura", "Licenciado", "Máster", "Mestrado",
+    "Laurea", "Diploma", "Kandidat", "Kandidatexamen", "Kandidatgrad", "Magisterexamen", "Kandidaatti", "Maisteri", "Tradenomi", "Insinööri", "Licencjat", "Magister", "Inżynier", "Inżynierski",
+    "Mgr.", "Bc.", "Ing.", "Licență", "Diplomă", "Lisans", "Yüksek", "Ön", "Бакалавр", "Магистр", "Специалист", "Магістр", "Πτυχίο", "Μεταπτυχιακό", "Sarjana", "Cử", "Thạc", "Kỹ",
+];
 
 fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
     let (entries, loose) = entries(lines, 5);
@@ -594,8 +1050,20 @@ const LEVELS: &[&str] = &[
 ];
 
 fn is_level(word: &str) -> bool {
-    LEVELS.contains(&word.trim_matches(|c: char| !c.is_alphanumeric()).to_lowercase().as_str())
+    let w = word.trim_matches(|c: char| !c.is_alphanumeric()).to_lowercase();
+    LEVELS.contains(&w.as_str()) || MORE_LEVELS.contains(&w.as_str())
 }
+
+/// Language levels in the other languages.
+const MORE_LEVELS: &[&str] = &[
+    "muttersprache", "fließend", "fliessend", "verhandlungssicher", "gut", "sehr", "grundkenntnisse", "fortgeschritten", "konversationssicher", "maternelle", "courant", "bilingue", "notions",
+    "intermédiaire", "avancé", "scolaire", "nativo", "nativa", "fluido", "avanzado", "básico", "intermedio", "bilingüe", "alto", "medio", "madrelingua", "fluente", "ottimo", "buono", "base",
+    "avanzato", "intermedio", "nativo", "materna", "avançado", "básico", "moedertaal", "vloeiend", "goed", "basis", "modersmål", "flytande", "grundläggande", "flydende", "modersmål", "äidinkieli",
+    "sujuva", "hyvä", "perustaso", "tyydyttävä", "ojczysty", "biegły", "biegle", "dobry", "podstawowy", "komunikatywny", "rodilý", "plynně", "pokročilý", "základní", "nativ", "fluent", "anyanyelv",
+    "anyanyelvi", "felsőfok", "középfok", "alapfok", "folyékony", "anadil", "akıcı", "ileri", "orta", "başlangıç", "iyi", "родной", "свободно", "свободный", "свободное", "базовый",
+    "разговорный", "средний", "продвинутый", "рідна", "вільно", "вільний", "розмовний", "середній", "μητρική", "άριστα", "καλά", "πολύ", "ασταθής", "asli", "lancar", "baik", "dasar", "menengah",
+    "bản", "thông", "thạo", "lưu", "loát", "cơ", "母語", "ネイティブ", "ビジネスレベル", "日常会話", "母语", "流利", "熟练", "原生", "모국어", "능통", "유창",
+];
 
 /// Language names in English and Norwegian, so a language list cannot swallow other text.
 const LANGUAGE_NAMES: &[&str] = &[
@@ -722,8 +1190,34 @@ const LANGUAGE_NAMES: &[&str] = &[
 
 fn is_language_name(text: &str) -> bool {
     let l = text.trim().to_lowercase();
-    LANGUAGE_NAMES.contains(&l.as_str())
+    LANGUAGE_NAMES.contains(&l.as_str()) || MORE_LANGUAGE_NAMES.contains(&l.as_str())
 }
+
+/// Language names as the other languages write them («Englisch», «anglais», «inglés» …).
+const MORE_LANGUAGE_NAMES: &[&str] = &[
+    // German
+    "deutsch", "englisch", "französisch", "spanisch", "italienisch", "portugiesisch", "niederländisch", "norwegisch", "schwedisch", "dänisch", "finnisch", "polnisch", "russisch", "türkisch",
+    "arabisch", "chinesisch", "japanisch", "koreanisch", "griechisch", "ungarisch", "tschechisch", "rumänisch", "ukrainisch",
+    // French
+    "français", "anglais", "allemand", "espagnol", "italien", "portugais", "néerlandais", "norvégien", "suédois", "danois", "finnois", "polonais", "russe", "turc", "arabe", "chinois", "japonais",
+    "coréen", "grec", "hongrois",
+    // Spanish, Portuguese, Italian
+    "español", "castellano", "inglés", "alemán", "francés", "italiano", "portugués", "neerlandés", "noruego", "sueco", "danés", "polaco", "ruso", "turco", "árabe", "chino", "japonés", "catalán",
+    "português", "inglês", "alemão", "francês", "espanhol", "holandês", "norueguês", "inglese", "tedesco", "francese", "spagnolo", "portoghese", "olandese", "norvegese", "svedese", "russo",
+    // Dutch, Swedish, Danish, Finnish
+    "nederlands", "engels", "duits", "frans", "spaans", "italiaans", "noors", "zweeds", "deens", "svenska", "engelska", "tyska", "franska", "spanska", "norska", "danska", "finska", "italienska",
+    "dansk", "tysk", "fransk", "spansk", "svensk", "suomi", "englanti", "ruotsi", "saksa", "ranska", "espanja", "norja", "venäjä", "viro",
+    // Polish, Czech, Romanian, Hungarian, Turkish
+    "polski", "angielski", "niemiecki", "francuski", "hiszpański", "rosyjski", "włoski", "ukraiński", "čeština", "angličtina", "němčina", "francouzština", "ruština", "slovenština", "română",
+    "engleză", "germană", "franceză", "spaniolă", "italiană", "magyar", "angol", "német", "francia", "spanyol", "orosz", "türkçe", "ingilizce", "almanca", "fransızca", "ispanyolca", "arapça",
+    "rusça", "kürtçe",
+    // Russian, Ukrainian, Greek
+    "русский", "английский", "немецкий", "французский", "испанский", "итальянский", "украинский", "казахский", "українська", "англійська", "німецька", "французька", "польська", "російська",
+    "ελληνικά", "αγγλικά", "γερμανικά", "γαλλικά", "ιταλικά", "ισπανικά",
+    // Indonesian, Vietnamese, Japanese, Chinese, Korean
+    "bahasa indonesia", "indonesia", "inggris", "jerman", "prancis", "mandarin", "jepang", "tiếng việt", "tiếng anh", "tiếng pháp", "tiếng đức", "tiếng trung", "tiếng nhật", "日本語", "英語",
+    "中国語", "韓国語", "中文", "汉语", "英语", "日语", "韩语", "한국어", "영어", "일본어", "중국어",
+];
 
 fn read_languages(lines: &[&str]) -> Vec<SpokenLanguage> {
     let text = lines.join("\n");
@@ -1088,8 +1582,16 @@ pub fn read_cv(text: &str) -> CvRead {
 
     // Sections.
     let mut parts: Vec<(Part, Vec<String>)> = vec![(Part::Top, Vec::new())];
+    // The language of each heading: a German CV has German headings, and gets them back.
+    let mut heading_titles: Vec<String> = vec![String::new()];
+    let (mut ours, mut theirs): (usize, Vec<&'static str>) = (0, Vec::new());
     for line in &lines {
         if let Some((part, rest)) = heading_line(line) {
+            let head = line.trim().strip_suffix(rest.as_str()).unwrap_or(line.trim()).trim().trim_end_matches([':', '：']).to_string();
+            match heading_languages(&head) {
+                langs if langs.is_empty() => ours += 1,
+                langs => theirs.extend(langs),
+            }
             let in_skills = parts.last().is_some_and(|(p, b)| *p == Part::Skills && !b.iter().all(|l| l.trim().is_empty()));
             if part == Part::Skills && in_skills && rest.is_empty() {
                 if let Some(last) = parts.last_mut() {
@@ -1098,10 +1600,17 @@ pub fn read_cv(text: &str) -> CvRead {
                 continue;
             }
             parts.push((part, if rest.is_empty() { Vec::new() } else { vec![rest] }));
+            heading_titles.push(name_case(&head));
         } else if let Some(last) = parts.last_mut() {
             last.1.push(line.clone());
         }
     }
+    // The other language that most headings are in, when it is not outnumbered by Norwegian/English ones.
+    // On a tie the language listed first wins: the main form (Français) before its regional ones
+    // (Français (Canada)), which share most headings.
+    let rank = |l: &str| ALL_FOREIGN.iter().position(|(x, _, _)| *x == l).unwrap_or(usize::MAX);
+    let count = |l: &str| theirs.iter().filter(|x| **x == l).count();
+    let foreign = theirs.iter().copied().max_by(|a, b| count(a).cmp(&count(b)).then(rank(b).cmp(&rank(a)))).filter(|l| count(l) >= ours.max(1));
     let home = p.candidate.city.clone();
     let mut rest = Vec::new();
     let mut leftover = |title: &str, lines: Vec<String>| {
@@ -1110,7 +1619,7 @@ pub fn read_cv(text: &str) -> CvRead {
             rest.push(format!("{}\n{body}", title.to_uppercase()));
         }
     };
-    for (part, body) in parts {
+    for ((part, body), heading_title) in parts.into_iter().zip(heading_titles) {
         let refs: Vec<&str> = body.iter().map(String::as_str).collect();
         if refs.iter().all(|l| l.trim().is_empty()) {
             continue;
@@ -1179,7 +1688,7 @@ pub fn read_cv(text: &str) -> CvRead {
             }
             Part::Custom(no, en) => {
                 let id = format!("section_imported_{}", p.custom_sections.len() + 1);
-                let title = if p.is_english() { en } else { no };
+                let title = if foreign.is_some() { heading_title.as_str() } else if p.is_english() { en } else { no };
                 match read_custom(&refs, &id, title) {
                     Some(section) => {
                         p.custom_sections.push(section);
@@ -1194,8 +1703,19 @@ pub fn read_cv(text: &str) -> CvRead {
             Part::Skip => {}
         }
     }
-    // An English CV keeps English headings.
-    if looks_english(&text) {
+    // A CV in another language gets that language's headings (and «heute» for a current job).
+    if let Some(h) = foreign.and_then(crate::headings::built_in) {
+        p.language = crate::model::Language::En;
+        for s in &mut p.custom_sections {
+            for item in &mut s.items {
+                if let Some(d) = item.date.strip_suffix(" – nå") {
+                    item.date = format!("{d} – {}", h.present);
+                }
+            }
+        }
+        p.options.headings = Some(h);
+    } else if looks_english(&text) {
+        // An English CV keeps English headings.
         p.language = crate::model::Language::En;
         for s in &mut p.custom_sections {
             for item in &mut s.items {

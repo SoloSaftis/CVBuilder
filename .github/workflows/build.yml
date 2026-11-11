@@ -1,5 +1,5 @@
 # One job per platform folder (platforms/windows, linux, macos), all built from the code in crates/.
-# Pushing a tag like v2.1.0 also makes a GitHub release: each platform job adds its files under
+# Pushing a tag like v1.0.0 also makes a GitHub release: each platform job adds its files under
 # the fixed names the README links to, and the release is published when all of them are there.
 name: Build CVBuilder
 on:

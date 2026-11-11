@@ -26,6 +26,42 @@ fn is_english(l: &str) -> bool {
     matches!(l.trim().to_lowercase().as_str(), "english" | "engelsk")
 }
 
+/// The CV language that fits this computer: its own language when CVBuilder has it, else English.
+pub(crate) fn system_cv_language() -> &'static str {
+    headings::for_locale(&i18n::locale()).unwrap_or("English")
+}
+
+/// The CV languages for a list: the computer's own first (when there is one), then every
+/// language A to Z by its own name (Čeština with C).
+pub(crate) fn cv_language_list() -> (Option<&'static str>, Vec<&'static str>) {
+    let own = headings::for_locale(&i18n::locale());
+    let mut rest: Vec<&'static str> = ["Bokmål", "English"].into_iter().chain(headings::built_in_languages()).filter(|n| Some(*n) != own).collect();
+    rest.sort_by_key(|n| theme::sort_key(&shown_name(n)));
+    (own, rest)
+}
+
+/// A CV language (kept by its own name, like «Deutsch») as shown in the lists: its name in the
+/// interface language («Tysk» with Norwegian menus). A language typed by the user stays as typed.
+pub(crate) fn shown_name(language: &str) -> String {
+    // Plain English is US English, next to English (UK).
+    let code = headings::code_of(language).map(|c| if c == "en" { "en-US" } else { c });
+    code.and_then(i18n::language_name).unwrap_or_else(|| language.to_string())
+}
+
+/// Gives a CV the headings and dates of a language (by its own name), keeping its text.
+pub(crate) fn set_cv_language(project: &mut cv_core::Project, language: &str) {
+    if is_norwegian(language) {
+        project.options.headings = None;
+        project.language = Language::No;
+    } else if is_english(language) {
+        project.options.headings = None;
+        project.language = Language::En;
+    } else {
+        project.language = Language::En;
+        project.options.headings = Some(headings::built_in(language).unwrap_or_else(|| Headings { language: language.to_string(), ..Default::default() }));
+    }
+}
+
 impl TranslateState {
     pub fn new(language: &str) -> TranslateState {
         let mut s = TranslateState { language: String::new(), headings: Headings::default(), edit_headings: false };
@@ -95,12 +131,17 @@ impl CvApp {
             let mut picked: Option<String> = None;
             ui.horizontal(|ui| {
                 egui::ComboBox::from_id_salt("translate-language")
-                    .selected_text(state.language.clone())
+                    .selected_text(shown_name(&state.language))
                     .width(200.0)
-                    .height(420.0)
+                    .height(2000.0)
                     .show_ui(ui, |ui| {
-                        for name in ["Bokmål", "English"].into_iter().chain(headings::built_in_languages()) {
-                            if ui.selectable_label(state.language == name, name).on_hover_text(i18n::t("Overskriftene finnes ferdig på dette språket")).clicked() {
+                        let (own, rest) = cv_language_list();
+                        let has_own = own.is_some();
+                        for (i, name) in own.into_iter().chain(rest).enumerate() {
+                            if i == 1 && has_own {
+                                ui.separator();
+                            }
+                            if ui.selectable_label(state.language == name, shown_name(name)).on_hover_text(i18n::t("Overskriftene finnes ferdig på dette språket")).clicked() {
                                 picked = Some(name.to_string());
                             }
                         }

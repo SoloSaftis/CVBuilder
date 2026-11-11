@@ -47,7 +47,7 @@ Use the cv_* tools: read the CV with cv_read before changing it, make changes wi
 Rules that always apply: \
 1) Never invent facts, employers, tools, numbers, results, dates or responsibilities that are not in the CV or that the person did not tell you. \
 If a number would make a point stronger but you do not have it, write [tall] where the number goes; CVBuilder blocks export until the person fills it in. \
-2) Write CV text in the CV's language (field \"language\": \"no\" = Norwegian bokmål, \"en\" = English). Talk to the person in the language they write to you in. \
+2) Write CV text in the CV's language (field \"cv_language\" in cv_read, e.g. Bokmål, English or Deutsch). Talk to the person in the language they write to you in. \
 3) Follow recruiter and ATS practice: one column of real text, standard headings, 2-4 short bullets per job that start with a verb and show a result, the job ad's own words where they are true, \
 no buzzwords, no \"I\", no personal data such as date of birth, marital status or nationality, at most two A4 pages. \
 4) Keep answers short. Say what you changed and what the person should check or fill in.";
@@ -233,7 +233,7 @@ pub fn tools() -> Vec<Tool> {
         },
         Tool {
             name: "cv_set_headings",
-            description: "Set the language of the CV's headings. language: the language's own name. \"Norsk\"/\"Bokmål\" and \"English\" use the built-in headings; Dansk, Svenska, Nynorsk, Íslenska, Suomi, Deutsch, Nederlands, Français, Español, Português, Italiano, Polski, Čeština, Lietuvių, Українська, Română, 日本語, 简体中文 and 한국어 have built-in headings too. For any other language pass every heading yourself (profile, skills, experience, education, certifications, languages, interests, contact, present = the word for a current job's end date). Translate the CV text itself with the other tools.",
+            description: "Set the language of the CV's headings and dates. language: a code (de, fr, pt-BR, sr-Latn …) or the language's own name (Deutsch). Every language from cv_list_languages has built-in headings and dates. For any other language pass every heading yourself (profile, skills, experience, education, certifications, languages, interests, contact, present = the word for a current job's end date). Translate the CV text itself with the other tools.",
             schema: schema(
                 json!({
                     "language": {"type": "string"},
@@ -284,9 +284,15 @@ pub fn tools() -> Vec<Tool> {
             edits: true,
         },
         Tool {
+            name: "cv_list_languages",
+            description: "List the languages a CV can be in with built-in headings and dates: code and the language's own name.",
+            schema: schema(json!({}), &[]),
+            edits: false,
+        },
+        Tool {
             name: "cv_set_language",
-            description: "Set the CV's language (no = Norwegian bokmål, en = English). This changes the headings; rewrite the text yourself with the other tools when translating.",
-            schema: schema(json!({"language": {"type": "string", "enum": ["no", "en"]}}), &["language"]),
+            description: "Set the CV's language: its headings and dates. language: a code from cv_list_languages (no = Norwegian bokmål, en = English, de, fr, pt-BR …) or the language's own name. Rewrite the text yourself with the other tools when translating.",
+            schema: schema(json!({"language": {"type": "string", "description": "A code such as no, en, de or pt-BR, or the language's own name"}}), &["language"]),
             edits: true,
         },
     ]
@@ -321,6 +327,7 @@ pub fn call(project: &mut Project, name: &str, args: &Value) -> Outcome {
         "cv_section_order" => section_order(project, a),
         "cv_custom_section_save" => custom_section_save(project, a),
         "cv_custom_section_remove" => custom_section_remove(project, a),
+        "cv_list_languages" => Outcome::ok(list_languages()),
         "cv_set_language" => set_language(project, a),
         _ => Outcome::error(format!("Unknown tool {name}. Use one of: {}.", tools().iter().map(|t| t.name).collect::<Vec<_>>().join(", "))),
     }
@@ -349,6 +356,8 @@ fn read(p: &Project) -> String {
         o.remove("approvals");
         o.remove("public_context");
         o.remove("version");
+        let shown = p.options.headings.as_ref().map(|h| h.language.clone()).unwrap_or_else(|| if p.language == Language::En { "English".into() } else { "Bokmål".into() });
+        o.insert("cv_language".into(), Value::String(shown));
     }
     serde_json::to_string_pretty(&v).unwrap_or_default()
 }
@@ -629,6 +638,9 @@ fn set_layout(p: &mut Project, a: &Map<String, Value>) -> Outcome {
 }
 
 fn set_colors(p: &mut Project, a: &Map<String, Value>) -> Outcome {
+    if !["reset", "palette", "section_colors"].iter().any(|k| a.contains_key(*k)) {
+        return Outcome::ok("Nothing changed: pass palette, section_colors and/or reset.");
+    }
     if a.get("reset").and_then(Value::as_bool) == Some(true) {
         p.options.palette = Default::default();
         p.options.section_colors.clear();
@@ -749,8 +761,25 @@ fn page_setup(p: &mut Project, a: &Map<String, Value>) -> Outcome {
     o
 }
 
+/// A built-in CV language by its own name («Deutsch») or its code («de», «pt-BR»), any case.
+fn built_in_language(wanted: &str) -> Option<&'static str> {
+    let w = wanted.trim();
+    cv_core::headings::built_in_languages()
+        .into_iter()
+        .find(|n| n.eq_ignore_ascii_case(w) || n.to_lowercase() == w.to_lowercase() || cv_core::headings::code_of(n).is_some_and(|c| c.eq_ignore_ascii_case(w)))
+}
+
+/// Every language the CV can be in without writing headings yourself.
+fn list_languages() -> String {
+    let mut all = vec![json!({"code": "nb", "name": "Bokmål"}), json!({"code": "en", "name": "English"})];
+    all.extend(cv_core::headings::built_in_languages().into_iter().map(|n| json!({"code": cv_core::headings::code_of(n).unwrap_or_default(), "name": n})));
+    serde_json::to_string_pretty(&all).unwrap_or_default()
+}
+
 fn set_headings(p: &mut Project, a: &Map<String, Value>) -> Outcome {
-    let language = text(a, "language").unwrap_or_default();
+    let typed = text(a, "language").unwrap_or_default();
+    // A code or any spelling of a built-in language gives that language's own name.
+    let language = built_in_language(&typed).map_or(typed, str::to_string);
     let lower = language.to_lowercase();
     if ["norsk", "bokmål", "bokmal", "norwegian", "no", "nb"].contains(&lower.as_str()) {
         p.options.headings = None;
@@ -876,11 +905,16 @@ fn custom_section_remove(p: &mut Project, a: &Map<String, Value>) -> Outcome {
 }
 
 fn set_language(p: &mut Project, a: &Map<String, Value>) -> Outcome {
-    let language = match text(a, "language").as_deref() {
-        Some("no") => Language::No,
-        Some("en") => Language::En,
-        other => return Outcome::error(format!("Unknown language {other:?}. Use no or en.")),
-    };
-    p.language = language;
-    Outcome::changed(if language == Language::En { "Byttet CV-språket til engelsk" } else { "Byttet CV-språket til bokmål" })
+    let wanted = text(a, "language").unwrap_or_default();
+    let lower = wanted.trim().to_lowercase();
+    let norwegian = ["no", "nb", "norsk", "bokmål", "bokmal", "norwegian"].contains(&lower.as_str());
+    let english = ["en", "en-us", "english", "engelsk"].contains(&lower.as_str());
+    // Only the language is passed on, so the headings and dates are the built-in ones.
+    let only = |language: &str| Map::from_iter([("language".to_string(), json!(language))]);
+    match built_in_language(&wanted) {
+        _ if norwegian => set_headings(p, &only("no")),
+        _ if english => set_headings(p, &only("en")),
+        Some(name) => set_headings(p, &only(name)),
+        None => Outcome::error(format!("CVBuilder has no built-in headings for {wanted:?}. Call cv_list_languages for the codes, or use cv_set_headings and pass every heading yourself.")),
+    }
 }

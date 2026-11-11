@@ -9,7 +9,7 @@ The Rust code shared by all platforms. The platform folders (`../platforms/windo
 | `cv-mcp/` | The CV editing tools an AI may use (`cv_read`, `cv_check`, `cv_job_save` …) and an MCP server (JSON-RPC 2.0) that offers them. The in-app chat and outside AI apps use the same tools. |
 | `cv-ai/` | Optional AI: the chat's tool loop for Claude (Anthropic Messages API), ChatGPT, Gemini and Grok (OpenAI-compatible) with the person's own key (kept in the OS keychain), and for the person's installed Claude Code, which reaches the CV over MCP. |
 | `app/` | The desktop window (egui): form, live page preview, AI chat, checklist, photo editor, and the local MCP link. A library; each platform calls `cvbuilder_app::run()`, which with `--mcp` runs as an MCP server on stdin/stdout instead. |
-| `../web/` | The HTML builder (v1) and the reference implementation of the rules. Its tests and `tools/parity-fixture.cjs` keep the Rust rules identical. |
+| `../web/` | The reference implementation of the rules in JavaScript (an offline HTML builder). Its tests and `tools/parity-fixture.cjs` keep the Rust rules identical. |
 | `../assets/` | Icons (regenerate with `cargo run -p cvbuilder-app --example make_icons`) the DM Sans font (OFL), and `craft-fonts/`: Japanese, Chinese, Korean, Arabic, Hebrew, Thai, Devanagari and Georgian fonts (OFL, about 31 MB), built into the app and the PDF export through `CRAFT_FONTS_DIR` in `.cargo/config.toml`. |
 | `../packaging/` | Steps every package uses, such as the third-party licence list. |
 

@@ -21,11 +21,11 @@ The app is not signed yet, so your computer may warn you once:
 
 ## What it does
 
-- Write your CV in a simple form and see the pages as they will look, while you type.
+- Import your old CV (Word, PDF and more) or start from scratch, then write in a simple form and see the pages as they will look, while you type.
 - Paste or fetch the job ad: CVBuilder shows which of its keywords are missing from your CV.
 - A recruiter checklist shows what is missing before you download.
 - Download a PDF with real, searchable text, or Word.
-- 31 designs, your own colours and page layout. Headings in 21 languages, offline.
+- 31 designs, your own colours and page layout. Menus and CV headings in 86 languages, offline.
 - Optional AI assistant (Claude, ChatGPT, Gemini, Grok or a local model).
 
 <details>

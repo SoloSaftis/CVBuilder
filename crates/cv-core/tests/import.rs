@@ -153,6 +153,49 @@ fn english_cvs_from_common_layouts() {
     assert_eq!(p.custom_sections[1].items[0].bullets, ["Mentored emerging designers through monthly portfolio reviews."]);
 }
 
+/// CVs in German, French and Spanish: headings, month names, «heute», «seit», levels and
+/// language names in that language, and the CV gets that language's headings.
+#[test]
+fn cvs_in_german_french_and_spanish() {
+    let de = "Lena Beispiel\nProjektingenieurin\nlena.beispiel@example.de · +49 151 2345 6789 · München\n\nKURZPROFIL\nProjektingenieurin mit acht Jahren Erfahrung in der Automatisierungstechnik.\n\n\
+        BERUFSERFAHRUNG\nProjektingenieurin | Beispiel Automation GmbH | München\nMärz 2021 – heute\n• Leitet Inbetriebnahmen von Steuerungen in 12 Werken.\n• Senkte Stillstandszeiten um 18 %.\n\n\
+        Werkstudentin, Muster AG\nseit 10/2018\n• Testete SPS-Programme.\n\nAUSBILDUNG\nM.Sc. Elektrotechnik | Technische Universität München | 2016 – 2018\n\n\
+        KENNTNISSE\nSPS: Siemens S7, TIA Portal\nSprachen: nicht hier\n\nSPRACHKENNTNISSE\nDeutsch – Muttersprache\nEnglisch – verhandlungssicher\n\nWEITERBILDUNGEN\nScrum Master · Scrum.org · 2022\n\n\
+        HOBBYS\nKlettern, Fotografie\n\nEHRENAMT\nJugendtrainerin, TSV Beispiel 2015 – 2019\n";
+    let r = import::read_cv(de);
+    let p = &r.project;
+    assert_eq!((p.candidate.name.as_str(), p.candidate.city.as_str()), ("Lena Beispiel", "München"));
+    assert!(p.candidate.summary.starts_with("Projektingenieurin mit acht Jahren"));
+    let jobs: Vec<_> = p.experience.iter().map(|j| (j.title.as_str(), j.company.as_str(), j.start.as_str(), j.end.as_deref(), j.bullets.len())).collect();
+    assert_eq!(jobs, [("Projektingenieurin", "Beispiel Automation GmbH", "2021-03", None, 2), ("Werkstudentin", "Muster AG", "2018-10", None, 1)]);
+    assert_eq!((p.education[0].qualification.as_str(), p.education[0].institution.as_str()), ("M.Sc. Elektrotechnik", "Technische Universität München"));
+    let langs: Vec<_> = p.languages.iter().map(|l| (l.name.as_str(), l.level.as_str())).collect();
+    assert_eq!(langs, [("Deutsch", "Muttersprache"), ("Englisch", "verhandlungssicher")]);
+    assert_eq!((p.certifications[0].name.as_str(), p.certifications[0].year.as_str()), ("Scrum Master", "2022"));
+    assert_eq!(p.interests.iter().map(|i| i.label.as_str()).collect::<Vec<_>>(), ["Klettern", "Fotografie"]);
+    assert_eq!(p.custom_sections[0].title, "Ehrenamt");
+    assert_eq!(p.custom_sections[0].items[0].date, "2015 – 2019");
+    let h = p.options.headings.as_ref().expect("German headings");
+    assert_eq!((h.language.as_str(), h.experience.as_str()), ("Deutsch", "Berufserfahrung"));
+
+    let fr = "Camille Exemple\ncamille@example.fr | 06 12 34 56 78 | Lyon\n\nExpérience professionnelle\nChargée de projet\nExemple Conseil SAS, Lyon\njanv. 2020 – aujourd'hui\n- Pilote 15 projets clients.\n\n\
+        Formation\nMaster Marketing\nUniversité Lumière Lyon 2\n2015 – 2017\n\nLangues\nFrançais : langue maternelle\nAnglais : courant\n";
+    let p = import::read_cv(fr).project;
+    let j = &p.experience[0];
+    assert_eq!((j.title.as_str(), j.company.as_str(), j.location.as_str(), j.start.as_str(), j.end.as_deref()), ("Chargée de projet", "Exemple Conseil SAS", "Lyon", "2020-01", None));
+    assert_eq!((p.education[0].qualification.as_str(), p.education[0].institution.as_str()), ("Master Marketing", "Université Lumière Lyon 2"));
+    assert_eq!(p.languages.iter().map(|l| (l.name.as_str(), l.level.as_str())).collect::<Vec<_>>(), [("Français", "langue maternelle"), ("Anglais", "courant")]);
+    assert_eq!(p.options.headings.as_ref().map(|h| h.language.as_str()), Some("Français"));
+
+    let es = "Lucía Ejemplo\nlucia@example.es · 612 345 678 · Madrid\n\nEXPERIENCIA PROFESIONAL\nAnalista de datos en Ejemplo Datos S.L.\nenero 2019 – actualidad\n• Automatizó informes semanales.\n\nFORMACIÓN ACADÉMICA\nGrado en Estadística | Universidad Complutense de Madrid | 2014 – 2018\n\nIDIOMAS\nEspañol: nativo\nInglés: avanzado (C1)\n";
+    let p = import::read_cv(es).project;
+    let j = &p.experience[0];
+    assert_eq!((j.title.as_str(), j.company.as_str(), j.start.as_str()), ("Analista de datos", "Ejemplo Datos S.L.", "2019-01"));
+    assert_eq!(p.education[0].institution, "Universidad Complutense de Madrid");
+    assert_eq!(p.languages[1].name, "Inglés");
+    assert_eq!(p.options.headings.as_ref().map(|h| h.language.as_str()), Some("Español"));
+}
+
 #[test]
 fn plain_text_cvs_with_pipes_and_a_shared_language_level() {
     let text = "Kari Nordmann\nElektriker\nkari@example.no | 912 34 567 | Bergen\n\nARBEIDSERFARING\n\nElektriker | Strøm AS | Bergen\n01.2020 – nå\n- Installerte og feilsøkte anlegg i næringsbygg.\n\n\

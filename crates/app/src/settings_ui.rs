@@ -58,6 +58,13 @@ impl CvApp {
                 if ui.checkbox(&mut remember, i18n::t("Husk utkastet på denne maskinen")).on_hover_text(i18n::t("Utkastet lagres her mens du skriver. Slå av på en delt maskin.")).changed() {
                     self.set_remember(remember);
                 }
+                if ui
+                    .checkbox(&mut self.settings.autosave, i18n::t("Lagre automatisk hvert 5. minutt"))
+                    .on_hover_text(i18n::t("Når CV-en er lagret som fil, lagres endringene i den filen hvert 5. minutt, som i Word."))
+                    .changed()
+                {
+                    storage::save_settings(&self.settings);
+                }
                 ui.add_space(10.0);
 
                 theme::section_title(ui, "AI");

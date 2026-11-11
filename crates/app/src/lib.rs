@@ -25,6 +25,7 @@ mod theme;
 #[cfg(test)]
 mod tooltips;
 mod translate_ui;
+mod welcome_ui;
 #[cfg(test)]
 mod ui_qa;
 
@@ -50,6 +51,8 @@ enum Picked {
     SaveProject(PathBuf),
     Export(Export, PathBuf),
     Photo(PathBuf),
+    /// The save dialog was closed without choosing a file.
+    SaveCancelled,
     ImportCv(PathBuf),
     AdFile(PathBuf),
     DesignImport(PathBuf),
@@ -100,6 +103,18 @@ struct CvApp {
     picked_rx: Receiver<Picked>,
     photo: Option<PhotoDialog>,
     save_at: Option<Instant>,
+    /// The file «Lagre» and the autosave write to, once the CV has been opened from or saved to one.
+    file: Option<PathBuf>,
+    /// A fingerprint of the CV as it was last saved to (or opened from) its file, or as it was at
+    /// start: a different one means changes the file does not have.
+    saved: u64,
+    last_autosave: Instant,
+    /// «Vil du lagre endringene?» is showing, after the window was asked to close.
+    closing: bool,
+    /// Close the window once the save that is under way has finished.
+    close_after_save: bool,
+    /// The person chose to close; the next close request goes through.
+    may_close: bool,
     sequence: u64,
     ai: ai_ui::AiState,
     chat: chat_ui::ChatState,
@@ -128,6 +143,8 @@ struct CvApp {
     ribbon_tab: menu_ui::Tab,
     /// The ribbon folded to its row of tabs.
     ribbon_folded: bool,
+    /// The first start's language question, while it is open.
+    welcome: Option<welcome_ui::Welcome>,
 }
 
 impl CvApp {
@@ -153,6 +170,12 @@ impl CvApp {
             picked_rx,
             photo: None,
             save_at: None,
+            file: None,
+            saved: 0,
+            last_autosave: Instant::now(),
+            closing: false,
+            close_after_save: false,
+            may_close: false,
             sequence: 0,
             ai: ai_ui::AiState::default(),
             chat: chat_ui::ChatState::new(cv_ai::chat::find_claude_code()),
@@ -174,7 +197,11 @@ impl CvApp {
             new_section_at: None,
             ribbon_tab: menu_ui::Tab::default(),
             ribbon_folded: false,
+            welcome: None,
         };
+        if !app.settings.welcomed {
+            app.welcome = Some(welcome_ui::Welcome::for_this_computer(&app.langs.packs));
+        }
         designs_ui::load_imported();
         // Developer aids for screenshots and manual testing.
         match std::env::var("CVBUILDER_OPEN").as_deref() {
@@ -208,6 +235,15 @@ impl CvApp {
                         app.status = i18n::t("Det lagrede utkastet kunne ikke åpnes, men er tatt vare på som sikkerhetskopi. Du ser nå eksemplet.").into();
                     }
                 }
+            }
+        }
+        // The draft came back: its file too, and what that file holds decides what is unsaved.
+        app.saved = app.fingerprint();
+        if !app.is_example && !app.settings.cv_file.is_empty() {
+            let path = PathBuf::from(&app.settings.cv_file);
+            if let Some(on_disk) = std::fs::read_to_string(&path).ok().and_then(|t| Project::from_json(&t).ok()) {
+                app.saved = fingerprint(&on_disk);
+                app.file = Some(path);
             }
         }
         // Developer aid: CVBUILDER_ASK="…" sends one chat message at start (for testing the chat).
@@ -257,6 +293,135 @@ impl CvApp {
         self.load(project, example);
         self.undo = Some(before);
         self.status = text.into();
+        // Another CV: «Lagre» must not write it over the file of the one before.
+        self.set_file(None);
+    }
+
+    fn fingerprint(&self) -> u64 {
+        fingerprint(&self.project)
+    }
+
+    /// The CV has changes its file does not have (or it has no file yet). The example never does.
+    fn unsaved(&self) -> bool {
+        !self.is_example && self.fingerprint() != self.saved
+    }
+
+    fn set_file(&mut self, file: Option<PathBuf>) {
+        self.settings.cv_file = file.as_ref().map(|p| p.display().to_string()).unwrap_or_default();
+        storage::save_settings(&self.settings);
+        self.file = file;
+    }
+
+    /// «Lagre» (Ctrl+S): into the CV's file, or ask where the first time.
+    fn save(&mut self) {
+        match self.file.clone() {
+            Some(path) => self.save_to(&path, false),
+            None => self.pick("save", None),
+        }
+    }
+
+    fn save_to(&mut self, path: &std::path::Path, auto: bool) {
+        let name = path.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+        match self.project.to_json().map_err(|e| e.to_string()).and_then(|j| std::fs::write(path, j).map_err(|e| e.to_string())) {
+            Ok(()) => {
+                self.saved = self.fingerprint();
+                self.last_autosave = Instant::now();
+                if self.file.as_deref() != Some(path) {
+                    self.set_file(Some(path.to_path_buf()));
+                }
+                self.status = if auto {
+                    i18n::tf("Lagret automatisk i «{file}».", &[("file", &name)])
+                } else {
+                    i18n::tf("Utkastet er lagret i {path}. Filen inneholder dine personopplysninger.", &[("path", &path.display().to_string())])
+                };
+                if self.close_after_save {
+                    self.close_after_save = false;
+                    self.may_close = true;
+                    self.egui_ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                }
+            }
+            Err(e) => {
+                self.close_after_save = false;
+                self.status = i18n::tf("Kunne ikke lagre: {e}", &[("e", &e)]);
+            }
+        }
+    }
+
+    /// Every five minutes, like Word: the CV goes into its file when it has changes.
+    fn autosave(&mut self, ctx: &egui::Context) {
+        const EVERY: Duration = Duration::from_secs(5 * 60);
+        if !self.settings.autosave || self.file.is_none() || self.is_example {
+            return;
+        }
+        let since = self.last_autosave.elapsed();
+        if since < EVERY {
+            ctx.request_repaint_after(EVERY - since);
+            return;
+        }
+        self.last_autosave = Instant::now();
+        if self.unsaved() {
+            if let Some(path) = self.file.clone() {
+                self.save_to(&path, true);
+            }
+        }
+        ctx.request_repaint_after(EVERY);
+    }
+
+    /// Closing the window with changes that are not in a file: ask first.
+    fn close_check(&mut self, ctx: &egui::Context) {
+        if ctx.input(|i| i.viewport().close_requested()) && !self.may_close && self.unsaved() {
+            ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+            self.closing = true;
+        }
+    }
+
+    fn close_dialog(&mut self, ctx: &egui::Context) {
+        if !self.closing {
+            return;
+        }
+        let mut choice = None;
+        let r = egui::Modal::new(egui::Id::unique("cvbuilder.close")).show(ctx, |ui| {
+            ui.set_width(420.0);
+            ui.label(RichText::new(i18n::t("Vil du lagre endringene i CV-en?")).size(17.0).family(theme::bold()));
+            ui.add_space(6.0);
+            let about = match &self.file {
+                Some(p) => i18n::tf("Endringene er ikke lagret i «{file}» ennå.", &[("file", &p.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default())]),
+                None => i18n::t("CV-en er ikke lagret som fil ennå.").to_string(),
+            };
+            ui.label(about);
+            if self.settings.remember {
+                theme::hint(ui, i18n::t("Utkastet huskes også på denne maskinen til neste gang."));
+            }
+            ui.add_space(12.0);
+            ui.horizontal(|ui| {
+                if theme::primary(ui, i18n::t("Lagre"), i18n::t("Lagre CV-en og lukk"), true).clicked() {
+                    choice = Some(0);
+                }
+                if ui.button(i18n::t("Ikke lagre")).on_hover_text(i18n::t("Lukk uten å lagre i fil")).clicked() {
+                    choice = Some(1);
+                }
+                if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Fortsett å jobbe med CV-en")).clicked() {
+                    choice = Some(2);
+                }
+            });
+        });
+        if r.should_close() && choice.is_none() {
+            choice = Some(2);
+        }
+        match choice {
+            Some(0) => {
+                self.closing = false;
+                self.close_after_save = true;
+                self.save();
+            }
+            Some(1) => {
+                self.closing = false;
+                self.may_close = true;
+                ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+            }
+            Some(_) => self.closing = false,
+            None => {}
+        }
     }
 
     fn next_id(&mut self, prefix: &str) -> String {
@@ -306,7 +471,7 @@ impl CvApp {
         std::thread::spawn(move || {
             let picked = match (kind, export) {
                 ("open", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).pick_file().map(Picked::OpenProject),
-                ("save", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).set_file_name(format!("{stem}_utkast.json")).save_file().map(Picked::SaveProject),
+                ("save", _) => Some(rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).set_file_name(format!("{stem}_utkast.json")).save_file().map_or(Picked::SaveCancelled, Picked::SaveProject)),
                 ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
                 ("ad_file", _) => rfd::FileDialog::new().add_filter(i18n::t("Annonse (PDF, Word, tekst, nettside)"), &["pdf", "docx", "txt", "md", "html", "htm"]).pick_file().map(Picked::AdFile),
                 ("checklist_load", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).pick_file().map(Picked::ChecklistLoad),
@@ -328,7 +493,12 @@ impl CvApp {
         while let Ok(picked) = self.picked_rx.try_recv() {
             match picked {
                 Picked::OpenProject(path) => match std::fs::read_to_string(&path).map_err(|e| e.to_string()).and_then(|t| Project::from_json(&t).map_err(|e| e.to_string())) {
-                    Ok(project) => self.replace(project, false, i18n::t("Utkastet er åpnet. Bekreft opplysningene når du laster ned.")),
+                    Ok(project) => {
+                        self.replace(project, false, i18n::t("Utkastet er åpnet. Bekreft opplysningene når du laster ned."));
+                        self.saved = self.fingerprint();
+                        self.last_autosave = Instant::now();
+                        self.set_file(Some(path));
+                    }
                     Err(_) => {
                         self.status = i18n::tf(
                             "«{file}» kunne ikke åpnes. Her åpner du bare .json-utkast lagret med «Lagre som fil».",
@@ -336,12 +506,9 @@ impl CvApp {
                         )
                     }
                 },
-                Picked::SaveProject(path) => {
-                    self.status = match self.project.to_json().map_err(|e| e.to_string()).and_then(|j| std::fs::write(&path, j).map_err(|e| e.to_string())) {
-                        Ok(()) => i18n::tf("Utkastet er lagret i {path}. Filen inneholder dine personopplysninger.", &[("path", &path.display().to_string())]),
-                        Err(e) => i18n::tf("Kunne ikke lagre: {e}", &[("e", &e)]),
-                    }
-                }
+                Picked::SaveProject(path) => self.save_to(&path, false),
+                // No file chosen: the window stays open after all.
+                Picked::SaveCancelled => self.close_after_save = false,
                 Picked::Export(kind, path) => self.write_export(kind, &path),
                 Picked::ImportCv(path) => self.import_cv_file(path),
                 Picked::AdFile(path) => self.import_ad_file(path),
@@ -834,6 +1001,11 @@ impl eframe::App for CvApp {
         if self.chat.running {
             ctx.request_repaint_after(Duration::from_millis(250));
         }
+        self.autosave(ctx);
+        self.close_check(ctx);
+        if ctx.input_mut(|i| i.consume_shortcut(&egui::KeyboardShortcut::new(egui::Modifiers::COMMAND, egui::Key::S))) {
+            self.save();
+        }
     }
 
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
@@ -893,6 +1065,8 @@ impl eframe::App for CvApp {
             }
         }
         self.confirm_dialog(&ctx);
+        self.close_dialog(&ctx);
+        self.welcome_dialog(&ctx);
         self.photo_dialog(&ctx);
         self.translate_dialog(&ctx);
         self.import_dialog(&ctx);
@@ -922,6 +1096,14 @@ impl eframe::App for CvApp {
         self.chat.stop_now();
         self.persist();
     }
+}
+
+/// A fingerprint of a CV's content, to tell whether it has changed since it was saved.
+fn fingerprint(project: &Project) -> u64 {
+    use std::hash::{Hash, Hasher};
+    let mut h = std::collections::hash_map::DefaultHasher::new();
+    project.to_json().unwrap_or_default().hash(&mut h);
+    h.finish()
 }
 
 fn window_icon() -> egui::IconData {

@@ -4,7 +4,7 @@ resolver = "3"
 members = ["crates/cv-core", "crates/cv-ai", "crates/cv-mcp", "crates/app", "platforms/windows", "platforms/linux", "platforms/macos"]
 
 [workspace.package]
-version = "2.0.0-alpha.2"
+version = "1.0.0"
 edition = "2024"
 rust-version = "1.95"
 license = "MIT OR Apache-2.0"

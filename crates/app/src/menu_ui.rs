@@ -30,6 +30,7 @@ enum Action {
     Example,
     Open,
     Save,
+    SaveAs,
     Export(Export),
     Undo,
     /// Switch the CV's headings and dates to this language (offline).
@@ -140,8 +141,11 @@ impl CvApp {
                 if ui.add(menu_item(ui, theme::ph::FOLDER_OPEN, i18n::t("Åpne"))).on_hover_text(i18n::t("Åpne et lagret CVBuilder-utkast (.json)")).clicked() {
                     action = Some(Action::Open);
                 }
-                if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som"))).on_hover_text(i18n::t("Lagre utkastet som fil")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre"))).on_hover_text(i18n::t("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor.")).clicked() {
                     action = Some(Action::Save);
+                }
+                if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som"))).on_hover_text(i18n::t("Lagre utkastet som fil")).clicked() {
+                    action = Some(Action::SaveAs);
                 }
                 if ui.add(menu_item(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV fra fil"))).on_hover_text(i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI")).clicked() {
                     action = Some(Action::ImportCv);
@@ -263,7 +267,7 @@ impl CvApp {
                 if tool(ui, theme::ph::FOLDER_OPEN, i18n::t("Åpne"), i18n::t("Åpne et lagret CVBuilder-utkast (.json)"), true) {
                     *action = Some(Action::Open);
                 }
-                if tool(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som"), i18n::t("Lagre utkastet som fil"), true) {
+                if tool(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre"), i18n::t("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor."), true) {
                     *action = Some(Action::Save);
                 }
             });
@@ -317,17 +321,24 @@ impl CvApp {
                     None => "Bokmål".to_string(),
                 };
                 egui::ComboBox::from_id_salt("cv-language")
-                    .selected_text(current.clone())
+                    .selected_text(crate::translate_ui::shown_name(&current))
                     .width(150.0)
-                    .height(460.0)
+                    .height(2000.0)
                     .show_ui(ui, |ui| {
-                        for name in ["Bokmål", "English"].into_iter().chain(cv_core::headings::built_in_languages()) {
+                        // The computer's own language first, then one list A to Z by each
+                        // language's own name (Čeština with C, Íslenska with I).
+                        let (own, rest) = crate::translate_ui::cv_language_list();
+                        let has_own = own.is_some();
+                        for (i, name) in own.into_iter().chain(rest).enumerate() {
+                            if i == 1 && has_own {
+                                ui.separator();
+                            }
                             let tip = match name {
                                 "Bokmål" => i18n::t("Overskrifter og datoer på bokmål"),
                                 "English" => i18n::t("Overskrifter og datoer på engelsk"),
                                 _ => i18n::t("Overskriftene byttes med en gang; teksten oversetter du med «Oversett»"),
                             };
-                            if ui.selectable_label(current == name, name).on_hover_text(tip).clicked() && current != name {
+                            if ui.selectable_label(current == name, crate::translate_ui::shown_name(name)).on_hover_text(tip).clicked() && current != name {
                                 *action = Some(Action::Headings(name.to_string()));
                             }
                         }
@@ -506,6 +517,8 @@ impl CvApp {
                 let mut blank = Project::default();
                 blank.options.layout = self.project.options.layout.clone();
                 blank.options.palette = self.project.options.palette.clone();
+                // A new CV starts in the computer's language (it can be changed in the list).
+                crate::translate_ui::set_cv_language(&mut blank, &self.new_cv_language());
                 let text =
                     if self.is_example { i18n::t("Tom CV klar. Start med kontaktinformasjonen, eller be AI-en om hjelp.") } else { i18n::t("Tom CV klar. Den forrige kan hentes tilbake med Angre.") };
                 self.reference = None;
@@ -516,7 +529,8 @@ impl CvApp {
                 self.replace(Project::example(), true, i18n::t("Du ser eksemplet. CV-en din kan hentes tilbake med Angre."));
             }
             Action::Open => self.pick("open", None),
-            Action::Save => self.pick("save", None),
+            Action::Save => self.save(),
+            Action::SaveAs => self.pick("save", None),
             Action::Export(kind) => self.start_export(ctx, kind),
             Action::Undo => {
                 if let Some((project, example)) = self.undo.take() {

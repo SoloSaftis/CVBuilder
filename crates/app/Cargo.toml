@@ -30,3 +30,4 @@ serde_json.workspace = true
 
 [dev-dependencies]
 egui_kittest = { version = "0.37", features = ["eframe", "wgpu"] }
+ttf-parser = "0.25"
