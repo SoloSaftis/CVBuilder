@@ -1,4 +1,4 @@
-CVBuilder 2 – bærbar utgave for Windows
+CVBuilder – bærbar utgave for Windows
 =======================================
 
 Start: dobbeltklikk CVBuilder.exe. Ingen installasjon.

@@ -1,4 +1,4 @@
-# Builds the Windows packages for CVBuilder 2:
+# Builds the Windows packages for CVBuilder:
 #   platforms\windows\dist\CVBuilder-<version>-windows-x64-portable.zip   (unzip and run; data stays next to the exe)
 #   platforms\windows\dist\CVBuilder-<version>-x64.msix                   (MSIX installer)
 # Signing: pass -Pfx/-PfxPassword for a real code-signing certificate. Without one, a throwaway
