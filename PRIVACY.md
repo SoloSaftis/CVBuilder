@@ -1,7 +1,7 @@
 # Privacy policy
 
 CVBuilder runs on your own computer. It has no account, no analytics, no advertising and no
-update check, and it does not send your CV or anything else to the CVBuilder project.
+automatic update check, and it does not send your CV or anything else to the CVBuilder project.
 
 ## What stays on your computer
 
@@ -22,8 +22,10 @@ Only when you ask it to:
   the assistant needs, go to the service you chose (Anthropic Claude, OpenAI ChatGPT, Google
   Gemini or xAI Grok), under that service's own privacy policy. A local model (Ollama,
   LM Studio …) stays on your computer. Without a connected AI, nothing is sent.
-- **MCP:** if you turn it on, AI apps on the same computer can read and edit the open CV. The
-  connection is only on this computer (127.0.0.1) and needs a key that only CVBuilder knows.
+- **MCP:** while CVBuilder is open, AI apps on the same computer that you connect to it (such as
+  Claude Code) can read and edit the open CV. The connection is only on this computer
+  (127.0.0.1) and needs a key that only CVBuilder knows; nothing is reachable from other
+  computers.
 
 ## Contact
 
