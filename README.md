@@ -55,14 +55,14 @@ All versions and what changed: [Releases](https://github.com/SoloSaftis/CVBuilde
 
 ## For developers
 
-Building, tests, languages and the folder layout: [DEVELOPING.md](DEVELOPING.md). CVBuilder is also
+Building, tests, languages and the folder layout: [docs/dev/DEVELOPING.md](docs/dev/DEVELOPING.md). CVBuilder is also
 an MCP server, so AI apps such as Claude Code can work on the open CV.
 
 ## Licence
 
 [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option. A contribution you submit is
 licensed the same way. Bundled components keep their own licences (`THIRD-PARTY.txt` in each
-package); design remakes of Reactive Resume and RenderCV are MIT (see [DEVELOPING.md](DEVELOPING.md#designs)).
+package); design remakes of Reactive Resume and RenderCV are MIT (see [docs/dev/DEVELOPING.md](docs/dev/DEVELOPING.md#designs)).
 WordCraft and the Craft AI integrations are by the ArtCraft/storytold contributors.
 [Code signing policy](CODE_SIGNING_POLICY.md): free code signing provided by
 [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).

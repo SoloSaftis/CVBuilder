@@ -1,6 +1,8 @@
 # CVBuilder – Windows
 
-Windows only. The app itself is in [`../shared`](../shared).
+> Paths below without a folder are in [`platforms/windows/`](../../platforms/windows/).
+
+Windows only. The app itself is in [`crates/`](../../crates/).
 
 - `src/main.rs` – starts the shared app without a console window.
 - `build.rs` – embeds the icon and version details into `CVBuilder.exe`.

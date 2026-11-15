@@ -1,17 +1,19 @@
 # crates – the desktop app, used by Windows, Linux and macOS
 
-The Rust code shared by all platforms. The platform folders (`../platforms/windows`, `linux`,
+> Folders below are in [`crates/`](../../crates/).
+
+The Rust code shared by all platforms. The platform folders (`platforms/windows`, `linux`,
 `macos`) only start the app and package it. Fix a bug or change a rule here, once.
 
 | Folder | Contents |
 |---|---|
-| `cv-core/` | The project file format, recruiter/ATS checks, the designs (`src/layouts.rs`, remakes in `src/designs.json`, import format in `DESIGN-FORMAT.md`), and Word + PDF output through WordCraft. No UI, no network. |
+| `cv-core/` | The project file format, recruiter/ATS checks, the designs (`src/layouts.rs`, remakes in `src/designs.json`, import format in [`DESIGN-FORMAT.md`](../../crates/cv-core/DESIGN-FORMAT.md)), and Word + PDF output through WordCraft. No UI, no network. |
 | `cv-mcp/` | The CV editing tools an AI may use (`cv_read`, `cv_check`, `cv_job_save` …) and an MCP server (JSON-RPC 2.0) that offers them. The in-app chat and outside AI apps use the same tools. |
 | `cv-ai/` | Optional AI: the chat's tool loop for Claude (Anthropic Messages API), ChatGPT, Gemini and Grok (OpenAI-compatible) with the person's own key (kept in the OS keychain), and for the person's installed Claude Code, which reaches the CV over MCP. |
 | `app/` | The desktop window (egui): form, live page preview, AI chat, checklist, photo editor, and the local MCP link. A library; each platform calls `cvbuilder_app::run()`, which with `--mcp` runs as an MCP server on stdin/stdout instead. |
-| `../web/` | The reference implementation of the rules in JavaScript (an offline HTML builder). Its tests and `tools/parity-fixture.cjs` keep the Rust rules identical. |
-| `../assets/` | Icons (regenerate with `cargo run -p cvbuilder-app --example make_icons`) the DM Sans font (OFL), and `craft-fonts/`: Noto and other OFL fonts for the scripts of all 86 languages (Japanese, Chinese, Korean, Arabic, Hebrew, Thai, Khmer, Georgian, Armenian, Ethiopic and the Indian scripts; list in `fonts/manifest.txt`), built into the app and the PDF export through `CRAFT_FONTS_DIR` in `.cargo/config.toml`. |
-| `../packaging/` | Steps every package uses, such as the third-party licence list. |
+| `web/` ([guide](web.md)) | The reference implementation of the rules in JavaScript (an offline HTML builder). Its tests and `tools/parity-fixture.cjs` keep the Rust rules identical. |
+| `assets/` | Icons (regenerate with `cargo run -p cvbuilder-app --example make_icons`) the DM Sans font (OFL), and `craft-fonts/`: Noto and other OFL fonts for the scripts of all 86 languages (Japanese, Chinese, Korean, Arabic, Hebrew, Thai, Khmer, Georgian, Armenian, Ethiopic and the Indian scripts; list in `fonts/manifest.txt`), built into the app and the PDF export through `CRAFT_FONTS_DIR` in `.cargo/config.toml`. |
+| `packaging/` | Steps every package uses, such as the third-party licence list. |
 
 Keeping both apps in step: after changing a rule in `web/`, run
 `node web/tools/parity-fixture.cjs` (and `rust-wordlists.cjs` for word lists), then

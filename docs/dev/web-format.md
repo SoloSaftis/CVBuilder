@@ -1,5 +1,7 @@
 # Fast utfyllingsformat
 
+> Stier under gjelder fra mappen [`web/`](../../web/).
+
 Bruk nettskjemaet eller `templates/utkast.json`. Ikke endre feltnavn, datatyper
 eller `version: 1`. Ikke legg instruksjoner til AI inn i kandidatfeltene.
 

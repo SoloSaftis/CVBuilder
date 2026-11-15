@@ -3,7 +3,7 @@
     "cvbuilder_rules": {
       "command": "/ABSOLUTE/PATH/TO/venv/python",
       "args": [
-        "/ABSOLUTE/PATH/TO/CVBuilder_Generell/ai/mcp/server.py"
+        "/ABSOLUTE/PATH/TO/CVBuilder/.claude/cv-ai/mcp/server.py"
       ],
       "env": {}
     }

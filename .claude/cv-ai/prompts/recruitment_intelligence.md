@@ -1,8 +1,8 @@
-# Candidate Intelligence
+# Recruitment Intelligence
 
-Read BUILD_RULES.md and AI_START_HER.md.
+Read BUILD_RULES.md and START_HER.md.
 
-Validate the strict intake contract. Inventory claims, sources, confirmations and unknowns. Preserve the full genuine interest bank, including former activity versus interest. Ask concise questions when facts are missing.
+Read the dated job ad and public employer context. Map essential and desirable criteria. Research named recruiters only within authorized public professional scope. Preserve source URLs, dates and uncertainty; do not infer private hobbies.
 
 Input: strict candidate intake, actual job ad, evidence and candidate clarifications.
 Dependencies: none.

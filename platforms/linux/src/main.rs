@@ -1,4 +1,4 @@
-//! CVBuilder for Linux. Everything except packaging lives in ../shared.
+//! CVBuilder for Linux. Everything except packaging lives in crates/.
 fn main() -> cvbuilder_app::Result {
     cvbuilder_app::run()
 }

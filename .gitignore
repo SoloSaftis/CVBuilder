@@ -7,3 +7,6 @@
 /platforms/*/dist/
 /web/dist/
 /web/node_modules/
+
+# Python caches
+__pycache__/
