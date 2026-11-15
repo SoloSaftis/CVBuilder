@@ -53,6 +53,10 @@ The app is not signed yet, so you may see a warning once:
 
 All versions and what changed: [Releases](https://github.com/SoloSaftis/CVBuilder/releases).
 
+## User guide
+
+How to use every part of CVBuilder, in plain language: [docs/user](docs/user/README.md).
+
 ## For developers
 
 Building, tests, languages and the folder layout: [docs/dev/DEVELOPING.md](docs/dev/DEVELOPING.md). CVBuilder is also
