@@ -39,8 +39,8 @@ innholdskontroll før eksport. Ingen ekstra Node-pakker kreves for dette.
 
 ## AI og kildearbeid
 
-Les [`.claude/cv-ai/START_HER.md`](../../.claude/cv-ai/START_HER.md) og [`.claude/cv-ai/BUILD_RULES.md`](../../.claude/cv-ai/BUILD_RULES.md). Ni rolleprompter, oppgavekontrakt,
-avhengigheter og godkjenningsregler følger med. De brukes av valgt AI-vert eller
+Arbeidsfilene for AI-assistert CV (startfil, regelsett, ni rolleprompter, oppgavekontrakt,
+avhengigheter og godkjenningsregler) ligger lokalt i `.claude/cv-ai/` og publiseres ikke. De brukes av valgt AI-vert eller
 manuelt. Denne pakken starter ikke ni modeller og foretar ingen skjult nettbruk.
 Interesseforslagene i skjemaet følger eksplisitte lokale regler.
 
@@ -48,7 +48,7 @@ Offentlig research kan gjennomføres av en tilkoblet AI-vert etter prosedyren i
 regelsettet. Ingen gjetting av personlige interesser eller private opplysninger.
 Manglende funn skal rapporteres som uavklart. Et hobbytreff er aldri et yrkeskrav.
 
-Valgfritt MCP-oppsett ligger i [`.claude/cv-ai/mcp/`](../../.claude/cv-ai/mcp/). Det eksponerer bare arbeidsflyt og
+Valgfritt MCP-oppsett ligger lokalt i `.claude/cv-ai/mcp/`. Det eksponerer bare arbeidsflyt og
 rolleprompter; ikke kandidatdata eller godkjenningsmyndighet. Installasjon og
 absolutte prosjektstier er forklart der. Vanlig bruk av byggeren trenger ikke MCP.
 

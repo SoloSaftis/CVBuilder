@@ -1,6 +1,5 @@
 # Personal material stays on this PC: real CVs, photos, source documents, working files.
 /private/
-/.claude/worktrees/
 
 # Build output
 /target/
@@ -10,3 +9,6 @@
 
 # Python caches
 __pycache__/
+
+# Claude and AI working files: kept on this PC only
+/.claude/
