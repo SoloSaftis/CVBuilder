@@ -51,6 +51,7 @@ enum Action {
     Chat,
     Checks,
     About,
+    CheckUpdates,
     DesignFormat,
     ShowAll,
     Settings,
@@ -164,6 +165,9 @@ impl CvApp {
                 if ui.add(menu_item(ui, theme::ph::INFO, i18n::t("Om CVBuilder"))).on_hover_text(i18n::t("Versjon, bygg og lisenser")).clicked() {
                     action = Some(Action::About);
                 }
+                if ui.add(menu_item(ui, theme::ph::ARROWS_CLOCKWISE, i18n::t("Se etter oppdateringer"))).on_hover_text(i18n::t("Spør GitHub om det finnes en nyere versjon. Ingenting lastes ned av seg selv.")).clicked() {
+                    action = Some(Action::CheckUpdates);
+                }
             });
             ui.add_space(6.0);
             let tabs = [
@@ -233,6 +237,9 @@ impl CvApp {
                             column(ui, |ui| {
                                 if tool(ui, theme::ph::INFO, i18n::t("Om CVBuilder"), i18n::t("Versjon, bygg og lisenser"), true) {
                                     action = Some(Action::About);
+                                }
+                                if tool(ui, theme::ph::ARROWS_CLOCKWISE, i18n::t("Se etter oppdateringer"), i18n::t("Spør GitHub om det finnes en nyere versjon. Ingenting lastes ned av seg selv."), true) {
+                                    action = Some(Action::CheckUpdates);
                                 }
                                 if tool(ui, theme::ph::FILE_CODE, i18n::t("Format for egne design"), i18n::t("Hvordan en .cvdesign.json-fil ser ut"), true) {
                                     action = Some(Action::DesignFormat);
@@ -579,6 +586,7 @@ impl CvApp {
                 self.side = Side::Checks;
             }
             Action::About => self.about_open = true,
+            Action::CheckUpdates => self.update_check = Some(crate::updates_ui::UpdateCheck::start(ctx)),
             Action::DesignFormat => {
                 self.designs.import_open = true;
                 self.designs.message.clear();

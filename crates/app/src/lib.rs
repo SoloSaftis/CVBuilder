@@ -25,6 +25,7 @@ mod theme;
 #[cfg(test)]
 mod tooltips;
 mod translate_ui;
+mod updates_ui;
 mod welcome_ui;
 #[cfg(test)]
 mod ui_qa;
@@ -131,6 +132,8 @@ struct CvApp {
     designs: designs_ui::DesignState,
     portrait: Option<(u64, egui::TextureHandle)>,
     about_open: bool,
+    /// Hjelp → «Se etter oppdateringer», while its window is open.
+    update_check: Option<updates_ui::UpdateCheck>,
     import: import_ui::ImportState,
     settings_open: bool,
     /// Added interface languages, and the translation that may be running.
@@ -189,6 +192,7 @@ impl CvApp {
             designs: designs_ui::DesignState::default(),
             portrait: None,
             about_open: false,
+            update_check: None,
             import: import_ui::ImportState::default(),
             settings_open: false,
             langs,
@@ -212,6 +216,7 @@ impl CvApp {
             Ok("mcp") => app.chat.mcp_help_open = true,
             Ok("checks") => app.side = Side::Checks,
             Ok("about") => app.about_open = true,
+            Ok("updates") => app.update_check = Some(updates_ui::UpdateCheck::Done(Ok(cv_ai::updates::Release { version: "9.9.9".into(), page: cv_ai::updates::RELEASES_PAGE.into() }))),
             Ok("insert") => app.ribbon_tab = menu_ui::Tab::Insert,
             Ok("design") => app.ribbon_tab = menu_ui::Tab::Design,
             Ok("view") => app.ribbon_tab = menu_ui::Tab::View,
@@ -1071,6 +1076,7 @@ impl eframe::App for CvApp {
         self.translate_dialog(&ctx);
         self.import_dialog(&ctx);
         self.about_dialog(&ctx);
+        self.update_dialog(&ctx);
         self.settings_dialog(&ctx);
         self.language_packs(&ctx);
         self.section_name_dialog(&ctx);

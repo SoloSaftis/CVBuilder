@@ -4,6 +4,7 @@
 pub mod chat;
 pub mod providers;
 pub mod tasks;
+pub mod updates;
 
 use craft_ai_core::{SecretRef, SecretString};
 use craft_ai_native::secrets::{KeychainStore, SecretStore};

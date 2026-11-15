@@ -16,6 +16,8 @@ update check, and it does not send your CV or anything else to the CVBuilder pro
 Only when you ask it to:
 
 - **Fetching a job ad** from a link you enter: CVBuilder downloads that page.
+- **Checking for updates** (Help → Check for updates): CVBuilder asks GitHub for the number of
+  the newest version. Nothing about you or your CV is sent, and nothing is downloaded by itself.
 - **The AI assistant**, if you connect one: what you send in the chat, and the parts of your CV
   the assistant needs, go to the service you chose (Anthropic Claude, OpenAI ChatGPT, Google
   Gemini or xAI Grok), under that service's own privacy policy. A local model (Ollama,
