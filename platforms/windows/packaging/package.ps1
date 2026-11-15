@@ -55,10 +55,19 @@ New-Item -ItemType Directory -Force "$msixStage\Assets" | Out-Null
 Copy-Item $exe $msixStage
 Copy-Item "$stage\THIRD-PARTY.txt" $msixStage
 $assets = Join-Path $root "assets"
-Copy-Item "$assets\cvbuilder-150.png" "$msixStage\Assets\Square150x150Logo.png"
-Copy-Item "$assets\cvbuilder-44.png" "$msixStage\Assets\Square44x44Logo.png"
-Copy-Item "$assets\cvbuilder-50.png" "$msixStage\Assets\StoreLogo.png"
+# Every icon size Windows picks from (made by `cargo run -p cvbuilder-app --example make_icons`):
+# by display scale (scale-100 … 400) and, for the taskbar and Start menu, by target size, also
+# «unplated» so Windows draws our own tile instead of a small icon on a coloured square.
+Copy-Item "$assets\msix\*.png" "$msixStage\Assets\"
 (Get-Content "$PSScriptRoot\AppxManifest.xml" -Raw).Replace("__VERSION__", $msixVersion).Replace("__PUBLISHER__", $Publisher).Replace("__IDENTITY__", $IdentityName).Replace("__PUBLISHER_NAME__", [Security.SecurityElement]::Escape($PublisherDisplayName)) | Set-Content "$msixStage\AppxManifest.xml" -Encoding UTF8
+# resources.pri is the index Windows looks the sizes up in; without it only exact file names work.
+$makepri = Join-Path $kit.FullName "makepri.exe"
+$priconfig = Join-Path $dist "priconfig.xml"
+& $makepri createconfig /cf $priconfig /dq lang-en-US /pv 10.0.0 /o | Out-Null
+if ($LASTEXITCODE -ne 0) { throw "makepri createconfig failed" }
+& $makepri new /pr $msixStage /cf $priconfig /mn "$msixStage\AppxManifest.xml" /of "$msixStage\resources.pri" /o | Out-Null
+if ($LASTEXITCODE -ne 0) { throw "makepri new failed" }
+Remove-Item $priconfig
 $msix = Join-Path $dist ($(if ($Store) { "CVBuilder-$version-x64-store.msix" } else { "CVBuilder-$version-x64.msix" }))
 & "$($kit.FullName)\makeappx.exe" pack /o /d $msixStage /p $msix | Out-Null
 if ($LASTEXITCODE -ne 0) { throw "makeappx failed" }

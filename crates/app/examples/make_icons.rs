@@ -51,5 +51,21 @@ fn main() {
     for n in [44, 50, 150, 256, 512] {
         tile(n).save(dir.join(format!("cvbuilder-{n}.png"))).expect("png");
     }
+    // The MSIX package: every size Windows picks from for the Start menu, the taskbar, the app
+    // list and the Store, by display scale and by target size. The «unplated» ones are drawn as
+    // they are, without the coloured square Windows otherwise puts behind a small icon.
+    let msix = dir.join("msix");
+    std::fs::create_dir_all(&msix).expect("msix dir");
+    for (name, base) in [("Square44x44Logo", 44.0), ("Square150x150Logo", 150.0), ("StoreLogo", 50.0)] {
+        for scale in [100, 125, 150, 200, 400] {
+            let n = (base * scale as f32 / 100.0).round() as u32;
+            tile(n).save(msix.join(format!("{name}.scale-{scale}.png"))).expect("png");
+        }
+    }
+    for n in [16, 20, 24, 30, 32, 36, 40, 48, 60, 64, 72, 80, 96, 256] {
+        for kind in ["", "_altform-unplated", "_altform-lightunplated"] {
+            tile(n).save(msix.join(format!("Square44x44Logo.targetsize-{n}{kind}.png"))).expect("png");
+        }
+    }
     println!("icons written to {}", dir.display());
 }

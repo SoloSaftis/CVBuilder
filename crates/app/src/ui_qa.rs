@@ -228,6 +228,11 @@ const SCENES: &[Scene] = &[
     Scene { name: "Sjekklisteredigering", setup: |a| a.checklist.editing = Some(cv_core::checklist::Checklist::starter()) },
     Scene { name: "Om CVBuilder", setup: |a| a.about_open = true },
     Scene {
+        name: "Oppdatering finnes",
+        setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Ok(cv_ai::updates::Release { version: "1.2.0".into(), page: cv_ai::updates::RELEASES_PAGE.into() }))),
+    },
+    Scene { name: "Sjekk feilet", setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Err("GitHub answered 503".into()))) },
+    Scene {
         name: "Lagre før lukking",
         setup: |a| {
             a.is_example = false;

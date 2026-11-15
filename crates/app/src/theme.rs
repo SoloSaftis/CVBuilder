@@ -156,6 +156,7 @@ pub mod ph {
     pub const FOLDER_OPEN: &str = "\u{e256}";
     pub const FLOPPY_DISK: &str = "\u{e248}";
     pub const ARROW_SQUARE_IN: &str = "\u{e5dc}";
+    pub const ARROWS_CLOCKWISE: &str = "\u{e094}";
     pub const COPY: &str = "\u{e1ca}";
     pub const FILE_PDF: &str = "\u{e702}";
     pub const FILE_DOC: &str = "\u{eb1e}";
