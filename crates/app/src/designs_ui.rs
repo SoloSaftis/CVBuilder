@@ -70,7 +70,7 @@ impl CvApp {
         ui.horizontal(|ui| {
             swatch(ui, &current);
             egui::ComboBox::from_id_salt("design")
-                .selected_text(RichText::new(i18n::tf("Design: {name}", &[("name", &current.name)])).size(13.5).family(theme::medium()))
+                .selected_text(RichText::new(i18n::tf("Design: {name}", &[("name", &i18n::tdyn(&current.name))])).size(13.5).family(theme::medium()))
                 .width(210.0)
                 .height(520.0)
                 .show_ui(ui, |ui| {
@@ -89,7 +89,7 @@ impl CvApp {
                                 swatch(ui, d);
                                 ui.vertical(|ui| {
                                     ui.horizontal(|ui| {
-                                        ui.label(RichText::new(&d.name).family(theme::medium()).color(if on { t.accent } else { t.text }));
+                                        ui.label(RichText::new(i18n::tdyn(&d.name)).family(theme::medium()).color(if on { t.accent } else { t.text }));
                                         if d.columns.is_some() {
                                             theme::pill(ui, i18n::t("To spalter"), t.warning.gamma_multiply(0.14), t.warning);
                                         }
@@ -193,7 +193,7 @@ impl CvApp {
             ui.add_space(4.0);
             ui.add(
                 egui::Label::new(i18n::t(
-                    "Et design bestemmer skrift, størrelser, farger, toppfelt og overskrifter. Teksten og den ene spalten er lik i alle design, så CV-en leses like godt av søknadssystemer (ATS).",
+                    "Et design bestemmer skrift, størrelser, farger, toppfelt og overskrifter, og eventuelt et sidefelt. Teksten og rekkefølgen er lik i alle design. Én spalte leses sikrest av søknadssystemer (ATS).",
                 ))
                 .wrap(),
             );
@@ -217,7 +217,7 @@ impl CvApp {
                 theme::hint(
                     ui,
                     i18n::t(
-                        "Ikke mulig, med vilje: to spalter, sidefelt, tabeller, tekstbokser, ikoner, ferdighetsstolper og tekst i topp- eller bunntekst. Det gjør CV-er vanskeligere å lese for ATS.",
+                        "Ikke mulig, med vilje: tabeller, tekstbokser, ikoner, ferdighetsstolper og tekst i topp- eller bunntekst. Det gjør CV-er vanskeligere å lese for ATS.",
                     ),
                 );
             });
@@ -245,7 +245,7 @@ impl CvApp {
 }
 
 /// The fields of a `.cvdesign.json` file and what each one holds.
-fn fields() -> [(&'static str, &'static str); 15] {
+fn fields() -> [(&'static str, &'static str); 16] {
     [
         ("format", "«cvbuilder-design/1»"),
         ("id", i18n::t("2–40 tegn: a–z, 0–9 og bindestrek. Ikke det samme som et innebygd design.")),
@@ -265,5 +265,6 @@ fn fields() -> [(&'static str, &'static str); 15] {
         ("date_style", i18n::t("right (samme linje) eller below (egen linje).")),
         ("company_italic", "true/false."),
         ("gap", i18n::t("Luft mellom delene, 0,75–1,3.")),
+        ("columns", i18n::t("Et sidefelt (valgfritt): side, bredde, farger og hvilke deler som står der. Utelat det for én spalte, som leses sikrest av ATS. Se DESIGN-FORMAT.md.")),
     ]
 }

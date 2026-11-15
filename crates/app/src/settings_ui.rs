@@ -70,7 +70,7 @@ impl CvApp {
                 theme::section_title(ui, "AI");
                 ui.horizontal(|ui| {
                     let now = match self.chat_backend() {
-                        Some(b) => i18n::tf("Tilkoblet: {name}", &[("name", &b.name())]),
+                        Some(b) => i18n::tf("Tilkoblet: {name}", &[("name", &i18n::tdyn(&b.name()))]),
                         None => i18n::t("Ingen AI tilkoblet").to_string(),
                     };
                     ui.label(RichText::new(now).color(t.dim));

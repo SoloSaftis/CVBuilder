@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
          xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+         xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
          xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-         IgnorableNamespaces="uap rescap">
+         IgnorableNamespaces="uap uap3 desktop rescap">
   <Identity Name="__IDENTITY__" Publisher="__PUBLISHER__" Version="__VERSION__" ProcessorArchitecture="x64" />
   <Properties>
     <DisplayName>CVBuilder</DisplayName>
@@ -20,6 +22,15 @@
     <Application Id="CVBuilder" Executable="CVBuilder.exe" EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements DisplayName="CVBuilder" Description="CV-er som rekrutterere og søknadssystemer leser riktig"
         BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" />
+      <Extensions>
+        <!-- CVBuilder.exe as a command: AI apps start the MCP bridge through it, inside the
+             package, so it sees the same (redirected) data folder as the open window. -->
+        <uap3:Extension Category="windows.appExecutionAlias" Executable="CVBuilder.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap3:AppExecutionAlias>
+            <desktop:ExecutionAlias Alias="CVBuilder.exe" />
+          </uap3:AppExecutionAlias>
+        </uap3:Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

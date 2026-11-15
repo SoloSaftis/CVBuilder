@@ -598,6 +598,7 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         rule(r"«\.(.*)» kan ikke leses\. Bruk PDF, Word \(\.docx\), tekst \(\.txt/\.md\) eller en nettside \(\.html\)\.", |c| {
             format!("“.{}” cannot be read. Use PDF, Word (.docx), text (.txt/.md) or a web page (.html).", &c[1])
         }),
+        rule(r"^Claude Code stoppet: (.+)$", |c| format!("Claude Code stopped: {}", &c[1])),
         rule(r"(Annonsen er lagt inn\.|Fra annonsen: .+?\.)(?: (\d+) fagord står allerede i CV-en din og er lagt til i kompetanse: (.+)\.)?", |c| {
             static COUNT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(\d+) fagord$").expect("i18n pattern"));
             let head = match c[1].strip_prefix("Fra annonsen: ").and_then(|s| s.strip_suffix('.')) {
@@ -767,6 +768,7 @@ static EN: &[(&str, &str)] = &[
     ("Start", "Start"),
     ("Bruk disse språkene", "Use these languages"),
     ("Se etter oppdateringer", "Check for updates"),
+    ("Et sidefelt (valgfritt): side, bredde, farger og hvilke deler som står der. Utelat det for én spalte, som leses sikrest av ATS. Se DESIGN-FORMAT.md.", "A sidebar (optional): side, width, colours and which sections go there. Leave it out for one column, which an ATS reads most reliably. See DESIGN-FORMAT.md."),
     ("Spør GitHub om det finnes en nyere versjon. Ingenting lastes ned av seg selv.", "Asks GitHub whether there is a newer version. Nothing is downloaded by itself."),
     ("Ser etter oppdateringer …", "Checking for updates …"),
     ("Fikk ikke sjekket: {error}", "Could not check: {error}"),
@@ -1355,19 +1357,13 @@ static EN: &[(&str, &str)] = &[
     ("Mal-filen er lagret: {path}. Endre den og importer den igjen.", "The template file is saved: {path}. Edit it and import it again."),
     ("Kunne ikke lagre mal-filen: {e}", "Could not save the template file: {e}"),
     ("Importer eget design", "Import your own design"),
-    (
-        "Et design bestemmer skrift, størrelser, farger, toppfelt og overskrifter. Teksten og den ene spalten er lik i alle design, så CV-en leses like godt av søknadssystemer (ATS).",
-        "A design sets the fonts, sizes, colors, header and headings. The text and the single column are the same in every design, so the CV reads just as well in applicant tracking systems (ATS).",
-    ),
+    ("Et design bestemmer skrift, størrelser, farger, toppfelt og overskrifter, og eventuelt et sidefelt. Teksten og rekkefølgen er lik i alle design. Én spalte leses sikrest av søknadssystemer (ATS).", "A design sets the fonts, sizes, colours, header and headings, and optionally a sidebar. The text and its order are the same in every design. One column is read most reliably by applicant tracking systems (ATS)."),
     ("Filformat: .cvdesign.json", "File format: .cvdesign.json"),
     (
         "En JSON-fil (UTF-8) med feltene under. «format» må være «cvbuilder-design/1». Lag en ved å lagre et design du liker som mal-fil og endre den.",
         "A JSON file (UTF-8) with the fields below. “format” must be “cvbuilder-design/1”. Make one by saving a design you like as a template file and editing it.",
     ),
-    (
-        "Ikke mulig, med vilje: to spalter, sidefelt, tabeller, tekstbokser, ikoner, ferdighetsstolper og tekst i topp- eller bunntekst. Det gjør CV-er vanskeligere å lese for ATS.",
-        "Not possible, on purpose: two columns, sidebars, tables, text boxes, icons, skill bars and text in headers or footers. They make CVs harder for ATS to read.",
-    ),
+    ("Ikke mulig, med vilje: tabeller, tekstbokser, ikoner, ferdighetsstolper og tekst i topp- eller bunntekst. Det gjør CV-er vanskeligere å lese for ATS.", "Not possible, on purpose: tables, text boxes, icons, skill bars and text in headers or footers. They make CVs harder for an ATS to read."),
     ("Velg fil …", "Choose file …"),
     ("Lagre mal-fil å starte fra …", "Save a template file to start from …"),
     ("2–40 tegn: a–z, 0–9 og bindestrek. Ikke det samme som et innebygd design.", "2–40 characters: a–z, 0–9 and hyphen. Not the same as a built-in design."),
@@ -1763,6 +1759,15 @@ static EN: &[(&str, &str)] = &[
 
 /// Fixed text that cv-core, cv-ai and cv-mcp produce, with its English.
 static DYN: &[(&str, &str)] = &[
+    // ---- names from cv-core and cv-ai ----
+    ("Klassisk", "Classic"),
+    ("Moderne", "Modern"),
+    ("Nordisk", "Nordic"),
+    ("Kompakt", "Compact"),
+    ("Lokal modell", "Local model"),
+    // ---- notes from the chat (cv-ai) ----
+    ("Claude Code fikk ikke kontakt med CVBuilder over MCP, så det kan ikke endre CV-en i denne runden.", "Claude Code could not reach CVBuilder over MCP, so it cannot change the CV in this round."),
+    ("Svaret ble avbrutt fordi det ble for langt.", "The answer was cut off because it got too long."),
     ("Navn", "Name"),
     ("Portrett", "Portrait"),
     ("Stillingen du søker", "The job you are applying for"),
@@ -2143,6 +2148,17 @@ mod tests {
     use std::collections::{BTreeSet, HashSet};
 
     use cv_core::Project;
+
+    #[test]
+    fn names_and_notes_from_other_crates_have_english() {
+        assert_eq!(super::english("Klassisk").as_deref(), Some("Classic"));
+        assert_eq!(super::english("Lokal modell").as_deref(), Some("Local model"));
+        assert_eq!(super::english("Claude Code stoppet: rate limit").as_deref(), Some("Claude Code stopped: rate limit"));
+        // Every built-in design's name has English.
+        for d in cv_core::layouts::all().iter().filter(|d| !d.id.contains('-')) {
+            assert!(super::english(&d.name).is_some(), "{}", d.name);
+        }
+    }
 
     #[test]
     fn language_names_follow_the_menu_language() {

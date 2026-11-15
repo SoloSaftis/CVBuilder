@@ -8,7 +8,7 @@ use regex::Regex;
 use serde_json::Value;
 
 use crate::checks;
-use crate::model::{Project, Skill};
+use crate::model::{Language, Project, Skill};
 
 /// The file types that can be read, for dialogs and messages.
 pub const FILE_TYPES: [&str; 16] = ["pdf", "docx", "doc", "odt", "rtf", "pages", "txt", "md", "html", "htm", "mht", "mhtml", "fodt", "dotx", "docm", "json"];
@@ -1072,8 +1072,15 @@ pub fn apply_ad(project: &mut Project, ad: &AdInfo) -> String {
         found.push(format!("{} fagord", t.keywords.len() - before));
     }
     let have = skills_you_have(project);
+    // The group's name is printed in the CV, so it follows the CV's language; in other languages
+    // the skills go in without a group, for the person to sort.
+    let group = match (&project.options.headings, project.language) {
+        (None, Language::No) => "Fra annonsen",
+        (None, _) => "From the job ad",
+        (Some(_), _) => "",
+    };
     for k in &have {
-        project.skills.push(Skill { group: "Fra annonsen".into(), name: k.clone(), evidence: "Står allerede i CV-en".into(), confirmed: true });
+        project.skills.push(Skill { group: group.into(), name: k.clone(), evidence: "Står allerede i CV-en".into(), confirmed: true });
     }
     let mut out = if found.is_empty() { "Annonsen er lagt inn.".to_string() } else { format!("Fra annonsen: {}.", found.join(", ")) };
     if !have.is_empty() {
