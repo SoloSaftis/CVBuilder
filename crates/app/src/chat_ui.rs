@@ -238,6 +238,7 @@ impl CvApp {
         loop {
             match events.try_recv() {
                 Ok(ChatEvent::Text(t)) => new_items.push(Item::Assistant(t)),
+                Ok(ChatEvent::Note(n)) => new_items.push(Item::Note { text: i18n::tdyn(&n), error: false }),
                 Ok(ChatEvent::ToolStarted { id, name }) => new_items.push(Item::Tool { id, name, state: ToolState::Running }),
                 Ok(ChatEvent::ToolDone { id, ok }) => {
                     let state = if ok { ToolState::Ok } else { ToolState::Failed };
@@ -363,7 +364,7 @@ impl CvApp {
         let api = self.ai_endpoint();
         let current = match backend {
             Some(Backend::Api { endpoint, model }) => {
-                format!("{} · {model}", endpoint.service.name())
+                format!("{} · {model}", i18n::tdyn(endpoint.service.name()))
             }
             Some(Backend::ClaudeCode { .. }) => i18n::t("Claude Code · din egen innlogging").into(),
             None => i18n::t("Ingen AI tilkoblet").into(),
@@ -375,7 +376,7 @@ impl CvApp {
                 .show_ui(ui, |ui| {
                     if let Some((endpoint, model)) = &api {
                         if ui
-                            .selectable_label(matches!(backend, Some(Backend::Api { .. })), format!("{} · {model}", endpoint.service.name()))
+                            .selectable_label(matches!(backend, Some(Backend::Api { .. })), format!("{} · {model}", i18n::tdyn(endpoint.service.name())))
                             .on_hover_text(i18n::t("Bruk AI-tjenesten du har koblet til med API-nøkkel"))
                             .clicked()
                         {

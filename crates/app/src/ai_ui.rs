@@ -53,7 +53,7 @@ impl CvApp {
                 match result {
                     Ok(models) => {
                         self.ai.models = models;
-                        self.ai.note = i18n::tf("Tilkoblet. {service} fant {n} modeller; den anbefalte er valgt.", &[("service", service.name()), ("n", &self.ai.models.len().to_string())]);
+                        self.ai.note = i18n::tf("Tilkoblet. {service} fant {n} modeller; den anbefalte er valgt.", &[("service", &i18n::tdyn(service.name())), ("n", &self.ai.models.len().to_string())]);
                         self.settings.ai_model = self.ai.models.first().cloned().unwrap_or_default();
                         if service == Service::Local {
                             self.settings.local_url = self.ai.local_url.trim().trim_end_matches('/').to_string();
@@ -103,8 +103,8 @@ impl CvApp {
             ui.add_space(6.0);
             ui.horizontal(|ui| {
                 for s in SERVICES {
-                    let tip = if s == Service::Local { i18n::t("En modell på din egen maskin, f.eks. med Ollama. Ingen nøkkel og ingen kostnad.").to_string() } else { i18n::tf("Bruk {service} med din egen API-nøkkel fra {company}", &[("service", s.name()), ("company", s.company())]) };
-                    if ui.selectable_label(self.ai.choice == Some(s), s.name()).on_hover_text(tip).clicked() {
+                    let tip = if s == Service::Local { i18n::t("En modell på din egen maskin, f.eks. med Ollama. Ingen nøkkel og ingen kostnad.").to_string() } else { i18n::tf("Bruk {service} med din egen API-nøkkel fra {company}", &[("service", &i18n::tdyn(s.name())), ("company", s.company())]) };
+                    if ui.selectable_label(self.ai.choice == Some(s), i18n::tdyn(s.name())).on_hover_text(tip).clicked() {
                         self.ai.choice = Some(s);
                         self.ai.models.clear();
                         self.ai.note.clear();
@@ -140,7 +140,7 @@ impl CvApp {
                     let endpoint = Endpoint::new(service, craft_ai_core_secret(&self.ai.key_input));
                     let (tx, rx) = channel();
                     self.ai.inbox = Some(rx);
-                    self.ai.busy = Some(i18n::tf("Tester nøkkelen hos {service} …", &[("service", service.name())]));
+                    self.ai.busy = Some(i18n::tf("Tester nøkkelen hos {service} …", &[("service", &i18n::tdyn(service.name()))]));
                     std::thread::spawn(move || {
                         let _ = tx.send(Outcome::Models(service, cv_ai::test_connection(&endpoint)));
                     });
@@ -149,7 +149,7 @@ impl CvApp {
                     self.ai.keys.forget(service);
                     self.settings.ai_service = None;
                     crate::storage::save_settings(&self.settings);
-                    self.ai.note = i18n::tf("Koblet fra {service}. Nøkkelen er slettet fra denne maskinen.", &[("service", service.name())]);
+                    self.ai.note = i18n::tf("Koblet fra {service}. Nøkkelen er slettet fra denne maskinen.", &[("service", &i18n::tdyn(service.name()))]);
                 }
             });
             if let Some(busy) = &self.ai.busy {

@@ -52,6 +52,10 @@ jobs:
       - name: Package (portable zip + MSIX signed with a test certificate)
         shell: pwsh
         run: ./platforms/windows/packaging/package.ps1
+      # The window's own tests: every language pack complete, every letter in the fonts,
+      # tooltips, language names. (The slow screen check, ui_qa, runs by hand before a release.)
+      - name: App tests
+        run: cargo test -p cvbuilder-app --release --locked
       # Signing through SignPath Foundation (see CODE_SIGNING_POLICY.md). Skipped until the
       # repository has the variable SIGNPATH_ORGANIZATION_ID and the secret SIGNPATH_API_TOKEN.
       - name: Unsigned program for SignPath

@@ -177,9 +177,25 @@ pub fn serve_stdio() {
     }
 }
 
+/// The program AI apps start as `… --mcp`. Normally this program itself. Installed from the
+/// Microsoft Store (under «WindowsApps»), Windows keeps the app's data folder private to the
+/// package, so the bridge must run inside the package too: through the «CVBuilder.exe» command
+/// (an app execution alias in AppxManifest.xml) rather than by the program's own path.
+fn mcp_command() -> Option<PathBuf> {
+    let exe = std::env::current_exe().ok()?;
+    if exe.to_string_lossy().to_lowercase().contains("\\windowsapps\\") {
+        if let Some(alias) = std::env::var_os("LOCALAPPDATA").map(|d| PathBuf::from(d).join("Microsoft").join("WindowsApps").join("CVBuilder.exe")) {
+            if alias.exists() {
+                return Some(alias);
+            }
+        }
+    }
+    Some(exe)
+}
+
 /// Where Claude Code's chat config is written: CVBuilder's own data folder.
 pub fn write_claude_code_config() -> Option<PathBuf> {
-    let exe = std::env::current_exe().ok()?;
+    let exe = mcp_command()?;
     let dir = crate::storage::data_dir().join("claude-code");
     std::fs::create_dir_all(&dir).ok()?;
     let file = dir.join("cvbuilder-mcp.json");
@@ -189,6 +205,6 @@ pub fn write_claude_code_config() -> Option<PathBuf> {
 
 /// The snippet a person pastes into an AI app's MCP settings.
 pub fn client_snippet() -> String {
-    let exe = std::env::current_exe().map(|p| p.to_string_lossy().to_string()).unwrap_or_else(|_| "CVBuilder".into());
+    let exe = mcp_command().map(|p| p.to_string_lossy().to_string()).unwrap_or_else(|| "CVBuilder".into());
     serde_json::to_string_pretty(&json!({"mcpServers": {"cvbuilder": {"command": exe, "args": ["--mcp"]}}})).unwrap_or_default()
 }

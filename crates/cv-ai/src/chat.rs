@@ -41,6 +41,8 @@ impl Backend {
 pub enum ChatEvent {
     /// Text from the AI (a whole block).
     Text(String),
+    /// A note from CVBuilder itself (not the AI), in Norwegian; the window translates it.
+    Note(String),
     /// The AI called a tool (the name without any `mcp__cvbuilder__` prefix).
     ToolStarted { id: String, name: String },
     ToolDone { id: String, ok: bool },
@@ -167,7 +169,7 @@ fn claude_turn(endpoint: &Endpoint, model: &str, history: &mut History, user: &s
         let calls: Vec<&Value> = blocks.iter().filter(|b| b["type"] == "tool_use").collect();
         if calls.is_empty() {
             if stop_reason == "max_tokens" {
-                let _ = events.send(ChatEvent::Text("(Svaret ble avbrutt fordi det ble for langt.)".into()));
+                let _ = events.send(ChatEvent::Note("Svaret ble avbrutt fordi det ble for langt.".into()));
             }
             return Ok(());
         }
@@ -358,7 +360,7 @@ fn claude_code_turn(program: &Path, mcp_config: &Path, model: Option<&str>, hist
                         }
                         let connected = v["mcp_servers"].as_array().is_some_and(|a| a.iter().any(|s| s["name"] == "cvbuilder" && s["status"] == "connected"));
                         if !connected {
-                            let _ = events.send(ChatEvent::Text("(Claude Code fikk ikke kontakt med CVBuilder over MCP, så det kan ikke endre CV-en i denne runden.)".into()));
+                            let _ = events.send(ChatEvent::Note("Claude Code fikk ikke kontakt med CVBuilder over MCP, så det kan ikke endre CV-en i denne runden.".into()));
                         }
                     }
                     Some("assistant") => {
