@@ -1,5 +1,7 @@
 # CVBuilder Familie
 
+> Stier og kommandoer under gjelder fra mappen [`web/`](../../web/).
+
 Pakk ut hele ZIP-filen og åpne `index.html` i Edge eller Chrome. Ingen innlogging,
 server, AI-abonnement eller installasjon trengs for skjema, interessevurdering,
 Word-eksport og utskrift til PDF. Ikke åpne HTML direkte inne i ZIP-filen.
@@ -28,7 +30,7 @@ ikke kandidatens tekst. Lagre én kontrollert prosjektfil per språk.
 
 `templates/utkast.json` er den tomme strukturen. `templates/intake.schema.json`
 beskriver alle tillatte felt, typer, grenser og enum-verdier. Ukjente felt avvises.
-`SKJEMA.md` forklarer formatering og regler. Et gyldig utkast kan være ufullstendig;
+[`web-format.md`](web-format.md) forklarer formatering og regler. Et gyldig utkast kan være ufullstendig;
 en CV-eksport krever i tillegg kontaktdata, tidslinje, bekreftelser og plasskontroll.
 
 `contract.js` er felles validering for nettleser og Node-verktøy. Med Node kan du
@@ -37,7 +39,7 @@ innholdskontroll før eksport. Ingen ekstra Node-pakker kreves for dette.
 
 ## AI og kildearbeid
 
-Les `AI_START_HER.md` og `ai/BUILD_RULES.md`. Ni rolleprompter, oppgavekontrakt,
+Les [`.claude/cv-ai/START_HER.md`](../../.claude/cv-ai/START_HER.md) og [`.claude/cv-ai/BUILD_RULES.md`](../../.claude/cv-ai/BUILD_RULES.md). Ni rolleprompter, oppgavekontrakt,
 avhengigheter og godkjenningsregler følger med. De brukes av valgt AI-vert eller
 manuelt. Denne pakken starter ikke ni modeller og foretar ingen skjult nettbruk.
 Interesseforslagene i skjemaet følger eksplisitte lokale regler.
@@ -46,7 +48,7 @@ Offentlig research kan gjennomføres av en tilkoblet AI-vert etter prosedyren i
 regelsettet. Ingen gjetting av personlige interesser eller private opplysninger.
 Manglende funn skal rapporteres som uavklart. Et hobbytreff er aldri et yrkeskrav.
 
-Valgfritt MCP-oppsett ligger i `ai/mcp/`. Det eksponerer bare arbeidsflyt og
+Valgfritt MCP-oppsett ligger i [`.claude/cv-ai/mcp/`](../../.claude/cv-ai/mcp/). Det eksponerer bare arbeidsflyt og
 rolleprompter; ikke kandidatdata eller godkjenningsmyndighet. Installasjon og
 absolutte prosjektstier er forklart der. Vanlig bruk av byggeren trenger ikke MCP.
 
@@ -56,7 +58,7 @@ ingen universell ATS-kompatibilitet eller bestemt intervjusjanse.
 ## Tester og deling
 
 `node --test tests/core.cjs` tester kontrakter, interessevalg og godkjenningsporter.
-Nettlesertesten krever Playwright og Edge/Chromium; se `tests/LES_MEG.md`.
+Nettlesertesten krever Playwright og Edge/Chromium; se [`web-tests.md`](web-tests.md).
 Pakken er laget fra en liste med generelle filer og kontrollert for persondata fra
 eierens personlige prosjekt. Bruk den tomme ZIP-en når du deler videre; egne lagrede
 utkast og ferdige CV-er blir ikke automatisk anonymisert.

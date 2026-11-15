@@ -1,4 +1,4 @@
-//! CVBuilder for Windows. Everything except packaging and the exe's icon lives in ../shared.
+//! CVBuilder for Windows. Everything except packaging and the exe's icon lives in crates/.
 // No console window behind the app in release builds.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 

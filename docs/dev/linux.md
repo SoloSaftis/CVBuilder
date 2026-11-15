@@ -1,6 +1,8 @@
 # CVBuilder – Linux
 
-Linux only. The app itself is in [`../shared`](../shared).
+> Paths below without a folder are in [`platforms/linux/`](../../platforms/linux/).
+
+Linux only. The app itself is in [`crates/`](../../crates/).
 
 - `src/main.rs` – starts the shared app.
 - `packaging/package.sh` – builds `platforms/linux/dist/CVBuilder-<version>-linux-<arch>-portable.tar.gz`

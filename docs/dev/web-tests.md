@@ -1,5 +1,7 @@
 # Tester
 
+> Kommandoene kjøres fra mappen [`web/`](../../web/).
+
 Kjør `node --test tests/core.cjs`. Testene bruker bare Node og syntetiske data.
 Ingen personopplysninger fra eierens prosjekt følger med.
 

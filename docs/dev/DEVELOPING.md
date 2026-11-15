@@ -4,13 +4,13 @@
 
 | Folder | What it is |
 |---|---|
-| [`crates/`](crates/) | **The app, shared by every platform.** CV rules and Word/PDF output (`cv-core`), AI tools and MCP (`cv-mcp`), AI services (`cv-ai`) and the window (`app`). Change behaviour here. |
-| [`web/`](web/) | The reference implementation of the CV rules in JavaScript; a parity test keeps the app's rules identical to it. |
-| [`assets/`](assets/) | Icons, fonts (DM Sans, Phosphor icons, `craft-fonts` for other scripts), the bundled interface languages (`languages/`), CV headings and dates per language (`cv-languages.json`), screenshots and licence texts. |
-| [`platforms/`](platforms/) | One folder each for `windows`, `linux` and `macos`: the launcher and the packaging (zip and MSIX; AppImage and tar.gz; `CVBuilder.app`). |
-| [`packaging/`](packaging/) | Scripts every platform uses: the third-party licence list and the language-pack tools. |
-| [`.github/`](.github/) | The build (`workflows/build.yml`: tests, then each platform, and releases from `v*` tags) and the release page template. |
-| [`.signpath/`](.signpath/) | The SignPath configuration for signing the Windows program. |
+| [`crates/`](../../crates/) ([guide](crates.md)) | **The app, shared by every platform.** CV rules and Word/PDF output (`cv-core`), AI tools and MCP (`cv-mcp`), AI services (`cv-ai`) and the window (`app`). Change behaviour here. |
+| [`web/`](../../web/) ([guide](web.md)) | The reference implementation of the CV rules in JavaScript; a parity test keeps the app's rules identical to it. |
+| [`assets/`](../../assets/) | Icons, fonts (DM Sans, Phosphor icons, `craft-fonts` for other scripts), the bundled interface languages (`languages/`), CV headings and dates per language (`cv-languages.json`), screenshots and licence texts. |
+| [`platforms/`](../../platforms/) ([Windows](windows.md), [Linux](linux.md), [macOS](macos.md)) | One folder each for `windows`, `linux` and `macos`: the launcher and the packaging (zip and MSIX; AppImage and tar.gz; `CVBuilder.app`). |
+| [`packaging/`](../../packaging/) | Scripts every platform uses: the third-party licence list and the language-pack tools. |
+| [`.github/`](../../.github/) | The build (`workflows/build.yml`: tests, then each platform, and releases from `v*` tags) and the release page template. |
+| [`.signpath/`](../../.signpath/) | The SignPath configuration for signing the Windows program. |
 
 Each platform launcher is a few lines that call `cvbuilder_app::run()` from `crates/app`. Anything
 that is the same on every platform belongs in `crates/`.
@@ -18,7 +18,7 @@ that is the same on every platform belongs in `crates/`.
 ## Building and testing
 
 - Build for this computer: `cargo build -p cvbuilder-windows --release` (or `-linux`, `-macos`).
-  Packaging: see each platform folder.
+  Packaging: [Windows](windows.md), [Linux](linux.md), [macOS](macos.md).
 - Tests: `cargo test --workspace --release`. The parity test (`crates/cv-core/tests/parity.rs`)
   runs the app's rules and the reference rules in `web/` on the same CVs and requires identical
   results.
@@ -46,7 +46,7 @@ applicant-tracking system. Designs from Reactive Resume (MIT, © Amruth Pillai) 
 © Sina Atalay and contributors) are remakes: their look (fonts, colours, header and headings) on
 CVBuilder's single-column layout; sidebars and columns are left out on purpose. Licence texts are in
 `assets/licenses/`. Your own designs are `.cvdesign.json` files: see
-[`crates/cv-core/DESIGN-FORMAT.md`](crates/cv-core/DESIGN-FORMAT.md).
+[`crates/cv-core/DESIGN-FORMAT.md`](../../crates/cv-core/DESIGN-FORMAT.md).
 
 ## Personal data
 

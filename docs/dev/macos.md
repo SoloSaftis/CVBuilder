@@ -1,6 +1,8 @@
 # CVBuilder – macOS
 
-macOS only. The app itself is in [`../shared`](../shared).
+> Paths below without a folder are in [`platforms/macos/`](../../platforms/macos/).
+
+macOS only. The app itself is in [`crates/`](../../crates/).
 
 - `src/main.rs` – starts the shared app.
 - `packaging/package.sh` – builds `platforms/macos/dist/CVBuilder-<version>-macos-<arch>.zip` containing
