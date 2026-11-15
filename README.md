@@ -59,14 +59,18 @@ How to use every part of CVBuilder, in plain language: [docs/user](docs/user/REA
 
 ## For developers
 
-Building, tests, languages and the folder layout: [docs/dev/DEVELOPING.md](docs/dev/DEVELOPING.md). CVBuilder is also
-an MCP server, so AI apps such as Claude Code can work on the open CV.
+Rust (egui). Build for this computer with `cargo build --release -p cvbuilder-windows` (or
+`-linux`, `-macos`) and run the tests with `cargo test --workspace --release`. The app's code is
+in `crates/`, the platform launchers and packaging in `platforms/`. CVBuilder is also an MCP
+server, so AI apps such as Claude Code can work on the open CV.
 
 ## Licence
 
 [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option. A contribution you submit is
 licensed the same way. Bundled components keep their own licences (`THIRD-PARTY.txt` in each
-package); design remakes of Reactive Resume and RenderCV are MIT (see [docs/dev/DEVELOPING.md](docs/dev/DEVELOPING.md#designs)).
+package). Designs from Reactive Resume (MIT, © Amruth Pillai) and RenderCV (MIT, © Sina Atalay
+and contributors) are remakes on CVBuilder's own layout; their licence texts are in
+`assets/licenses/`. Your own designs: [`crates/cv-core/DESIGN-FORMAT.md`](crates/cv-core/DESIGN-FORMAT.md).
 WordCraft and the Craft AI integrations are by the ArtCraft/storytold contributors.
 [Code signing policy](CODE_SIGNING_POLICY.md): free code signing provided by
 [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
