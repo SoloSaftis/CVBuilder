@@ -9,6 +9,16 @@ use crate::theme::{self, Tokens};
 use crate::{CvApp, storage};
 
 /// The theme setting as egui's preference.
+/// The window's zoom for a text size in percent (kept within what the window can show).
+pub fn zoom(percent: u16) -> f32 {
+    f32::from(percent.clamp(50, 300)) / 100.0
+}
+
+/// A zoom factor as a whole percent.
+pub fn percent(zoom: f32) -> u16 {
+    (zoom * 100.0).round().clamp(50.0, 300.0) as u16
+}
+
 pub fn theme_preference(value: &str) -> egui::ThemePreference {
     match value {
         "light" => egui::ThemePreference::Light,
@@ -47,6 +57,19 @@ impl CvApp {
                         if ui.radio(self.settings.theme == value, name).on_hover_text(tip).clicked() && self.settings.theme != value {
                             self.settings.theme = value.to_string();
                             ctx.set_theme(theme_preference(value));
+                            storage::save_settings(&self.settings);
+                        }
+                    }
+                });
+                ui.add_space(10.0);
+
+                theme::section_title(ui, i18n::t("Tekststørrelse i vinduet"));
+                ui.horizontal(|ui| {
+                    for value in [90u16, 100, 125, 150] {
+                        let tip = i18n::t("Gjør menyer, knapper og skjema større eller mindre. Ctrl + pluss og minus gjør det samme. Tekststørrelsen i selve CV-en velges under Sideoppsett.");
+                        if ui.radio(self.settings.text_size == value, format!("{value} %")).on_hover_text(tip).clicked() && self.settings.text_size != value {
+                            self.settings.text_size = value;
+                            ctx.set_zoom_factor(zoom(value));
                             storage::save_settings(&self.settings);
                         }
                     }
@@ -211,5 +234,18 @@ impl CvApp {
             }
             None => self.new_section = Some(name),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn text_size_and_zoom_agree() {
+        for p in [90u16, 100, 125, 150] {
+            assert_eq!(super::percent(super::zoom(p)), p);
+        }
+        // An odd value from an old settings file stays within what the window can show.
+        assert_eq!(super::zoom(5), 0.5);
+        assert_eq!(super::zoom(1000), 3.0);
     }
 }

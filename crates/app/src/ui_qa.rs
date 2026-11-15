@@ -274,7 +274,10 @@ fn private_data_folder(lang: &str) {
     let dir = std::env::current_exe().ok().and_then(|e| e.parent().map(|p| p.join("CVBuilder-data"))).expect("test exe folder");
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir).expect("data folder");
-    std::fs::write(dir.join("settings.json"), format!("{{\"ui_language\": {lang:?}, \"remember\": false, \"welcomed\": true}}")).expect("settings");
+    // The CV language is set too, so the example (Norwegian for «no», English otherwise) is the
+    // same on every computer, whatever its own language.
+    let cv = if lang == "no" { "Bokmål" } else { "English" };
+    std::fs::write(dir.join("settings.json"), format!("{{\"ui_language\": {lang:?}, \"cv_language\": {cv:?}, \"remember\": false, \"welcomed\": true}}")).expect("settings");
 }
 
 #[test]
@@ -402,6 +405,61 @@ fn click(h: &mut Harness<'_, CvApp>, label: &str) {
     step(h, 3);
 }
 
+/// Every button on the main screens has a name a screen reader can say: icon buttons, drawn
+/// buttons and clickable areas get their hover text as their name (theme::named).
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn every_button_has_a_name() {
+    private_data_folder("en");
+    let mut nameless = Vec::new();
+    for scene in SCENES.iter().filter(|s| ["Hjem", "Alle seksjoner åpne", "Sideoppsett", "Design", "Sjekkliste"].contains(&s.name)) {
+        let h = harness(Vec2::new(1440.0, 900.0), scene.setup);
+        let named_by_content = |r: Role| matches!(r, Role::TextInput | Role::MultilineTextInput | Role::ScrollBar | Role::Splitter);
+        for c in snapshot(&h).into_iter().filter(|c| c.control && !named_by_content(c.role)) {
+            let label = c.label;
+            // An icon-font character alone (Private Use Area) is no name either.
+            if label.trim().chars().all(|c| ('\u{e000}'..='\u{f8ff}').contains(&c)) {
+                nameless.push(format!("{}: a {:?} at {:?}", scene.name, c.role, c.rect.center()));
+            }
+        }
+    }
+    assert!(nameless.is_empty(), "buttons without a name:\n{}", nameless.join("\n"));
+    // Drawn buttons without a name are not in the accessibility tree at all, so ask for them by
+    // name: the up, down and delete buttons of an open job.
+    let h = harness(Vec2::new(1440.0, 900.0), |a| a.folded.clear());
+    // …and as buttons, so a screen reader says what they are, not only what they are called.
+    let names: Vec<String> = snapshot(&h).into_iter().filter(|c| c.control && c.role == Role::Button).map(|c| c.label).collect();
+    for wanted in ["Move up in the CV", "Move down in the CV", "Delete the job"] {
+        assert!(names.iter().any(|n| n == wanted), "no button named «{wanted}» (a drawn button lost its name or its button role)");
+    }
+}
+
+/// The welcome window's three ways to start each do what they say, and the answer is kept.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn welcome_asks_how_to_start() {
+    let welcome = |a: &mut CvApp| {
+        a.settings.ui_language = "no".into();
+        a.welcome = Some(crate::welcome_ui::Welcome::for_this_computer(&a.langs.packs));
+    };
+    // Import: the import window opens.
+    private_data_folder("no");
+    let mut h = harness(Vec2::new(1440.0, 900.0), welcome);
+    click(&mut h, "Hent inn CV-en jeg har");
+    assert!(h.state().welcome.is_none() && h.state().settings.welcomed);
+    assert!(h.state().import.cv_open, "the import window did not open");
+    // Empty: a blank CV, not the example.
+    private_data_folder("no");
+    let mut h = harness(Vec2::new(1440.0, 900.0), welcome);
+    click(&mut h, "Start med en tom CV");
+    assert!(!h.state().is_example && h.state().project.experience.is_empty(), "no empty CV");
+    // Example: the example stays.
+    private_data_folder("no");
+    let mut h = harness(Vec2::new(1440.0, 900.0), welcome);
+    click(&mut h, "Se et eksempel først");
+    assert!(h.state().welcome.is_none() && h.state().is_example);
+}
+
 /// Saving like Word: Ctrl+S into the CV's file, the question on close, the autosave every five
 /// minutes, and the file coming back after a restart.
 #[test]
@@ -487,6 +545,19 @@ fn save_close_and_autosave() {
     let _ = std::fs::remove_file(&file);
 }
 
+/// The preview is made on its own thread after a short pause: wait for the pages (at most ten
+/// seconds), so pictures show the CV rather than «Creating preview …».
+fn wait_for_preview(h: &mut Harness<'_, CvApp>) {
+    for _ in 0..200 {
+        h.step();
+        if h.state().preview.page_count > 0 {
+            break;
+        }
+        std::thread::sleep(std::time::Duration::from_millis(50));
+    }
+    step(h, 20);
+}
+
 /// Pictures of every scene, for looking at the layout by eye:
 /// `CVBUILDER_SHOTS=<dir> cargo test --release -p cvbuilder-app ui_shots -- --ignored`
 #[test]
@@ -500,6 +571,7 @@ fn ui_shots() {
     private_data_folder(&lang);
     for (i, scene) in SCENES.iter().enumerate() {
         let mut h = harness(Vec2::new(1440.0, 900.0), scene.setup);
+        wait_for_preview(&mut h);
         let image = h.render().expect("render");
         image.save(dir.join(format!("{i:02}-{}.png", scene.name.replace(' ', "_")))).expect("save");
     }
@@ -524,15 +596,7 @@ fn store_shots() {
     ];
     for (name, setup) in scenes {
         let mut h = harness(Vec2::new(1920.0, 1080.0), setup);
-        // The preview is made on its own thread after a short pause: wait for the pages.
-        for _ in 0..200 {
-            h.step();
-            if h.state().preview.page_count > 0 {
-                break;
-            }
-            std::thread::sleep(std::time::Duration::from_millis(50));
-        }
-        step(&mut h, 20);
+        wait_for_preview(&mut h);
         let image = h.render().expect("render");
         image.save(dir.join(format!("{lang}-{name}.png"))).expect("save");
     }

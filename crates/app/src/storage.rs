@@ -50,6 +50,8 @@ pub struct Settings {
     pub welcomed: bool,
     /// The language a new CV starts in (its own name); empty: the computer's.
     pub cv_language: String,
+    /// The size of the window's text, in percent (menus, buttons, form; not the CV itself).
+    pub text_size: u16,
 }
 
 impl Default for Settings {
@@ -67,6 +69,7 @@ impl Default for Settings {
             cv_file: String::new(),
             welcomed: false,
             cv_language: String::new(),
+            text_size: 100,
         }
     }
 }

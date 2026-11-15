@@ -129,11 +129,8 @@ impl CvApp {
                 .inner
             });
             let title_rect = header.inner.expand2(egui::vec2(4.0, 4.0));
-            let click = ui.interact(title_rect, ui.scope_id().with((key, "fold")), egui::Sense::click()).on_hover_text(if open {
-                i18n::t("Klikk for å skjule seksjonen i skjemaet. Den står fortsatt i CV-en.")
-            } else {
-                i18n::t("Klikk for å vise seksjonen")
-            });
+            let fold_tip = if open { i18n::t("Klikk for å skjule seksjonen i skjemaet. Den står fortsatt i CV-en.") } else { i18n::t("Klikk for å vise seksjonen") };
+            let click = theme::named(ui.interact(title_rect, ui.scope_id().with((key, "fold")), egui::Sense::click()), fold_tip).on_hover_text(fold_tip);
             if click.on_hover_cursor(egui::CursorIcon::PointingHand).clicked() {
                 if open {
                     self.folded.insert(key.to_string());
@@ -256,7 +253,7 @@ impl CvApp {
             match self.portrait_texture(ui.ctx()) {
                 Some(tex) => {
                     let r = ui.add(egui::Image::new((tex.id(), size)).corner_radius(CornerRadius::same(theme::R)).sense(egui::Sense::click()));
-                    if r.on_hover_text(i18n::t("Bytt bilde")).on_hover_cursor(egui::CursorIcon::PointingHand).clicked() {
+                    if theme::named(r, i18n::t("Bytt bilde")).on_hover_text(i18n::t("Bytt bilde")).on_hover_cursor(egui::CursorIcon::PointingHand).clicked() {
                         self.pick("photo", None);
                     }
                 }
@@ -272,7 +269,7 @@ impl CvApp {
                         egui::FontId::new(11.0, egui::FontFamily::Proportional),
                         if hot { t.accent } else { t.dim },
                     );
-                    if r.on_hover_text(i18n::t("Valgfritt portrett. Vanlig i Norge, men ikke påkrevd.")).on_hover_cursor(egui::CursorIcon::PointingHand).clicked() {
+                    if theme::named(r, i18n::t("Legg til bilde")).on_hover_text(i18n::t("Valgfritt portrett. Vanlig i Norge, men ikke påkrevd.")).on_hover_cursor(egui::CursorIcon::PointingHand).clicked() {
                         self.pick("photo", None);
                     }
                 }
@@ -304,7 +301,8 @@ impl CvApp {
                 ui.label(RichText::new(if open { "–" } else { "+" }).size(16.0).color(t.faint));
                 theme::section_title(ui, i18n::t("Stillingsannonsen du søker på"));
             });
-            if ui.interact(header.response.rect, ui.scope_id().with("fold-target"), egui::Sense::click()).on_hover_cursor(egui::CursorIcon::PointingHand).on_hover_text(if open { i18n::t("Klikk for å skjule annonsefeltene") } else { i18n::t("Klikk for å vise annonsefeltene") }).clicked() {
+            let fold_tip = if open { i18n::t("Klikk for å skjule annonsefeltene") } else { i18n::t("Klikk for å vise annonsefeltene") };
+            if theme::named(ui.interact(header.response.rect, ui.scope_id().with("fold-target"), egui::Sense::click()), fold_tip).on_hover_cursor(egui::CursorIcon::PointingHand).on_hover_text(fold_tip).clicked() {
                 if open {
                     self.folded.insert(key.into());
                 } else {
@@ -436,7 +434,13 @@ impl CvApp {
             let original = self.reference.as_ref().and_then(|r| r.experience.iter().find(|x| x.id == self.project.experience[i].id)).map(|j| j.bullets.join("\n"));
             sub_card(ui, &tk, |ui| {
                 ui.horizontal(|ui| {
-                    ui.label(RichText::new(title).family(theme::medium()).color(tk.text));
+                    // A long title and employer are cut with «…» so the delete button keeps its
+                    // place and the panel keeps its width; the full text is in the fields below.
+                    let room = (ui.available_width() - 30.0 - ui.spacing().item_spacing.x).max(40.0);
+                    ui.scope(|ui| {
+                        ui.set_max_width(room);
+                        ui.add(egui::Label::new(RichText::new(&title).family(theme::medium()).color(tk.text)).truncate());
+                    });
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         if theme::icon_button(ui, Icon::Trash, i18n::t("Slett jobben"), true).clicked() {
                             remove = Some(i);
