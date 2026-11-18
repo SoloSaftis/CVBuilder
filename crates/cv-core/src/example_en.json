@@ -1,0 +1,183 @@
+{
+ "version": 2,
+ "language": "en",
+ "candidate": {
+  "name": "Alex Morgan",
+  "email": "alex.morgan@example.com",
+  "phone": "+44 7700 900000",
+  "city": "Manchester, United Kingdom",
+  "headline": "Project Coordinator | Procurement | Client Relations",
+  "linkedin": "https://www.linkedin.com/in/example",
+  "summary": "Project coordinator with seven years in construction and property. Plans deliveries, follows up suppliers and keeps clients informed from contract to handover. Cut delays with fixed weekly plans and clear deviation routines, and wants to bring this to a growing contractor as coordinator.",
+  "photo": ""
+ },
+ "target": {
+  "role": "Project Coordinator",
+  "company": "Example Construction Ltd",
+  "url": "",
+  "description": "We are looking for a structured project coordinator with construction experience. You will be responsible for schedules, procurement, follow-up of subcontractors, health and safety documentation and client contact. Experience with Excel, Procore and Power BI is an advantage.",
+  "keywords": [
+   "project coordinator",
+   "schedule",
+   "procurement",
+   "subcontractors",
+   "health and safety",
+   "client contact",
+   "Excel",
+   "Power BI",
+   "Procore"
+  ]
+ },
+ "experience": [
+  {
+   "id": "ex_1",
+   "company": "Northwall Builders Ltd (fictional)",
+   "title": "Project Coordinator",
+   "location": "Manchester",
+   "start": "2021-03",
+   "end": null,
+   "bullets": [
+    "Coordinate procurement and deliveries for 6 housing projects at once, 140 flats in total.",
+    "Introduced a shared weekly plan for subcontractors and cut late deliveries by 30% in one year.",
+    "Prepare health and safety and maintenance documentation and lead handover meetings with clients."
+   ],
+   "evidence": "Example.",
+   "confirmed": true
+  },
+  {
+   "id": "ex_2",
+   "company": "Midlands Building Supplies Ltd (fictional)",
+   "title": "Procurement Assistant",
+   "location": "Manchester",
+   "start": "2018-01",
+   "end": "2021-02",
+   "bullets": [
+    "Managed 40 regular suppliers on price, delivery time and complaints.",
+    "Built a Power BI report that gave management a weekly view of stock value."
+   ],
+   "evidence": "Example.",
+   "confirmed": true
+  }
+ ],
+ "education": [
+  {
+   "qualification": "BSc Business and Management",
+   "institution": "Example University",
+   "start": "2015",
+   "end": "2018"
+  }
+ ],
+ "skills": [
+  {
+   "group": "Projects",
+   "name": "schedules",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  },
+  {
+   "group": "Projects",
+   "name": "procurement and ordering",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  },
+  {
+   "group": "Projects",
+   "name": "follow-up of subcontractors",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  },
+  {
+   "group": "Projects",
+   "name": "health and safety documentation",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  },
+  {
+   "group": "Tools",
+   "name": "Excel (pivot tables, lookups)",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  },
+  {
+   "group": "Tools",
+   "name": "Power BI",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  },
+  {
+   "group": "Tools",
+   "name": "MS Project",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  },
+  {
+   "group": "Clients",
+   "name": "client contact and clarifications",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  },
+  {
+   "group": "Clients",
+   "name": "handover documentation",
+   "evidence": "Example: describe where you have used this.",
+   "confirmed": true
+  }
+ ],
+ "languages": [
+  {
+   "name": "English",
+   "level": "native"
+  },
+  {
+   "name": "Spanish",
+   "level": "conversational"
+  }
+ ],
+ "certifications": [
+  {
+   "name": "Project management, foundation course",
+   "issuer": "Example training provider",
+   "year": "2022"
+  }
+ ],
+ "interests": [
+  {
+   "id": "ex_i1",
+   "label": "Fell running",
+   "status": "current",
+   "description": "Example.",
+   "category": "sport",
+   "tags": [
+    "running"
+   ],
+   "confirmed": true,
+   "specificity": 1
+  },
+  {
+   "id": "ex_i2",
+   "label": "Volunteer at a local sports club",
+   "status": "current",
+   "description": "Example.",
+   "category": "community",
+   "tags": [
+    "volunteer"
+   ],
+   "confirmed": true,
+   "specificity": 2
+  }
+ ],
+ "public_context": [],
+ "options": {
+  "layout": "classic",
+  "photo": false,
+  "include_interests": true,
+  "interest_ids": [
+   "ex_i1",
+   "ex_i2"
+  ],
+  "page_limit": 2
+ },
+ "approvals": {
+  "facts_confirmed": false
+ }
+}

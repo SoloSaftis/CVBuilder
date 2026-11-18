@@ -6,7 +6,15 @@ use egui::RichText;
 use crate::i18n::{self, Choice};
 use crate::theme::{self, Tokens};
 use crate::translate_ui::{cv_language_list, set_cv_language, shown_name, system_cv_language};
+use crate::menu_ui::Action;
 use crate::{CvApp, storage};
+
+/// The welcome window's three ways to start.
+enum Start {
+    Import,
+    Empty,
+    Example,
+}
 
 /// The welcome window's choices while it is open.
 pub struct Welcome {
@@ -34,7 +42,8 @@ impl CvApp {
             return;
         };
         let t = Tokens::get(ctx);
-        let mut start = false;
+        // How to start, once the languages are chosen.
+        let mut start: Option<Start> = None;
         let mut ui_changed = false;
         egui::Modal::new(egui::Id::unique("cvbuilder.welcome")).show(ctx, |ui| {
             ui.set_width(440.0);
@@ -89,32 +98,49 @@ impl CvApp {
                 .response
                 .on_hover_text(i18n::t("Overskrifter og datoer i CV-en. Teksten skriver du selv, eller AI-en oversetter den."));
             ui.add_space(14.0);
-            ui.horizontal(|ui| {
-                if theme::primary(ui, i18n::t("Start"), i18n::t("Bruk disse språkene"), true).clicked() {
-                    start = true;
+            theme::label(ui, i18n::t("Hvordan vil du starte?"));
+            ui.vertical(|ui| {
+                ui.spacing_mut().item_spacing.y = 6.0;
+                if theme::primary(ui, i18n::t("Hent inn CV-en jeg har"), i18n::t("Les inn en CV du allerede har: Word, PDF, tekst og mer, uten internett"), true).clicked() {
+                    start = Some(Start::Import);
                 }
-                ui.label(RichText::new(i18n::t("Endres under Innstillinger og i språklisten på Hjem.")).size(12.0).color(t.faint));
+                if ui.button(i18n::t("Start med en tom CV")).on_hover_text(i18n::t("Et tomt skjema på språket du valgte")).clicked() {
+                    start = Some(Start::Empty);
+                }
+                if ui.button(i18n::t("Se et eksempel først")).on_hover_text(i18n::t("Et ferdig utfylt eksempel med en oppdiktet person. Du kan starte din egen når som helst.")).clicked() {
+                    start = Some(Start::Example);
+                }
             });
+            ui.add_space(6.0);
+            ui.label(RichText::new(i18n::t("Endres under Innstillinger og i språklisten på Hjem.")).size(12.0).color(t.faint));
         });
         // The menus switch while choosing, so the window itself is read in the chosen language.
         if ui_changed {
             i18n::apply(&w.ui_language, &self.langs.packs);
         }
-        if !start {
+        let Some(start) = start else {
             self.welcome = Some(w);
             return;
-        }
+        };
         self.settings.ui_language = w.ui_language.clone();
         self.settings.cv_language = w.cv_language.clone();
         self.settings.welcomed = true;
         i18n::apply(&self.settings.ui_language, &self.langs.packs);
         storage::save_settings(&self.settings);
-        // The example (or the CV that came back) gets the chosen headings and dates.
-        let example = self.is_example;
-        set_cv_language(&mut self.project, &w.cv_language);
-        self.is_example = example;
+        // The example is shown in the chosen CV language (English text for languages other than
+        // Norwegian); a CV that came back keeps its text and gets the chosen headings and dates.
+        if self.is_example {
+            self.project = crate::translate_ui::example_in(&w.cv_language);
+        } else {
+            set_cv_language(&mut self.project, &w.cv_language);
+        }
         self.buffers.clear();
         self.preview.changed();
+        match start {
+            Start::Import => self.run_action(ctx, Action::ImportCv),
+            Start::Empty => self.run_action(ctx, Action::New),
+            Start::Example => {}
+        }
     }
 
     /// The language a new CV starts in: the one chosen at the first start, else the computer's.

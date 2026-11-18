@@ -376,4 +376,10 @@ impl Project {
     pub fn example() -> Project {
         Project::from_json(include_str!("example.json")).unwrap_or_default()
     }
+
+    /// The same example in English: a made-up person in the UK, for every CV language except
+    /// Norwegian (its headings and dates are then set to the chosen language).
+    pub fn example_en() -> Project {
+        Project::from_json(include_str!("example_en.json")).unwrap_or_default()
+    }
 }

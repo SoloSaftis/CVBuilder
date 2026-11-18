@@ -23,6 +23,9 @@ pub struct Tokens {
     #[allow(dead_code)]
     pub accent_hover: Color32,
     pub accent_soft: Color32,
+    /// The background of filled buttons (white text on it); darker than `accent` in dark mode,
+    /// where `accent` is a text colour on dark surfaces.
+    pub accent_fill: Color32,
     pub on_accent: Color32,
     pub user_bubble: Color32,
     pub success: Color32,
@@ -41,14 +44,15 @@ pub const LIGHT: Tokens = Tokens {
     hover: Color32::from_rgb(0xf1, 0xf0, 0xec),
     text: Color32::from_rgb(0x1c, 0x1b, 0x19),
     dim: Color32::from_rgb(0x5f, 0x5c, 0x57),
-    faint: Color32::from_rgb(0x8f, 0x8b, 0x84),
+    faint: Color32::from_rgb(0x6b, 0x67, 0x61),
     accent: Color32::from_rgb(0x2b, 0x55, 0xd9),
     accent_hover: Color32::from_rgb(0x22, 0x47, 0xbd),
     accent_soft: Color32::from_rgb(0xe9, 0xef, 0xfd),
+    accent_fill: Color32::from_rgb(0x2b, 0x55, 0xd9),
     on_accent: Color32::WHITE,
     user_bubble: Color32::from_rgb(0xef, 0xee, 0xea),
     success: Color32::from_rgb(0x1f, 0x7a, 0x45),
-    warning: Color32::from_rgb(0xa1, 0x5c, 0x07),
+    warning: Color32::from_rgb(0x96, 0x55, 0x06),
     danger: Color32::from_rgb(0xb4, 0x2b, 0x2b),
     info: Color32::from_rgb(0x2b, 0x55, 0xd9),
     shadow: Color32::from_black_alpha(22),
@@ -63,10 +67,11 @@ pub const DARK: Tokens = Tokens {
     hover: Color32::from_rgb(0x2a, 0x2a, 0x2f),
     text: Color32::from_rgb(0xec, 0xec, 0xee),
     dim: Color32::from_rgb(0xb0, 0xb0, 0xb8),
-    faint: Color32::from_rgb(0x84, 0x84, 0x8c),
-    accent: Color32::from_rgb(0x5b, 0x7f, 0xf5),
-    accent_hover: Color32::from_rgb(0x74, 0x94, 0xff),
+    faint: Color32::from_rgb(0x93, 0x93, 0x9b),
+    accent: Color32::from_rgb(0x7d, 0x98, 0xff),
+    accent_hover: Color32::from_rgb(0x93, 0xac, 0xff),
     accent_soft: Color32::from_rgb(0x24, 0x2c, 0x48),
+    accent_fill: Color32::from_rgb(0x40, 0x62, 0xd8),
     on_accent: Color32::WHITE,
     user_bubble: Color32::from_rgb(0x2c, 0x2c, 0x32),
     success: Color32::from_rgb(0x5c, 0xc4, 0x8a),
@@ -192,7 +197,6 @@ pub mod ph {
     pub const CHAT_DOTS: &str = "\u{e16c}";
     pub const LIST_CHECKS: &str = "\u{eadc}";
     pub const INFO: &str = "\u{e2ce}";
-    pub const FILE_CODE: &str = "\u{e914}";
     pub const GEAR: &str = "\u{e270}";
     pub const NOTEPAD: &str = "\u{e63e}";
     pub const MINUS: &str = "\u{e32a}";
@@ -229,6 +233,14 @@ pub fn sort_key(name: &str) -> String {
             c => c,
         })
         .collect()
+}
+
+/// Gives a control that has no readable text of its own (an icon, a drawn shape, a clickable
+/// area) a name for screen readers: what it does, as its hover text says.
+pub fn named(r: egui::Response, name: &str) -> egui::Response {
+    let enabled = r.enabled();
+    r.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Button, enabled, name));
+    r
 }
 
 /// A small flat button with only an icon (the caller adds the hover text).
@@ -349,7 +361,7 @@ pub fn primary(ui: &mut egui::Ui, text: &str, tip: &str, enabled: bool) -> egui:
     debug_assert!(!tip.trim().is_empty(), "the button «{text}» needs a tip");
     let t = Tokens::get(ui.ctx());
     let label = egui::RichText::new(text).color(t.on_accent).family(medium());
-    ui.add_enabled(enabled, egui::Button::new(label).fill(if enabled { t.accent } else { t.faint }).stroke(Stroke::NONE).corner_radius(CornerRadius::same(R)))
+    ui.add_enabled(enabled, egui::Button::new(label).fill(if enabled { t.accent_fill } else { t.faint }).stroke(Stroke::NONE).corner_radius(CornerRadius::same(R)))
         .on_hover_text(tip)
         .on_disabled_hover_text(tip)
 }
@@ -450,7 +462,7 @@ pub fn icon_button(ui: &mut egui::Ui, icon: Icon, tip: &str, enabled: bool) -> e
         }
     }
     let r = if enabled { r.on_hover_cursor(egui::CursorIcon::PointingHand) } else { r };
-    r.on_hover_text(tip)
+    named(r, tip).on_hover_text(tip)
 }
 
 /// A pill in a wrapping row: starts a new row when it would not fit, so the row never pushes its
@@ -467,6 +479,47 @@ pub fn pill_wrapped(ui: &mut egui::Ui, text: &str, fill: Color32, color: Color32
 
 #[cfg(test)]
 mod tests {
+    use egui::Color32;
+
+    /// WCAG contrast ratio between two colours.
+    fn contrast(a: Color32, b: Color32) -> f32 {
+        let lum = |c: Color32| {
+            let ch = |v: u8| {
+                let v = f32::from(v) / 255.0;
+                if v <= 0.039_28 { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) }
+            };
+            0.2126 * ch(c.r()) + 0.7152 * ch(c.g()) + 0.0722 * ch(c.b())
+        };
+        let (x, y) = (lum(a), lum(b));
+        (x.max(y) + 0.05) / (x.min(y) + 0.05)
+    }
+
+    /// Every text colour is readable on every surface it is drawn on, in both themes: at least
+    /// 4.5:1, what WCAG AA asks for at the window's text sizes.
+    #[test]
+    fn text_has_enough_contrast() {
+        let mut low = Vec::new();
+        for (theme, t) in [("light", super::LIGHT), ("dark", super::DARK)] {
+            let surfaces = [("canvas", t.canvas), ("panel", t.panel), ("card", t.card), ("field", t.field), ("hover", t.hover)];
+            let texts = [("text", t.text), ("dim", t.dim), ("faint", t.faint), ("accent", t.accent), ("success", t.success), ("warning", t.warning), ("danger", t.danger), ("info", t.info)];
+            for (sn, s) in surfaces {
+                for (tn, c) in texts {
+                    let r = contrast(c, s);
+                    if r < 4.5 {
+                        low.push(format!("{theme}: {tn} on {sn} {r:.2}"));
+                    }
+                }
+            }
+            for (name, fg, bg) in [("on_accent on accent_fill", t.on_accent, t.accent_fill), ("accent on accent_soft", t.accent, t.accent_soft)] {
+                let r = contrast(fg, bg);
+                if r < 4.5 {
+                    low.push(format!("{theme}: {name} {r:.2}"));
+                }
+            }
+        }
+        assert!(low.is_empty(), "too little contrast:\n{}", low.join("\n"));
+    }
+
     /// Every letter of every bundled interface language is in one of the window's fonts, so no
     /// language shows boxes instead of letters.
     #[test]

@@ -54,3 +54,23 @@ fn one_pdf() {
     p.options.headings = headings::built_in(&name);
     std::fs::write(out, document::to_pdf(&document::build(&p)).expect("pdf")).expect("write");
 }
+
+/// The English example is as complete as the Norwegian one, has no Norwegian left, and blocks
+/// the download for the same reason only (the person has not confirmed the facts).
+#[test]
+fn the_english_example_is_complete_and_english() {
+    let no = Project::example();
+    let en = Project::example_en();
+    assert_eq!(en.language, cv_core::model::Language::En);
+    assert_eq!((en.experience.len(), en.education.len(), en.skills.len(), en.languages.len()), (no.experience.len(), no.education.len(), no.skills.len(), no.languages.len()));
+    let json = en.to_json().expect("json");
+    for word in ["æ", "ø", "å", "Æ", "Ø", "Å", "fiktiv", "Eksempel", "Norge"] {
+        assert!(!json.contains(word), "Norwegian left in the English example: {word}");
+    }
+    let without_approval = |p: &Project| cv_core::checks::blocking(p).into_iter().filter(|b| !b.starts_with("approvals:")).collect::<Vec<_>>();
+    assert_eq!(without_approval(&en), without_approval(&no), "the examples block the download differently");
+    // It reads back from its own Word file.
+    let docx = document::to_docx(&document::build(&en)).expect("docx");
+    let text = import::text_from_bytes(&docx, "docx").expect("text");
+    assert!(text.contains("Project Coordinator") && text.contains("Alex Morgan"));
+}

@@ -485,7 +485,7 @@ impl CvApp {
                     } else {
                         let ready = !self.chat.input.trim().is_empty();
                         let b = egui::Button::new(RichText::new("Send").color(t.on_accent).size(12.5).family(theme::medium()))
-                            .fill(if ready { t.accent } else { t.faint })
+                            .fill(if ready { t.accent_fill } else { t.faint })
                             .corner_radius(CornerRadius::same(255));
                         if ui.add_enabled(ready, b).on_hover_text(i18n::t("Send meldingen (Enter)")).on_disabled_hover_text(i18n::t("Skriv en melding først")).clicked() {
                             *send = Some(self.chat.input.clone());

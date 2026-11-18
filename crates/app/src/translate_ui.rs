@@ -48,6 +48,14 @@ pub(crate) fn shown_name(language: &str) -> String {
     code.and_then(i18n::language_name).unwrap_or_else(|| language.to_string())
 }
 
+/// The example CV for a CV language (by its own name): the Norwegian example for Norwegian, the
+/// English one for every other language, with that language's headings and dates.
+pub(crate) fn example_in(language: &str) -> cv_core::Project {
+    let mut p = if is_norwegian(language) || language.eq_ignore_ascii_case("Nynorsk") { cv_core::Project::example() } else { cv_core::Project::example_en() };
+    set_cv_language(&mut p, language);
+    p
+}
+
 /// Gives a CV the headings and dates of a language (by its own name), keeping its text.
 pub(crate) fn set_cv_language(project: &mut cv_core::Project, language: &str) {
     if is_norwegian(language) {

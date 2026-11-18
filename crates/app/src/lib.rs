@@ -158,9 +158,10 @@ impl CvApp {
         // Added languages (packs) too: the setting may name one, or «auto» may pick one.
         let langs = langpack_ui::LangState::load(&settings.ui_language);
         cc.egui_ctx.set_theme(settings_ui::theme_preference(&settings.theme));
+        cc.egui_ctx.set_zoom_factor(settings_ui::zoom(settings.text_size));
         let (picked_tx, picked_rx) = channel();
         let mut app = CvApp {
-            project: Project::example(),
+            project: translate_ui::example_in(&if settings.cv_language.is_empty() { translate_ui::system_cv_language().to_string() } else { settings.cv_language.clone() }),
             is_example: true,
             settings,
             buffers: HashMap::new(),
@@ -570,7 +571,12 @@ impl CvApp {
     fn view_header(ui: &mut egui::Ui, title: &str, shown: &mut bool) {
         let t = Tokens::get(ui.ctx());
         ui.horizontal(|ui| {
-            ui.label(RichText::new(title).size(12.0).family(theme::medium()).color(t.faint));
+            // Cut with «…» in a narrow window so the heading never runs under the button.
+            let room = (ui.available_width() - 30.0 - ui.spacing().item_spacing.x).max(40.0);
+            ui.scope(|ui| {
+                ui.set_max_width(room);
+                ui.add(egui::Label::new(RichText::new(title).size(12.0).family(theme::medium()).color(t.faint)).truncate());
+            });
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                 if theme::icon_button(ui, theme::Icon::Hide, i18n::t("Skjul (vis igjen fra «Vis:» øverst)"), true).clicked() {
                     *shown = false;
@@ -1008,6 +1014,15 @@ impl eframe::App for CvApp {
         }
         self.autosave(ctx);
         self.close_check(ctx);
+        if ctx.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::F1)) {
+            ctx.open_url(egui::OpenUrl::new_tab(menu_ui::USER_GUIDE));
+        }
+        // Ctrl + plus/minus/0 change the window's text size too: keep it for the next start.
+        let size = settings_ui::percent(ctx.zoom_factor());
+        if size != self.settings.text_size {
+            self.settings.text_size = size;
+            storage::save_settings(&self.settings);
+        }
         if ctx.input_mut(|i| i.consume_shortcut(&egui::KeyboardShortcut::new(egui::Modifiers::COMMAND, egui::Key::S))) {
             self.save();
         }

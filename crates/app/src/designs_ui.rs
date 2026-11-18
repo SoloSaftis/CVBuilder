@@ -98,7 +98,7 @@ impl CvApp {
                                 });
                             })
                             .response;
-                        let r = ui.interact(r.rect, ui.scope_id().with(("design", &d.id)), egui::Sense::click());
+                        let r = theme::named(ui.interact(r.rect, ui.scope_id().with(("design", &d.id)), egui::Sense::click()), &i18n::tdyn(&d.name));
                         if r.hovered() {
                             ui.painter().rect_stroke(r.rect.expand(2.0), CornerRadius::same(theme::R_SM), Stroke::new(1.0, t.border), egui::StrokeKind::Outside);
                         }

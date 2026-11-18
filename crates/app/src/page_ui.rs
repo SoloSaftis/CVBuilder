@@ -186,7 +186,7 @@ impl CvApp {
                     ui.spacing_mut().item_spacing.x = 2.0;
                     ui.add_sized([26.0, 26.0], egui::Label::new(RichText::new(theme::ph::TEXT_AA).family(theme::icons()).size(16.0).color(t.accent)))
                         .on_hover_text(i18n::t("Tekst"));
-                    if theme::flat_icon(ui, theme::ph::MINUS, page.text_delta > -1.5)
+                    if theme::named(theme::flat_icon(ui, theme::ph::MINUS, page.text_delta > -1.5), i18n::t("Mindre tekst"))
                         .on_hover_text(i18n::t("Mindre tekst"))
                         .on_disabled_hover_text(i18n::t("Teksten er så liten den kan bli"))
                         .clicked()
@@ -195,7 +195,7 @@ impl CvApp {
                     }
                     let size = if page.text_delta == 0.0 { i18n::t("normal").to_string() } else { format!("{:+.1} pt", page.text_delta) };
                     ui.add_sized([56.0, 26.0], egui::Label::new(RichText::new(size).size(13.0)));
-                    if theme::flat_icon(ui, theme::ph::PLUS, page.text_delta < 2.0).on_hover_text(i18n::t("Større tekst")).on_disabled_hover_text(i18n::t("Teksten er så stor den kan bli")).clicked() {
+                    if theme::named(theme::flat_icon(ui, theme::ph::PLUS, page.text_delta < 2.0), i18n::t("Større tekst")).on_hover_text(i18n::t("Større tekst")).on_disabled_hover_text(i18n::t("Teksten er så stor den kan bli")).clicked() {
                         page.text_delta = (page.text_delta + 0.5).min(2.0);
                     }
                 });

@@ -11,6 +11,24 @@ use crate::{CvApp, Export, Side, Views};
 
 /// The version and the exact source it was built from (set by build.rs).
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+
+/// The user guide, in the public repository.
+pub const USER_GUIDE: &str = "https://github.com/SoloSaftis/CVBuilder/blob/main/docs/user/README.md";
+
+/// A new GitHub issue with the version filled in (only the version, build and system: nothing
+/// from the CV), and a reminder not to attach personal details.
+pub fn report_problem_url() -> String {
+    let body = format!(
+        "CVBuilder {VERSION} ({BUILD}) {} {}\n\nWhat happened:\n\nWhat you expected:\n\nPlease do not attach a real CV or other personal details.",
+        std::env::consts::OS,
+        std::env::consts::ARCH
+    );
+    let encoded: String = body
+        .bytes()
+        .map(|b| if b.is_ascii_alphanumeric() || b"-_.~".contains(&b) { (b as char).to_string() } else { format!("%{b:02X}") })
+        .collect();
+    format!("https://github.com/SoloSaftis/CVBuilder/issues/new?body={encoded}")
+}
 pub const BUILD: &str = env!("CVBUILDER_BUILD");
 
 #[derive(Clone, Copy, PartialEq, Eq, Default)]
@@ -25,7 +43,7 @@ pub enum Tab {
     Help,
 }
 
-enum Action {
+pub(crate) enum Action {
     New,
     Example,
     Open,
@@ -52,7 +70,8 @@ enum Action {
     Checks,
     About,
     CheckUpdates,
-    DesignFormat,
+    UserGuide,
+    ReportProblem,
     ShowAll,
     Settings,
 }
@@ -125,7 +144,7 @@ impl CvApp {
             let file = ui
                 .add(
                     egui::Button::new(RichText::new(i18n::t("Fil")).size(13.5).color(t.on_accent).family(theme::medium()))
-                        .fill(t.accent)
+                        .fill(t.accent_fill)
                         .corner_radius(CornerRadius::same(theme::R_SM))
                         .min_size(egui::vec2(46.0, 28.0)),
                 )
@@ -235,14 +254,19 @@ impl CvApp {
                     Tab::Help => {
                         group(ui, i18n::t("Hjelp"), |ui| {
                             column(ui, |ui| {
+                                if tool(ui, theme::ph::NOTEPAD, i18n::t("Brukerveiledning"), i18n::t("Slik bruker du CVBuilder, steg for steg (F1). Åpnes i nettleseren."), true) {
+                                    action = Some(Action::UserGuide);
+                                }
+                                if tool(ui, theme::ph::CHAT_DOTS, i18n::t("Meld fra om et problem"), i18n::t("Åpner GitHub i nettleseren med versjonen fylt inn. Ikke legg ved en ekte CV eller personopplysninger."), true) {
+                                    action = Some(Action::ReportProblem);
+                                }
+                            });
+                            column(ui, |ui| {
                                 if tool(ui, theme::ph::INFO, i18n::t("Om CVBuilder"), i18n::t("Versjon, bygg og lisenser"), true) {
                                     action = Some(Action::About);
                                 }
                                 if tool(ui, theme::ph::ARROWS_CLOCKWISE, i18n::t("Se etter oppdateringer"), i18n::t("Spør GitHub om det finnes en nyere versjon. Ingenting lastes ned av seg selv."), true) {
                                     action = Some(Action::CheckUpdates);
-                                }
-                                if tool(ui, theme::ph::FILE_CODE, i18n::t("Format for egne design"), i18n::t("Hvordan en .cvdesign.json-fil ser ut"), true) {
-                                    action = Some(Action::DesignFormat);
                                 }
                             });
                             column(ui, |ui| {
@@ -518,7 +542,7 @@ impl CvApp {
         });
     }
 
-    fn run_action(&mut self, ctx: &egui::Context, action: Action) {
+    pub(crate) fn run_action(&mut self, ctx: &egui::Context, action: Action) {
         match action {
             Action::New => {
                 let mut blank = Project::default();
@@ -533,7 +557,7 @@ impl CvApp {
             }
             Action::Example => {
                 self.reference = None;
-                self.replace(Project::example(), true, i18n::t("Du ser eksemplet. CV-en din kan hentes tilbake med Angre."));
+                self.replace(crate::translate_ui::example_in(&self.new_cv_language()), true, i18n::t("Du ser eksemplet. CV-en din kan hentes tilbake med Angre."));
             }
             Action::Open => self.pick("open", None),
             Action::Save => self.save(),
@@ -587,10 +611,8 @@ impl CvApp {
             }
             Action::About => self.about_open = true,
             Action::CheckUpdates => self.update_check = Some(crate::updates_ui::UpdateCheck::start(ctx)),
-            Action::DesignFormat => {
-                self.designs.import_open = true;
-                self.designs.message.clear();
-            }
+            Action::UserGuide => ctx.open_url(egui::OpenUrl::new_tab(USER_GUIDE)),
+            Action::ReportProblem => ctx.open_url(egui::OpenUrl::new_tab(report_problem_url())),
             Action::ShowAll => self.views = Views { zoom: self.views.zoom, ..Views::default() },
             Action::Settings => self.settings_open = true,
         }
@@ -681,6 +703,12 @@ impl CvApp {
             theme::hint(ui, i18n::t("Lisens: MIT eller Apache-2.0. Bygger på WordCraft og Craft AI-integrasjonene (ArtCraft/storytold). Design fra Reactive Resume (MIT, © Amruth Pillai) og RenderCV (MIT, © Sina Atalay og bidragsyterne) er laget om til én spalte. Skrift: DM Sans (SIL OFL). Full liste i THIRD-PARTY.txt."));
             ui.add_space(10.0);
             ui.horizontal(|ui| {
+                if ui.button(i18n::t("Brukerveiledning")).on_hover_text(i18n::t("Slik bruker du CVBuilder, steg for steg (F1). Åpnes i nettleseren.")).clicked() {
+                    ui.ctx().open_url(egui::OpenUrl::new_tab(USER_GUIDE));
+                }
+                if ui.button(i18n::t("Meld fra om et problem")).on_hover_text(i18n::t("Åpner GitHub i nettleseren med versjonen fylt inn. Ikke legg ved en ekte CV eller personopplysninger.")).clicked() {
+                    ui.ctx().open_url(egui::OpenUrl::new_tab(report_problem_url()));
+                }
                 if ui.button(i18n::t("Kopier versjonsinfo")).on_hover_text(i18n::t("Kopier versjon, bygg og system, f.eks. til en feilmelding")).clicked() {
                     ui.ctx().copy_text(format!("CVBuilder {VERSION} ({BUILD}) {} {}", std::env::consts::OS, std::env::consts::ARCH));
                 }
@@ -692,5 +720,17 @@ impl CvApp {
         if close || r.should_close() {
             self.about_open = false;
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    /// The problem report carries only the version, build and system, encoded for a URL.
+    #[test]
+    fn report_link_has_only_the_version() {
+        let url = super::report_problem_url();
+        assert!(url.starts_with("https://github.com/SoloSaftis/CVBuilder/issues/new?body=CVBuilder%20"), "{url}");
+        assert!(url.contains(super::VERSION) && !url.contains(' ') && !url.contains('\n'), "{url}");
+        assert!(url.contains("do%20not%20attach%20a%20real%20CV"), "{url}");
     }
 }

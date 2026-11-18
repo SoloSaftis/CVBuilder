@@ -105,8 +105,7 @@ impl CvApp {
                     chip(ui, &[to_rgb(&preview.accent), to_rgb(&preview.ink), to_rgb(&preview.rule)]);
                     ui.label(RichText::new(i18n::tdyn(name)).color(if on { t.accent } else { t.text }));
                 });
-                if ui
-                    .interact(r.response.rect, ui.scope_id().with(("palette", name)), egui::Sense::click())
+                if theme::named(ui.interact(r.response.rect, ui.scope_id().with(("palette", name)), egui::Sense::click()), &i18n::tdyn(name))
                     .on_hover_cursor(egui::CursorIcon::PointingHand)
                     .on_hover_text(i18n::t("Bruk paletten på hele CV-en. Den beholdes når du bytter design."))
                     .clicked()
