@@ -301,7 +301,9 @@ fn ui_qa() {
                 // controls, a tab's tools), since the rest is the same as on the first.
                 let first: BTreeSet<u64> =
                     if scene.name == "Hjem" { BTreeSet::new() } else { baseline.entry((lang.clone(), size.x as u32)).or_insert_with(|| snapshot(&harness(size, |_| {})).into_iter().map(|c| c.id).collect()).clone() };
-                let ids: Vec<u64> = base.iter().filter(|c| c.control && !first.contains(&c.id)).map(|c| c.id).collect();
+                // Scroll bars are egui's own and float in only while a list scrolls, so whether one
+                // is there to click depends on timing; they are left out of the click test.
+                let ids: Vec<u64> = base.iter().filter(|c| c.control && c.role != Role::ScrollBar && !first.contains(&c.id)).map(|c| c.id).collect();
                 count += ids.len();
                 let mut problems = check_overlaps(&mut h, &base, screen);
                 // Panels keep their size: one that grew has content wider than it (a row that
