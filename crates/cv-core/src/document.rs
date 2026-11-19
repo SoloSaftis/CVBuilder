@@ -66,6 +66,8 @@ struct Builder<'a> {
     current: Rgb,
     /// The width of the column being written, points.
     width: f32,
+    /// The CV is written right to left: borders and other physical sides are mirrored.
+    rtl: bool,
 }
 
 fn color(value: Rgb) -> Option<TextColor> {
@@ -110,6 +112,10 @@ impl Builder<'_> {
     /// below, as the design says.
     fn two_column(&mut self, left: &str, right: &str, left_props: CharProps, after: f32) {
         let muted = self.chars(self.l.size - 1.5, false, self.muted(), &self.l.body_font);
+        // In a right-to-left CV a range like «2015 – 2018» reads from the right: start date first.
+        // Right-to-left marks around the dash make it so, after a tab and on a line of its own.
+        let rtl_range = self.rtl.then(|| right.replace(" – ", " \u{200f}–\u{200f} "));
+        let right = rtl_range.as_deref().unwrap_or(right);
         if right.is_empty() || self.l.date_style == DateStyle::Right {
             let mut p = if right.is_empty() { self.para(&[(left, left_props)], after) } else { self.para(&[(left, left_props), (&format!("\t{right}"), muted)], after) };
             p.props.tabs = Some(vec![TabStop { pos: self.width, align: TabAlign::Right, leader: TabLeader::None }]);
@@ -145,7 +151,8 @@ impl Builder<'_> {
             HeadingStyle::RuleAbove => p.props.borders = Some(Borders { top: line(0.6, 3.0), ..Default::default() }),
             HeadingStyle::Double => p.props.borders = Some(Borders { top: line(0.6, 2.0), bottom: line(0.6, 2.0), ..Default::default() }),
             HeadingStyle::Bar => {
-                p.props.borders = Some(Borders { left: line(2.4, 5.0), ..Default::default() });
+                // The bar stands at the start of the line: the right side in a right-to-left CV.
+                p.props.borders = Some(if self.rtl { Borders { right: line(2.4, 5.0), ..Default::default() } } else { Borders { left: line(2.4, 5.0), ..Default::default() } });
                 p.props.indent_left = Some(7.0);
             }
             HeadingStyle::Band => {
@@ -201,10 +208,11 @@ pub fn build(project: &Project) -> Document {
     doc.numbering = Arc::new(numbering);
     let photo = photo_bytes(project).map(|bytes| doc.add_media(bytes, "jpeg"));
     let order = text::section_order(project);
+    let rtl = project.is_right_to_left();
 
     let body: Vec<Block> = match l.columns.clone() {
         None => {
-            let mut b = Builder { l: &l, bullets, body: Vec::new(), current: rgb(&l.accent), width: text_w };
+            let mut b = Builder { l: &l, bullets, body: Vec::new(), current: rgb(&l.accent), width: text_w, rtl };
             write_header(&mut b, project, photo, true, true);
             // A break "before" a section, or "after" one (the next section that has content).
             let mut pending = false;
@@ -261,10 +269,10 @@ pub fn build(project: &Project) -> Document {
                 let fit_word = side_inner / (longest * 0.62);
                 sd.name_size = sd.name_size.min(if fit_line >= 16.0 { fit_line } else { fit_word }).max(14.0);
             }
-            let mut side = Builder { l: &sd, bullets, body: Vec::new(), current: rgb(&sd.accent), width: side_inner };
-            let mut main = Builder { l: &l, bullets, body: Vec::new(), current: rgb(&l.accent), width: main_inner };
+            let mut side = Builder { l: &sd, bullets, body: Vec::new(), current: rgb(&sd.accent), width: side_inner, rtl };
+            let mut main = Builder { l: &l, bullets, body: Vec::new(), current: rgb(&l.accent), width: main_inner, rtl };
             let contact_in_side = cols.sections.iter().any(|k| k == "contact");
-            let mut top = Builder { l: &l, bullets, body: Vec::new(), current: rgb(&l.accent), width: text_w };
+            let mut top = Builder { l: &l, bullets, body: Vec::new(), current: rgb(&l.accent), width: text_w, rtl };
             match cols.header {
                 HeaderPlace::Top => write_header(&mut top, project, photo, !contact_in_side, true),
                 HeaderPlace::Main => write_header(&mut main, project, photo, !contact_in_side, false),
@@ -378,6 +386,22 @@ pub fn build(project: &Project) -> Document {
     doc.last_section.footers.default = Some(footer_id);
 
     doc.body = body.into_iter().map(Arc::new).collect();
+    // The CV's language on every run (the PDF's /Lang, spell checking in Word), and for a
+    // right-to-left language every paragraph, the columns and the two-column table read from
+    // the right: headings and bullets at the right edge, full stops where they belong.
+    let lang = project.language_code();
+    let styles = Arc::make_mut(&mut doc.styles);
+    styles.default_chr.lang = Some(lang.to_string());
+    if rtl {
+        styles.default_chr.lang_bidi = Some(lang.to_string());
+        styles.default_para.bidi = Some(true);
+        doc.last_section.rtl = true;
+        for block in doc.body.iter_mut() {
+            if let Block::Table(t) = Arc::make_mut(block) {
+                t.props.bidi_visual = true;
+            }
+        }
+    }
     doc.ensure_nonempty();
     doc
 }

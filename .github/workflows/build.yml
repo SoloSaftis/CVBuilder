@@ -99,17 +99,34 @@ jobs:
   linux:
     needs: shared
     runs-on: ubuntu-latest
+    # Built inside Ubuntu 22.04 (glibc 2.35), not on the runner's own newer Ubuntu: a program
+    # needs at least the glibc it was linked against, so this keeps CVBuilder starting on older
+    # distributions (Ubuntu 22.04+, Debian 12+, Fedora 36+ and the like). Rust itself comes from
+    # rustup, so the toolchain is as new as on the other jobs.
+    container: ubuntu:22.04
     permissions:
       contents: write
+    env:
+      DEBIAN_FRONTEND: noninteractive
     steps:
+      - name: Build tools and desktop development packages
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates curl git file build-essential pkg-config libxkbcommon-dev libwayland-dev libx11-dev libdbus-1-dev libfontconfig-dev gh
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with: { node-version: 22 }
       - uses: dtolnay/rust-toolchain@stable
-      - name: Desktop development packages
-        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libxkbcommon-dev libwayland-dev libx11-dev libdbus-1-dev libfontconfig-dev
       - name: Package (AppImage and portable tar.gz)
         run: platforms/linux/packaging/package.sh
+      - name: Oldest glibc the program runs on (must be 2.35 or lower)
+        run: |
+          need=$(objdump -T target/release/CVBuilder | grep -o 'GLIBC_[0-9][0-9.]*' | sed 's/GLIBC_//' | sort -uV | tail -1)
+          echo "CVBuilder needs glibc $need or newer."
+          if [ "$(printf '%s\n' "$need" 2.35 | sort -V | tail -1)" != "2.35" ]; then
+            echo "::error::CVBuilder needs glibc $need, above 2.35: it would not start on older distributions."
+            exit 1
+          fi
       # One file each: uploaded as it is, so the download is the app itself, not a zip around it.
       - uses: actions/upload-artifact@v7
         with:
@@ -124,7 +141,7 @@ jobs:
         run: |
           cp platforms/linux/dist/*-x86_64.AppImage platforms/linux/dist/CVBuilder-linux-x86_64.AppImage
           cp platforms/linux/dist/*-linux-x86_64-portable.tar.gz platforms/linux/dist/CVBuilder-linux-x86_64-portable.tar.gz
-          gh release upload "$GITHUB_REF_NAME" platforms/linux/dist/CVBuilder-linux-x86_64.AppImage platforms/linux/dist/CVBuilder-linux-x86_64-portable.tar.gz --clobber
+          gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" platforms/linux/dist/CVBuilder-linux-x86_64.AppImage platforms/linux/dist/CVBuilder-linux-x86_64-portable.tar.gz --clobber
 
   macos:
     needs: shared

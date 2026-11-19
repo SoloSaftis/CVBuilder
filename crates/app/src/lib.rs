@@ -6,6 +6,7 @@
 pub use eframe::Result;
 
 mod ai_ui;
+mod browser;
 mod chat_ui;
 mod checklist_ui;
 mod colors_ui;
@@ -448,12 +449,19 @@ impl CvApp {
                     'å' => "a".to_string(),
                     'Å' => "A".to_string(),
                     c if c.is_ascii_alphanumeric() => c.to_string(),
+                    // Letters and vowel signs of other scripts (Arabic, Devanagari, Chinese …) stay,
+                    // so a name in its own script is not lost; spaces, punctuation and characters
+                    // that file systems refuse become «_».
+                    c if !c.is_ascii() && !c.is_whitespace() && !c.is_control() && !"\u{200e}\u{200f}\u{202a}\u{202b}\u{202c}\u{202d}\u{202e}\u{2066}\u{2067}\u{2068}\u{2069}«»“”„‘’–—…·•".contains(c) => c.to_string(),
                     _ => "_".to_string(),
                 })
                 .collect();
             t.split('_').filter(|p| !p.is_empty()).collect::<Vec<_>>().join("_")
         };
-        let lang = if self.project.is_english() { "en" } else { "no" };
+        let lang = match self.project.language_code() {
+            "nb" => "no",
+            code => code,
+        };
         [clean(&self.project.candidate.name), "CV".into(), clean(&self.project.target.company), lang.into()].into_iter().filter(|s| !s.is_empty()).collect::<Vec<_>>().join("_")
     }
 
@@ -1111,6 +1119,8 @@ impl eframe::App for CvApp {
         self.ai_poll(&ctx);
         self.connect_dialog(&ctx);
         self.mcp_help(&ctx);
+        // Last, so it sees every link this frame asked to open (menus, F1, hyperlinks).
+        browser::open_requested(&ctx);
     }
 
     fn on_exit(&mut self) {
@@ -1140,7 +1150,18 @@ pub fn run() -> eframe::Result {
         return Ok(());
     }
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_title("CVBuilder").with_icon(window_icon()).with_inner_size([1440.0, 900.0]).with_min_inner_size([1100.0, 620.0]).with_maximized(true),
+        // The app id is the desktop file's name (cvbuilder.desktop): on Wayland it is how GNOME
+        // and KDE find the icon and name for the window. Decorations are on explicitly: GNOME
+        // draws none for Wayland windows, so winit draws its own (wayland-csd-adwaita, enabled
+        // by the Linux launcher).
+        viewport: egui::ViewportBuilder::default()
+            .with_title("CVBuilder")
+            .with_app_id("cvbuilder")
+            .with_decorations(true)
+            .with_icon(window_icon())
+            .with_inner_size([1440.0, 900.0])
+            .with_min_inner_size([1100.0, 620.0])
+            .with_maximized(true),
         ..Default::default()
     };
     eframe::run_native("CVBuilder", options, Box::new(|cc| Ok(Box::new(CvApp::new(cc)))))

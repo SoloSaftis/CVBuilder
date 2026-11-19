@@ -369,6 +369,22 @@ impl Project {
     pub fn is_english(&self) -> bool {
         self.language == Language::En
     }
+
+    /// The CV's language as a BCP 47 code: «nb», «en», or the code of its own headings
+    /// («العربية» → «ar»). A language typed by hand with no known code counts as English.
+    pub fn language_code(&self) -> &'static str {
+        if let Some(h) = &self.options.headings
+            && let Some(code) = crate::headings::code_of(&h.language)
+        {
+            return code;
+        }
+        if self.is_english() { "en" } else { "nb" }
+    }
+
+    /// The CV is written right to left (Arabic, Hebrew, Persian, Urdu, Uyghur …).
+    pub fn is_right_to_left(&self) -> bool {
+        crate::headings::is_right_to_left(self.language_code())
+    }
 }
 
 impl Project {

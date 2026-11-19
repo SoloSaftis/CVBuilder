@@ -106,6 +106,13 @@ pub fn code_of(language: &str) -> Option<&'static str> {
     TABLE.iter().position(|(n, _)| n.to_lowercase() == wanted).map(|i| TABLE_CODES[i]).or_else(|| MORE.iter().find(|l| l.name.to_lowercase() == wanted).map(|l| l.code.as_str()))
 }
 
+/// A language written right to left, by its BCP 47 code («ar», «fa», «he», «ur», «ug», «ps», «sd», «yi», «dv», «ku-Arab»).
+pub fn is_right_to_left(code: &str) -> bool {
+    let code = code.to_lowercase();
+    let base = code.split('-').next().unwrap_or("");
+    matches!(base, "ar" | "fa" | "he" | "iw" | "ur" | "ug" | "ps" | "sd" | "yi" | "dv" | "ckb" | "syr") || code.contains("-arab") || code.contains("-hebr")
+}
+
 /// The built-in CV language that fits a computer's locale best («de-AT» → «Deutsch»,
 /// «sr-Latn-RS» → «Srpski», «zh-TW» → Traditional Chinese, «nb-NO» → «Bokmål», «en-US» →
 /// «English»), or `None` when there is none for it.

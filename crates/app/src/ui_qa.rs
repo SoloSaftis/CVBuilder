@@ -230,7 +230,7 @@ const SCENES: &[Scene] = &[
     Scene { name: "Importer design", setup: |a| a.designs.import_open = true },
     Scene {
         name: "Oppdatering finnes",
-        setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Ok(cv_ai::updates::Release { version: "1.2.0".into(), page: cv_ai::updates::RELEASES_PAGE.into() }))),
+        setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Ok(cv_ai::updates::Release { version: "9.9.9".into(), page: cv_ai::updates::RELEASES_PAGE.into() }))),
     },
     Scene { name: "Sjekk feilet", setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Err("GitHub answered 503".into()))) },
     Scene {
