@@ -113,19 +113,7 @@ fn open_with_system(url: &str) -> bool {
         let quoted = format!("'{}'", url.replace('\\', "\\\\").replace('\'', "\\'"));
         run(
             "gdbus",
-            &[
-                "call",
-                "--session",
-                "--dest",
-                "org.freedesktop.portal.Desktop",
-                "--object-path",
-                "/org/freedesktop/portal/desktop",
-                "--method",
-                "org.freedesktop.portal.OpenURI.OpenURI",
-                "''",
-                &quoted,
-                "{}",
-            ],
+            &["call", "--session", "--dest", "org.freedesktop.portal.Desktop", "--object-path", "/org/freedesktop/portal/desktop", "--method", "org.freedesktop.portal.OpenURI.OpenURI", "''", &quoted, "{}"],
         ) || run("busctl", &["--user", "call", "org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop", "org.freedesktop.portal.OpenURI", "OpenURI", "ssa{sv}", "", url, "0"])
     }
 

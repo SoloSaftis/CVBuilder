@@ -4,9 +4,9 @@
 use egui::RichText;
 
 use crate::i18n::{self, Choice};
-use crate::menu_ui::Action;
 use crate::theme::{self, Tokens};
 use crate::translate_ui::{cv_language_list, set_cv_language, shown_name, system_cv_language};
+use crate::menu_ui::Action;
 use crate::{CvApp, storage};
 
 /// The welcome window's three ways to start.

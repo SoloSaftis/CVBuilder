@@ -53,8 +53,7 @@ impl CvApp {
                 match result {
                     Ok(models) => {
                         self.ai.models = models;
-                        self.ai.note =
-                            i18n::tf("Tilkoblet. {service} fant {n} modeller; den anbefalte er valgt.", &[("service", &i18n::tdyn(service.name())), ("n", &self.ai.models.len().to_string())]);
+                        self.ai.note = i18n::tf("Tilkoblet. {service} fant {n} modeller; den anbefalte er valgt.", &[("service", &i18n::tdyn(service.name())), ("n", &self.ai.models.len().to_string())]);
                         self.settings.ai_model = self.ai.models.first().cloned().unwrap_or_default();
                         if service == Service::Local {
                             self.settings.local_url = self.ai.local_url.trim().trim_end_matches('/').to_string();

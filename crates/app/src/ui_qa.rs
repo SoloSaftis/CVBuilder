@@ -242,16 +242,8 @@ const SCENES: &[Scene] = &[
     },
     Scene { name: "Velkommen", setup: |a| a.welcome = Some(crate::welcome_ui::Welcome::for_this_computer(&a.langs.packs)) },
     Scene { name: "Importer CV", setup: |a| a.import.cv_open = true },
-    Scene {
-        name: "Importrest",
-        setup: |a| {
-            a.import.rest = Some(
-                "ERFARING
-Som koordinator i Fjellvegg Bygg AS 2021 – nå"
-                    .into(),
-            )
-        },
-    },
+    Scene { name: "Importrest", setup: |a| a.import.rest = Some("ERFARING
+Som koordinator i Fjellvegg Bygg AS 2021 – nå".into()) },
     Scene {
         name: "Koble til AI",
         setup: |a| {
@@ -307,11 +299,8 @@ fn ui_qa() {
                 let base = snapshot(&h);
                 // The first screen tests every control; the others what they add (a dialog's own
                 // controls, a tab's tools), since the rest is the same as on the first.
-                let first: BTreeSet<u64> = if scene.name == "Hjem" {
-                    BTreeSet::new()
-                } else {
-                    baseline.entry((lang.clone(), size.x as u32)).or_insert_with(|| snapshot(&harness(size, |_| {})).into_iter().map(|c| c.id).collect()).clone()
-                };
+                let first: BTreeSet<u64> =
+                    if scene.name == "Hjem" { BTreeSet::new() } else { baseline.entry((lang.clone(), size.x as u32)).or_insert_with(|| snapshot(&harness(size, |_| {})).into_iter().map(|c| c.id).collect()).clone() };
                 // Scroll bars are egui's own and float in only while a list scrolls, so whether one
                 // is there to click depends on timing; they are left out of the click test.
                 let ids: Vec<u64> = base.iter().filter(|c| c.control && c.role != Role::ScrollBar && !first.contains(&c.id)).map(|c| c.id).collect();
@@ -709,8 +698,12 @@ fn store_shots() {
     std::fs::create_dir_all(&dir).expect("shots folder");
     let lang = std::env::var("CVBUILDER_QA_LANGS").unwrap_or_else(|_| "no".into());
     private_data_folder(&lang);
-    let scenes: [(&str, fn(&mut CvApp)); 4] =
-        [("1-skjema-og-forhandsvisning", |_| {}), ("2-sjekkliste", |a| a.side = Side::Checks), ("3-design", |a| a.ribbon_tab = Tab::Design), ("4-sideoppsett", |a| a.ribbon_tab = Tab::Page)];
+    let scenes: [(&str, fn(&mut CvApp)); 4] = [
+        ("1-skjema-og-forhandsvisning", |_| {}),
+        ("2-sjekkliste", |a| a.side = Side::Checks),
+        ("3-design", |a| a.ribbon_tab = Tab::Design),
+        ("4-sideoppsett", |a| a.ribbon_tab = Tab::Page),
+    ];
     for (name, setup) in scenes {
         let mut h = harness(Vec2::new(1920.0, 1080.0), setup);
         wait_for_preview(&mut h);

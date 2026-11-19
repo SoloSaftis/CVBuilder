@@ -270,11 +270,7 @@ impl CvApp {
                         egui::FontId::new(11.0, egui::FontFamily::Proportional),
                         if hot { t.accent } else { t.dim },
                     );
-                    if theme::named(r, i18n::t("Legg til bilde"))
-                        .on_hover_text(i18n::t("Valgfritt portrett. Vanlig i Norge, men ikke påkrevd."))
-                        .on_hover_cursor(egui::CursorIcon::PointingHand)
-                        .clicked()
-                    {
+                    if theme::named(r, i18n::t("Legg til bilde")).on_hover_text(i18n::t("Valgfritt portrett. Vanlig i Norge, men ikke påkrevd.")).on_hover_cursor(egui::CursorIcon::PointingHand).clicked() {
                         self.pick("photo", None);
                     }
                 }

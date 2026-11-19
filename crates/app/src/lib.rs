@@ -27,10 +27,10 @@ mod theme;
 #[cfg(test)]
 mod tooltips;
 mod translate_ui;
-#[cfg(test)]
-mod ui_qa;
 mod updates_ui;
 mod welcome_ui;
+#[cfg(test)]
+mod ui_qa;
 
 use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
@@ -477,13 +477,7 @@ impl CvApp {
                     // Letters and vowel signs of other scripts (Arabic, Devanagari, Chinese …) stay,
                     // so a name in its own script is not lost; spaces, punctuation and characters
                     // that file systems refuse become «_».
-                    c if !c.is_ascii()
-                        && !c.is_whitespace()
-                        && !c.is_control()
-                        && !"\u{200e}\u{200f}\u{202a}\u{202b}\u{202c}\u{202d}\u{202e}\u{2066}\u{2067}\u{2068}\u{2069}«»“”„‘’–—…·•".contains(c) =>
-                    {
-                        c.to_string()
-                    }
+                    c if !c.is_ascii() && !c.is_whitespace() && !c.is_control() && !"\u{200e}\u{200f}\u{202a}\u{202b}\u{202c}\u{202d}\u{202e}\u{2066}\u{2067}\u{2068}\u{2069}«»“”„‘’–—…·•".contains(c) => c.to_string(),
                     _ => "_".to_string(),
                 })
                 .collect();
@@ -516,13 +510,7 @@ impl CvApp {
         std::thread::spawn(move || {
             let picked = match (kind, export) {
                 ("open", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).pick_file().map(Picked::OpenProject),
-                ("save", _) => Some(
-                    rfd::FileDialog::new()
-                        .add_filter(i18n::t("CVBuilder-utkast"), &["json"])
-                        .set_file_name(format!("{stem}_utkast.json"))
-                        .save_file()
-                        .map_or(Picked::SaveCancelled, Picked::SaveProject),
-                ),
+                ("save", _) => Some(rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).set_file_name(format!("{stem}_utkast.json")).save_file().map_or(Picked::SaveCancelled, Picked::SaveProject)),
                 ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
                 ("ad_file", _) => rfd::FileDialog::new().add_filter(i18n::t("Annonse (PDF, Word, tekst, nettside)"), &["pdf", "docx", "txt", "md", "html", "htm"]).pick_file().map(Picked::AdFile),
                 ("checklist_load", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).pick_file().map(Picked::ChecklistLoad),
