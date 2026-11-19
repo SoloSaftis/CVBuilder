@@ -27,6 +27,11 @@ function keys() {
     let m;
     while ((m = row.exec(body))) out.push([lit(m[1]), lit(m[2])]);
   }
+  // The message templates of the RULES: .t("<Norwegian with {a} {b} {c}>", "<English>").
+  const rules = src.slice(src.indexOf('static RULES'), src.indexOf('\n});', src.indexOf('static RULES')));
+  const t = /\.t\(\s*("(?:[^"\\]|\\.)*")\s*,\s*("(?:[^"\\]|\\.)*")\s*\)/g;
+  let m;
+  while ((m = t.exec(rules))) out.push([lit(m[1]), lit(m[2])]);
   return out;
 }
 

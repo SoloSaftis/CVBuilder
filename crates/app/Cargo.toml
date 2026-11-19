@@ -28,6 +28,10 @@ sys-locale = "0.3"
 serde.workspace = true
 serde_json.workspace = true
 
+# Opens links in the browser on Windows and macOS (Linux uses xdg-open, gio or the portal: see browser.rs).
+[target.'cfg(not(target_os = "linux"))'.dependencies]
+webbrowser = "1.2.4"
+
 [dev-dependencies]
 egui_kittest = { version = "0.37", features = ["eframe", "wgpu"] }
 ttf-parser = "0.25"

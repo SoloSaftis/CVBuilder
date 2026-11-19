@@ -13,3 +13,10 @@ path = "src/main.rs"
 
 [dependencies]
 cvbuilder-app = { path = "../../crates/app" }
+
+# eframe is built without its default features, which also leaves out winit's: switch on the ones
+# a Linux desktop needs. wayland-csd-adwaita draws the title bar (GNOME gives Wayland windows
+# none); wayland-dlopen loads libwayland at start instead of linking it. Same winit as eframe's
+# (the workspace patches it to the storytold fork), so the features unify.
+[target.'cfg(target_os = "linux")'.dependencies]
+winit = { version = "0.30", default-features = false, features = ["rwh_06", "x11", "wayland", "wayland-dlopen", "wayland-csd-adwaita"] }

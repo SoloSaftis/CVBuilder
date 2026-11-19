@@ -410,11 +410,18 @@ static ALL_FOREIGN: LazyLock<Vec<(&'static str, Part, Vec<&'static str>)>> = Laz
                     words.push(w);
                 }
             };
-            if let Some(i) = own {
-                add(leak_lower(&lang.headings[i]));
-            }
-            for w in lang.import.get(key).into_iter().flatten() {
-                add(leak_lower(w));
+            let mut given: Vec<&'static str> = own.map(|i| leak_lower(&lang.headings[i])).into_iter().collect();
+            given.extend(lang.import.get(key).into_iter().flatten().map(|w| leak_lower(w)));
+            for w in given {
+                add(w);
+                // Arabic headings come with and without the article «ال» («ملخص» / «الملخص»): both count.
+                if w.starts_with(|c: char| ('\u{0600}'..='\u{06ff}').contains(&c)) {
+                    match w.strip_prefix("ال") {
+                        Some(bare) if bare.chars().count() >= 2 => add(leak_lower(bare)),
+                        Some(_) => {}
+                        None => add(leak_lower(&format!("ال{w}"))),
+                    }
+                }
             }
             if !words.is_empty() {
                 all.push((lang.name.as_str(), part, words));
@@ -810,7 +817,7 @@ fn is_company(line: &str) -> bool {
 
 /// Splits «Senior Designer, Acme» or «Konsulent hos Acme» into title and employer.
 fn title_and_employer(text: &str) -> (String, String) {
-    for sep in [" hos ", " at ", " @ ", " bei ", " chez ", " presso ", " bij ", " på ", " – ", " — ", " | ", ", ", " - "] {
+    for sep in [" hos ", " at ", " @ ", " bei ", " chez ", " presso ", " bij ", " på ", " – ", " — ", " | ", ", ", "، ", " - "] {
         if let Some((a, b)) = text.split_once(sep) {
             if !a.trim().is_empty() && !b.trim().is_empty() {
                 return (a.trim().to_string(), b.trim().to_string());
@@ -914,6 +921,10 @@ const MORE_SCHOOL_WORDS: &[&str] = &[
     "szkoła", "politechnika", "akademia", "liceum", "škola", "vysoká", "gimnázium", "egyetem", "főiskola", "iskola", "üniversite", "lise", "okul", "yüksekokul", "fakülte", "университет", "институт",
     "колледж", "школа", "академия", "техникум", "університет", "коледж", "πανεπιστήμιο", "σχολή", "ίδρυμα", "universitas", "institut teknologi", "politeknik", "sekolah", "đại học", "trường", "học viện",
     "大学", "学院", "大學", "대학교", "大学院",
+    // Arabic, Persian, Urdu, Hebrew, Hindi and the other Indian languages, Thai
+    "جامعة", "كلية", "معهد", "أكاديمية", "مدرسة", "دانشگاه", "دانشکده", "یونیورسٹی", "جامعہ", "کالج", "אוניברסיטת", "אוניברסיטה", "מכללת", "מכללה", "הטכניון",
+    "विश्वविद्यालय", "महाविद्यालय", "संस्थान", "कॉलेज", "विद्यालय", "বিশ্ববিদ্যালয়", "কলেজ", "பல்கலைக்கழகம்", "கல்லூரி", "విశ్వవిద్యాలయం", "కళాశాల", "ವಿಶ್ವವಿದ್ಯಾಲಯ",
+    "സർവകലാശാല", "ਯੂਨੀਵਰਸਿਟੀ", "યુનિવર્સિટી", "มหาวิทยาลัย", "วิทยาลัย",
 ];
 const MORE_DEGREES: &[&str] = &[
     "Diplom", "Dipl.-Ing.", "B.Sc.", "M.Sc.", "B.A.", "M.A.", "Magister", "Staatsexamen", "Ausbildung", "Licence", "Maîtrise", "BTS", "DUT", "Grado", "Licenciatura", "Licenciado", "Máster", "Mestrado",
@@ -924,6 +935,23 @@ const MORE_DEGREES: &[&str] = &[
 fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
     let (entries, loose) = entries(lines, 5);
     let mut out = Vec::new();
+    // «BSc Computer Science, University of Example, 2016» (or «… (2016)»): a whole entry on one
+    // line with the year it was finished, which has no date range for `entries` to find.
+    static ONE_YEAR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(.+?)[\s,،–\-(]+((?:19|20)\d{2})\)?\.?$").expect("regex"));
+    let mut rest = Vec::new();
+    for line in loose {
+        let t = unbullet(&line).to_string();
+        let Some(c) = ONE_YEAR.captures(&t) else {
+            rest.push(line);
+            continue;
+        };
+        let text = c[1].trim().trim_end_matches([',', '،']).trim().to_string();
+        let mut parts: Vec<String> = text.split([',', '،']).map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect();
+        let school_at = parts.iter().rposition(|p| is_school(p)).or(if parts.len() >= 2 { Some(parts.len() - 1) } else { None });
+        let institution = school_at.map(|i| parts.remove(i)).unwrap_or_default();
+        out.push(Education { qualification: parts.join(", "), institution, start: String::new(), end: c[2].to_string() });
+    }
+    let loose = rest;
     for e in entries {
         let mut parts: Vec<String> = e.labels.clone();
         if !e.on_date_line.is_empty() {
@@ -947,7 +975,12 @@ fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
             continue;
         }
         for p in &parts {
-            if institution.is_empty() && is_school(p) {
+            // «BSc Computer Science, King Saud University» on one line: the school after the comma.
+            let split = p.rsplit_once(", ").or_else(|| p.rsplit_once("، ")).filter(|(d, s)| !d.trim().is_empty() && is_school(s) && !is_school(d));
+            if let (true, Some((degree, school))) = (institution.is_empty(), split) {
+                qualification.push(degree.trim().to_string());
+                institution = school.trim().to_string();
+            } else if institution.is_empty() && is_school(p) {
                 // «University of Brighton BA»: the degree at the end goes to the qualification.
                 let mut words: Vec<&str> = p.split_whitespace().collect();
                 if let Some(last) = words.last() {
@@ -1239,7 +1272,10 @@ fn read_languages(lines: &[&str]) -> Vec<SpokenLanguage> {
             let level = level.trim().trim_end_matches(')').trim();
             // «Norsk og engelsk: flytende» gives two languages with the same level.
             let names: Vec<&str> = name.split(" og ").flat_map(|n| n.split(" and ")).map(str::trim).collect();
-            if names.iter().all(|n| is_language_name(n)) {
+            // In the languages section a short «name: level» is a language even when the name is
+            // not in our lists (Arabic «العربية: اللغة الأم», Hindi «हिन्दी: मातृभाषा»).
+            let short = |n: &str| !n.is_empty() && n.split_whitespace().count() <= 3 && n.chars().all(|c| is_letter(c) || " -'()".contains(c));
+            if names.iter().all(|n| is_language_name(n)) || names.len() == 1 && short(names[0]) && !level.is_empty() {
                 for n in names {
                     out.push(SpokenLanguage { name: capitalise(n), level: level.to_string() });
                 }
@@ -1439,10 +1475,17 @@ const TITLE_WORDS: &[&str] = &[
     "operatør",
 ];
 
+/// A letter, or a mark that belongs to one: a vowel sign, virama or nukta (Devanagari, Bengali,
+/// Tamil …), Arabic harakat, Hebrew points, and the zero-width (non-)joiners they use.
+fn is_letter(c: char) -> bool {
+    static MARK: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\p{M}$").expect("regex"));
+    c.is_alphabetic() || c == '\u{200c}' || c == '\u{200d}' || !c.is_ascii() && MARK.is_match(c.encode_utf8(&mut [0; 4]))
+}
+
 fn looks_like_name(line: &str) -> bool {
     let t = line.trim();
     let words = t.split_whitespace().count();
-    (2..=5).contains(&words) && !t.contains('@') && !t.chars().any(|c| c.is_ascii_digit()) && heading_line(t).is_none() && t.chars().all(|c| c.is_alphabetic() || " -.'".contains(c))
+    (2..=5).contains(&words) && !t.contains('@') && !t.chars().any(|c| c.is_ascii_digit()) && heading_line(t).is_none() && t.chars().all(|c| is_letter(c) || " -.'".contains(c))
 }
 
 fn has_title_word(line: &str) -> bool {
@@ -1486,9 +1529,10 @@ fn town_from(line: &str) -> Option<String> {
         .map(str::trim)
         .find(|s| {
             let n = s.chars().count();
-            (2..=40).contains(&n) && s.chars().all(|c| c.is_alphabetic() || " ,.-'".contains(c)) && s.chars().next().is_some_and(char::is_uppercase) && s.split_whitespace().count() <= 4
+            // Starts with a capital, or with a letter of a script that has none (Arabic, Devanagari …).
+            (2..=40).contains(&n) && s.chars().all(|c| is_letter(c) || " ,.-'،".contains(c)) && s.chars().next().is_some_and(|c| c.is_uppercase() || c.is_alphabetic() && !c.is_lowercase()) && s.split_whitespace().count() <= 4
         })
-        .map(|s| s.trim_end_matches(',').to_string())
+        .map(|s| s.trim_end_matches([',', '،']).to_string())
 }
 
 /// Reads an existing CV's text without AI.
@@ -1524,7 +1568,7 @@ pub fn read_cv(text: &str) -> CvRead {
     };
     let town_line = |i: &usize| {
         let l = lines[*i].trim();
-        let alone = l.contains(',') && l.split_whitespace().count() <= 4 && l.chars().all(|c| c.is_alphabetic() || " ,.-'".contains(c));
+        let alone = l.contains([',', '،']) && l.split_whitespace().count() <= 4 && l.chars().all(|c| is_letter(c) || " ,.-'،".contains(c));
         if contact_lines.contains(i) || alone { town_from(l) } else { None }
     };
     let mut taken: Vec<usize> = contact_lines.clone();
@@ -1547,6 +1591,13 @@ pub fn read_cv(text: &str) -> CvRead {
     // above the contact lines wins.
     let above_contact: Vec<usize> = (0..first_contact).rev().filter(|&i| !lines[i].trim().is_empty()).take(3).collect();
     let by_contact = above_contact.iter().copied().filter(|&i| looks_like_name(&lines[i]) && !has_title_word(&lines[i])).max();
+    // The CV's first line and the one under it both look like names (no known title word, as in
+    // a CV in Arabic or Hindi): the name comes first, the job title under it.
+    let first_line = lines.iter().position(|l| !l.trim().is_empty());
+    let by_contact = by_contact.map(|i| match (first_line, i.checked_sub(1)) {
+        (Some(f), Some(above)) if f == above && looks_like_name(&lines[above]) && !has_title_word(&lines[above]) => above,
+        _ => i,
+    });
     let name_at = by_contact.or(match near.as_slice() {
         [a, b, ..] if has_title_word(&lines[*a]) && !has_title_word(&lines[*b]) => Some(*b),
         [a, ..] => Some(*a),
@@ -1613,12 +1664,15 @@ pub fn read_cv(text: &str) -> CvRead {
     let foreign = theirs.iter().copied().max_by(|a, b| count(a).cmp(&count(b)).then(rank(b).cmp(&rank(a)))).filter(|l| count(l) >= ours.max(1));
     let home = p.candidate.city.clone();
     let mut rest = Vec::new();
-    let mut leftover = |title: &str, lines: Vec<String>| {
+    let mut leftover = |title: String, lines: Vec<String>| {
         let body = tidy(&lines.join("\n"));
         if !body.trim().is_empty() {
             rest.push(format!("{}\n{body}", title.to_uppercase()));
         }
     };
+    // A leftover box is titled with the CV's own heading («التعليم»), else the Norwegian one
+    // (which the app shows in the interface language).
+    let own = |heading: &str, no: &'static str| -> String { if heading.trim().is_empty() { no.to_string() } else { heading.to_string() } };
     for ((part, body), heading_title) in parts.into_iter().zip(heading_titles) {
         let refs: Vec<&str> = body.iter().map(String::as_str).collect();
         if refs.iter().all(|l| l.trim().is_empty()) {
@@ -1659,7 +1713,7 @@ pub fn read_cv(text: &str) -> CvRead {
                     found.push("jobber");
                 }
                 if !loose.is_empty() {
-                    leftover("Erfaring", loose);
+                    leftover(own(&heading_title, "Erfaring"), loose);
                 }
             }
             Part::Education => {
@@ -1669,7 +1723,7 @@ pub fn read_cv(text: &str) -> CvRead {
                     found.push("utdanning");
                 }
                 if !loose.is_empty() {
-                    leftover("Utdanning", loose);
+                    leftover(own(&heading_title, "Utdanning"), loose);
                 }
             }
             Part::Certifications => {
@@ -1696,10 +1750,10 @@ pub fn read_cv(text: &str) -> CvRead {
                             found.push("andre seksjoner");
                         }
                     }
-                    None => leftover(title, body),
+                    None => leftover(title.to_string(), body),
                 }
             }
-            Part::Profile => leftover("Profil", body),
+            Part::Profile => leftover(own(&heading_title, "Profil"), body),
             Part::Skip => {}
         }
     }

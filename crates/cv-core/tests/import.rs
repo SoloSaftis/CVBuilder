@@ -597,3 +597,69 @@ fn read_cv_folder() {
         }
     }
 }
+
+/// CVs in Arabic and Hindi (no capital letters, vowel signs and the Arabic comma «،»): name,
+/// title, town, job, school and languages land in their fields, and the CV gets its headings.
+#[test]
+fn reads_cvs_in_arabic_and_hindi() {
+    let cases = [
+        ("arabic.txt", "سارة الأحمد", "مهندسة برمجيات", "الرياض", ("مهندسة برمجيات أولى", "شركة الحلول الرقمية"), ("بكالوريوس علوم الحاسب", "جامعة الملك سعود"), "العربية"),
+        ("hindi.txt", "प्रिया शर्मा", "सॉफ़्टवेयर इंजीनियर", "दिल्ली", ("वरिष्ठ सॉफ़्टवेयर इंजीनियर", "डिजिटल सॉल्यूशंस प्राइवेट लिमिटेड"), ("बी.टेक कंप्यूटर विज्ञान", "दिल्ली विश्वविद्यालय"), "हिन्दी"),
+    ];
+    for (file, name, headline, city, (title, company), (degree, school), language) in cases {
+        let text = std::fs::read_to_string(format!("{}/tests/cv-files/scripts/{file}", env!("CARGO_MANIFEST_DIR"))).expect("test CV");
+        let read = import::read_cv(&text);
+        let p = &read.project;
+        assert_eq!(p.candidate.name, name, "{file}: name");
+        assert_eq!(p.candidate.headline, headline, "{file}: headline");
+        assert_eq!(p.candidate.city, city, "{file}: city");
+        assert!(!p.candidate.summary.is_empty(), "{file}: profile");
+        let job = p.experience.first().expect("a job");
+        assert_eq!((job.title.as_str(), job.company.as_str()), (title, company), "{file}: job");
+        let edu = p.education.first().expect("education");
+        assert_eq!((edu.qualification.as_str(), edu.institution.as_str()), (degree, school), "{file}: education");
+        assert_eq!(p.languages.len(), 2, "{file}: languages");
+        assert_eq!(p.options.headings.as_ref().map(|h| h.language.as_str()), Some(language), "{file}: headings");
+        assert!(read.rest.trim().is_empty(), "{file}: nothing left over, got {}", read.rest);
+    }
+}
+
+/// An Arabic CV is laid out right to left (paragraphs, columns, the two-column table) and says
+/// its language; a Hindi one keeps left to right.
+#[test]
+fn right_to_left_cv_is_laid_out_from_the_right() {
+    for (file, rtl, code) in [("arabic.txt", true, "ar"), ("hindi.txt", false, "hi")] {
+        let text = std::fs::read_to_string(format!("{}/tests/cv-files/scripts/{file}", env!("CARGO_MANIFEST_DIR"))).expect("test CV");
+        let mut p = import::read_cv(&text).project;
+        assert_eq!(p.language_code(), code);
+        assert_eq!(p.is_right_to_left(), rtl);
+        for layout in ["classic", "rr-azurill-2"] {
+            p.options.layout = layout.into();
+            let doc = document::build(&p);
+            assert_eq!(doc.styles.default_para.bidi, rtl.then_some(true), "{file} {layout}: paragraph direction");
+            assert_eq!(doc.last_section.rtl, rtl, "{file} {layout}: section");
+            assert_eq!(doc.styles.default_chr.lang.as_deref(), Some(code), "{file} {layout}: language");
+            assert!(document::to_pdf(&doc).is_ok() && document::to_docx(&doc).is_ok());
+        }
+    }
+}
+
+/// The Arabic and Hindi CVs from the Linux test: a profile headed «الملخص» (with the article),
+/// and education on one line with only the year it ended («…، جامعة المثال، 2016»).
+#[test]
+fn reads_profile_and_one_line_education_in_arabic_and_hindi() {
+    for (file, school) in [("arabic-2.txt", "جامعة المثال"), ("hindi-2.txt", "उदाहरण विश्वविद्यालय")] {
+        let text = std::fs::read_to_string(format!("{}/tests/cv-files/scripts/{file}", env!("CARGO_MANIFEST_DIR"))).expect("test CV");
+        let read = import::read_cv(&text);
+        let p = &read.project;
+        assert!(!p.candidate.summary.is_empty(), "{file}: profile");
+        let edu = p.education.first().expect("education");
+        assert_eq!((edu.institution.as_str(), edu.end.as_str()), (school, "2016"), "{file}: education");
+        assert!(!edu.qualification.is_empty(), "{file}: degree");
+        assert!(read.rest.trim().is_empty(), "{file}: nothing left over, got {}", read.rest);
+    }
+    // The same in English: «BSc Computer Science, University of Example, 2016».
+    let p = import::read_cv("Sarah Ahmed\nSoftware Engineer\nLondon · sarah@example.com · +44 7700 900000\n\nEducation\nBSc Computer Science, University of Example, 2016\n").project;
+    let edu = p.education.first().expect("education");
+    assert_eq!((edu.qualification.as_str(), edu.institution.as_str(), edu.end.as_str()), ("BSc Computer Science", "University of Example", "2016"));
+}
