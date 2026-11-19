@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Dizajni u ndërrua në {a}",
   "Endret seksjonen «{a}»": "U ndryshua seksioni «{a}»",
   "La til seksjonen «{a}»": "U shtua seksioni «{a}»",
-  "Fjernet seksjonen «{a}»": "U hoq seksioni «{a}»"
+  "Fjernet seksjonen «{a}»": "U hoq seksioni «{a}»",
+  "Ferdig": "U krye",
+  "Å gjøre": "Për t'u bërë",
+  "Må rettes": "Duhet ndrequr",
+  "Tips": "Këshillë",
+  "Ikke sjekket ennå": "Ende i pakontrolluar",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Cilën listë kontrolli shihni dhe mjetet për tuajën"
  }
 }

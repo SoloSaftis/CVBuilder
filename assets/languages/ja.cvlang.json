@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "デザインを {a} に切り替えました",
   "Endret seksjonen «{a}»": "セクション「{a}」を変更しました",
   "La til seksjonen «{a}»": "セクション「{a}」を追加しました",
-  "Fjernet seksjonen «{a}»": "セクション「{a}」を削除しました"
+  "Fjernet seksjonen «{a}»": "セクション「{a}」を削除しました",
+  "Ferdig": "完了",
+  "Å gjøre": "要対応",
+  "Må rettes": "修正が必要",
+  "Tips": "ヒント",
+  "Ikke sjekket ennå": "未確認",
+  "{status}: {text}": "{status}：{text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "表示するチェックリストと、自分のチェックリスト用のツール"
  }
 }

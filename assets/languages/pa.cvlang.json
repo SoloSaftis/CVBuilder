@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "ਡਿਜ਼ਾਈਨ ਬਦਲ ਕੇ {a} ਕੀਤਾ",
   "Endret seksjonen «{a}»": "“{a}” ਸੈਕਸ਼ਨ ਬਦਲਿਆ",
   "La til seksjonen «{a}»": "“{a}” ਸੈਕਸ਼ਨ ਜੋੜਿਆ",
-  "Fjernet seksjonen «{a}»": "“{a}” ਸੈਕਸ਼ਨ ਹਟਾਇਆ"
+  "Fjernet seksjonen «{a}»": "“{a}” ਸੈਕਸ਼ਨ ਹਟਾਇਆ",
+  "Ferdig": "ਪੂਰਾ",
+  "Å gjøre": "ਕਰਨਾ ਬਾਕੀ",
+  "Må rettes": "ਠੀਕ ਕਰਨਾ ਜ਼ਰੂਰੀ",
+  "Tips": "ਸੁਝਾਅ",
+  "Ikke sjekket ennå": "ਅਜੇ ਜਾਂਚਿਆ ਨਹੀਂ ਗਿਆ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "ਤੁਸੀਂ ਕਿਹੜੀ ਚੈੱਕਲਿਸਟ ਵੇਖ ਰਹੇ ਹੋ, ਅਤੇ ਆਪਣੀ ਚੈੱਕਲਿਸਟ ਲਈ ਟੂਲ"
  }
 }

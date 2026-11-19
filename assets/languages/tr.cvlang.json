@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Tasarım değiştirildi: {a}",
   "Endret seksjonen «{a}»": "“{a}” bölümü değiştirildi",
   "La til seksjonen «{a}»": "“{a}” bölümü eklendi",
-  "Fjernet seksjonen «{a}»": "“{a}” bölümü kaldırıldı"
+  "Fjernet seksjonen «{a}»": "“{a}” bölümü kaldırıldı",
+  "Ferdig": "Tamam",
+  "Å gjøre": "Yapılacak",
+  "Må rettes": "Düzeltilmeli",
+  "Tips": "İpucu",
+  "Ikke sjekket ennå": "Henüz kontrol edilmedi",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Gördüğünüz kontrol listesi ve kendi listeniz için araçlar"
  }
 }

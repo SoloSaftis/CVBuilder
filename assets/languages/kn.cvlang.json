@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "ವಿನ್ಯಾಸವನ್ನು {a} ಗೆ ಬದಲಾಯಿಸಲಾಗಿದೆ",
   "Endret seksjonen «{a}»": "“{a}” ವಿಭಾಗವನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ",
   "La til seksjonen «{a}»": "“{a}” ವಿಭಾಗವನ್ನು ಸೇರಿಸಲಾಗಿದೆ",
-  "Fjernet seksjonen «{a}»": "“{a}” ವಿಭಾಗವನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
+  "Fjernet seksjonen «{a}»": "“{a}” ವಿಭಾಗವನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ",
+  "Ferdig": "ಮುಗಿದಿದೆ",
+  "Å gjøre": "ಮಾಡಬೇಕಿದೆ",
+  "Må rettes": "ಸರಿಪಡಿಸಬೇಕು",
+  "Tips": "ಸಲಹೆ",
+  "Ikke sjekket ennå": "ಇನ್ನೂ ಪರಿಶೀಲಿಸಿಲ್ಲ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "ನೀವು ನೋಡುವ ಪರಿಶೀಲನಾ ಪಟ್ಟಿ, ಮತ್ತು ನಿಮ್ಮದೇ ಪಟ್ಟಿಗಾಗಿ ಉಪಕರಣಗಳು"
  }
 }

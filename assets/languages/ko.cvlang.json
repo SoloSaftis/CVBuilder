@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "디자인을 {a}(으)로 바꿨습니다",
   "Endret seksjonen «{a}»": "“{a}” 섹션을 변경했습니다",
   "La til seksjonen «{a}»": "“{a}” 섹션을 추가했습니다",
-  "Fjernet seksjonen «{a}»": "“{a}” 섹션을 삭제했습니다"
+  "Fjernet seksjonen «{a}»": "“{a}” 섹션을 삭제했습니다",
+  "Ferdig": "완료",
+  "Å gjøre": "할 일",
+  "Må rettes": "수정 필요",
+  "Tips": "팁",
+  "Ikke sjekket ennå": "아직 확인 안 됨",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "표시할 체크리스트와 나만의 체크리스트 도구"
  }
 }

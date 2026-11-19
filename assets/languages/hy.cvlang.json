@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Ձևավորումը փոխվեց՝ {a}",
   "Endret seksjonen «{a}»": "Փոխվեց «{a}» բաժինը",
   "La til seksjonen «{a}»": "Ավելացվեց «{a}» բաժինը",
-  "Fjernet seksjonen «{a}»": "Հեռացվեց «{a}» բաժինը"
+  "Fjernet seksjonen «{a}»": "Հեռացվեց «{a}» բաժինը",
+  "Ferdig": "Արված է",
+  "Å gjøre": "Անելիք",
+  "Må rettes": "Պետք է ուղղել",
+  "Tips": "Խորհուրդ",
+  "Ikke sjekket ennå": "Դեռ ստուգված չէ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Որ ստուգաթերթն եք տեսնում, և ձեր սեփականի գործիքները"
  }
 }

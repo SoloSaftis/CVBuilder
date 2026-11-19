@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Design op {a} gewiesselt",
   "Endret seksjonen «{a}»": "D'Rubrik „{a}“ geännert",
   "La til seksjonen «{a}»": "D'Rubrik „{a}“ derbäigesat",
-  "Fjernet seksjonen «{a}»": "D'Rubrik „{a}“ ewechgeholl"
+  "Fjernet seksjonen «{a}»": "D'Rubrik „{a}“ ewechgeholl",
+  "Ferdig": "Fäerdeg",
+  "Å gjøre": "Ze maachen",
+  "Må rettes": "Muss verbessert ginn",
+  "Tips": "Tipp",
+  "Ikke sjekket ennå": "Nach net iwwerpréift",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Wéi eng Checklëscht Dir gesitt, an d'Tools fir Är eege"
  }
 }

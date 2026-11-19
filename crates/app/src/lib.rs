@@ -39,6 +39,7 @@ use std::time::{Duration, Instant};
 use cv_core::checks::{self, Level};
 use cv_core::{Project, document};
 use egui::{CornerRadius, Margin, RichText, Stroke};
+use checklist_ui::{Status, status_line};
 use theme::Tokens;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -675,11 +676,11 @@ impl CvApp {
             theme::section_title(ui, i18n::t("Før nedlasting"));
             let design = cv_core::layouts::effective(&self.project);
             if let Some(w) = design.ats_warning() {
-                status_line(ui, t.warning, &i18n::tdyn(w));
+                status_line(ui, Status::ToDo, &i18n::tdyn(w));
             }
             let (pages, advice) = (self.preview.page_count, self.recommended_pages());
             if pages > advice {
-                let color = if pages > advice + 1 { t.danger } else { t.warning };
+                let status = if pages > advice + 1 { Status::Problem } else { Status::ToDo };
                 status_line(
                     ui,
                     color,
@@ -690,13 +691,13 @@ impl CvApp {
                 );
             }
             for w in design.color_warnings() {
-                status_line(ui, t.warning, &i18n::tdyn(&w));
+                status_line(ui, Status::ToDo, &i18n::tdyn(&w));
             }
             if blocking.is_empty() {
-                status_line(ui, t.success, i18n::t("Alt nødvendig er fylt ut. Du bekrefter opplysningene når du laster ned."));
+                status_line(ui, Status::Done, i18n::t("Alt nødvendig er fylt ut. Du bekrefter opplysningene når du laster ned."));
             } else {
                 for e in blocking.iter().take(12) {
-                    status_line(ui, t.danger, &i18n::tdyn(e));
+                    status_line(ui, Status::Problem, &i18n::tdyn(e));
                 }
             }
         });
@@ -712,15 +713,10 @@ impl CvApp {
             ui.add_space(4.0);
             let today = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() / 2_629_746).unwrap_or(0) as i32 + 1970 * 12;
             let (list, matched) = checks::audit(&self.project, self.preview.page_count.max(1), today);
-            for c in list {
-                let color = match c.level {
-                    Level::Pass => t.success,
-                    Level::Warn => t.warning,
-                    Level::Info => t.info,
-                };
-                status_line(ui, color, &i18n::tdyn(&c.text));
+            for c in checklist_ui::todo_first(list) {
+                status_line(ui, Status::of_level(c.level), &i18n::tdyn(&c.text));
                 if c.level != Level::Pass && !c.tip.is_empty() {
-                    egui::Frame::new().inner_margin(Margin { left: 16, right: 0, top: 0, bottom: 0 }).show(ui, |ui| {
+                    egui::Frame::new().inner_margin(Margin { left: 20, right: 0, top: 0, bottom: 0 }).show(ui, |ui| {
                         ui.set_width(ui.available_width());
                         theme::hint(ui, &i18n::tdyn(&c.tip));
                     });
@@ -986,17 +982,6 @@ fn logo(ui: &mut egui::Ui, t: &Tokens, size: f32) {
     for (dy, w) in [(-5.0, 9.0), (0.0, 9.0), (5.0, 6.0)] {
         p.line_segment([egui::pos2(c.x - 4.5 * k, c.y + dy * k), egui::pos2(c.x + (w - 4.5) * k, c.y + dy * k)], stroke);
     }
-}
-
-pub(crate) fn status_line(ui: &mut egui::Ui, color: egui::Color32, text: &str) {
-    let t = Tokens::get(ui.ctx());
-    // Indented text with the dot drawn in the margin: the text always wraps to the panel.
-    let r = egui::Frame::new().inner_margin(Margin { left: 16, right: 0, top: 0, bottom: 0 }).show(ui, |ui| {
-        ui.set_width(ui.available_width());
-        ui.add(egui::Label::new(RichText::new(text).size(13.5).color(t.text)).wrap());
-    });
-    let top = r.response.rect.left_top();
-    ui.painter().circle_filled(egui::pos2(top.x + 5.0, top.y + 9.0), 3.5, color);
 }
 
 impl eframe::App for CvApp {

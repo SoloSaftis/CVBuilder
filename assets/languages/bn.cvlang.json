@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "ডিজাইন বদলে {a} করা হয়েছে",
   "Endret seksjonen «{a}»": "“{a}” বিভাগ বদলানো হয়েছে",
   "La til seksjonen «{a}»": "“{a}” বিভাগ যোগ করা হয়েছে",
-  "Fjernet seksjonen «{a}»": "“{a}” বিভাগ সরানো হয়েছে"
+  "Fjernet seksjonen «{a}»": "“{a}” বিভাগ সরানো হয়েছে",
+  "Ferdig": "সম্পন্ন",
+  "Å gjøre": "করণীয়",
+  "Må rettes": "ঠিক করতে হবে",
+  "Tips": "পরামর্শ",
+  "Ikke sjekket ennå": "এখনও যাচাই করা হয়নি",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "আপনি কোন চেকলিস্ট দেখছেন, আর আপনার নিজের চেকলিস্টের টুল"
  }
 }

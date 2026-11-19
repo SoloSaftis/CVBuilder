@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Desain diganti ke {a}",
   "Endret seksjonen «{a}»": "Bagian “{a}” diubah",
   "La til seksjonen «{a}»": "Bagian “{a}” ditambahkan",
-  "Fjernet seksjonen «{a}»": "Bagian “{a}” dihapus"
+  "Fjernet seksjonen «{a}»": "Bagian “{a}” dihapus",
+  "Ferdig": "Selesai",
+  "Å gjøre": "Perlu dikerjakan",
+  "Må rettes": "Harus diperbaiki",
+  "Tips": "Tips",
+  "Ikke sjekket ennå": "Belum diperiksa",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Daftar periksa yang Anda lihat, dan alat untuk daftar Anda sendiri"
  }
 }

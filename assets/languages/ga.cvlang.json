@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Athraíodh an dearadh go {a}",
   "Endret seksjonen «{a}»": "Athraíodh an rannóg “{a}”",
   "La til seksjonen «{a}»": "Cuireadh an rannóg “{a}” leis",
-  "Fjernet seksjonen «{a}»": "Baineadh an rannóg “{a}”"
+  "Fjernet seksjonen «{a}»": "Baineadh an rannóg “{a}”",
+  "Ferdig": "Déanta",
+  "Å gjøre": "Le déanamh",
+  "Må rettes": "Caithfear é a cheartú",
+  "Tips": "Leid",
+  "Ikke sjekket ennå": "Gan seiceáil fós",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "An seicliosta atá á fheiceáil agat, agus na huirlisí do do cheann féin"
  }
 }

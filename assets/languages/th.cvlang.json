@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "เปลี่ยนดีไซน์เป็น {a} แล้ว",
   "Endret seksjonen «{a}»": "แก้ไขส่วน “{a}” แล้ว",
   "La til seksjonen «{a}»": "เพิ่มส่วน “{a}” แล้ว",
-  "Fjernet seksjonen «{a}»": "ลบส่วน “{a}” แล้ว"
+  "Fjernet seksjonen «{a}»": "ลบส่วน “{a}” แล้ว",
+  "Ferdig": "เสร็จแล้ว",
+  "Å gjøre": "ต้องทำ",
+  "Må rettes": "ต้องแก้ไข",
+  "Tips": "เคล็ดลับ",
+  "Ikke sjekket ennå": "ยังไม่ได้ตรวจ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "รายการตรวจสอบที่คุณเห็น และเครื่องมือสำหรับรายการของคุณเอง"
  }
 }

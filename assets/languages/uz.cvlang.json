@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Dizayn {a} ga almashtirildi",
   "Endret seksjonen «{a}»": "«{a}» boʻlimi oʻzgartirildi",
   "La til seksjonen «{a}»": "«{a}» boʻlimi qoʻshildi",
-  "Fjernet seksjonen «{a}»": "«{a}» boʻlimi olib tashlandi"
+  "Fjernet seksjonen «{a}»": "«{a}» boʻlimi olib tashlandi",
+  "Ferdig": "Bajarildi",
+  "Å gjøre": "Bajarish kerak",
+  "Må rettes": "Tuzatish kerak",
+  "Tips": "Maslahat",
+  "Ikke sjekket ennå": "Hali tekshirilmagan",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Qaysi nazorat roʻyxatini koʻrasiz va oʻz roʻyxatingiz uchun vositalar"
  }
 }

@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Chaidh an dealbhadh atharrachadh gu {a}",
   "Endret seksjonen «{a}»": "Chaidh an earrann “{a}” atharrachadh",
   "La til seksjonen «{a}»": "Chaidh an earrann “{a}” a chur ris",
-  "Fjernet seksjonen «{a}»": "Chaidh an earrann “{a}” a thoirt air falbh"
+  "Fjernet seksjonen «{a}»": "Chaidh an earrann “{a}” a thoirt air falbh",
+  "Ferdig": "Deiseil",
+  "Å gjøre": "Ri dhèanamh",
+  "Må rettes": "Feumar a cheartachadh",
+  "Tips": "Gliocas",
+  "Ikke sjekket ennå": "Gun sgrùdadh fhathast",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Dè an liosta-sgrùdaidh a chì thu, agus na h-innealan airson an tè agad fhèin"
  }
 }

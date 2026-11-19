@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Дизайн ауыстырылды: {a}",
   "Endret seksjonen «{a}»": "«{a}» бөлімі өзгертілді",
   "La til seksjonen «{a}»": "«{a}» бөлімі қосылды",
-  "Fjernet seksjonen «{a}»": "«{a}» бөлімі жойылды"
+  "Fjernet seksjonen «{a}»": "«{a}» бөлімі жойылды",
+  "Ferdig": "Дайын",
+  "Å gjøre": "Орындау керек",
+  "Må rettes": "Түзету қажет",
+  "Tips": "Кеңес",
+  "Ikke sjekket ennå": "Әлі тексерілмеген",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Қай тексеру тізімін көресіз және өз тізіміңізге арналған құралдар"
  }
 }

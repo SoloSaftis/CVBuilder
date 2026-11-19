@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "העיצוב הוחלף ל־{a}",
   "Endret seksjonen «{a}»": "המקטע “{a}” שונה",
   "La til seksjonen «{a}»": "המקטע “{a}” נוסף",
-  "Fjernet seksjonen «{a}»": "המקטע “{a}” הוסר"
+  "Fjernet seksjonen «{a}»": "המקטע “{a}” הוסר",
+  "Ferdig": "בוצע",
+  "Å gjøre": "לביצוע",
+  "Må rettes": "חובה לתקן",
+  "Tips": "טיפ",
+  "Ikke sjekket ennå": "עדיין לא נבדק",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "איזו רשימת בדיקה מוצגת, והכלים לרשימה משלך"
  }
 }

@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Dizajn zmenený na {a}",
   "Endret seksjonen «{a}»": "Zmenená sekcia „{a}“",
   "La til seksjonen «{a}»": "Pridaná sekcia „{a}“",
-  "Fjernet seksjonen «{a}»": "Odstránená sekcia „{a}“"
+  "Fjernet seksjonen «{a}»": "Odstránená sekcia „{a}“",
+  "Ferdig": "Hotovo",
+  "Å gjøre": "Treba urobiť",
+  "Må rettes": "Treba opraviť",
+  "Tips": "Tip",
+  "Ikke sjekket ennå": "Zatiaľ nekontrolované",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Ktorý kontrolný zoznam vidíte a nástroje pre váš vlastný"
  }
 }

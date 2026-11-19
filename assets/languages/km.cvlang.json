@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "បានប្ដូររចនាទៅជា {a}",
   "Endret seksjonen «{a}»": "បានកែប្រែផ្នែក “{a}”",
   "La til seksjonen «{a}»": "បានបន្ថែមផ្នែក “{a}”",
-  "Fjernet seksjonen «{a}»": "បានលុបផ្នែក “{a}”"
+  "Fjernet seksjonen «{a}»": "បានលុបផ្នែក “{a}”",
+  "Ferdig": "រួចរាល់",
+  "Å gjøre": "ត្រូវធ្វើ",
+  "Må rettes": "ត្រូវតែកែ",
+  "Tips": "គន្លឹះ",
+  "Ikke sjekket ennå": "មិនទាន់បានពិនិត្យ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "បញ្ជីត្រួតពិនិត្យដែលអ្នកឃើញ និងឧបករណ៍សម្រាប់បញ្ជីផ្ទាល់ខ្លួនរបស់អ្នក"
  }
 }

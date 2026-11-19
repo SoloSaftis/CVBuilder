@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "ዲዛይኑን ወደ {a} ቀየረ",
   "Endret seksjonen «{a}»": "«{a}» የተባለውን ክፍል ቀየረ",
   "La til seksjonen «{a}»": "«{a}» የተባለውን ክፍል አከለ",
-  "Fjernet seksjonen «{a}»": "«{a}» የተባለውን ክፍል አስወገደ"
+  "Fjernet seksjonen «{a}»": "«{a}» የተባለውን ክፍል አስወገደ",
+  "Ferdig": "ተጠናቋል",
+  "Å gjøre": "የሚሠራ",
+  "Må rettes": "መስተካከል አለበት",
+  "Tips": "ምክር",
+  "Ikke sjekket ennå": "ገና አልተመረመረም",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "የሚያዩት የማረጋገጫ ዝርዝር እና ለራስዎ ዝርዝር የሚሆኑ መሣሪያዎች"
  }
 }

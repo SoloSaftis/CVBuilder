@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "ডিজাইন {a}-লৈ সলনি কৰিলে",
   "Endret seksjonen «{a}»": "“{a}” শাখাটো সলনি কৰিলে",
   "La til seksjonen «{a}»": "“{a}” শাখাটো যোগ কৰিলে",
-  "Fjernet seksjonen «{a}»": "“{a}” শাখাটো আঁতৰালে"
+  "Fjernet seksjonen «{a}»": "“{a}” শাখাটো আঁতৰালে",
+  "Ferdig": "সম্পূৰ্ণ",
+  "Å gjøre": "কৰিবলগীয়া",
+  "Må rettes": "শুধৰাব লাগিব",
+  "Tips": "পৰামৰ্শ",
+  "Ikke sjekket ennå": "এতিয়াও পৰীক্ষা কৰা হোৱা নাই",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "আপুনি কোনখন চেকলিষ্ট চাইছে, আৰু আপোনাৰ নিজৰ চেকলিষ্টৰ সঁজুলি"
  }
 }

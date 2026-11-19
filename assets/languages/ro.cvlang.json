@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Designul a fost schimbat în {a}",
   "Endret seksjonen «{a}»": "Secțiunea „{a}” a fost modificată",
   "La til seksjonen «{a}»": "Secțiunea „{a}” a fost adăugată",
-  "Fjernet seksjonen «{a}»": "Secțiunea „{a}” a fost eliminată"
+  "Fjernet seksjonen «{a}»": "Secțiunea „{a}” a fost eliminată",
+  "Ferdig": "Gata",
+  "Å gjøre": "De făcut",
+  "Må rettes": "Trebuie corectat",
+  "Tips": "Sfat",
+  "Ikke sjekket ennå": "Încă neverificat",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Ce listă de verificare vedeți și instrumentele pentru lista proprie"
  }
 }

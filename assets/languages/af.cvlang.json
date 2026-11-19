@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Het die ontwerp na {a} verander",
   "Endret seksjonen «{a}»": "Het die afdeling “{a}” verander",
   "La til seksjonen «{a}»": "Het die afdeling “{a}” bygevoeg",
-  "Fjernet seksjonen «{a}»": "Het die afdeling “{a}” verwyder"
+  "Fjernet seksjonen «{a}»": "Het die afdeling “{a}” verwyder",
+  "Ferdig": "Klaar",
+  "Å gjøre": "Om te doen",
+  "Må rettes": "Moet reggemaak word",
+  "Tips": "Wenk",
+  "Ikke sjekket ennå": "Nog nie nagegaan nie",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Watter kontrolelys jy sien, en die gereedskap vir jou eie"
  }
 }

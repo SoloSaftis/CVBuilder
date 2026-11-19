@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "డిజైన్ {a}కి మార్చబడింది",
   "Endret seksjonen «{a}»": "“{a}” విభాగం మార్చబడింది",
   "La til seksjonen «{a}»": "“{a}” విభాగం జోడించబడింది",
-  "Fjernet seksjonen «{a}»": "“{a}” విభాగం తీసివేయబడింది"
+  "Fjernet seksjonen «{a}»": "“{a}” విభాగం తీసివేయబడింది",
+  "Ferdig": "పూర్తయింది",
+  "Å gjøre": "చేయాల్సింది",
+  "Må rettes": "సరిదిద్దాలి",
+  "Tips": "చిట్కా",
+  "Ikke sjekket ennå": "ఇంకా తనిఖీ చేయలేదు",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "మీరు చూసే చెక్‌లిస్ట్, మీ సొంత జాబితా కోసం సాధనాలు"
  }
 }

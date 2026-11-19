@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Menukar reka bentuk kepada {a}",
   "Endret seksjonen «{a}»": "Mengubah bahagian “{a}”",
   "La til seksjonen «{a}»": "Menambah bahagian “{a}”",
-  "Fjernet seksjonen «{a}»": "Membuang bahagian “{a}”"
+  "Fjernet seksjonen «{a}»": "Membuang bahagian “{a}”",
+  "Ferdig": "Selesai",
+  "Å gjøre": "Perlu dibuat",
+  "Må rettes": "Mesti dibetulkan",
+  "Tips": "Petua",
+  "Ikke sjekket ennå": "Belum disemak",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Senarai semak yang anda lihat, dan alat untuk senarai anda sendiri"
  }
 }

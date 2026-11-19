@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Design remplacé par {a}",
   "Endret seksjonen «{a}»": "Section « {a} » modifiée",
   "La til seksjonen «{a}»": "Section « {a} » ajoutée",
-  "Fjernet seksjonen «{a}»": "Section « {a} » supprimée"
+  "Fjernet seksjonen «{a}»": "Section « {a} » supprimée",
+  "Ferdig": "Fait",
+  "Å gjøre": "À faire",
+  "Må rettes": "À corriger",
+  "Tips": "Conseil",
+  "Ikke sjekket ennå": "Pas encore vérifié",
+  "{status}: {text}": "{status} : {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "La liste de vérification affichée et les outils pour la vôtre"
  }
 }

@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "已將設計切換為 {a}",
   "Endret seksjonen «{a}»": "已修改「{a}」區段",
   "La til seksjonen «{a}»": "已新增「{a}」區段",
-  "Fjernet seksjonen «{a}»": "已移除「{a}」區段"
+  "Fjernet seksjonen «{a}»": "已移除「{a}」區段",
+  "Ferdig": "已完成",
+  "Å gjøre": "待辦",
+  "Må rettes": "必須修正",
+  "Tips": "提示",
+  "Ikke sjekket ennå": "尚未檢查",
+  "{status}: {text}": "{status}：{text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "顯示哪份檢查清單，以及自訂清單的工具"
  }
 }

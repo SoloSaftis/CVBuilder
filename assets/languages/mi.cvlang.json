@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "I huri te hoahoa ki {a}",
   "Endret seksjonen «{a}»": "I panoni i te wāhanga “{a}”",
   "La til seksjonen «{a}»": "I tāpiri i te wāhanga “{a}”",
-  "Fjernet seksjonen «{a}»": "I tango i te wāhanga “{a}”"
+  "Fjernet seksjonen «{a}»": "I tango i te wāhanga “{a}”",
+  "Ferdig": "Kua oti",
+  "Å gjøre": "Hei mahi",
+  "Må rettes": "Me whakatika",
+  "Tips": "Tohutohu",
+  "Ikke sjekket ennå": "Kāore anō kia tirohia",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Te rārangi arowhai e kitea ana e koe, me ngā taputapu mō tōu ake"
  }
 }

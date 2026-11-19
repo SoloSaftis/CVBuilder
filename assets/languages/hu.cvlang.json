@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Dizájn átváltva erre: {a}",
   "Endret seksjonen «{a}»": "„{a}” szakasz módosítva",
   "La til seksjonen «{a}»": "„{a}” szakasz hozzáadva",
-  "Fjernet seksjonen «{a}»": "„{a}” szakasz eltávolítva"
+  "Fjernet seksjonen «{a}»": "„{a}” szakasz eltávolítva",
+  "Ferdig": "Kész",
+  "Å gjøre": "Teendő",
+  "Må rettes": "Javítani kell",
+  "Tips": "Tipp",
+  "Ikke sjekket ennå": "Még nincs ellenőrizve",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Melyik ellenőrzőlistát látja, és a saját listája eszközei"
  }
 }

@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Id-disinn inbidel għal {a}",
   "Endret seksjonen «{a}»": "Inbidlet is-sezzjoni “{a}”",
   "La til seksjonen «{a}»": "Żdiedet is-sezzjoni “{a}”",
-  "Fjernet seksjonen «{a}»": "Tneħħiet is-sezzjoni “{a}”"
+  "Fjernet seksjonen «{a}»": "Tneħħiet is-sezzjoni “{a}”",
+  "Ferdig": "Lest",
+  "Å gjøre": "Biex isir",
+  "Må rettes": "Irid jiġi korrett",
+  "Tips": "Ħjiel",
+  "Ikke sjekket ennå": "Għadu ma ġiex iċċekkjat",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Liema checklist qed tara, u l-għodod għal tiegħek"
  }
 }

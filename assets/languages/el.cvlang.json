@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Το σχέδιο άλλαξε σε {a}",
   "Endret seksjonen «{a}»": "Άλλαξε η ενότητα «{a}»",
   "La til seksjonen «{a}»": "Προστέθηκε η ενότητα «{a}»",
-  "Fjernet seksjonen «{a}»": "Αφαιρέθηκε η ενότητα «{a}»"
+  "Fjernet seksjonen «{a}»": "Αφαιρέθηκε η ενότητα «{a}»",
+  "Ferdig": "Ολοκληρώθηκε",
+  "Å gjøre": "Προς υλοποίηση",
+  "Må rettes": "Πρέπει να διορθωθεί",
+  "Tips": "Συμβουλή",
+  "Ikke sjekket ennå": "Δεν έχει ελεγχθεί ακόμα",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Ποια λίστα ελέγχου βλέπετε και τα εργαλεία για τη δική σας"
  }
 }

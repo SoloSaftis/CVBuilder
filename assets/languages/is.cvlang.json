@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Útliti breytt í {a}",
   "Endret seksjonen «{a}»": "Hlutanum „{a}“ breytt",
   "La til seksjonen «{a}»": "Hlutanum „{a}“ bætt við",
-  "Fjernet seksjonen «{a}»": "Hlutinn „{a}“ fjarlægður"
+  "Fjernet seksjonen «{a}»": "Hlutinn „{a}“ fjarlægður",
+  "Ferdig": "Lokið",
+  "Å gjøre": "Ógert",
+  "Må rettes": "Þarf að laga",
+  "Tips": "Ábending",
+  "Ikke sjekket ennå": "Ekki athugað enn",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Hvaða gátlista þú sérð, og verkfærin fyrir þinn eigin"
  }
 }

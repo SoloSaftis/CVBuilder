@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Ulkoasuksi vaihdettu {a}",
   "Endret seksjonen «{a}»": "Osiota ”{a}” muutettu",
   "La til seksjonen «{a}»": "Osio ”{a}” lisätty",
-  "Fjernet seksjonen «{a}»": "Osio ”{a}” poistettu"
+  "Fjernet seksjonen «{a}»": "Osio ”{a}” poistettu",
+  "Ferdig": "Valmis",
+  "Å gjøre": "Tehtävänä",
+  "Må rettes": "Korjattava",
+  "Tips": "Vinkki",
+  "Ikke sjekket ennå": "Ei vielä tarkistettu",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Mikä tarkistuslista näkyy, ja työkalut omaa listaasi varten"
  }
 }

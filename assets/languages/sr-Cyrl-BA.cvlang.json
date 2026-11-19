@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Дизајн промијењен у {a}",
   "Endret seksjonen «{a}»": "Промијењен одјељак «{a}»",
   "La til seksjonen «{a}»": "Додат одјељак «{a}»",
-  "Fjernet seksjonen «{a}»": "Уклоњен одјељак «{a}»"
+  "Fjernet seksjonen «{a}»": "Уклоњен одјељак «{a}»",
+  "Ferdig": "Готово",
+  "Å gjøre": "За урадити",
+  "Må rettes": "Мора се исправити",
+  "Tips": "Савјет",
+  "Ikke sjekket ennå": "Још није провјерено",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Коју контролну листу видите и алати за вашу сопствену"
  }
 }

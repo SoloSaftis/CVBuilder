@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "डिज़ाइन बदलकर {a} किया",
   "Endret seksjonen «{a}»": "“{a}” सेक्शन बदला",
   "La til seksjonen «{a}»": "“{a}” सेक्शन जोड़ा",
-  "Fjernet seksjonen «{a}»": "“{a}” सेक्शन हटाया"
+  "Fjernet seksjonen «{a}»": "“{a}” सेक्शन हटाया",
+  "Ferdig": "पूरा",
+  "Å gjøre": "करना है",
+  "Må rettes": "ठीक करना ज़रूरी",
+  "Tips": "सुझाव",
+  "Ikke sjekket ennå": "अभी जाँचा नहीं गया",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "आप कौन-सी चेकलिस्ट देख रहे हैं, और अपनी चेकलिस्ट के टूल"
  }
 }

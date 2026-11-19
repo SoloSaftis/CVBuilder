@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Bytte design til {a}",
   "Endret seksjonen «{a}»": "Endra seksjonen «{a}»",
   "La til seksjonen «{a}»": "La til seksjonen «{a}»",
-  "Fjernet seksjonen «{a}»": "Fjerna seksjonen «{a}»"
+  "Fjernet seksjonen «{a}»": "Fjerna seksjonen «{a}»",
+  "Ferdig": "Ferdig",
+  "Å gjøre": "Å gjere",
+  "Må rettes": "Må rettast",
+  "Tips": "Tips",
+  "Ikke sjekket ennå": "Ikkje sjekka enno",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Kva sjekkliste du ser, og verktøy for di eiga"
  }
 }

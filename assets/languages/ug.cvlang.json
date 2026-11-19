@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "لايىھە {a} غا ئالماشتۇرۇلدى",
   "Endret seksjonen «{a}»": "«{a}» بۆلىكى ئۆزگەرتىلدى",
   "La til seksjonen «{a}»": "«{a}» بۆلىكى قوشۇلدى",
-  "Fjernet seksjonen «{a}»": "«{a}» بۆلىكى ئۆچۈرۈلدى"
+  "Fjernet seksjonen «{a}»": "«{a}» بۆلىكى ئۆچۈرۈلدى",
+  "Ferdig": "تامام",
+  "Å gjøre": "قىلىدىغان",
+  "Må rettes": "تۈزىتىش كېرەك",
+  "Tips": "تەۋسىيە",
+  "Ikke sjekket ennå": "تېخى تەكشۈرۈلمىدى",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "سىز كۆرۈۋاتقان تەكشۈرۈش تىزىملىكى ۋە ئۆزىڭىزنىڭكى ئۈچۈن قوراللار"
  }
 }

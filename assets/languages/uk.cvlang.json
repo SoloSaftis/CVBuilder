@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Дизайн змінено на {a}",
   "Endret seksjonen «{a}»": "Змінено розділ «{a}»",
   "La til seksjonen «{a}»": "Додано розділ «{a}»",
-  "Fjernet seksjonen «{a}»": "Видалено розділ «{a}»"
+  "Fjernet seksjonen «{a}»": "Видалено розділ «{a}»",
+  "Ferdig": "Готово",
+  "Å gjøre": "Зробити",
+  "Må rettes": "Треба виправити",
+  "Tips": "Порада",
+  "Ikke sjekket ennå": "Ще не перевірено",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Який контрольний список ви бачите, та інструменти для власного"
  }
 }

@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "დიზაინი შეიცვალა: {a}",
   "Endret seksjonen «{a}»": "შეიცვალა სექცია “{a}”",
   "La til seksjonen «{a}»": "დაემატა სექცია “{a}”",
-  "Fjernet seksjonen «{a}»": "წაიშალა სექცია “{a}”"
+  "Fjernet seksjonen «{a}»": "წაიშალა სექცია “{a}”",
+  "Ferdig": "შესრულებულია",
+  "Å gjøre": "გასაკეთებელი",
+  "Må rettes": "უნდა გასწორდეს",
+  "Tips": "რჩევა",
+  "Ikke sjekket ennå": "ჯერ არ შემოწმებულა",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "რომელ საკონტროლო სიას ხედავთ და ხელსაწყოები თქვენი საკუთარისთვის"
  }
 }

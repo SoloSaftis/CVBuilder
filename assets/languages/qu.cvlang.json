@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Diseño {a}-man t'ikrasqa",
   "Endret seksjonen «{a}»": "“{a}” sección t'ikrasqa",
   "La til seksjonen «{a}»": "“{a}” sección yapasqa",
-  "Fjernet seksjonen «{a}»": "“{a}” sección qichusqa"
+  "Fjernet seksjonen «{a}»": "“{a}” sección qichusqa",
+  "Ferdig": "Tukusqa",
+  "Å gjøre": "Ruwanapaq",
+  "Må rettes": "Allichanan tiyan",
+  "Tips": "Yuyaychay",
+  "Ikke sjekket ennå": "Manaraq qhawasqachu",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Mayqin qhawana sutisqatam rikunki, hinaspa kikiykipa llamk'anankuna"
  }
 }

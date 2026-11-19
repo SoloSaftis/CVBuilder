@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Đã đổi thiết kế sang {a}",
   "Endret seksjonen «{a}»": "Đã sửa mục “{a}”",
   "La til seksjonen «{a}»": "Đã thêm mục “{a}”",
-  "Fjernet seksjonen «{a}»": "Đã xóa mục “{a}”"
+  "Fjernet seksjonen «{a}»": "Đã xóa mục “{a}”",
+  "Ferdig": "Xong",
+  "Å gjøre": "Cần làm",
+  "Må rettes": "Phải sửa",
+  "Tips": "Mẹo",
+  "Ikke sjekket ennå": "Chưa kiểm tra",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Danh sách kiểm tra bạn đang xem và công cụ cho danh sách của riêng bạn"
  }
 }

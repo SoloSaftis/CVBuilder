@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "غيّر التصميم إلى {a}",
   "Endret seksjonen «{a}»": "عدّل القسم «{a}»",
   "La til seksjonen «{a}»": "أضاف القسم «{a}»",
-  "Fjernet seksjonen «{a}»": "حذف القسم «{a}»"
+  "Fjernet seksjonen «{a}»": "حذف القسم «{a}»",
+  "Ferdig": "تم",
+  "Å gjøre": "مطلوب",
+  "Må rettes": "يجب إصلاحه",
+  "Tips": "نصيحة",
+  "Ikke sjekket ennå": "لم يُفحص بعد",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "قائمة التحقق التي تراها، وأدوات قائمتك الخاصة"
  }
 }

@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "ଡିଜାଇନ୍ {a}କୁ ବଦଳାଗଲା",
   "Endret seksjonen «{a}»": "“{a}” ବିଭାଗ ବଦଳାଗଲା",
   "La til seksjonen «{a}»": "“{a}” ବିଭାଗ ଯୋଡ଼ାଗଲା",
-  "Fjernet seksjonen «{a}»": "“{a}” ବିଭାଗ ହଟାଗଲା"
+  "Fjernet seksjonen «{a}»": "“{a}” ବିଭାଗ ହଟାଗଲା",
+  "Ferdig": "ସମ୍ପୂର୍ଣ୍ଣ",
+  "Å gjøre": "କରିବାକୁ ଅଛି",
+  "Må rettes": "ସଂଶୋଧନ କରିବା ଆବଶ୍ୟକ",
+  "Tips": "ପରାମର୍ଶ",
+  "Ikke sjekket ennå": "ଏପର୍ଯ୍ୟନ୍ତ ଯାଞ୍ଚ ହୋଇନାହିଁ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "ଆପଣ କେଉଁ ଚେକଲିଷ୍ଟ ଦେଖୁଛନ୍ତି, ଏବଂ ନିଜ ଚେକଲିଷ୍ଟ ପାଇଁ ଉପକରଣ"
  }
 }

@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "ഡിസൈൻ {a} ആക്കി മാറ്റി",
   "Endret seksjonen «{a}»": "“{a}” വിഭാഗം മാറ്റി",
   "La til seksjonen «{a}»": "“{a}” വിഭാഗം ചേർത്തു",
-  "Fjernet seksjonen «{a}»": "“{a}” വിഭാഗം നീക്കം ചെയ്തു"
+  "Fjernet seksjonen «{a}»": "“{a}” വിഭാഗം നീക്കം ചെയ്തു",
+  "Ferdig": "പൂർത്തിയായി",
+  "Å gjøre": "ചെയ്യാനുണ്ട്",
+  "Må rettes": "തിരുത്തണം",
+  "Tips": "നുറുങ്ങ്",
+  "Ikke sjekket ennå": "ഇതുവരെ പരിശോധിച്ചിട്ടില്ല",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "നിങ്ങൾ കാണുന്ന ചെക്ക്‌ലിസ്റ്റും നിങ്ങളുടെ സ്വന്തം ലിസ്റ്റിനുള്ള ഉപകരണങ്ങളും"
  }
 }

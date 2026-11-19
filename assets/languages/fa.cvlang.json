@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "طراحی به {a} تغییر کرد",
   "Endret seksjonen «{a}»": "بخش «{a}» تغییر کرد",
   "La til seksjonen «{a}»": "بخش «{a}» اضافه شد",
-  "Fjernet seksjonen «{a}»": "بخش «{a}» حذف شد"
+  "Fjernet seksjonen «{a}»": "بخش «{a}» حذف شد",
+  "Ferdig": "انجام شد",
+  "Å gjøre": "باید انجام شود",
+  "Må rettes": "باید اصلاح شود",
+  "Tips": "نکته",
+  "Ikke sjekket ennå": "هنوز بررسی نشده",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "چک‌لیستی که می‌بینید و ابزارهای چک‌لیست خودتان"
  }
 }

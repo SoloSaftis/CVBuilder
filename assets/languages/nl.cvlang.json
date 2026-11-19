@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Ontwerp gewijzigd naar {a}",
   "Endret seksjonen «{a}»": "Sectie “{a}” gewijzigd",
   "La til seksjonen «{a}»": "Sectie “{a}” toegevoegd",
-  "Fjernet seksjonen «{a}»": "Sectie “{a}” verwijderd"
+  "Fjernet seksjonen «{a}»": "Sectie “{a}” verwijderd",
+  "Ferdig": "Klaar",
+  "Å gjøre": "Te doen",
+  "Må rettes": "Moet worden verbeterd",
+  "Tips": "Tip",
+  "Ikke sjekket ennå": "Nog niet gecontroleerd",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Welke checklist je ziet, en de hulpmiddelen voor je eigen lijst"
  }
 }

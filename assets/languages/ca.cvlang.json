@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Ha canviat el disseny a {a}",
   "Endret seksjonen «{a}»": "Ha canviat la secció «{a}»",
   "La til seksjonen «{a}»": "Ha afegit la secció «{a}»",
-  "Fjernet seksjonen «{a}»": "Ha suprimit la secció «{a}»"
+  "Fjernet seksjonen «{a}»": "Ha suprimit la secció «{a}»",
+  "Ferdig": "Fet",
+  "Å gjøre": "Per fer",
+  "Må rettes": "Cal corregir-ho",
+  "Tips": "Consell",
+  "Ikke sjekket ennå": "Encara no s'ha comprovat",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Quina llista de comprovació veus, i les eines per a la teva"
  }
 }

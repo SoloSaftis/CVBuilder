@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Diseinua aldatu da: {a}",
   "Endret seksjonen «{a}»": "“{a}” atala aldatu da",
   "La til seksjonen «{a}»": "“{a}” atala gehitu da",
-  "Fjernet seksjonen «{a}»": "“{a}” atala kendu da"
+  "Fjernet seksjonen «{a}»": "“{a}” atala kendu da",
+  "Ferdig": "Eginda",
+  "Å gjøre": "Egiteko",
+  "Må rettes": "Zuzendu behar da",
+  "Tips": "Aholkua",
+  "Ikke sjekket ennå": "Oraindik egiaztatu gabe",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Zein egiaztapen-zerrenda ikusten duzun, eta zure zerrendarako tresnak"
  }
 }

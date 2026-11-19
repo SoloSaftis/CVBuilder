@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Смени дизайна на {a}",
   "Endret seksjonen «{a}»": "Промени раздела „{a}“",
   "La til seksjonen «{a}»": "Добави раздела „{a}“",
-  "Fjernet seksjonen «{a}»": "Премахна раздела „{a}“"
+  "Fjernet seksjonen «{a}»": "Премахна раздела „{a}“",
+  "Ferdig": "Готово",
+  "Å gjøre": "За вършене",
+  "Må rettes": "Трябва да се поправи",
+  "Tips": "Съвет",
+  "Ikke sjekket ennå": "Още не е проверено",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Кой контролен списък виждате и инструментите за вашия собствен"
  }
 }

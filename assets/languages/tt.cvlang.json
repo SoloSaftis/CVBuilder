@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Дизайн {a} итеп алыштырылды",
   "Endret seksjonen «{a}»": "«{a}» бүлеге үзгәртелде",
   "La til seksjonen «{a}»": "«{a}» бүлеге өстәлде",
-  "Fjernet seksjonen «{a}»": "«{a}» бүлеге бетерелде"
+  "Fjernet seksjonen «{a}»": "«{a}» бүлеге бетерелде",
+  "Ferdig": "Әзер",
+  "Å gjøre": "Эшлисе",
+  "Må rettes": "Төзәтергә кирәк",
+  "Tips": "Киңәш",
+  "Ikke sjekket ennå": "Әле тикшерелмәгән",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Сез кайсы тикшерү исемлеген күрәсез, һәм үз исемлегегез өчен кораллар"
  }
 }

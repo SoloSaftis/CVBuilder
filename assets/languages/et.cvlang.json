@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Kujundus vahetatud: {a}",
   "Endret seksjonen «{a}»": "Jaotist „{a}“ muudeti",
   "La til seksjonen «{a}»": "Lisati jaotis „{a}“",
-  "Fjernet seksjonen «{a}»": "Eemaldati jaotis „{a}“"
+  "Fjernet seksjonen «{a}»": "Eemaldati jaotis „{a}“",
+  "Ferdig": "Tehtud",
+  "Å gjøre": "Teha",
+  "Må rettes": "Tuleb parandada",
+  "Tips": "Nõuanne",
+  "Ikke sjekket ennå": "Veel kontrollimata",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Milline kontrollnimekiri on näha ja tööriistad oma nimekirja jaoks"
  }
 }

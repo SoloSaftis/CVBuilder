@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "ڈیزائن {a} میں تبدیل کیا گیا",
   "Endret seksjonen «{a}»": "حصہ “{a}” تبدیل کیا گیا",
   "La til seksjonen «{a}»": "حصہ “{a}” شامل کیا گیا",
-  "Fjernet seksjonen «{a}»": "حصہ “{a}” ہٹا دیا گیا"
+  "Fjernet seksjonen «{a}»": "حصہ “{a}” ہٹا دیا گیا",
+  "Ferdig": "مکمل",
+  "Å gjøre": "کرنا ہے",
+  "Må rettes": "درست کرنا ضروری",
+  "Tips": "مشورہ",
+  "Ikke sjekket ennå": "ابھی جانچا نہیں گیا",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "آپ کون سی چیک لسٹ دیکھ رہے ہیں، اور اپنی چیک لسٹ کے ٹولز"
  }
 }

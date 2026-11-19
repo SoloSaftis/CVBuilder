@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Dizajn promijenjen u {a}",
   "Endret seksjonen «{a}»": "Promijenjen odjeljak „{a}”",
   "La til seksjonen «{a}»": "Dodan odjeljak „{a}”",
-  "Fjernet seksjonen «{a}»": "Uklonjen odjeljak „{a}”"
+  "Fjernet seksjonen «{a}»": "Uklonjen odjeljak „{a}”",
+  "Ferdig": "Gotovo",
+  "Å gjøre": "Za napraviti",
+  "Må rettes": "Mora se ispraviti",
+  "Tips": "Savjet",
+  "Ikke sjekket ennå": "Još nije provjereno",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Koji kontrolni popis vidite i alati za vaš vlastiti"
  }
 }

@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Dizainas pakeistas į {a}",
   "Endret seksjonen «{a}»": "Pakeistas skyrius „{a}“",
   "La til seksjonen «{a}»": "Pridėtas skyrius „{a}“",
-  "Fjernet seksjonen «{a}»": "Pašalintas skyrius „{a}“"
+  "Fjernet seksjonen «{a}»": "Pašalintas skyrius „{a}“",
+  "Ferdig": "Atlikta",
+  "Å gjøre": "Reikia atlikti",
+  "Må rettes": "Būtina pataisyti",
+  "Tips": "Patarimas",
+  "Ikke sjekket ennå": "Dar nepatikrinta",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Kurį kontrolinį sąrašą matote ir įrankiai jūsų sąrašui"
  }
 }

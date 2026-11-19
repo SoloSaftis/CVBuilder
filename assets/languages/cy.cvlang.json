@@ -1225,6 +1225,13 @@
   "Byttet design til {a}": "Wedi newid y dyluniad i {a}",
   "Endret seksjonen «{a}»": "Wedi newid yr adran “{a}”",
   "La til seksjonen «{a}»": "Wedi ychwanegu’r adran “{a}”",
-  "Fjernet seksjonen «{a}»": "Wedi dileu’r adran “{a}”"
+  "Fjernet seksjonen «{a}»": "Wedi dileu’r adran “{a}”",
+  "Ferdig": "Wedi'i wneud",
+  "Å gjøre": "I'w wneud",
+  "Må rettes": "Rhaid ei gywiro",
+  "Tips": "Awgrym",
+  "Ikke sjekket ennå": "Heb ei wirio eto",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Pa restr wirio a welwch, a'r offer ar gyfer eich un eich hun"
  }
 }
