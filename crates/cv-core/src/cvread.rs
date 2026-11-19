@@ -410,11 +410,18 @@ static ALL_FOREIGN: LazyLock<Vec<(&'static str, Part, Vec<&'static str>)>> = Laz
                     words.push(w);
                 }
             };
-            if let Some(i) = own {
-                add(leak_lower(&lang.headings[i]));
-            }
-            for w in lang.import.get(key).into_iter().flatten() {
-                add(leak_lower(w));
+            let mut given: Vec<&'static str> = own.map(|i| leak_lower(&lang.headings[i])).into_iter().collect();
+            given.extend(lang.import.get(key).into_iter().flatten().map(|w| leak_lower(w)));
+            for w in given {
+                add(w);
+                // Arabic headings come with and without the article «ال» («ملخص» / «الملخص»): both count.
+                if w.starts_with(|c: char| ('\u{0600}'..='\u{06ff}').contains(&c)) {
+                    match w.strip_prefix("ال") {
+                        Some(bare) if bare.chars().count() >= 2 => add(leak_lower(bare)),
+                        Some(_) => {}
+                        None => add(leak_lower(&format!("ال{w}"))),
+                    }
+                }
             }
             if !words.is_empty() {
                 all.push((lang.name.as_str(), part, words));
@@ -928,6 +935,23 @@ const MORE_DEGREES: &[&str] = &[
 fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
     let (entries, loose) = entries(lines, 5);
     let mut out = Vec::new();
+    // «BSc Computer Science, University of Example, 2016» (or «… (2016)»): a whole entry on one
+    // line with the year it was finished, which has no date range for `entries` to find.
+    static ONE_YEAR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(.+?)[\s,،–\-(]+((?:19|20)\d{2})\)?\.?$").expect("regex"));
+    let mut rest = Vec::new();
+    for line in loose {
+        let t = unbullet(&line).to_string();
+        let Some(c) = ONE_YEAR.captures(&t) else {
+            rest.push(line);
+            continue;
+        };
+        let text = c[1].trim().trim_end_matches([',', '،']).trim().to_string();
+        let mut parts: Vec<String> = text.split([',', '،']).map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect();
+        let school_at = parts.iter().rposition(|p| is_school(p)).or(if parts.len() >= 2 { Some(parts.len() - 1) } else { None });
+        let institution = school_at.map(|i| parts.remove(i)).unwrap_or_default();
+        out.push(Education { qualification: parts.join(", "), institution, start: String::new(), end: c[2].to_string() });
+    }
+    let loose = rest;
     for e in entries {
         let mut parts: Vec<String> = e.labels.clone();
         if !e.on_date_line.is_empty() {

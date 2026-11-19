@@ -643,3 +643,23 @@ fn right_to_left_cv_is_laid_out_from_the_right() {
         }
     }
 }
+
+/// The Arabic and Hindi CVs from the Linux test: a profile headed «الملخص» (with the article),
+/// and education on one line with only the year it ended («…، جامعة المثال، 2016»).
+#[test]
+fn reads_profile_and_one_line_education_in_arabic_and_hindi() {
+    for (file, school) in [("arabic-2.txt", "جامعة المثال"), ("hindi-2.txt", "उदाहरण विश्वविद्यालय")] {
+        let text = std::fs::read_to_string(format!("{}/tests/cv-files/scripts/{file}", env!("CARGO_MANIFEST_DIR"))).expect("test CV");
+        let read = import::read_cv(&text);
+        let p = &read.project;
+        assert!(!p.candidate.summary.is_empty(), "{file}: profile");
+        let edu = p.education.first().expect("education");
+        assert_eq!((edu.institution.as_str(), edu.end.as_str()), (school, "2016"), "{file}: education");
+        assert!(!edu.qualification.is_empty(), "{file}: degree");
+        assert!(read.rest.trim().is_empty(), "{file}: nothing left over, got {}", read.rest);
+    }
+    // The same in English: «BSc Computer Science, University of Example, 2016».
+    let p = import::read_cv("Sarah Ahmed\nSoftware Engineer\nLondon · sarah@example.com · +44 7700 900000\n\nEducation\nBSc Computer Science, University of Example, 2016\n").project;
+    let edu = p.education.first().expect("education");
+    assert_eq!((edu.qualification.as_str(), edu.institution.as_str(), edu.end.as_str()), ("BSc Computer Science", "University of Example", "2016"));
+}
