@@ -129,7 +129,9 @@ mod tests {
     use super::*;
 
     fn ctx(os: egui::os::OperatingSystem) -> Context {
+        // One frame first: the fonts (which decide ⌘ or Cmd) are loaded by the first run.
         let ctx = Context::default();
+        ctx.run_ui(egui::RawInput::default(), |_| {}).textures_delta.clear();
         ctx.set_os(os);
         ctx
     }
@@ -161,10 +163,9 @@ mod tests {
         let ctx = Context::default();
         let press = |modifiers: Modifiers, key: Key| {
             let mut input = egui::RawInput::default();
-            input.modifiers = modifiers;
             input.events.push(egui::Event::Key { key, physical_key: None, pressed: true, repeat: false, modifiers });
             let mut got = None;
-            let _ = ctx.run_ui(input, |ui| got = pressed(ui.ctx(), false).map(|a| format!("{a:?}")));
+            ctx.run_ui(input, |ui| got = pressed(ui.ctx(), false).map(|a| format!("{a:?}"))).textures_delta.clear();
             got
         };
         assert_eq!(press(CMD, Key::S).as_deref(), Some("Save"));

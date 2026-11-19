@@ -73,7 +73,7 @@ pub(crate) struct LangState {
     job: Option<Job>,
     message: Option<String>,
     confirm_delete: bool,
-    editor: Option<Editor>,
+    pub(crate) editor: Option<Editor>,
     picks_tx: Sender<LangPick>,
     picks_rx: Receiver<LangPick>,
 }
@@ -114,7 +114,7 @@ enum LangPick {
     Export(String, PathBuf),
 }
 
-struct Editor {
+pub(crate) struct Editor {
     code: String,
     /// (key, English, translation) for every text.
     rows: Vec<(&'static str, &'static str, String)>,
