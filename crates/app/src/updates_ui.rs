@@ -84,7 +84,9 @@ impl CvApp {
                         ui.ctx().open_url(egui::OpenUrl::new_tab(url));
                     }
                 }
-                if ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)")).clicked() {
+                let default = ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)"));
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     close = true;
                 }
             });

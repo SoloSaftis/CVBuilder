@@ -354,8 +354,7 @@ fn installed() -> Option<&'static Installed> {
 }
 
 /// Every language's name in every interface language, made by `node packaging/lang-tools.cjs names`.
-static LANGUAGE_NAMES: LazyLock<HashMap<String, HashMap<String, String>>> =
-    LazyLock::new(|| serde_json::from_str(include_str!("../../../assets/language-names.json")).unwrap_or_default());
+static LANGUAGE_NAMES: LazyLock<HashMap<String, HashMap<String, String>>> = LazyLock::new(|| serde_json::from_str(include_str!("../../../assets/language-names.json")).unwrap_or_default());
 
 /// The code of the interface language now in use: "no", "en" or a pack's code.
 pub fn current_code() -> String {
@@ -557,10 +556,15 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         // ---- cv-core: reading CV and ad files ----
         rule(r"^«\.(\w+)» kan ikke leses\. Bruk PDF, Word \(\.docx eller \.doc\), OpenDocument \(\.odt\), RTF, tekst \(\.txt/\.md\) eller en nettside \(\.html\)\.$", |c| {
             format!("«.{}» cannot be read. Use PDF, Word (.docx or .doc), OpenDocument (.odt), RTF, text (.txt/.md) or a web page (.html).", &c[1])
-        }).t("«.{a}» kan ikke leses. Bruk PDF, Word (.docx eller .doc), OpenDocument (.odt), RTF, tekst (.txt/.md) eller en nettside (.html).", "«.{a}» cannot be read. Use PDF, Word (.docx or .doc), OpenDocument (.odt), RTF, text (.txt/.md) or a web page (.html)."),
+        })
+        .t(
+            "«.{a}» kan ikke leses. Bruk PDF, Word (.docx eller .doc), OpenDocument (.odt), RTF, tekst (.txt/.md) eller en nettside (.html).",
+            "«.{a}» cannot be read. Use PDF, Word (.docx or .doc), OpenDocument (.odt), RTF, text (.txt/.md) or a web page (.html).",
+        ),
         rule(r"^Den eldre Word-filen \(\.doc\) kunne ikke leses: (.+)\. Åpne den i Word og lagre den som \.docx\.$", |c| {
             format!("The older Word file (.doc) could not be read: {}. Open it in Word and save it as .docx.", &c[1])
-        }).t("Den eldre Word-filen (.doc) kunne ikke leses: {a}. Åpne den i Word og lagre den som .docx.", "The older Word file (.doc) could not be read: {a}. Open it in Word and save it as .docx."),
+        })
+        .t("Den eldre Word-filen (.doc) kunne ikke leses: {a}. Åpne den i Word og lagre den som .docx.", "The older Word file (.doc) could not be read: {a}. Open it in Word and save it as .docx."),
         rule(r"^(RTF-filen|Nettarkivet \(\.mht\)|OpenDocument-filen) kunne ikke leses(?:: (.+))?\. Lagre den som Word \(\.docx\) eller PDF og prøv igjen\.$", |c| {
             let what = match &c[1] {
                 "RTF-filen" => "The RTF file",
@@ -573,61 +577,90 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         // ---- cv-core: own checklist files ----
         rule(r"Punkt (\d+) mangler tekst\.", |c| format!("Point {} has no text.", &c[1])).t("Punkt {a} mangler tekst.", "Point {a} has no text."),
         rule(r"Punkt (\d+) har ingen egen id\.", |c| format!("Point {} has no id of its own.", &c[1])).t("Punkt {a} har ingen egen id.", "Point {a} has no id of its own."),
-        rule(r"Punkt (\d+): skriv ordet CV-en skal \(eller ikke skal\) nevne\.", |c| format!("Point {}: write the word the CV should (or should not) mention.", &c[1])).t("Punkt {a}: skriv ordet CV-en skal (eller ikke skal) nevne.", "Point {a}: write the word the CV should (or should not) mention."),
-        rule(r"Punkt (\d+): antall sider må være et tall fra 1 til 10\.", |c| format!("Point {}: the number of pages must be from 1 to 10.", &c[1])).t("Punkt {a}: antall sider må være et tall fra 1 til 10.", "Point {a}: the number of pages must be from 1 to 10."),
-        rule(r"Punkt (\d+): feltet må være ett av (.+)\.", |c| format!("Point {}: the field must be one of {}.", &c[1], &c[2])).t("Punkt {a}: feltet må være ett av {b}.", "Point {a}: the field must be one of {b}."),
-        rule(r"Filen er ikke en CVBuilder-sjekkliste: (.*)", |c| format!("The file is not a CVBuilder checklist: {}", &c[1])).t("Filen er ikke en CVBuilder-sjekkliste: {a}", "The file is not a CVBuilder checklist: {a}"),
+        rule(r"Punkt (\d+): skriv ordet CV-en skal \(eller ikke skal\) nevne\.", |c| format!("Point {}: write the word the CV should (or should not) mention.", &c[1]))
+            .t("Punkt {a}: skriv ordet CV-en skal (eller ikke skal) nevne.", "Point {a}: write the word the CV should (or should not) mention."),
+        rule(r"Punkt (\d+): antall sider må være et tall fra 1 til 10\.", |c| format!("Point {}: the number of pages must be from 1 to 10.", &c[1]))
+            .t("Punkt {a}: antall sider må være et tall fra 1 til 10.", "Point {a}: the number of pages must be from 1 to 10."),
+        rule(r"Punkt (\d+): feltet må være ett av (.+)\.", |c| format!("Point {}: the field must be one of {}.", &c[1], &c[2]))
+            .t("Punkt {a}: feltet må være ett av {b}.", "Point {a}: the field must be one of {b}."),
+        rule(r"Filen er ikke en CVBuilder-sjekkliste: (.*)", |c| format!("The file is not a CVBuilder checklist: {}", &c[1]))
+            .t("Filen er ikke en CVBuilder-sjekkliste: {a}", "The file is not a CVBuilder checklist: {a}"),
         // ---- cv-core: release check ----
         rule(r"(.+) må fylles ut\.", |c| format!("{} is required.", word(&c[1]))).t("{a} må fylles ut.", "{a} is required."),
         rule(r"(Jobb \d+(?: \(.*\))?|Utdanning \d+): (.+)", |c| format!("{}: {}", item_name(&c[1]), word(&c[2]))),
         rule(r"Kompetanse (\d+) mangler navn\.", |c| format!("Skill {} has no name.", &c[1])).t("Kompetanse {a} mangler navn.", "Skill {a} has no name."),
         // ---- cv-core: recruiter checklist ----
         rule(r"Profilen har (\d+) ord", |c| format!("The profile has {}", plural(&c[1], "word", "words"))).t("Profilen har {a} ord", "The profile has {a} words"),
-        rule(r"Bare (\d+) av (\d+) fagord fra annonsen finnes i CV-en", |c| format!("Only {} of {} keywords from the ad are in the CV", &c[1], &c[2])).t("Bare {a} av {b} fagord fra annonsen finnes i CV-en", "Only {a} of {b} keywords from the ad are in the CV"),
-        rule(r"(\d+) av (\d+) fagord fra annonsen finnes i CV-en", |c| format!("{} of {} keywords from the ad are in the CV", &c[1], &c[2])).t("{a} av {b} fagord fra annonsen finnes i CV-en", "{a} of {b} keywords from the ad are in the CV"),
+        rule(r"Bare (\d+) av (\d+) fagord fra annonsen finnes i CV-en", |c| format!("Only {} of {} keywords from the ad are in the CV", &c[1], &c[2]))
+            .t("Bare {a} av {b} fagord fra annonsen finnes i CV-en", "Only {a} of {b} keywords from the ad are in the CV"),
+        rule(r"(\d+) av (\d+) fagord fra annonsen finnes i CV-en", |c| format!("{} of {} keywords from the ad are in the CV", &c[1], &c[2]))
+            .t("{a} av {b} fagord fra annonsen finnes i CV-en", "{a} of {b} keywords from the ad are in the CV"),
         rule(r"Mangler: (.*)\. Bruk annonsens ordlyd der du faktisk har erfaringen\. Legg aldri inn ord du ikke kan stå for\.", |c| {
             format!("Missing: {}. Use the ad's wording where you really have the experience. Never add words you can't stand behind.", &c[1])
-        }).t("Mangler: {a}. Bruk annonsens ordlyd der du faktisk har erfaringen. Legg aldri inn ord du ikke kan stå for.", "Missing: {a}. Use the ad's wording where you really have the experience. Never add words you can't stand behind."),
-        rule(r"(\d+) kompetanser i kompetanseseksjonen", |c| format!("{} in the skills section", plural(&c[1], "skill", "skills"))).t("{a} kompetanser i kompetanseseksjonen", "{a} skills in the skills section"),
+        })
+        .t(
+            "Mangler: {a}. Bruk annonsens ordlyd der du faktisk har erfaringen. Legg aldri inn ord du ikke kan stå for.",
+            "Missing: {a}. Use the ad's wording where you really have the experience. Never add words you can't stand behind.",
+        ),
+        rule(r"(\d+) kompetanser i kompetanseseksjonen", |c| format!("{} in the skills section", plural(&c[1], "skill", "skills")))
+            .t("{a} kompetanser i kompetanseseksjonen", "{a} skills in the skills section"),
         rule(r"Bare (\d+) kompetanser", |c| format!("Only {}", plural(&c[1], "skill", "skills"))).t("Bare {a} kompetanser", "Only {a} skills"),
-        rule(r"(\d+) punkt er for lange", |c| if &c[1] == "1" { "1 bullet point is too long".into() } else { format!("{} bullet points are too long", &c[1]) }).t("{a} punkt er for lange", "{a} bullet points are too long"),
-        rule(r"Hold hvert punkt til én–to linjer\. Gjelder: (.*)", |c| format!("Keep each bullet point to one or two lines. Applies to: {}", &c[1])).t("Hold hvert punkt til én–to linjer. Gjelder: {a}", "Keep each bullet point to one or two lines. Applies to: {a}"),
+        rule(r"(\d+) punkt er for lange", |c| if &c[1] == "1" { "1 bullet point is too long".into() } else { format!("{} bullet points are too long", &c[1]) })
+            .t("{a} punkt er for lange", "{a} bullet points are too long"),
+        rule(r"Hold hvert punkt til én–to linjer\. Gjelder: (.*)", |c| format!("Keep each bullet point to one or two lines. Applies to: {}", &c[1]))
+            .t("Hold hvert punkt til én–to linjer. Gjelder: {a}", "Keep each bullet point to one or two lines. Applies to: {a}"),
         rule(r"(\d+) punkt starter med «Jeg» eller «Ansvarlig for»", |c| {
             if &c[1] == "1" { "1 bullet point starts with “I” or “Responsible for”".into() } else { format!("{} bullet points start with “I” or “Responsible for”", &c[1]) }
-        }).t("{a} punkt starter med «Jeg» eller «Ansvarlig for»", "{a} bullet points start with “I” or “Responsible for”"),
-        rule(r"Start med et verb: «Ledet …», «Innførte …», «Behandlet …»\. Gjelder: (.*)", |c| format!("Start with a verb: “Led …”, “Introduced …”, “Handled …”. Applies to: {}", &c[1])).t("Start med et verb: «Ledet …», «Innførte …», «Behandlet …». Gjelder: {a}", "Start with a verb: “Led …”, “Introduced …”, “Handled …”. Applies to: {a}"),
+        })
+        .t("{a} punkt starter med «Jeg» eller «Ansvarlig for»", "{a} bullet points start with “I” or “Responsible for”"),
+        rule(r"Start med et verb: «Ledet …», «Innførte …», «Behandlet …»\. Gjelder: (.*)", |c| format!("Start with a verb: “Led …”, “Introduced …”, “Handled …”. Applies to: {}", &c[1]))
+            .t("Start med et verb: «Ledet …», «Innførte …», «Behandlet …». Gjelder: {a}", "Start with a verb: “Led …”, “Introduced …”, “Handled …”. Applies to: {a}"),
         rule(r"Varier verbene\. Gjentatt: (.*)\.", |c| format!("Vary the verbs. Repeated: {}.", &c[1])).t("Varier verbene. Gjentatt: {a}.", "Vary the verbs. Repeated: {a}."),
-        rule(r"(\d+) av (\d+) jobber viser et målbart resultat", |c| format!("{} of {} jobs show a measurable result", &c[1], &c[2])).t("{a} av {b} jobber viser et målbart resultat", "{a} of {b} jobs show a measurable result"),
-        rule(r"Vis heller med eksempler enn å skrive: (.*)\.", |c| format!("Show it with examples instead of writing: {}.", &c[1])).t("Vis heller med eksempler enn å skrive: {a}.", "Show it with examples instead of writing: {a}."),
+        rule(r"(\d+) av (\d+) jobber viser et målbart resultat", |c| format!("{} of {} jobs show a measurable result", &c[1], &c[2]))
+            .t("{a} av {b} jobber viser et målbart resultat", "{a} of {b} jobs show a measurable result"),
+        rule(r"Vis heller med eksempler enn å skrive: (.*)\.", |c| format!("Show it with examples instead of writing: {}.", &c[1]))
+            .t("Vis heller med eksempler enn å skrive: {a}.", "Show it with examples instead of writing: {a}."),
         rule(r"(.*)\. Forklar kort, for eksempel studier, permisjon eller omstilling\.", |c| {
             static GAP: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(\d+) måneder mellom (.*) og (.*)$").expect("i18n pattern"));
             let gaps = c[1].split("; ").map(|g| GAP.captures(g).map(|m| format!("{} months between {} and {}", &m[1], &m[2], &m[3])).unwrap_or_else(|| g.to_string())).collect::<Vec<_>>().join("; ");
             format!("{gaps}. Explain briefly, for example studies, leave or a career change.")
-        }).t("{a}. Forklar kort, for eksempel studier, permisjon eller omstilling.", "{a}. Explain briefly, for example studies, leave or a career change."),
+        })
+        .t("{a}. Forklar kort, for eksempel studier, permisjon eller omstilling.", "{a}. Explain briefly, for example studies, leave or a career change."),
         rule(r"(\d+) A4-sider; maks to", |c| format!("{} A4 pages; two at most", &c[1])).t("{a} A4-sider; maks to", "{a} A4 pages; two at most"),
         rule(r"(\d+) A4-sider?", |c| plural(&c[1], "A4 page", "A4 pages")).t("{a} A4-sider", "{a} A4 pages"),
         // ---- cv-core: designs ----
-        rule(r"Basert på malen «(.+)» i Reactive Resume \(MIT-lisens\), © Amruth Pillai", |c| format!("Based on the “{}” template in Reactive Resume (MIT license), © Amruth Pillai", &c[1])).t("Basert på malen «{a}» i Reactive Resume (MIT-lisens), © Amruth Pillai", "Based on the “{a}” template in Reactive Resume (MIT license), © Amruth Pillai"),
+        rule(r"Basert på malen «(.+)» i Reactive Resume \(MIT-lisens\), © Amruth Pillai", |c| format!("Based on the “{}” template in Reactive Resume (MIT license), © Amruth Pillai", &c[1]))
+            .t("Basert på malen «{a}» i Reactive Resume (MIT-lisens), © Amruth Pillai", "Based on the “{a}” template in Reactive Resume (MIT license), © Amruth Pillai"),
         rule(r"Basert på temaet «(.+)» i RenderCV \(MIT-lisens\), © Sina Atalay og bidragsyterne", |c| {
             format!("Based on the “{}” theme in RenderCV (MIT license), © Sina Atalay and contributors", &c[1])
-        }).t("Basert på temaet «{a}» i RenderCV (MIT-lisens), © Sina Atalay og bidragsyterne", "Based on the “{a}” theme in RenderCV (MIT license), © Sina Atalay and contributors"),
-        rule(r"Filen er ikke en CVBuilder-design: (.*)", |c| format!("The file is not a CVBuilder design: {}", &c[1])).t("Filen er ikke en CVBuilder-design: {a}", "The file is not a CVBuilder design: {a}"),
+        })
+        .t("Basert på temaet «{a}» i RenderCV (MIT-lisens), © Sina Atalay og bidragsyterne", "Based on the “{a}” theme in RenderCV (MIT license), © Sina Atalay and contributors"),
+        rule(r"Filen er ikke en CVBuilder-design: (.*)", |c| format!("The file is not a CVBuilder design: {}", &c[1]))
+            .t("Filen er ikke en CVBuilder-design: {a}", "The file is not a CVBuilder design: {a}"),
         rule(r"«format» må være «(.+)»\.", |c| format!("“format” must be “{}”.", &c[1])).t("«format» må være «{a}».", "“format” must be “{a}”."),
-        rule(r"«id» «(.+)» brukes allerede av et innebygd design\. Velg en annen id\.", |c| format!("“id” “{}” is already used by a built-in design. Choose another id.", &c[1])).t("«id» «{a}» brukes allerede av et innebygd design. Velg en annen id.", "“id” “{a}” is already used by a built-in design. Choose another id."),
-        rule(r"«(\w+)»: «(.+)» er ikke en av de tillatte skriftene \((.+)\)\.", |c| format!("“{}”: “{}” is not one of the allowed fonts ({}).", &c[1], &c[2], &c[3])).t("«{a}»: «{b}» er ikke en av de tillatte skriftene ({c}).", "“{a}”: “{b}” is not one of the allowed fonts ({c})."),
-        rule(r"«(\w+)» må være mellom (\S+) og (\S+)\.", |c| format!("“{}” must be between {} and {}.", &c[1], &c[2], &c[3])).t("«{a}» må være mellom {b} og {c}.", "“{a}” must be between {b} and {c}."),
-        rule(r"«section_colors»: «(.+)» er ikke en seksjon \((.+)\)\.", |c| format!("“section_colors”: “{}” is not a section ({}).", &c[1], &c[2])).t("«section_colors»: «{a}» er ikke en seksjon ({b}).", "“section_colors”: “{a}” is not a section ({b})."),
-        rule(r"«section_colors» «(.+)» er for svak for overskrifter \(kontrast under 3:1\)\.", |c| format!("“section_colors” “{}” is too weak for headings (contrast below 3:1).", &c[1])).t("«section_colors» «{a}» er for svak for overskrifter (kontrast under 3:1).", "“section_colors” “{a}” is too weak for headings (contrast below 3:1)."),
+        rule(r"«id» «(.+)» brukes allerede av et innebygd design\. Velg en annen id\.", |c| format!("“id” “{}” is already used by a built-in design. Choose another id.", &c[1]))
+            .t("«id» «{a}» brukes allerede av et innebygd design. Velg en annen id.", "“id” “{a}” is already used by a built-in design. Choose another id."),
+        rule(r"«(\w+)»: «(.+)» er ikke en av de tillatte skriftene \((.+)\)\.", |c| format!("“{}”: “{}” is not one of the allowed fonts ({}).", &c[1], &c[2], &c[3]))
+            .t("«{a}»: «{b}» er ikke en av de tillatte skriftene ({c}).", "“{a}”: “{b}” is not one of the allowed fonts ({c})."),
+        rule(r"«(\w+)» må være mellom (\S+) og (\S+)\.", |c| format!("“{}” must be between {} and {}.", &c[1], &c[2], &c[3]))
+            .t("«{a}» må være mellom {b} og {c}.", "“{a}” must be between {b} and {c}."),
+        rule(r"«section_colors»: «(.+)» er ikke en seksjon \((.+)\)\.", |c| format!("“section_colors”: “{}” is not a section ({}).", &c[1], &c[2]))
+            .t("«section_colors»: «{a}» er ikke en seksjon ({b}).", "“section_colors”: “{a}” is not a section ({b})."),
+        rule(r"«section_colors» «(.+)» er for svak for overskrifter \(kontrast under 3:1\)\.", |c| format!("“section_colors” “{}” is too weak for headings (contrast below 3:1).", &c[1]))
+            .t("«section_colors» «{a}» er for svak for overskrifter (kontrast under 3:1).", "“section_colors” “{a}” is too weak for headings (contrast below 3:1)."),
         rule(r"«category» må være en av: (.+)\.", |c| format!("“category” must be one of: {}.", &c[1])).t("«category» må være en av: {a}.", "“category” must be one of: {a}."),
-        rule(r"«columns\.sections»: «(.+)» er ikke en seksjon\.", |c| format!("“columns.sections”: “{}” is not a section.", &c[1])).t("«columns.sections»: «{a}» er ikke en seksjon.", "“columns.sections”: “{a}” is not a section."),
-        rule(r"«(\w+)» må være en farge som «#2F4A66»\.", |c| format!("“{}” must be a color like “#2F4A66”.", &c[1])).t("«{a}» må være en farge som «#2F4A66».", "“{a}” must be a color like “#2F4A66”."),
+        rule(r"«columns\.sections»: «(.+)» er ikke en seksjon\.", |c| format!("“columns.sections”: “{}” is not a section.", &c[1]))
+            .t("«columns.sections»: «{a}» er ikke en seksjon.", "“columns.sections”: “{a}” is not a section."),
+        rule(r"«(\w+)» må være en farge som «#2F4A66»\.", |c| format!("“{}” must be a color like “#2F4A66”.", &c[1]))
+            .t("«{a}» må være en farge som «#2F4A66».", "“{a}” must be a color like “#2F4A66”."),
         // ---- cv-core: import ----
         rule(r"Filen kunne ikke leses: (.*)", |c| format!("The file could not be read: {}", &c[1])).t("Filen kunne ikke leses: {a}", "The file could not be read: {a}"),
         rule(r"Word-filen kunne ikke leses: (.*)", |c| format!("The Word file could not be read: {}", &c[1])).t("Word-filen kunne ikke leses: {a}", "The Word file could not be read: {a}"),
         rule(r"PDF-en kunne ikke leses: (.*)", |c| format!("The PDF could not be read: {}", &c[1])).t("PDF-en kunne ikke leses: {a}", "The PDF could not be read: {a}"),
         rule(r"«\.(.*)» kan ikke leses\. Bruk PDF, Word \(\.docx\), tekst \(\.txt/\.md\) eller en nettside \(\.html\)\.", |c| {
             format!("“.{}” cannot be read. Use PDF, Word (.docx), text (.txt/.md) or a web page (.html).", &c[1])
-        }).t("«.{a}» kan ikke leses. Bruk PDF, Word (.docx), tekst (.txt/.md) eller en nettside (.html).", "“.{a}” cannot be read. Use PDF, Word (.docx), text (.txt/.md) or a web page (.html)."),
+        })
+        .t("«.{a}» kan ikke leses. Bruk PDF, Word (.docx), tekst (.txt/.md) eller en nettside (.html).", "“.{a}” cannot be read. Use PDF, Word (.docx), text (.txt/.md) or a web page (.html)."),
         rule(r"^Claude Code stoppet: (.+)$", |c| format!("Claude Code stopped: {}", &c[1])).t("Claude Code stoppet: {a}", "Claude Code stopped: {a}"),
         rule(r"(Annonsen er lagt inn\.|Fra annonsen: .+?\.)(?: (\d+) fagord står allerede i CV-en din og er lagt til i kompetanse: (.+)\.)?", |c| {
             static COUNT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(\d+) fagord$").expect("i18n pattern"));
@@ -646,26 +679,44 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         // ---- cv-ai: fetching pages and talking to AI services ----
         rule(r"Siden svarte med feil (\d+)\. Noen nettsteder krever innlogging; lim da inn annonseteksten selv\.", |c| {
             format!("The page answered with error {}. Some sites require sign-in; then paste the ad text yourself.", &c[1])
-        }).t("Siden svarte med feil {a}. Noen nettsteder krever innlogging; lim da inn annonseteksten selv.", "The page answered with error {a}. Some sites require sign-in; then paste the ad text yourself."),
+        })
+        .t(
+            "Siden svarte med feil {a}. Noen nettsteder krever innlogging; lim da inn annonseteksten selv.",
+            "The page answered with error {a}. Some sites require sign-in; then paste the ad text yourself.",
+        ),
         rule(r"Siden svarte ikke innen (\d+) sekunder\. Prøv igjen, eller kopier annonseteksten og lim den inn\.", |c| {
             format!("The page did not answer within {} seconds. Try again, or copy the ad text and paste it in.", &c[1])
-        }).t("Siden svarte ikke innen {a} sekunder. Prøv igjen, eller kopier annonseteksten og lim den inn.", "The page did not answer within {a} seconds. Try again, or copy the ad text and paste it in."),
-        rule(r"Fikk ikke kontakt med den lokale AI-serveren på (.+)\. Kjører den fortsatt\?", |c| format!("Could not reach the local AI server at {}. Is it still running?", &c[1])).t("Fikk ikke kontakt med den lokale AI-serveren på {a}. Kjører den fortsatt?", "Could not reach the local AI server at {a}. Is it still running?"),
-        rule(r"Fikk ikke kontakt med (.+)\. Sjekk internettforbindelsen\.", |c| format!("Could not reach {}. Check your internet connection.", &c[1])).t("Fikk ikke kontakt med {a}. Sjekk internettforbindelsen.", "Could not reach {a}. Check your internet connection."),
-        rule(r"(.+) er opptatt eller har nådd en grense\. Vent litt og prøv igjen\.", |c| format!("{} is busy or has reached a limit. Wait a moment and try again.", &c[1])).t("{a} er opptatt eller har nådd en grense. Vent litt og prøv igjen.", "{a} is busy or has reached a limit. Wait a moment and try again."),
-        rule(r"(.+) avslo forespørselen\. Prøv en annen formulering eller en annen tjeneste\.", |c| format!("{} refused the request. Try different wording or another service.", &c[1])).t("{a} avslo forespørselen. Prøv en annen formulering eller en annen tjeneste.", "{a} refused the request. Try different wording or another service."),
-        rule(r"(.+) svarte, men ikke i formatet CVBuilder trenger\. Prøv igjen\.", |c| format!("{} answered, but not in the format CVBuilder needs. Try again.", &c[1])).t("{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.", "{a} answered, but not in the format CVBuilder needs. Try again."),
+        })
+        .t(
+            "Siden svarte ikke innen {a} sekunder. Prøv igjen, eller kopier annonseteksten og lim den inn.",
+            "The page did not answer within {a} seconds. Try again, or copy the ad text and paste it in.",
+        ),
+        rule(r"Fikk ikke kontakt med den lokale AI-serveren på (.+)\. Kjører den fortsatt\?", |c| format!("Could not reach the local AI server at {}. Is it still running?", &c[1]))
+            .t("Fikk ikke kontakt med den lokale AI-serveren på {a}. Kjører den fortsatt?", "Could not reach the local AI server at {a}. Is it still running?"),
+        rule(r"Fikk ikke kontakt med (.+)\. Sjekk internettforbindelsen\.", |c| format!("Could not reach {}. Check your internet connection.", &c[1]))
+            .t("Fikk ikke kontakt med {a}. Sjekk internettforbindelsen.", "Could not reach {a}. Check your internet connection."),
+        rule(r"(.+) er opptatt eller har nådd en grense\. Vent litt og prøv igjen\.", |c| format!("{} is busy or has reached a limit. Wait a moment and try again.", &c[1]))
+            .t("{a} er opptatt eller har nådd en grense. Vent litt og prøv igjen.", "{a} is busy or has reached a limit. Wait a moment and try again."),
+        rule(r"(.+) avslo forespørselen\. Prøv en annen formulering eller en annen tjeneste\.", |c| format!("{} refused the request. Try different wording or another service.", &c[1]))
+            .t("{a} avslo forespørselen. Prøv en annen formulering eller en annen tjeneste.", "{a} refused the request. Try different wording or another service."),
+        rule(r"(.+) svarte, men ikke i formatet CVBuilder trenger\. Prøv igjen\.", |c| format!("{} answered, but not in the format CVBuilder needs. Try again.", &c[1]))
+            .t("{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.", "{a} answered, but not in the format CVBuilder needs. Try again."),
         rule(r"([^:]+): fikk ikke kontakt med (.+)\. Kjører Ollama, LM Studio eller serveren din\?", |c| {
             format!("{}: could not reach {}. Is Ollama, LM Studio or your server running?", &c[1], &c[2])
-        }).t("{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?", "{a}: could not reach {b}. Is Ollama, LM Studio or your server running?"),
-        rule(r"([^:]+): fant ingen modeller for denne nøkkelen", |c| format!("{}: no models found for this key", &c[1])).t("{a}: fant ingen modeller for denne nøkkelen", "{a}: no models found for this key"),
-        rule(r"([^:]+): oversettelsen manglet deler av CV-en; prøv igjen", |c| format!("{}: the translation left out parts of the CV; try again", &c[1])).t("{a}: oversettelsen manglet deler av CV-en; prøv igjen", "{a}: the translation left out parts of the CV; try again"),
+        })
+        .t("{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?", "{a}: could not reach {b}. Is Ollama, LM Studio or your server running?"),
+        rule(r"([^:]+): fant ingen modeller for denne nøkkelen", |c| format!("{}: no models found for this key", &c[1]))
+            .t("{a}: fant ingen modeller for denne nøkkelen", "{a}: no models found for this key"),
+        rule(r"([^:]+): oversettelsen manglet deler av CV-en; prøv igjen", |c| format!("{}: the translation left out parts of the CV; try again", &c[1]))
+            .t("{a}: oversettelsen manglet deler av CV-en; prøv igjen", "{a}: the translation left out parts of the CV; try again"),
         // ---- cv-mcp: what a tool call changed, listed in the chat ----
         rule(r"La til jobben (.+)", |c| format!("Added the job {}", job_label(&c[1]))),
         rule(r"Fjernet jobben (.+)", |c| format!("Removed the job {}", job_label(&c[1]))),
-        rule(r"Oppdaterte kjernekompetansen \((\d+) punkter\)", |c| format!("Updated the core skills ({} items)", &c[1])).t("Oppdaterte kjernekompetansen ({a} punkter)", "Updated the core skills ({a} items)"),
+        rule(r"Oppdaterte kjernekompetansen \((\d+) punkter\)", |c| format!("Updated the core skills ({} items)", &c[1]))
+            .t("Oppdaterte kjernekompetansen ({a} punkter)", "Updated the core skills ({a} items)"),
         rule(r"Oppdaterte utdanningen \((\d+)\)", |c| format!("Updated the education ({})", &c[1])).t("Oppdaterte utdanningen ({a})", "Updated the education ({a})"),
-        rule(r"Oppdaterte kurs og sertifiseringer \((\d+)\)", |c| format!("Updated courses and certifications ({})", &c[1])).t("Oppdaterte kurs og sertifiseringer ({a})", "Updated courses and certifications ({a})"),
+        rule(r"Oppdaterte kurs og sertifiseringer \((\d+)\)", |c| format!("Updated courses and certifications ({})", &c[1]))
+            .t("Oppdaterte kurs og sertifiseringer ({a})", "Updated courses and certifications ({a})"),
         rule(r"Byttet design til (.+)", |c| format!("Switched the design to {}", &c[1])).t("Byttet design til {a}", "Switched the design to {a}"),
         rule(r"Endret seksjonen «(.+)»", |c| format!("Changed the section “{}”", &c[1])).t("Endret seksjonen «{a}»", "Changed the section “{a}”"),
         rule(r"La til seksjonen «(.+)»", |c| format!("Added the section “{}”", &c[1])).t("La til seksjonen «{a}»", "Added the section “{a}”"),
@@ -799,7 +850,10 @@ static EN: &[(&str, &str)] = &[
     ("Brukerveiledning", "User guide"),
     ("Slik bruker du CVBuilder, steg for steg (F1). Åpnes i nettleseren.", "How to use CVBuilder, step by step (F1). Opens in your browser."),
     ("Meld fra om et problem", "Report a problem"),
-    ("Åpner GitHub i nettleseren med versjonen fylt inn. Ikke legg ved en ekte CV eller personopplysninger.", "Opens GitHub in your browser with the version filled in. Do not attach a real CV or personal details."),
+    (
+        "Åpner GitHub i nettleseren med versjonen fylt inn. Ikke legg ved en ekte CV eller personopplysninger.",
+        "Opens GitHub in your browser with the version filled in. Do not attach a real CV or personal details.",
+    ),
     ("Hvordan vil du starte?", "How would you like to start?"),
     ("Hent inn CV-en jeg har", "Import the CV I have"),
     ("Les inn en CV du allerede har: Word, PDF, tekst og mer, uten internett", "Read in a CV you already have: Word, PDF, text and more, without internet"),
@@ -808,8 +862,14 @@ static EN: &[(&str, &str)] = &[
     ("Se et eksempel først", "Show me an example first"),
     ("Et ferdig utfylt eksempel med en oppdiktet person. Du kan starte din egen når som helst.", "A filled-in example with a made-up person. You can start your own at any time."),
     ("Tekststørrelse i vinduet", "Text size in the window"),
-    ("Gjør menyer, knapper og skjema større eller mindre. Ctrl + pluss og minus gjør det samme. Tekststørrelsen i selve CV-en velges under Sideoppsett.", "Makes menus, buttons and the form bigger or smaller. Ctrl + plus and minus do the same. The text size of the CV itself is chosen under Layout."),
-    ("Et sidefelt (valgfritt): side, bredde, farger og hvilke deler som står der. Utelat det for én spalte, som leses sikrest av ATS. Se DESIGN-FORMAT.md.", "A sidebar (optional): side, width, colours and which sections go there. Leave it out for one column, which an ATS reads most reliably. See DESIGN-FORMAT.md."),
+    (
+        "Gjør menyer, knapper og skjema større eller mindre. Ctrl + pluss og minus gjør det samme. Tekststørrelsen i selve CV-en velges under Sideoppsett.",
+        "Makes menus, buttons and the form bigger or smaller. Ctrl + plus and minus do the same. The text size of the CV itself is chosen under Layout.",
+    ),
+    (
+        "Et sidefelt (valgfritt): side, bredde, farger og hvilke deler som står der. Utelat det for én spalte, som leses sikrest av ATS. Se DESIGN-FORMAT.md.",
+        "A sidebar (optional): side, width, colours and which sections go there. Leave it out for one column, which an ATS reads most reliably. See DESIGN-FORMAT.md.",
+    ),
     ("Spør GitHub om det finnes en nyere versjon. Ingenting lastes ned av seg selv.", "Asks GitHub whether there is a newer version. Nothing is downloaded by itself."),
     ("Ser etter oppdateringer …", "Checking for updates …"),
     ("Fikk ikke sjekket: {error}", "Could not check: {error}"),
@@ -923,6 +983,9 @@ static EN: &[(&str, &str)] = &[
     ("Tom CV klar. Den forrige kan hentes tilbake med Angre.", "Blank CV ready. The previous one can be brought back with Undo."),
     ("Du ser eksemplet. CV-en din kan hentes tilbake med Angre.", "You are looking at the example. Your CV can be brought back with Undo."),
     ("Angret.", "Undone."),
+    ("Gjør om", "Redo"),
+    ("Gjør om det du angret", "Bring back what you undid"),
+    ("Gjort om.", "Redone."),
     ("Lagt til. Fyll ut feltene i skjemaet.", "Added. Fill in the fields in the form."),
     ("CV-er som rekrutterere og søknadssystemer leser riktig", "CVs that recruiters and applicant tracking systems read correctly"),
     ("Versjon", "Version"),
@@ -1396,13 +1459,19 @@ static EN: &[(&str, &str)] = &[
     ("Mal-filen er lagret: {path}. Endre den og importer den igjen.", "The template file is saved: {path}. Edit it and import it again."),
     ("Kunne ikke lagre mal-filen: {e}", "Could not save the template file: {e}"),
     ("Importer eget design", "Import your own design"),
-    ("Et design bestemmer skrift, størrelser, farger, toppfelt og overskrifter, og eventuelt et sidefelt. Teksten og rekkefølgen er lik i alle design. Én spalte leses sikrest av søknadssystemer (ATS).", "A design sets the fonts, sizes, colours, header and headings, and optionally a sidebar. The text and its order are the same in every design. One column is read most reliably by applicant tracking systems (ATS)."),
+    (
+        "Et design bestemmer skrift, størrelser, farger, toppfelt og overskrifter, og eventuelt et sidefelt. Teksten og rekkefølgen er lik i alle design. Én spalte leses sikrest av søknadssystemer (ATS).",
+        "A design sets the fonts, sizes, colours, header and headings, and optionally a sidebar. The text and its order are the same in every design. One column is read most reliably by applicant tracking systems (ATS).",
+    ),
     ("Filformat: .cvdesign.json", "File format: .cvdesign.json"),
     (
         "En JSON-fil (UTF-8) med feltene under. «format» må være «cvbuilder-design/1». Lag en ved å lagre et design du liker som mal-fil og endre den.",
         "A JSON file (UTF-8) with the fields below. “format” must be “cvbuilder-design/1”. Make one by saving a design you like as a template file and editing it.",
     ),
-    ("Ikke mulig, med vilje: tabeller, tekstbokser, ikoner, ferdighetsstolper og tekst i topp- eller bunntekst. Det gjør CV-er vanskeligere å lese for ATS.", "Not possible, on purpose: tables, text boxes, icons, skill bars and text in headers or footers. They make CVs harder for an ATS to read."),
+    (
+        "Ikke mulig, med vilje: tabeller, tekstbokser, ikoner, ferdighetsstolper og tekst i topp- eller bunntekst. Det gjør CV-er vanskeligere å lese for ATS.",
+        "Not possible, on purpose: tables, text boxes, icons, skill bars and text in headers or footers. They make CVs harder for an ATS to read.",
+    ),
     ("Velg fil …", "Choose file …"),
     ("Lagre mal-fil å starte fra …", "Save a template file to start from …"),
     ("2–40 tegn: a–z, 0–9 og bindestrek. Ikke det samme som et innebygd design.", "2–40 characters: a–z, 0–9 and hyphen. Not the same as a built-in design."),
@@ -1467,7 +1536,7 @@ static EN: &[(&str, &str)] = &[
     ("Koble til AI under AI-fanen for å bruke dette.", "Connect AI under the AI tab to use this."),
     (
         "Uten AI – på denne maskinen: kontaktinfo, profil, jobber, utdanning, kompetanse, språk, kurs og interesser.",
-        "Without AI – on this computer: contact details, profile, jobs, education, skills, languages, courses and interests."
+        "Without AI – on this computer: contact details, profile, jobs, education, skills, languages, courses and interests.",
     ),
     (
         "Du får en ny CV med designet og fargene du har valgt. Den du har nå kan hentes tilbake med Angre. Med AI sendes teksten til tjenesten du har koblet til.",
@@ -1477,7 +1546,7 @@ static EN: &[(&str, &str)] = &[
     ("Dette må plasseres", "This still needs a place"),
     (
         "Det meste er fylt inn. Dette kunne ikke plasseres sikkert – legg det inn selv i skjemaet (kopier fra teksten under), eller la AI-en gjøre det.",
-        "Most of it is filled in. This could not be placed with confidence – add it in the form yourself (copy from the text below), or let the AI do it."
+        "Most of it is filled in. This could not be placed with confidence – add it in the form yourself (copy from the text below), or let the AI do it.",
     ),
     ("La AI-en legge det inn", "Let the AI add it"),
     ("Kopier teksten", "Copy the text"),
@@ -1661,8 +1730,9 @@ static EN: &[(&str, &str)] = &[
     ("Slå av den lokale modellen i CVBuilder", "Turn off the local model in CVBuilder"),
     // import_ui.rs, settings_ui.rs, lib.rs
     ("AI-en leser hele CV-en og fyller ut alle delene. Teksten sendes til AI-tjenesten.", "The AI reads the whole CV and fills in every part. The text is sent to the AI service."),
-    ("Leses på denne maskinen, og ingenting sendes. Sjekk resultatet; det som ikke kunne plasseres, vises til slutt.",
-        "Read on this computer, and nothing is sent. Check the result; anything that could not be placed is shown at the end."
+    (
+        "Leses på denne maskinen, og ingenting sendes. Sjekk resultatet; det som ikke kunne plasseres, vises til slutt.",
+        "Read on this computer, and nothing is sent. Check the result; anything that could not be placed is shown at the end.",
     ),
     ("Velg CV-filen du vil hente inn", "Choose the CV file you want to bring in"),
     ("Lukk uten å endre noe (Esc)", "Close without changing anything (Esc)"),

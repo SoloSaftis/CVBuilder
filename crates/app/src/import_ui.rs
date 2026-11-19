@@ -92,6 +92,7 @@ impl CvApp {
         }
         let note = i18n::tdyn(&import::apply_ad(&mut self.project, &ad));
         self.undo = Some(before);
+        self.redo = None;
         self.buffers.remove("keywords");
         self.folded.remove("target");
         self.import.ad_note = note.clone();
@@ -179,7 +180,12 @@ impl CvApp {
             egui::Frame::new().fill(t.accent_soft).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin::same(10)).show(ui, |ui| {
                 ui.set_width(ui.available_width());
                 ui.label(RichText::new(i18n::t("Filer som kan leses")).family(theme::medium()));
-                ui.add(egui::Label::new(i18n::t("PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)")).wrap());
+                ui.add(
+                    egui::Label::new(i18n::t(
+                        "PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)",
+                    ))
+                    .wrap(),
+                );
             });
             ui.add_space(8.0);
             ui.add_enabled_ui(has_ai, |ui| {
@@ -196,7 +202,9 @@ impl CvApp {
             theme::hint(ui, i18n::t("Du får en ny CV med designet og fargene du har valgt. Den du har nå kan hentes tilbake med Angre. Med AI sendes teksten til tjenesten du har koblet til."));
             ui.add_space(8.0);
             ui.horizontal(|ui| {
-                if theme::primary(ui, i18n::t("Velg fil"), i18n::t("Velg CV-filen du vil hente inn"), true).clicked() {
+                let default = theme::primary(ui, i18n::t("Velg fil"), i18n::t("Velg CV-filen du vil hente inn"), true);
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     pick = true;
                     close = true;
                 }
@@ -224,12 +232,7 @@ impl CvApp {
         let r = egui::Modal::new(egui::Id::unique("cvbuilder.import-rest")).show(ctx, |ui| {
             ui.set_max_width(600.0);
             ui.heading(i18n::t("Dette må plasseres"));
-            ui.add(
-                egui::Label::new(i18n::t(
-                    "Det meste er fylt inn. Dette kunne ikke plasseres sikkert – legg det inn selv i skjemaet (kopier fra teksten under), eller la AI-en gjøre det.",
-                ))
-                .wrap(),
-            );
+            ui.add(egui::Label::new(i18n::t("Det meste er fylt inn. Dette kunne ikke plasseres sikkert – legg det inn selv i skjemaet (kopier fra teksten under), eller la AI-en gjøre det.")).wrap());
             ui.add_space(6.0);
             egui::ScrollArea::vertical().max_height(320.0).show(ui, |ui| {
                 ui.add(egui::Label::new(RichText::new(&rest).size(12.5)).wrap().selectable(true));

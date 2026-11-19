@@ -233,7 +233,9 @@ impl CvApp {
                 if ui.button(i18n::t("Lagre mal-fil å starte fra …")).on_hover_text(i18n::t("Dette designet som fil du kan endre")).clicked() {
                     self.pick("design_save", None);
                 }
-                if ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)")).clicked() {
+                let default = ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)"));
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     close = true;
                 }
             });

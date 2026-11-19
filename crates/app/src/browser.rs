@@ -70,7 +70,9 @@ fn failed_dialog(ctx: &egui::Context) {
             if theme::primary(ui, i18n::t("Kopier"), i18n::t("Kopier til utklippstavlen"), true).clicked() {
                 ui.ctx().copy_text(url.clone());
             }
-            if ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)")).clicked() {
+            let default = ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)"));
+            crate::shortcuts::default_button(ui, &default);
+            if default.clicked() {
                 close = true;
             }
         });
@@ -111,7 +113,19 @@ fn open_with_system(url: &str) -> bool {
         let quoted = format!("'{}'", url.replace('\\', "\\\\").replace('\'', "\\'"));
         run(
             "gdbus",
-            &["call", "--session", "--dest", "org.freedesktop.portal.Desktop", "--object-path", "/org/freedesktop/portal/desktop", "--method", "org.freedesktop.portal.OpenURI.OpenURI", "''", &quoted, "{}"],
+            &[
+                "call",
+                "--session",
+                "--dest",
+                "org.freedesktop.portal.Desktop",
+                "--object-path",
+                "/org/freedesktop/portal/desktop",
+                "--method",
+                "org.freedesktop.portal.OpenURI.OpenURI",
+                "''",
+                &quoted,
+                "{}",
+            ],
         ) || run("busctl", &["--user", "call", "org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop", "org.freedesktop.portal.OpenURI", "OpenURI", "ssa{sv}", "", url, "0"])
     }
 

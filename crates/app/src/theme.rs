@@ -169,6 +169,7 @@ pub mod ph {
     pub const LINK: &str = "\u{e2e2}";
     pub const FILE_ARROW_UP: &str = "\u{e61e}";
     pub const UNDO: &str = "\u{e038}";
+    pub const REDO: &str = "\u{e036}";
     pub const TRANSLATE: &str = "\u{e4a2}";
     pub const BRIEFCASE: &str = "\u{e0ee}";
     pub const GRADUATION_CAP: &str = "\u{e62c}";
@@ -258,11 +259,7 @@ pub fn tool_button<'a>(ui: &egui::Ui, icon: &str, text: &str, enabled: bool, car
     let t = Tokens::get(ui.ctx());
     let icon = egui::RichText::new(icon).family(icons()).size(17.0).color(if enabled { t.accent } else { t.border });
     let label = egui::RichText::new(text).size(13.0).color(if enabled { t.text } else { t.faint });
-    let b = if caret {
-        egui::Button::new((icon, label, egui::RichText::new(ph::CARET_DOWN).family(icons()).size(11.0).color(t.faint)))
-    } else {
-        egui::Button::new((icon, label))
-    };
+    let b = if caret { egui::Button::new((icon, label, egui::RichText::new(ph::CARET_DOWN).family(icons()).size(11.0).color(t.faint))) } else { egui::Button::new((icon, label)) };
     b.wrap_mode(egui::TextWrapMode::Extend).frame_when_inactive(false).corner_radius(CornerRadius::same(R_SM)).min_size(egui::vec2(0.0, 26.0))
 }
 
@@ -528,7 +525,8 @@ mod tests {
         let faces: Vec<ttf_parser::Face<'_>> = defs.font_data.values().filter_map(|d| ttf_parser::Face::parse((*d.font).as_ref(), d.index).ok()).collect();
         let covered = |c: char| faces.iter().any(|f| f.glyph_index(c).is_some());
         // Joiners, direction marks and variation selectors are not drawn.
-        let invisible = |c: char| c.is_whitespace() || c.is_control() || matches!(c, '\u{200b}'..='\u{200f}' | '\u{2028}'..='\u{202e}' | '\u{2060}'..='\u{206f}' | '\u{fe00}'..='\u{fe0f}' | '\u{feff}');
+        let invisible =
+            |c: char| c.is_whitespace() || c.is_control() || matches!(c, '\u{200b}'..='\u{200f}' | '\u{2028}'..='\u{202e}' | '\u{2060}'..='\u{206f}' | '\u{fe00}'..='\u{fe0f}' | '\u{feff}');
         let mut problems = Vec::new();
         for (code, text) in crate::langpack_ui::BUNDLED_LANGUAGES.iter().copied() {
             let pack = crate::i18n::parse_pack(text).expect("pack").pack;
