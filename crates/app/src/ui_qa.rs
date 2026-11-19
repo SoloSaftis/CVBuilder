@@ -221,6 +221,7 @@ const SCENES: &[Scene] = &[
     Scene { name: "AI-fanen", setup: |a| a.ribbon_tab = Tab::Ai },
     Scene { name: "Hjelp", setup: |a| a.ribbon_tab = Tab::Help },
     Scene { name: "Sjekkliste", setup: |a| a.side = Side::Checks },
+    Scene { name: "Søknadsskjema", setup: |a| a.side = Side::Form },
     Scene { name: "Alle seksjoner åpne", setup: |a| a.folded.clear() },
     Scene { name: "Oversett-vinduet", setup: |a| a.open_translate(None) },
     Scene { name: "Innstillinger", setup: |a| a.settings_open = true },

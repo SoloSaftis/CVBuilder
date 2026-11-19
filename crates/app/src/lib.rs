@@ -12,6 +12,7 @@ mod checklist_ui;
 mod colors_ui;
 mod designs_ui;
 mod form;
+mod form_helper_ui;
 mod i18n;
 mod import_ui;
 mod langpack_ui;
@@ -88,6 +89,8 @@ impl Default for Views {
 enum Side {
     Chat,
     Checks,
+    /// «Søknadsskjema»: the CV field by field, and the ready answers.
+    Form,
 }
 
 struct CvApp {
@@ -140,6 +143,7 @@ struct CvApp {
     /// Added interface languages, and the translation that may be running.
     langs: langpack_ui::LangState,
     checklist: checklist_ui::ChecklistState,
+    form_helper: form_helper_ui::FormHelperState,
     /// The name being typed for a new section, while that window is open.
     new_section: Option<String>,
     /// Where the new section goes in the CV: `None` at the bottom, `Some(i)` at position i.
@@ -199,6 +203,7 @@ impl CvApp {
             settings_open: false,
             langs,
             checklist: checklist_ui::ChecklistState::load(),
+            form_helper: form_helper_ui::FormHelperState::load(),
             new_section: None,
             new_section_at: None,
             ribbon_tab: menu_ui::Tab::default(),
@@ -217,6 +222,7 @@ impl CvApp {
             }
             Ok("mcp") => app.chat.mcp_help_open = true,
             Ok("checks") => app.side = Side::Checks,
+            Ok("form") => app.side = Side::Form,
             Ok("about") => app.about_open = true,
             Ok("updates") => app.update_check = Some(updates_ui::UpdateCheck::Done(Ok(cv_ai::updates::Release { version: "9.9.9".into(), page: cv_ai::updates::RELEASES_PAGE.into() }))),
             Ok("insert") => app.ribbon_tab = menu_ui::Tab::Insert,
@@ -634,7 +640,7 @@ impl CvApp {
         egui::Frame::new().fill(t.hover).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin::same(3)).show(ui, |ui| {
             ui.spacing_mut().item_spacing.x = 2.0;
             ui.horizontal(|ui| {
-                let w = ((ui.available_width() - 10.0) / 2.0).floor();
+                let w = ((ui.available_width() - 14.0) / 3.0).floor();
                 for (side, name, tip) in [
                     (Side::Chat, i18n::t("AI-assistent").to_string(), i18n::t("Be AI-en om endringer i CV-en med egne ord")),
                     (
@@ -642,6 +648,7 @@ impl CvApp {
                         if blocking.is_empty() { i18n::t("Sjekkliste").to_string() } else { i18n::tf("Sjekkliste · {n}", &[("n", &blocking.len().to_string())]) },
                         i18n::t("Hva som mangler før nedlasting, og råd fra rekrutterere og ATS"),
                     ),
+                    (Side::Form, i18n::t("Søknadsskjema").to_string(), i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene")),
                 ] {
                     let on = self.side == side;
                     let b = egui::Button::new(RichText::new(name.as_str()).size(13.0).family(theme::medium()).color(if on { t.text } else { t.dim }))
@@ -649,7 +656,7 @@ impl CvApp {
                         .stroke(if on { Stroke::new(1.0, t.border) } else { Stroke::NONE })
                         .corner_radius(CornerRadius::same(theme::R_SM))
                         .truncate();
-                    // Exactly half each, the name shortened if it is longer (one long Icelandic
+                    // Exactly a third each, the name shortened if it is longer (one long Icelandic
                     // word widened the panel; found by ui_qa.rs).
                     if ui.add_sized([w, 28.0], b).on_hover_text(format!("{name}: {tip}")).clicked() {
                         self.side = side;
@@ -662,6 +669,9 @@ impl CvApp {
             Side::Chat => self.chat_panel(ui),
             Side::Checks => {
                 egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| self.checklist(ui, &blocking));
+            }
+            Side::Form => {
+                egui::ScrollArea::vertical().id_salt("form-helper-scroll").auto_shrink([false, false]).show(ui, |ui| self.form_helper(ui));
             }
         }
     }

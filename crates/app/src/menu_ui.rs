@@ -68,6 +68,8 @@ pub(crate) enum Action {
     NewChat,
     Chat,
     Checks,
+    /// The «Søknadsskjema» tab in the side panel.
+    FormHelper,
     About,
     CheckUpdates,
     UserGuide,
@@ -176,6 +178,9 @@ impl CvApp {
                     if ui.add(menu_item(ui, icon, name)).on_hover_text(&tip).clicked() {
                         action = Some(Action::Export(kind));
                     }
+                }
+                if ui.add(menu_item(ui, theme::ph::ROWS, i18n::t("Søknadsskjema"))).on_hover_text(i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene")).clicked() {
+                    action = Some(Action::FormHelper);
                 }
                 ui.separator();
                 if ui.add(menu_item(ui, theme::ph::GEAR, i18n::t("Innstillinger"))).on_hover_text(i18n::t("Språk i menyene, tema og mer")).clicked() {
@@ -317,6 +322,11 @@ impl CvApp {
                 }
                 if tool(ui, theme::ph::FILE_DOC, i18n::t("Last ned Word"), &export_tip(Export::Word, blocked), true) {
                     *action = Some(Action::Export(Export::Word));
+                }
+            });
+            column(ui, |ui| {
+                if tool(ui, theme::ph::ROWS, i18n::t("Søknadsskjema"), i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene"), true) {
+                    *action = Some(Action::FormHelper);
                 }
             });
         });
@@ -608,6 +618,10 @@ impl CvApp {
             Action::Checks => {
                 self.views.side = true;
                 self.side = Side::Checks;
+            }
+            Action::FormHelper => {
+                self.views.side = true;
+                self.side = Side::Form;
             }
             Action::About => self.about_open = true,
             Action::CheckUpdates => self.update_check = Some(crate::updates_ui::UpdateCheck::start(ctx)),
