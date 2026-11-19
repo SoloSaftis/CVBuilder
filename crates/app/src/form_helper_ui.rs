@@ -349,12 +349,12 @@ impl CvApp {
                 ui.horizontal(|ui| {
                     ui.vertical(|ui| {
                         ui.set_width((ui.available_width() - 40.0).max(60.0));
-                        ui.add(egui::Label::new(RichText::new(&name).size(12.0).color(t.dim)).truncate());
+                        ui.add(egui::Label::new(RichText::new(name).size(12.0).color(t.dim)).truncate());
                         let text = self.form_helper.ready.answers.entry(id.to_string()).or_default();
-                        changed |= ui.add(egui::TextEdit::multiline(text).desired_rows(1).desired_width(f32::INFINITY)).on_hover_text(&name).changed();
+                        changed |= ui.add(egui::TextEdit::multiline(text).desired_rows(1).desired_width(f32::INFINITY)).on_hover_text(name).changed();
                     });
                     let value = self.form_helper.ready.answer(id).to_string();
-                    self.copy_button(ui, &format!("ready.{id}"), &name, &value);
+                    self.copy_button(ui, &format!("ready.{id}"), name, &value);
                 });
             }
             let mut remove = None;
