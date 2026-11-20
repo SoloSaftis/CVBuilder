@@ -40,3 +40,24 @@ fn a_sidebar_design_shows_what_is_lost() {
     assert!(b.count(State::Missing) + b.count(State::Different) > 0, "a sidebar design read back whole: {:#?}", b.fields);
     assert!(b.fields.iter().any(|f| f.field == Field::Name));
 }
+
+/// Cambria and Calibri draw «å» as «a» plus a ring. The PDF writer gave the «a» glyph the whole
+/// word as its text, so every later «A», «E», «(» and «f» read as a word («Automasjonsingeniør»),
+/// and «nå» read «na», which dropped the current job. Norwegian text in those fonts reads back
+/// whole, with its «å».
+#[test]
+fn norwegian_aa_survives_in_cambria_and_calibri() {
+    for layout in ["rcv-engineeringresumes", "modern"] {
+        let mut p = Project::example();
+        p.options.layout = layout.into();
+        p.candidate.summary = "Automasjonsingeniør (bachelor) med over 7 års erfaring, mest fra offshore olje- og gassprosjekter for Equinor, og jobber på land og på sokkelen.".into();
+        if let Some(job) = p.experience.first_mut() {
+            job.end = None;
+        }
+        let b = back(&p, false);
+        assert!(lost(&b).is_empty(), "{layout}: {:#?}", lost(&b));
+        for word in ["7 års", "på land", "Automasjonsingeniør (bachelor) med"] {
+            assert!(b.text.contains(word), "{layout}: «{word}» not in the text as read:\n{}", b.text);
+        }
+    }
+}
