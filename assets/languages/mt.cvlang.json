@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Jekk ma tissalvax, dan is-CV jintilef meta CVBuilder jingħalaq.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Jekk ma tissalvax, Annulla biss tista’ ġġibu lura, u biss sakemm CVBuilder jingħalaq.",
   "Lagre …": "Salva …",
-  "Fortsett å jobbe med CV-en (Esc)": "Kompli aħdem fuq is-CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Kompli aħdem fuq is-CV (Esc)",
+  "Hva et ATS leser": "X’jaqra ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Jerġa’ jaqra l-fajl kif jagħmel sistema li ssegwi l-applikanti (ATS), u juri x’jgħaddi. Il-qarrej tagħna huwa iktar ġentili minn ħafna sistemi veri: dak li jonqos hawn x’aktarx jonqos hemm ukoll.",
+  "Les PDF-en tilbake": "Erġa’ aqra l-PDF",
+  "Les Word-filen tilbake": "Erġa’ aqra l-fajl Word",
+  "Leser filen tilbake …": "Il-fajl qed jerġa’ jinqara …",
+  "Filen kunne ikke lages eller leses: {error}": "Il-fajl ma setax isir jew jinqara: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} minn {all} qasam inqraw bħalma huma fis-CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” inqara bħala “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” ma nstabx",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "It-test kif jinqara",
+  "Utdanning {n}": "Edukazzjoni {n}",
+  "Tidsrom": "Perjodu",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Jagħmel il-fajl kif jitniżżel, u jaqrah bħal ATS"
  }
 }

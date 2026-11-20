@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "保存しないと、CVBuilder を閉じたときにこの履歴書は失われます。",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "保存しないと、取り戻せるのは「元に戻す」だけで、それも CVBuilder を閉じるまでです。",
   "Lagre …": "保存 …",
-  "Fortsett å jobbe med CV-en (Esc)": "履歴書の作業を続ける (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "履歴書の作業を続ける (Esc)",
+  "Hva et ATS leser": "ATS が読み取る内容",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "応募者追跡システム（ATS）と同じようにファイルを読み直し、何が伝わるかを示します。このリーダーは多くの実際のシステムより寛容です。ここで欠けているものは、向こうでもおそらく欠けています。",
+  "Les PDF-en tilbake": "PDF を読み直す",
+  "Les Word-filen tilbake": "Word ファイルを読み直す",
+  "Leser filen tilbake …": "ファイルを読み直しています …",
+  "Filen kunne ikke lages eller leses: {error}": "ファイルを作成または読み取れませんでした: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} 項目中 {same} 項目が履歴書どおりに読み取られました。",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: 「{expected}」 は 「{read}」 と読み取られました",
+  "{field}: «{expected}» ble ikke funnet": "{field}: 「{expected}」 が見つかりませんでした",
+  "{field}: «{expected}»": "{field}: 「{expected}」",
+  "Teksten slik den leses": "読み取られたままのテキスト",
+  "Utdanning {n}": "学歴 {n}",
+  "Tidsrom": "期間",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "ダウンロード時と同じファイルを作成し、ATS と同じように読み取ります"
  }
 }

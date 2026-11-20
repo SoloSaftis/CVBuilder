@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Kui sa ei salvesta, on see CV CVBuilderi sulgemisel kadunud.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Kui sa ei salvesta, saab selle tagasi tuua ainult „Võta tagasi“, ja ainult kuni CVBuilder suletakse.",
   "Lagre …": "Salvesta …",
-  "Fortsett å jobbe med CV-en (Esc)": "Jätka CV kallal töötamist (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Jätka CV kallal töötamist (Esc)",
+  "Hva et ATS leser": "Mida ATS loeb",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Loeb faili tagasi nii, nagu värbamissüsteem (ATS) seda teeb, ja näitab, mis läbi tuleb. Meie lugeja on leebem kui paljud päris süsteemid: mis siin puudub, puudub tõenäoliselt ka seal.",
+  "Les PDF-en tilbake": "Loe PDF tagasi",
+  "Les Word-filen tilbake": "Loe Wordi fail tagasi",
+  "Leser filen tilbake …": "Faili loetakse tagasi …",
+  "Filen kunne ikke lages eller leses: {error}": "Faili ei saanud luua ega lugeda: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} väljast {same} loeti nagu CV-s.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: „{expected}“ loeti kui „{read}“",
+  "{field}: «{expected}» ble ikke funnet": "{field}: „{expected}“ ei leitud",
+  "{field}: «{expected}»": "{field}: „{expected}“",
+  "Teksten slik den leses": "Tekst nii, nagu seda loetakse",
+  "Utdanning {n}": "Haridus {n}",
+  "Tidsrom": "Ajavahemik",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Teeb faili nii, nagu see alla laaditakse, ja loeb seda nagu ATS"
  }
 }

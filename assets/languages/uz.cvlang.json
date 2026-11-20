@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Saqlamasangiz, CVBuilder yopilganda bu rezyume yo‘qoladi.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Saqlamasangiz, uni faqat Qaytarish orqali qaytarish mumkin, u ham faqat CVBuilder yopilguncha.",
   "Lagre …": "Saqlash …",
-  "Fortsett å jobbe med CV-en (Esc)": "Rezyume ustida ishlashni davom ettirish (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Rezyume ustida ishlashni davom ettirish (Esc)",
+  "Hva et ATS leser": "ATS nimani o‘qiydi",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Faylni nomzodlarni kuzatish tizimi (ATS) kabi qayta o‘qiydi va nima yetib borishini ko‘rsatadi. O‘quvchimiz ko‘plab haqiqiy tizimlardan yumshoqroq: bu yerda yo‘q narsa u yerda ham yo‘q bo‘lishi mumkin.",
+  "Les PDF-en tilbake": "PDF ni qayta o‘qish",
+  "Les Word-filen tilbake": "Word faylini qayta o‘qish",
+  "Leser filen tilbake …": "Fayl qayta o‘qilmoqda …",
+  "Filen kunne ikke lages eller leses: {error}": "Faylni yaratib yoki o‘qib bo‘lmadi: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} maydondan {same} tasi rezyumedagidek o‘qildi.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» «{read}» deb o‘qildi",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» topilmadi",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "O‘qilgan matn",
+  "Utdanning {n}": "Taʼlim {n}",
+  "Tidsrom": "Davr",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Faylni yuklab olinganidek yaratadi va uni ATS kabi o‘qiydi"
  }
 }

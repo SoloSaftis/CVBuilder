@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Nếu bạn không lưu, CV này sẽ mất khi CVBuilder đóng.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Nếu bạn không lưu, chỉ Hoàn tác mới đưa nó trở lại được, và chỉ cho đến khi CVBuilder đóng.",
   "Lagre …": "Lưu …",
-  "Fortsett å jobbe med CV-en (Esc)": "Tiếp tục làm CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Tiếp tục làm CV (Esc)",
+  "Hva et ATS leser": "Những gì ATS đọc được",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Đọc lại tệp như một hệ thống theo dõi ứng viên (ATS) và cho thấy điều gì đến được. Trình đọc của chúng tôi dễ tính hơn nhiều hệ thống thật: thứ thiếu ở đây có lẽ cũng thiếu ở đó.",
+  "Les PDF-en tilbake": "Đọc lại PDF",
+  "Les Word-filen tilbake": "Đọc lại tệp Word",
+  "Leser filen tilbake …": "Đang đọc lại tệp …",
+  "Filen kunne ikke lages eller leses: {error}": "Không thể tạo hoặc đọc tệp: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} trên {all} trường được đọc giống trong CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” được đọc thành “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: không tìm thấy “{expected}”",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "Văn bản như khi được đọc",
+  "Utdanning {n}": "Học vấn {n}",
+  "Tidsrom": "Thời gian",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Tạo tệp như khi tải xuống và đọc nó như một ATS"
  }
 }

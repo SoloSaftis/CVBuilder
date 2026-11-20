@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Mana waqaychaspaqa, kay CV chinkanqa CVBuilder wichq'akuptin.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Mana waqaychaspaqa, Kutichiywanlla kutichiyta atinki, CVBuilder wichq'akunankamalla.",
   "Lagre …": "Waqaychay …",
-  "Fortsett å jobbe med CV-en (Esc)": "CV-wan llamk'aspa qatiy (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "CV-wan llamk'aspa qatiy (Esc)",
+  "Hva et ATS leser": "ATS ima ñawinchan",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Archivota kaqmanta ñawinchan, huk ATS ñawinchasqanman hina, imakuna chayasqantataq rikuchin. Ñawinchaqniyku achka cheqaq sistemakunamanta aswan llampum: kaypi pisiqqa, chaypipas yaqa pisillantaq.",
+  "Les PDF-en tilbake": "PDF-ta kaqmanta ñawinchay",
+  "Les Word-filen tilbake": "Word archivota kaqmanta ñawinchay",
+  "Leser filen tilbake …": "Archivota kaqmanta ñawinchachkan …",
+  "Filen kunne ikke lages eller leses: {error}": "Archivota mana ruwayta nitaq ñawinchayta atikurqanchu: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} kamputa {same} CV-pi hina ñawinchasqa karqan.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” “{read}” hina ñawinchasqa karqan",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” mana tarikurqanchu",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "Qillqa ñawinchasqan hina",
+  "Utdanning {n}": "Yachakusqakuna {n}",
+  "Tidsrom": "Pacha",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Archivota uraykachisqan hina ruwan, ATS hinataq ñawinchan"
  }
 }

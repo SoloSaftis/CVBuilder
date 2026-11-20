@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "সংরক্ষণ না করলে CVBuilder বন্ধ হলে এই সিভি হারিয়ে যাবে।",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "সংরক্ষণ না করলে শুধু পূর্বাবস্থায় ফেরান দিয়েই এটি ফেরত আনা যাবে, তাও কেবল CVBuilder বন্ধ হওয়া পর্যন্ত।",
   "Lagre …": "সংরক্ষণ …",
-  "Fortsett å jobbe med CV-en (Esc)": "সিভিতে কাজ চালিয়ে যান (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "সিভিতে কাজ চালিয়ে যান (Esc)",
+  "Hva et ATS leser": "ATS কী পড়ে",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "আবেদন ব্যবস্থা (ATS) যেভাবে পড়ে সেভাবে ফাইলটি আবার পড়ে এবং কী আসে তা দেখায়। আমাদের পাঠক অনেক আসল ব্যবস্থার চেয়ে নরম: এখানে যা নেই, সেখানেও সম্ভবত নেই।",
+  "Les PDF-en tilbake": "PDF আবার পড়ুন",
+  "Les Word-filen tilbake": "Word ফাইল আবার পড়ুন",
+  "Leser filen tilbake …": "ফাইলটি আবার পড়া হচ্ছে …",
+  "Filen kunne ikke lages eller leses: {error}": "ফাইলটি তৈরি বা পড়া যায়নি: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all}টি ঘরের {same}টি সিভির মতোই পড়া হয়েছে।",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” পড়া হয়েছে “{read}” হিসেবে",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” পাওয়া যায়নি",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "যেভাবে পড়া হয় সেই লেখা",
+  "Utdanning {n}": "শিক্ষা {n}",
+  "Tidsrom": "সময়কাল",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "ডাউনলোডের মতো করে ফাইলটি তৈরি করে, এবং ATS-এর মতো পড়ে"
  }
 }

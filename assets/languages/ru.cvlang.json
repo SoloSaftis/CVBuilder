@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Если не сохранить, это резюме пропадёт, когда CVBuilder закроется.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Если не сохранить, вернуть его можно только кнопкой «Отменить» и только до закрытия CVBuilder.",
   "Lagre …": "Сохранить …",
-  "Fortsett å jobbe med CV-en (Esc)": "Продолжить работу над резюме (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Продолжить работу над резюме (Esc)",
+  "Hva et ATS leser": "Что читает ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Читает файл так, как это делает система отбора кандидатов (ATS), и показывает, что доходит. Наш читатель мягче многих настоящих систем: чего нет здесь, скорее всего, нет и там.",
+  "Les PDF-en tilbake": "Прочитать PDF заново",
+  "Les Word-filen tilbake": "Прочитать файл Word заново",
+  "Leser filen tilbake …": "Файл читается …",
+  "Filen kunne ikke lages eller leses: {error}": "Не удалось создать или прочитать файл: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} из {all} полей прочитаны так, как в резюме.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» прочитано как «{read}»",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» не найдено",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "Текст в том виде, в каком он читается",
+  "Utdanning {n}": "Образование {n}",
+  "Tidsrom": "Период",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Создаёт файл так, как он скачивается, и читает его как ATS"
  }
 }

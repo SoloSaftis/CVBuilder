@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Mura sábhálann tú, beidh an CV seo imithe nuair a dhúnfar CVBuilder.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Mura sábhálann tú, ní féidir é a fháil ar ais ach le Cealaigh, agus sin go dtí go ndúnfar CVBuilder amháin.",
   "Lagre …": "Sábháil …",
-  "Fortsett å jobbe med CV-en (Esc)": "Lean ort ag obair ar an CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Lean ort ag obair ar an CV (Esc)",
+  "Hva et ATS leser": "An rud a léann ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Léann sé an comhad ar ais mar a dhéanann córas rianaithe iarratasóirí (ATS), agus taispeánann sé cad a thagann tríd. Tá ár léitheoir níos boige ná go leor córas fíor: an rud atá in easnamh anseo, is dócha go bhfuil sé in easnamh ansin freisin.",
+  "Les PDF-en tilbake": "Léigh an PDF ar ais",
+  "Les Word-filen tilbake": "Léigh an comhad Word ar ais",
+  "Leser filen tilbake …": "Ag léamh an chomhaid ar ais …",
+  "Filen kunne ikke lages eller leses: {error}": "Níorbh fhéidir an comhad a dhéanamh ná a léamh: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "Léadh {same} as {all} réimse mar atá sa CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: léadh “{expected}” mar “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: níor aimsíodh “{expected}”",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "An téacs mar a léitear é",
+  "Utdanning {n}": "Oideachas {n}",
+  "Tidsrom": "Tréimhse",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Déanann sé an comhad mar a íoslódáiltear é, agus léann sé é mar a dhéanfadh ATS"
  }
 }

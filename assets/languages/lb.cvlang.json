@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Wann Dir net späichert, ass dësen CV fort, wann CVBuilder zougemaach gëtt.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Wann Dir net späichert, kann nëmmen Réckgängeg en zréckbréngen, an nëmme bis CVBuilder zougemaach gëtt.",
   "Lagre …": "Späicheren …",
-  "Fortsett å jobbe med CV-en (Esc)": "Weider um CV schaffen (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Weider um CV schaffen (Esc)",
+  "Hva et ATS leser": "Wat en ATS liest",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Liest de Fichier zréck, wéi e Bewerbersystem (ATS) et mécht, a weist, wat ukënnt. Eise Lieser ass méi nodënklech wéi vill richteg Systemer: Wat hei feelt, feelt do wuel och.",
+  "Les PDF-en tilbake": "PDF zréckliesen",
+  "Les Word-filen tilbake": "Word-Fichier zréckliesen",
+  "Leser filen tilbake …": "De Fichier gëtt zréckgelies …",
+  "Filen kunne ikke lages eller leses: {error}": "De Fichier konnt net gemaach oder gelies ginn: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} vun {all} Felder goufe wéi am CV gelies.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: „{expected}“ gouf als „{read}“ gelies",
+  "{field}: «{expected}» ble ikke funnet": "{field}: „{expected}“ gouf net fonnt",
+  "{field}: «{expected}»": "{field}: „{expected}“",
+  "Teksten slik den leses": "Den Text, wéi e gelies gëtt",
+  "Utdanning {n}": "Ausbildung {n}",
+  "Tidsrom": "Zäitraum",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Mécht de Fichier, wéi en erofgelueden gëtt, a liest en wéi en ATS"
  }
 }

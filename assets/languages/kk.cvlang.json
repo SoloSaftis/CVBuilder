@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Сақтамасаңыз, CVBuilder жабылғанда бұл түйіндеме жоғалады.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Сақтамасаңыз, оны тек «Болдырмау» ғана қайтара алады, онда да CVBuilder жабылғанша ғана.",
   "Lagre …": "Сақтау …",
-  "Fortsett å jobbe med CV-en (Esc)": "Түйіндемемен жұмысты жалғастыру (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Түйіндемемен жұмысты жалғастыру (Esc)",
+  "Hva et ATS leser": "ATS нені оқиды",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Файлды үміткерлерді бақылау жүйесі (ATS) сияқты қайта оқып, неның өтетінін көрсетеді. Біздің оқу құралы көптеген нақты жүйелерден жұмсақ: мұнда жоқ нәрсе сол жерде де жоқ болуы мүмкін.",
+  "Les PDF-en tilbake": "PDF-ті қайта оқу",
+  "Les Word-filen tilbake": "Word файлын қайта оқу",
+  "Leser filen tilbake …": "Файл қайта оқылуда …",
+  "Filen kunne ikke lages eller leses: {error}": "Файлды жасау немесе оқу мүмкін болмады: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} өрістің {same} өрісі түйіндемедегідей оқылды.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» «{read}» ретінде оқылды",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» табылмады",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "Мәтін оқылғандай",
+  "Utdanning {n}": "Білімі {n}",
+  "Tidsrom": "Кезең",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Файлды жүктелгендей жасап, оны ATS сияқты оқиды"
  }
 }

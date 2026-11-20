@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "ଆପଣ ସଞ୍ଚୟ ନକଲେ, CVBuilder ବନ୍ଦ ହେଲେ ଏହି ସିଭି ଚାଲିଯିବ।",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "ଆପଣ ସଞ୍ଚୟ ନକଲେ, କେବଳ ପୂର୍ବବତ୍ ଏହାକୁ ଫେରାଇ ଆଣିପାରିବ, ତାହା ମଧ୍ୟ କେବଳ CVBuilder ବନ୍ଦ ହେବା ପର୍ଯ୍ୟନ୍ତ।",
   "Lagre …": "ସଞ୍ଚୟ କରନ୍ତୁ …",
-  "Fortsett å jobbe med CV-en (Esc)": "ସିଭିରେ କାମ ଜାରି ରଖନ୍ତୁ (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "ସିଭିରେ କାମ ଜାରି ରଖନ୍ତୁ (Esc)",
+  "Hva et ATS leser": "ATS କ’ଣ ପଢ଼େ",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "ଆବେଦନକାରୀ ଟ୍ରାକିଂ ପ୍ରଣାଳୀ (ATS) ପଢ଼ିଲା ପରି ଫାଇଲକୁ ପୁଣି ପଢ଼େ ଏବଂ କ’ଣ ପହଞ୍ଚେ ଦେଖାଏ। ଆମ ପାଠକ ଅନେକ ପ୍ରକୃତ ପ୍ରଣାଳୀଠାରୁ କୋମଳ: ଏଠାରେ ଯାହା ନାହିଁ, ସେଠାରେ ମଧ୍ୟ ସମ୍ଭବତଃ ନାହିଁ।",
+  "Les PDF-en tilbake": "PDF ପୁଣି ପଢ଼ନ୍ତୁ",
+  "Les Word-filen tilbake": "Word ଫାଇଲ ପୁଣି ପଢ଼ନ୍ତୁ",
+  "Leser filen tilbake …": "ଫାଇଲ ପୁଣି ପଢ଼ାଯାଉଛି …",
+  "Filen kunne ikke lages eller leses: {error}": "ଫାଇଲ ତିଆରି କିମ୍ବା ପଢ଼ି ହେଲା ନାହିଁ: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all}ଟି ମଧ୍ୟରୁ {same}ଟି କ୍ଷେତ୍ର ସିଭି ପରି ପଢ଼ାଗଲା।",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}”କୁ “{read}” ଭାବେ ପଢ଼ାଗଲା",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” ମିଳିଲା ନାହିଁ",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "ପଢ଼ାଯିବା ପରି ପାଠ",
+  "Utdanning {n}": "ଶିକ୍ଷା {n}",
+  "Tidsrom": "ଅବଧି",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "ଡାଉନଲୋଡ୍ ହେଲା ପରି ଫାଇଲ ତିଆରି କରେ, ଏବଂ ATS ପରି ପଢ଼େ"
  }
 }

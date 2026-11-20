@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Ако не сачувате, овај CV нестаје када се CVBuilder затвори.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Ако не сачувате, вратити га може само Опозови, и то само док се CVBuilder не затвори.",
   "Lagre …": "Сачувај …",
-  "Fortsett å jobbe med CV-en (Esc)": "Настави рад на CV-ју (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Настави рад на CV-ју (Esc)",
+  "Hva et ATS leser": "Шта ATS чита",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Чита датотеку назад као систем за праћење кандидата (ATS) и показује шта пролази. Наш читач је блажи од многих стварних система: што овде недостаје, вероватно недостаје и тамо.",
+  "Les PDF-en tilbake": "Прочитај PDF назад",
+  "Les Word-filen tilbake": "Прочитај Word датотеку назад",
+  "Leser filen tilbake …": "Датотека се чита назад …",
+  "Filen kunne ikke lages eller leses: {error}": "Датотека није могла бити направљена или прочитана: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} од {all} поља прочитано је као у CV-ју.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» је прочитано као «{read}»",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» није пронађено",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "Текст како се чита",
+  "Utdanning {n}": "Образовање {n}",
+  "Tidsrom": "Период",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Прави датотеку као при преузимању и чита је као ATS"
  }
 }

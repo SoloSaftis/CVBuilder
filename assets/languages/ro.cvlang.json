@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Dacă nu salvezi, acest CV dispare când se închide CVBuilder.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Dacă nu salvezi, doar Anulează îl poate aduce înapoi, și doar până se închide CVBuilder.",
   "Lagre …": "Salvează …",
-  "Fortsett å jobbe med CV-en (Esc)": "Continuă lucrul la CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Continuă lucrul la CV (Esc)",
+  "Hva et ATS leser": "Ce citește un ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Recitește fișierul așa cum o face un sistem de urmărire a candidaților (ATS) și arată ce ajunge. Cititorul nostru e mai îngăduitor decât multe sisteme reale: ce lipsește aici probabil lipsește și acolo.",
+  "Les PDF-en tilbake": "Recitește PDF-ul",
+  "Les Word-filen tilbake": "Recitește fișierul Word",
+  "Leser filen tilbake …": "Se recitește fișierul …",
+  "Filen kunne ikke lages eller leses: {error}": "Fișierul nu a putut fi creat sau citit: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} din {all} câmpuri au fost citite ca în CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: „{expected}” a fost citit ca „{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: „{expected}” nu a fost găsit",
+  "{field}: «{expected}»": "{field}: „{expected}”",
+  "Teksten slik den leses": "Textul așa cum este citit",
+  "Utdanning {n}": "Studii {n}",
+  "Tidsrom": "Perioadă",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Creează fișierul așa cum se descarcă și îl citește ca un ATS"
  }
 }

@@ -221,6 +221,15 @@ const SCENES: &[Scene] = &[
     Scene { name: "AI-fanen", setup: |a| a.ribbon_tab = Tab::Ai },
     Scene { name: "Hjelp", setup: |a| a.ribbon_tab = Tab::Help },
     Scene { name: "Sjekkliste", setup: |a| a.side = Side::Checks },
+    Scene {
+        name: "Hva et ATS leser",
+        setup: |a| {
+            a.side = Side::Checks;
+            a.project.options.layout = "rr-pikachu-2".into();
+            let result = crate::readback_ui::run(&a.project, false);
+            a.readback.show(result, "Pikachu · PDF");
+        },
+    },
     Scene { name: "Søknadsskjema", setup: |a| a.side = Side::Form },
     Scene {
         name: "Egen sjekkliste",

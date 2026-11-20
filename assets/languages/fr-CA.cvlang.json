@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Si vous n’enregistrez pas, ce CV disparaîtra à la fermeture de CVBuilder.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Si vous n’enregistrez pas, seul Annuler peut le récupérer, et seulement jusqu’à la fermeture de CVBuilder.",
   "Lagre …": "Enregistrer …",
-  "Fortsett å jobbe med CV-en (Esc)": "Continuer à travailler sur le CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Continuer à travailler sur le CV (Esc)",
+  "Hva et ATS leser": "Ce que lit un ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Relit le fichier comme le fait un logiciel de recrutement (ATS) et montre ce qui passe. Notre lecteur est plus indulgent que bien des systèmes réels : ce qui manque ici manque sans doute là-bas aussi.",
+  "Les PDF-en tilbake": "Relire le PDF",
+  "Les Word-filen tilbake": "Relire le fichier Word",
+  "Leser filen tilbake …": "Relecture du fichier …",
+  "Filen kunne ikke lages eller leses: {error}": "Le fichier n’a pas pu être créé ou lu : {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} champs sur {all} ont été lus comme dans le CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field} : “{expected}” a été lu comme “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field} : “{expected}” n’a pas été trouvé",
+  "{field}: «{expected}»": "{field} : “{expected}”",
+  "Teksten slik den leses": "Le texte tel qu’il est lu",
+  "Utdanning {n}": "Formation {n}",
+  "Tidsrom": "Période",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Crée le fichier tel qu’il est téléchargé et le lit comme un ATS"
  }
 }

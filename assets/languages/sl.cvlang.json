@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Če ne shranite, bo ta življenjepis izginil, ko se CVBuilder zapre.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Če ne shranite, ga lahko vrne le Razveljavi, in to le, dokler se CVBuilder ne zapre.",
   "Lagre …": "Shrani …",
-  "Fortsett å jobbe med CV-en (Esc)": "Nadaljuj delo na življenjepisu (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Nadaljuj delo na življenjepisu (Esc)",
+  "Hva et ATS leser": "Kaj prebere ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Datoteko znova prebere tako, kot to stori sistem za sledenje kandidatom (ATS), in pokaže, kaj pride skozi. Naš bralnik je prizanesljivejši od mnogih pravih sistemov: kar manjka tu, verjetno manjka tudi tam.",
+  "Les PDF-en tilbake": "Znova preberi PDF",
+  "Les Word-filen tilbake": "Znova preberi datoteko Word",
+  "Leser filen tilbake …": "Datoteka se bere …",
+  "Filen kunne ikke lages eller leses: {error}": "Datoteke ni bilo mogoče ustvariti ali prebrati: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} od {all} polj je prebranih kot v življenjepisu.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: „{expected}“ je prebrano kot „{read}“",
+  "{field}: «{expected}» ble ikke funnet": "{field}: „{expected}“ ni najdeno",
+  "{field}: «{expected}»": "{field}: „{expected}“",
+  "Teksten slik den leses": "Besedilo, kot se prebere",
+  "Utdanning {n}": "Izobrazba {n}",
+  "Tidsrom": "Obdobje",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Ustvari datoteko, kot se prenese, in jo prebere kot ATS"
  }
 }

@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Saxlamasanız, CVBuilder bağlananda bu CV itəcək.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Saxlamasanız, onu yalnız Geri al ilə qaytara bilərsiniz, o da yalnız CVBuilder bağlanana qədər.",
   "Lagre …": "Saxla …",
-  "Fortsett å jobbe med CV-en (Esc)": "CV üzərində işə davam et (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "CV üzərində işə davam et (Esc)",
+  "Hva et ATS leser": "ATS nə oxuyur",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Faylı müraciət sistemi (ATS) kimi geri oxuyur və nəyin keçdiyini göstərir. Oxuyucumuz bir çox real sistemdən yumşaqdır: burada çatmayan, yəqin ki, orada da çatmır.",
+  "Les PDF-en tilbake": "PDF-i geri oxu",
+  "Les Word-filen tilbake": "Word faylını geri oxu",
+  "Leser filen tilbake …": "Fayl geri oxunur …",
+  "Filen kunne ikke lages eller leses: {error}": "Fayl yaradıla və ya oxuna bilmədi: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} sahədən {same}-i CV-dəki kimi oxundu.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» «{read}» kimi oxundu",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» tapılmadı",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "Mətn oxunduğu kimi",
+  "Utdanning {n}": "Təhsil {n}",
+  "Tidsrom": "Dövr",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Faylı endirildiyi kimi yaradır və ATS kimi oxuyur"
  }
 }

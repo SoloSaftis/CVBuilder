@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Եթե չպահեք, այս CV-ն կկորչի, երբ CVBuilder-ը փակվի։",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Եթե չպահեք, այն կարող է վերադարձնել միայն Հետարկելը, և միայն մինչև CVBuilder-ի փակվելը։",
   "Lagre …": "Պահել …",
-  "Fortsett å jobbe med CV-en (Esc)": "Շարունակել աշխատել CV-ի վրա (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Շարունակել աշխատել CV-ի վրա (Esc)",
+  "Hva et ATS leser": "Ինչ է կարդում ATS-ը",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Ֆայլը կրկին կարդում է այնպես, ինչպես թեկնածուների հետևման համակարգը (ATS), և ցույց է տալիս, թե ինչ է անցնում։ Մեր ընթերցիչն ավելի մեղմ է, քան շատ իրական համակարգեր. ինչ որ այստեղ բացակայում է, հավանաբար այնտեղ էլ է բացակայում։",
+  "Les PDF-en tilbake": "Կրկին կարդալ PDF-ը",
+  "Les Word-filen tilbake": "Կրկին կարդալ Word ֆայլը",
+  "Leser filen tilbake …": "Ֆայլը կարդացվում է …",
+  "Filen kunne ikke lages eller leses: {error}": "Չհաջողվեց ստեղծել կամ կարդալ ֆայլը՝ {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} դաշտից {same}-ը կարդացվեց ինչպես CV-ում։",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}՝ «{expected}»-ը կարդացվեց որպես «{read}»",
+  "{field}: «{expected}» ble ikke funnet": "{field}՝ «{expected}»-ը չգտնվեց",
+  "{field}: «{expected}»": "{field}՝ «{expected}»",
+  "Teksten slik den leses": "Տեքստն այնպես, ինչպես կարդացվում է",
+  "Utdanning {n}": "Կրթություն {n}",
+  "Tidsrom": "Ժամանակահատված",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Ստեղծում է ֆայլը, ինչպես ներբեռնվում է, և կարդում այն ATS-ի պես"
  }
 }

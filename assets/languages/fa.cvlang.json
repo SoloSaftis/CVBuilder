@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "اگر ذخیره نکنید، این رزومه با بسته شدن CVBuilder از بین می‌رود.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "اگر ذخیره نکنید، فقط واگرد می‌تواند آن را برگرداند، آن هم فقط تا وقتی CVBuilder بسته نشده است.",
   "Lagre …": "ذخیره …",
-  "Fortsett å jobbe med CV-en (Esc)": "ادامهٔ کار روی رزومه (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "ادامهٔ کار روی رزومه (Esc)",
+  "Hva et ATS leser": "آنچه ATS می‌خواند",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "فایل را همان‌طور که یک سامانهٔ ردیابی متقاضیان (ATS) می‌خواند دوباره می‌خواند و نشان می‌دهد چه چیزی می‌رسد. خوانندهٔ ما از بسیاری از سامانه‌های واقعی آسان‌گیرتر است: آنچه اینجا نیست، احتمالاً آنجا هم نیست.",
+  "Les PDF-en tilbake": "خواندن دوبارهٔ PDF",
+  "Les Word-filen tilbake": "خواندن دوبارهٔ فایل Word",
+  "Leser filen tilbake …": "در حال خواندن فایل …",
+  "Filen kunne ikke lages eller leses: {error}": "فایل ساخته یا خوانده نشد: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} از {all} فیلد مانند رزومه خوانده شد.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» به‌صورت «{read}» خوانده شد",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» پیدا نشد",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "متن همان‌طور که خوانده می‌شود",
+  "Utdanning {n}": "تحصیلات {n}",
+  "Tidsrom": "بازهٔ زمانی",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "فایل را همان‌طور که دانلود می‌شود می‌سازد و مانند ATS می‌خواند"
  }
 }

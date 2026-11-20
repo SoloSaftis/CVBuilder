@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Αν δεν αποθηκεύσετε, αυτό το βιογραφικό θα χαθεί όταν κλείσει το CVBuilder.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Αν δεν αποθηκεύσετε, μόνο η Αναίρεση μπορεί να το επαναφέρει, και μόνο μέχρι να κλείσει το CVBuilder.",
   "Lagre …": "Αποθήκευση …",
-  "Fortsett å jobbe med CV-en (Esc)": "Συνέχεια εργασίας στο βιογραφικό (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Συνέχεια εργασίας στο βιογραφικό (Esc)",
+  "Hva et ATS leser": "Τι διαβάζει ένα ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Διαβάζει ξανά το αρχείο όπως ένα σύστημα παρακολούθησης υποψηφίων (ATS) και δείχνει τι περνάει. Ο αναγνώστης μας είναι πιο επιεικής από πολλά πραγματικά συστήματα: ό,τι λείπει εδώ, μάλλον λείπει κι εκεί.",
+  "Les PDF-en tilbake": "Ανάγνωση του PDF",
+  "Les Word-filen tilbake": "Ανάγνωση του αρχείου Word",
+  "Leser filen tilbake …": "Το αρχείο διαβάζεται …",
+  "Filen kunne ikke lages eller leses: {error}": "Δεν ήταν δυνατή η δημιουργία ή η ανάγνωση του αρχείου: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} από {all} πεδία διαβάστηκαν όπως στο βιογραφικό.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: το «{expected}» διαβάστηκε ως «{read}»",
+  "{field}: «{expected}» ble ikke funnet": "{field}: το «{expected}» δεν βρέθηκε",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "Το κείμενο όπως διαβάζεται",
+  "Utdanning {n}": "Εκπαίδευση {n}",
+  "Tidsrom": "Περίοδος",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Δημιουργεί το αρχείο όπως κατεβαίνει και το διαβάζει όπως ένα ATS"
  }
 }

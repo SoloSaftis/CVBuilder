@@ -22,6 +22,7 @@ mod menu_ui;
 mod page_ui;
 mod photo;
 mod preview;
+mod readback_ui;
 mod settings_ui;
 mod shortcuts;
 mod storage;
@@ -163,6 +164,7 @@ struct CvApp {
     langs: langpack_ui::LangState,
     checklist: checklist_ui::ChecklistState,
     form_helper: form_helper_ui::FormHelperState,
+    readback: readback_ui::ReadBackState,
     /// The name being typed for a new section, while that window is open.
     new_section: Option<String>,
     /// Where the new section goes in the CV: `None` at the bottom, `Some(i)` at position i.
@@ -225,6 +227,7 @@ impl CvApp {
             langs,
             checklist: checklist_ui::ChecklistState::load(),
             form_helper: form_helper_ui::FormHelperState::load(),
+            readback: readback_ui::ReadBackState::default(),
             new_section: None,
             new_section_at: None,
             ribbon_tab: menu_ui::Tab::default(),
@@ -795,6 +798,8 @@ impl CvApp {
                 }
             }
         });
+        ui.add_space(10.0);
+        self.read_back_card(ui);
         ui.add_space(10.0);
         if self.settings.own_checklist {
             self.own_checklist(ui);

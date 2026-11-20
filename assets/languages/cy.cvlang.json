@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Os na fyddwch yn cadw, bydd y CV hwn wedi mynd pan fydd CVBuilder yn cau.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Os na fyddwch yn cadw, dim ond Dadwneud all ddod ag ef yn ôl, a hynny dim ond nes bydd CVBuilder yn cau.",
   "Lagre …": "Cadw …",
-  "Fortsett å jobbe med CV-en (Esc)": "Dal ati gyda’r CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Dal ati gyda’r CV (Esc)",
+  "Hva et ATS leser": "Beth mae ATS yn ei ddarllen",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Yn darllen y ffeil yn ôl fel y mae system olrhain ymgeiswyr (ATS) yn ei wneud, ac yn dangos beth sy’n dod drwodd. Mae ein darllenydd yn fwy caredig na llawer o systemau go iawn: mae’r hyn sydd ar goll yma yn debygol o fod ar goll yno hefyd.",
+  "Les PDF-en tilbake": "Darllen y PDF yn ôl",
+  "Les Word-filen tilbake": "Darllen y ffeil Word yn ôl",
+  "Leser filen tilbake …": "Yn darllen y ffeil yn ôl …",
+  "Filen kunne ikke lages eller leses: {error}": "Nid oedd modd creu na darllen y ffeil: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "Darllenwyd {same} o {all} maes fel yn y CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: darllenwyd “{expected}” fel “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: ni chafwyd hyd i “{expected}”",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "Y testun fel y’i darllenir",
+  "Utdanning {n}": "Addysg {n}",
+  "Tidsrom": "Cyfnod",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Yn creu’r ffeil fel y caiff ei lawrlwytho, ac yn ei darllen fel ATS"
  }
 }

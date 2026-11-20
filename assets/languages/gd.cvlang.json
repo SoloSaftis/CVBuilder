@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Mura sàbhail thu, bidh an CV seo air falbh nuair a dhùineas CVBuilder.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Mura sàbhail thu, chan fhaigh thu air ais e ach le Neo-dhèan, agus dìreach gus an dùin CVBuilder.",
   "Lagre …": "Sàbhail …",
-  "Fortsett å jobbe med CV-en (Esc)": "Lean ort ag obair air a’ CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Lean ort ag obair air a’ CV (Esc)",
+  "Hva et ATS leser": "Na leughas ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Leughaidh e am faidhle air ais mar a nì siostam tagraidh thagraichean (ATS), agus seallaidh e na thig troimhe. Tha an leughadair againn nas coibhneile na iomadh fìor shiostam: na tha a dhìth an seo, tha e coltach gu bheil e a dhìth an sin cuideachd.",
+  "Les PDF-en tilbake": "Leugh am PDF air ais",
+  "Les Word-filen tilbake": "Leugh am faidhle Word air ais",
+  "Leser filen tilbake …": "A’ leughadh an fhaidhle air ais …",
+  "Filen kunne ikke lages eller leses: {error}": "Cha b’ urrainn dhuinn am faidhle a dhèanamh no a leughadh: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "Chaidh {same} à {all} raon a leughadh mar a tha iad sa CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: chaidh “{expected}” a leughadh mar “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: cha deach “{expected}” a lorg",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "An teacsa mar a thèid a leughadh",
+  "Utdanning {n}": "Foghlam {n}",
+  "Tidsrom": "Ùine",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Nì e am faidhle mar a thèid a luchdadh a-nuas, is leughaidh e e mar ATS"
  }
 }

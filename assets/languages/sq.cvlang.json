@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Nëse nuk e ruan, ky CV zhduket kur mbyllet CVBuilder.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Nëse nuk e ruan, vetëm Zhbëj mund ta kthejë, dhe vetëm derisa të mbyllet CVBuilder.",
   "Lagre …": "Ruaj …",
-  "Fortsett å jobbe med CV-en (Esc)": "Vazhdo të punosh me CV-në (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Vazhdo të punosh me CV-në (Esc)",
+  "Hva et ATS leser": "Çfarë lexon një ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "E rilexon skedarin siç e bën një sistem ndjekjeje kandidatësh (ATS) dhe tregon çfarë kalon. Lexuesi ynë është më i butë se shumë sisteme të vërteta: ajo që mungon këtu, ka gjasa të mungojë edhe atje.",
+  "Les PDF-en tilbake": "Rilexo PDF-në",
+  "Les Word-filen tilbake": "Rilexo skedarin Word",
+  "Leser filen tilbake …": "Po rilexohet skedari …",
+  "Filen kunne ikke lages eller leses: {error}": "Skedari nuk mund të krijohej ose lexohej: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} nga {all} fusha u lexuan si në CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» u lexua si «{read}»",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» nuk u gjet",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "Teksti siç lexohet",
+  "Utdanning {n}": "Arsimi {n}",
+  "Tidsrom": "Periudha",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Krijon skedarin siç shkarkohet dhe e lexon si një ATS"
  }
 }

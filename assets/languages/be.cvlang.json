@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Калі не захаваць, гэтае рэзюмэ знікне, калі CVBuilder закрыецца.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Калі не захаваць, вярнуць яго можна толькі праз «Адрабіць» і толькі да закрыцця CVBuilder.",
   "Lagre …": "Захаваць …",
-  "Fortsett å jobbe med CV-en (Esc)": "Працягнуць працу з рэзюмэ (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Працягнуць працу з рэзюмэ (Esc)",
+  "Hva et ATS leser": "Што чытае ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Чытае файл назад так, як гэта робіць сістэма адбору (ATS), і паказвае, што праходзіць. Наш чытач мякчэйшы за многія сапраўдныя сістэмы: чаго няма тут, хутчэй за ўсё няма і там.",
+  "Les PDF-en tilbake": "Прачытаць PDF назад",
+  "Les Word-filen tilbake": "Прачытаць файл Word назад",
+  "Leser filen tilbake …": "Файл чытаецца назад …",
+  "Filen kunne ikke lages eller leses: {error}": "Не ўдалося стварыць або прачытаць файл: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} з {all} палёў прачытана так, як у рэзюмэ.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» прачытана як «{read}»",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» не знойдзена",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "Тэкст, як ён чытаецца",
+  "Utdanning {n}": "Адукацыя {n}",
+  "Tidsrom": "Перыяд",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Стварае файл так, як ён спампоўваецца, і чытае яго як ATS"
  }
 }

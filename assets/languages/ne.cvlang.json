@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "सेभ गर्नुभएन भने, CVBuilder बन्द हुँदा यो CV हराउँछ।",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "सेभ गर्नुभएन भने, अन्डूले मात्र यसलाई फिर्ता ल्याउन सक्छ, त्यो पनि CVBuilder बन्द नहुँदासम्म मात्र।",
   "Lagre …": "सेभ गर्नुहोस् …",
-  "Fortsett å jobbe med CV-en (Esc)": "CV मा काम जारी राख्नुहोस् (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "CV मा काम जारी राख्नुहोस् (Esc)",
+  "Hva et ATS leser": "ATS ले के पढ्छ",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "आवेदक ट्र्याकिङ प्रणाली (ATS) ले पढेझैं फाइल फेरि पढ्छ र के पुग्छ देखाउँछ। हाम्रो पाठक धेरै वास्तविक प्रणालीभन्दा नरम छ: यहाँ जे छैन, त्यो त्यहाँ पनि सम्भवतः छैन।",
+  "Les PDF-en tilbake": "PDF फेरि पढ्नुहोस्",
+  "Les Word-filen tilbake": "Word फाइल फेरि पढ्नुहोस्",
+  "Leser filen tilbake …": "फाइल फेरि पढ्दै …",
+  "Filen kunne ikke lages eller leses: {error}": "फाइल बनाउन वा पढ्न सकिएन: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} मध्ये {same} फिल्ड CV मा जस्तै पढिए।",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” लाई “{read}” भनेर पढियो",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” भेटिएन",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "पढिएजस्तो पाठ",
+  "Utdanning {n}": "शिक्षा {n}",
+  "Tidsrom": "अवधि",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "डाउनलोड हुने जस्तै फाइल बनाउँछ, र ATS जस्तै पढ्छ"
  }
 }

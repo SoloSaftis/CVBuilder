@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "ถ้าไม่บันทึก CV นี้จะหายไปเมื่อปิด CVBuilder",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "ถ้าไม่บันทึก จะกู้คืนได้ด้วยเลิกทำเท่านั้น และได้จนกว่าจะปิด CVBuilder เท่านั้น",
   "Lagre …": "บันทึก …",
-  "Fortsett å jobbe med CV-en (Esc)": "ทำ CV ต่อ (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "ทำ CV ต่อ (Esc)",
+  "Hva et ATS leser": "สิ่งที่ ATS อ่าน",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "อ่านไฟล์กลับแบบที่ระบบติดตามผู้สมัคร (ATS) อ่าน และแสดงว่าอะไรผ่านไปได้ ตัวอ่านของเราผ่อนปรนกว่าระบบจริงหลายระบบ สิ่งที่ขาดที่นี่ก็น่าจะขาดที่นั่นด้วย",
+  "Les PDF-en tilbake": "อ่าน PDF กลับ",
+  "Les Word-filen tilbake": "อ่านไฟล์ Word กลับ",
+  "Leser filen tilbake …": "กำลังอ่านไฟล์กลับ …",
+  "Filen kunne ikke lages eller leses: {error}": "สร้างหรืออ่านไฟล์ไม่ได้: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "อ่านได้ตรงกับ CV {same} จาก {all} ช่อง",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” ถูกอ่านเป็น “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: ไม่พบ “{expected}”",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "ข้อความตามที่อ่านได้",
+  "Utdanning {n}": "การศึกษา {n}",
+  "Tidsrom": "ช่วงเวลา",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "สร้างไฟล์แบบเดียวกับตอนดาวน์โหลด แล้วอ่านแบบที่ ATS อ่าน"
  }
 }

@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Jei neįrašysite, šis CV dings, kai CVBuilder bus uždarytas.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Jei neįrašysite, jį grąžinti gali tik Atšaukti, ir tik kol CVBuilder neuždarytas.",
   "Lagre …": "Išsaugoti …",
-  "Fortsett å jobbe med CV-en (Esc)": "Toliau dirbti su CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Toliau dirbti su CV (Esc)",
+  "Hva et ATS leser": "Ką skaito ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Perskaito failą taip, kaip tai daro kandidatų atrankos sistema (ATS), ir parodo, kas pasiekia. Mūsų skaitytuvas atlaidesnis už daugelį tikrų sistemų: ko trūksta čia, tikriausiai trūksta ir ten.",
+  "Les PDF-en tilbake": "Perskaityti PDF",
+  "Les Word-filen tilbake": "Perskaityti „Word“ failą",
+  "Leser filen tilbake …": "Failas skaitomas …",
+  "Filen kunne ikke lages eller leses: {error}": "Nepavyko sukurti ar perskaityti failo: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} iš {all} laukų perskaityta kaip CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: „{expected}“ perskaityta kaip „{read}“",
+  "{field}: «{expected}» ble ikke funnet": "{field}: „{expected}“ nerasta",
+  "{field}: «{expected}»": "{field}: „{expected}“",
+  "Teksten slik den leses": "Tekstas, kaip jis skaitomas",
+  "Utdanning {n}": "Išsilavinimas {n}",
+  "Tidsrom": "Laikotarpis",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Sukuria failą taip, kaip jis atsisiunčiamas, ir perskaito jį kaip ATS"
  }
 }

@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Gordetzen ez baduzu, CV hau galdu egingo da CVBuilder ixtean.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Gordetzen ez baduzu, Desegin-ek bakarrik ekar dezake berriro, eta CVBuilder itxi arte bakarrik.",
   "Lagre …": "Gorde …",
-  "Fortsett å jobbe med CV-en (Esc)": "Jarraitu CVarekin lanean (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Jarraitu CVarekin lanean (Esc)",
+  "Hva et ATS leser": "Zer irakurtzen duen ATS batek",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Fitxategia hautagaien jarraipen-sistema batek (ATS) bezala irakurtzen du berriro, eta zer iristen den erakusten du. Gure irakurgailua benetako sistema asko baino biguinagoa da: hemen falta dena han ere falta da seguruenik.",
+  "Les PDF-en tilbake": "Irakurri PDFa berriro",
+  "Les Word-filen tilbake": "Irakurri Word fitxategia berriro",
+  "Leser filen tilbake …": "Fitxategia irakurtzen …",
+  "Filen kunne ikke lages eller leses: {error}": "Ezin izan da fitxategia sortu edo irakurri: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} eremutatik {same} CVan bezala irakurri dira.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” “{read}” gisa irakurri da",
+  "{field}: «{expected}» ble ikke funnet": "{field}: ez da “{expected}” aurkitu",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "Testua irakurtzen den bezala",
+  "Utdanning {n}": "Prestakuntza {n}",
+  "Tidsrom": "Epea",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Fitxategia deskargatzen den bezala sortzen du, eta ATS batek bezala irakurtzen du"
  }
 }

@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Ja nesaglabāsiet, šis CV pazudīs, kad CVBuilder tiks aizvērts.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Ja nesaglabāsiet, to var atgūt tikai ar Atsaukt un tikai līdz CVBuilder aizvēršanai.",
   "Lagre …": "Saglabāt …",
-  "Fortsett å jobbe med CV-en (Esc)": "Turpināt darbu ar CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Turpināt darbu ar CV (Esc)",
+  "Hva et ATS leser": "Ko nolasa ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Nolasa failu tā, kā to dara kandidātu atlases sistēma (ATS), un parāda, kas nonāk līdz tai. Mūsu lasītājs ir saudzīgāks par daudzām īstām sistēmām: kas trūkst šeit, visticamāk, trūkst arī tur.",
+  "Les PDF-en tilbake": "Nolasīt PDF atpakaļ",
+  "Les Word-filen tilbake": "Nolasīt Word failu atpakaļ",
+  "Leser filen tilbake …": "Fails tiek nolasīts …",
+  "Filen kunne ikke lages eller leses: {error}": "Failu neizdevās izveidot vai nolasīt: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} no {all} laukiem nolasīti kā CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: «{expected}» nolasīts kā «{read}»",
+  "{field}: «{expected}» ble ikke funnet": "{field}: «{expected}» nav atrasts",
+  "{field}: «{expected}»": "{field}: «{expected}»",
+  "Teksten slik den leses": "Teksts, kā tas tiek nolasīts",
+  "Utdanning {n}": "Izglītība {n}",
+  "Tidsrom": "Periods",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Izveido failu tā, kā tas tiek lejupielādēts, un nolasa to kā ATS"
  }
 }

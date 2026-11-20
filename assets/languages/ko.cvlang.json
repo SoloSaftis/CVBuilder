@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "저장하지 않으면 CVBuilder를 닫을 때 이 이력서가 사라집니다.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "저장하지 않으면 실행 취소로만 되돌릴 수 있으며, 그것도 CVBuilder를 닫기 전까지만 가능합니다.",
   "Lagre …": "저장 …",
-  "Fortsett å jobbe med CV-en (Esc)": "이력서 작업 계속하기 (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "이력서 작업 계속하기 (Esc)",
+  "Hva et ATS leser": "ATS가 읽는 내용",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "지원자 추적 시스템(ATS)처럼 파일을 다시 읽고 무엇이 전달되는지 보여 줍니다. 이 리더는 많은 실제 시스템보다 관대합니다. 여기서 빠진 것은 그곳에서도 빠졌을 가능성이 큽니다.",
+  "Les PDF-en tilbake": "PDF 다시 읽기",
+  "Les Word-filen tilbake": "Word 파일 다시 읽기",
+  "Leser filen tilbake …": "파일을 다시 읽는 중 …",
+  "Filen kunne ikke lages eller leses: {error}": "파일을 만들거나 읽을 수 없습니다: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all}개 항목 중 {same}개가 이력서대로 읽혔습니다.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}”이(가) “{read}”(으)로 읽혔습니다",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}”을(를) 찾지 못했습니다",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "읽힌 그대로의 텍스트",
+  "Utdanning {n}": "학력 {n}",
+  "Tidsrom": "기간",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "다운로드할 때와 같은 파일을 만들고 ATS처럼 읽습니다"
  }
 }

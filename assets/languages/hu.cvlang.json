@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Ha nem menti, ez az önéletrajz elvész, amikor a CVBuilder bezárul.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Ha nem menti, csak a Visszavonás hozhatja vissza, és csak addig, amíg a CVBuilder be nem zárul.",
   "Lagre …": "Mentés …",
-  "Fortsett å jobbe med CV-en (Esc)": "Tovább dolgozom az önéletrajzon (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Tovább dolgozom az önéletrajzon (Esc)",
+  "Hva et ATS leser": "Mit olvas egy ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Úgy olvassa vissza a fájlt, ahogy egy jelentkezéskezelő rendszer (ATS), és megmutatja, mi jut át. Olvasónk elnézőbb sok valódi rendszernél: ami itt hiányzik, valószínűleg ott is hiányzik.",
+  "Les PDF-en tilbake": "PDF visszaolvasása",
+  "Les Word-filen tilbake": "Word-fájl visszaolvasása",
+  "Leser filen tilbake …": "A fájl visszaolvasása …",
+  "Filen kunne ikke lages eller leses: {error}": "A fájlt nem sikerült elkészíteni vagy beolvasni: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} mezőből {same} az önéletrajz szerint lett beolvasva.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: „{expected}” így lett beolvasva: „{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: „{expected}” nem található",
+  "{field}: «{expected}»": "{field}: „{expected}”",
+  "Teksten slik den leses": "A szöveg, ahogy beolvasva",
+  "Utdanning {n}": "Tanulmányok {n}",
+  "Tidsrom": "Időszak",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Elkészíti a fájlt úgy, ahogy letöltődik, és ATS-ként olvassa be"
  }
 }

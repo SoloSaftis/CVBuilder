@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "As jy nie stoor nie, is hierdie CV weg wanneer CVBuilder toemaak.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "As jy nie stoor nie, kan net Ontdoen dit terugbring, en net totdat CVBuilder toemaak.",
   "Lagre …": "Stoor …",
-  "Fortsett å jobbe med CV-en (Esc)": "Werk verder aan die CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Werk verder aan die CV (Esc)",
+  "Hva et ATS leser": "Wat 'n ATS lees",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Lees die lêer terug soos 'n aansoekstelsel (ATS) dit doen, en wys wat deurkom. Ons leser is vriendeliker as baie regte stelsels: wat hier ontbreek, ontbreek waarskynlik ook daar.",
+  "Les PDF-en tilbake": "Lees die PDF terug",
+  "Les Word-filen tilbake": "Lees die Word-lêer terug",
+  "Leser filen tilbake …": "Lees die lêer terug …",
+  "Filen kunne ikke lages eller leses: {error}": "Die lêer kon nie gemaak of gelees word nie: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} van {all} velde is gelees soos in die CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” is gelees as “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” is nie gevind nie",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "Die teks soos dit gelees word",
+  "Utdanning {n}": "Opleiding {n}",
+  "Tidsrom": "Tydperk",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Maak die lêer soos dit afgelaai word, en lees dit soos 'n ATS"
  }
 }

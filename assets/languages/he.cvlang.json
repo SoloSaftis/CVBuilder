@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "אם לא תשמרו, קורות החיים האלה ייעלמו כש-CVBuilder ייסגר.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "אם לא תשמרו, רק ביטול פעולה יכול להחזיר אותם, ורק עד ש-CVBuilder ייסגר.",
   "Lagre …": "שמירה …",
-  "Fortsett å jobbe med CV-en (Esc)": "להמשיך לעבוד על קורות החיים (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "להמשיך לעבוד על קורות החיים (Esc)",
+  "Hva et ATS leser": "מה ATS קורא",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "קורא את הקובץ בחזרה כמו שמערכת לניהול מועמדים (ATS) קוראת, ומראה מה עובר. הקורא שלנו סלחני יותר ממערכות אמיתיות רבות: מה שחסר כאן כנראה חסר גם שם.",
+  "Les PDF-en tilbake": "לקרוא שוב את ה-PDF",
+  "Les Word-filen tilbake": "לקרוא שוב את קובץ ה-Word",
+  "Leser filen tilbake …": "הקובץ נקרא בחזרה …",
+  "Filen kunne ikke lages eller leses: {error}": "לא ניתן היה ליצור או לקרוא את הקובץ: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} מתוך {all} שדות נקראו כמו בקורות החיים.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” נקרא כ-“{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” לא נמצא",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "הטקסט כפי שהוא נקרא",
+  "Utdanning {n}": "השכלה {n}",
+  "Tidsrom": "תקופה",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "יוצר את הקובץ כפי שהוא יורד, וקורא אותו כמו ATS"
  }
 }

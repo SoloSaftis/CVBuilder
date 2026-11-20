@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Ki te kore koe e tiaki, ka ngaro tēnei CV ina kati a CVBuilder.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Ki te kore koe e tiaki, ko Wetekina anake ka taea te whakahoki mai, ā, tae noa ki te katinga o CVBuilder anake.",
   "Lagre …": "Tiaki …",
-  "Fortsett å jobbe med CV-en (Esc)": "Haere tonu te mahi i te CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Haere tonu te mahi i te CV (Esc)",
+  "Hva et ATS leser": "Te mea ka pānuitia e te ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Ka pānui anō i te kōnae pērā i tētahi pūnaha aroturuki kaitono (ATS), ka whakaatu i ngā mea ka puta. He ngāwari ake tā mātou kaipānui i te maha o ngā pūnaha tūturu: ko te mea e ngaro ana i konei, tērā pea kei te ngaro anō i reira.",
+  "Les PDF-en tilbake": "Pānui anō i te PDF",
+  "Les Word-filen tilbake": "Pānui anō i te kōnae Word",
+  "Leser filen tilbake …": "E pānui anō ana i te kōnae …",
+  "Filen kunne ikke lages eller leses: {error}": "Kāore i taea te hanga, te pānui rānei i te kōnae: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} o ngā āpure {all} i pānuitia pērā i te CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: i pānuitia a “{expected}” hei “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: kāore i kitea a “{expected}”",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "Te kuputuhi pērā i tōna pānuitanga",
+  "Utdanning {n}": "Mātauranga {n}",
+  "Tidsrom": "Wā",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Ka hanga i te kōnae pērā i tōna tikiakehanga, ka pānui pērā i te ATS"
  }
 }

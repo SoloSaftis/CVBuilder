@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Ak neuložíte, tento životopis po zatvorení CVBuildera zmizne.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Ak neuložíte, vrátiť ho môže len Späť, a to len do zatvorenia CVBuildera.",
   "Lagre …": "Uložiť …",
-  "Fortsett å jobbe med CV-en (Esc)": "Pokračovať v práci na životopise (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Pokračovať v práci na životopise (Esc)",
+  "Hva et ATS leser": "Čo prečíta ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Prečíta súbor späť tak, ako to robí systém na nábor (ATS), a ukáže, čo prejde. Naša čítačka je miernejšia ako mnohé skutočné systémy: čo chýba tu, pravdepodobne chýba aj tam.",
+  "Les PDF-en tilbake": "Prečítať PDF späť",
+  "Les Word-filen tilbake": "Prečítať súbor Word späť",
+  "Leser filen tilbake …": "Súbor sa číta späť …",
+  "Filen kunne ikke lages eller leses: {error}": "Súbor sa nepodarilo vytvoriť ani prečítať: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} z {all} polí sa prečítalo ako v životopise.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: „{expected}“ sa prečítalo ako „{read}“",
+  "{field}: «{expected}» ble ikke funnet": "{field}: „{expected}“ sa nenašlo",
+  "{field}: «{expected}»": "{field}: „{expected}“",
+  "Teksten slik den leses": "Text tak, ako sa číta",
+  "Utdanning {n}": "Vzdelanie {n}",
+  "Tidsrom": "Obdobie",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Vytvorí súbor tak, ako sa stiahne, a prečíta ho ako ATS"
  }
 }

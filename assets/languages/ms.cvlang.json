@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Jika anda tidak menyimpan, resume ini hilang apabila CVBuilder ditutup.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Jika anda tidak menyimpan, hanya Buat asal boleh mengembalikannya, dan hanya sehingga CVBuilder ditutup.",
   "Lagre …": "Simpan …",
-  "Fortsett å jobbe med CV-en (Esc)": "Teruskan menyunting resume (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Teruskan menyunting resume (Esc)",
+  "Hva et ATS leser": "Apa yang dibaca ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Membaca semula fail seperti sistem penjejakan pemohon (ATS), dan menunjukkan apa yang sampai. Pembaca kami lebih lembut daripada banyak sistem sebenar: yang hilang di sini mungkin hilang di sana juga.",
+  "Les PDF-en tilbake": "Baca semula PDF",
+  "Les Word-filen tilbake": "Baca semula fail Word",
+  "Leser filen tilbake …": "Membaca semula fail …",
+  "Filen kunne ikke lages eller leses: {error}": "Fail tidak dapat dibuat atau dibaca: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} daripada {all} medan dibaca seperti dalam resume.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” dibaca sebagai “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” tidak ditemui",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "Teks seperti yang dibaca",
+  "Utdanning {n}": "Pendidikan {n}",
+  "Tidsrom": "Tempoh",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Membuat fail seperti semasa dimuat turun, dan membacanya seperti ATS"
  }
 }

@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "ካላስቀመጥክ፣ CVBuilder ሲዘጋ ይህ ሲቪ ይጠፋል።",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "ካላስቀመጥክ፣ መልሰህ ማምጣት የምትችለው በቀልብስ ብቻ ነው፣ እሱም CVBuilder እስኪዘጋ ድረስ ብቻ።",
   "Lagre …": "አስቀምጥ …",
-  "Fortsett å jobbe med CV-en (Esc)": "በሲቪው ላይ መሥራት ቀጥል (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "በሲቪው ላይ መሥራት ቀጥል (Esc)",
+  "Hva et ATS leser": "ATS የሚያነበው",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "ፋይሉን የማመልከቻ ሥርዓት (ATS) እንደሚያነበው መልሶ ያነባል፣ ምን እንደሚያልፍም ያሳያል። አንባቢያችን ከብዙ እውነተኛ ሥርዓቶች ይቀላል፤ እዚህ የጎደለው እዚያም ይጎድላል።",
+  "Les PDF-en tilbake": "PDFውን መልሰህ አንብብ",
+  "Les Word-filen tilbake": "የWord ፋይሉን መልሰህ አንብብ",
+  "Leser filen tilbake …": "ፋይሉ መልሶ እየተነበበ ነው …",
+  "Filen kunne ikke lages eller leses: {error}": "ፋይሉን መሥራት ወይም ማንበብ አልተቻለም፦ {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "ከ{all} መስኮች {same}ቱ እንደ ሲቪው ተነበቡ።",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}፦ «{expected}» እንደ «{read}» ተነበበ",
+  "{field}: «{expected}» ble ikke funnet": "{field}፦ «{expected}» አልተገኘም",
+  "{field}: «{expected}»": "{field}፦ «{expected}»",
+  "Teksten slik den leses": "ጽሑፉ እንደሚነበበው",
+  "Utdanning {n}": "ትምህርት {n}",
+  "Tidsrom": "ጊዜ",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "ፋይሉን እንደሚወርደው ይሠራል፣ እንደ ATS ያነበዋል"
  }
 }

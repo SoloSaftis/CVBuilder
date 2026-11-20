@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "បើអ្នកមិនរក្សាទុកទេ ប្រវត្តិរូបនេះនឹងបាត់នៅពេល CVBuilder បិទ។",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "បើអ្នកមិនរក្សាទុកទេ មានតែ មិនធ្វើវិញ ប៉ុណ្ណោះដែលអាចយកវាមកវិញបាន ហើយត្រឹមតែមុនពេល CVBuilder បិទ។",
   "Lagre …": "រក្សាទុក …",
-  "Fortsett å jobbe med CV-en (Esc)": "បន្តធ្វើការលើប្រវត្តិរូប (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "បន្តធ្វើការលើប្រវត្តិរូប (Esc)",
+  "Hva et ATS leser": "អ្វីដែល ATS អាន",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "អានឯកសារឡើងវិញដូចប្រព័ន្ធតាមដានបេក្ខជន (ATS) ធ្វើ ហើយបង្ហាញអ្វីដែលឆ្លងកាត់។ កម្មវិធីអានរបស់យើងទន់ជាងប្រព័ន្ធពិតជាច្រើន៖ អ្វីដែលខ្វះនៅទីនេះ ប្រហែលជាខ្វះនៅទីនោះដែរ។",
+  "Les PDF-en tilbake": "អាន PDF ឡើងវិញ",
+  "Les Word-filen tilbake": "អានឯកសារ Word ឡើងវិញ",
+  "Leser filen tilbake …": "កំពុងអានឯកសារឡើងវិញ …",
+  "Filen kunne ikke lages eller leses: {error}": "មិនអាចបង្កើត ឬអានឯកសារបានទេ៖ {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "វាល {same} ក្នុងចំណោម {all} ត្រូវបានអានដូចក្នុងប្រវត្តិរូប។",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}៖ “{expected}” ត្រូវបានអានជា “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}៖ រកមិនឃើញ “{expected}”",
+  "{field}: «{expected}»": "{field}៖ “{expected}”",
+  "Teksten slik den leses": "អត្ថបទដូចដែលវាត្រូវបានអាន",
+  "Utdanning {n}": "ការសិក្សា {n}",
+  "Tidsrom": "រយៈពេល",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "បង្កើតឯកសារដូចពេលទាញយក ហើយអានវាដូច ATS"
  }
 }

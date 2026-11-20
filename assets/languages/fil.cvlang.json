@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Kung hindi ka magse-save, mawawala ang CV na ito kapag nagsara ang CVBuilder.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Kung hindi ka magse-save, ang I-undo lang ang makakapagbalik nito, at hanggang magsara lang ang CVBuilder.",
   "Lagre …": "I-save …",
-  "Fortsett å jobbe med CV-en (Esc)": "Ituloy ang paggawa sa CV (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Ituloy ang paggawa sa CV (Esc)",
+  "Hva et ATS leser": "Ang binabasa ng ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Binabasa muli ang file gaya ng ginagawa ng applicant tracking system (ATS), at ipinapakita kung ano ang nakakalusot. Mas maluwag ang aming reader kaysa sa maraming totoong system: ang kulang dito ay malamang kulang din doon.",
+  "Les PDF-en tilbake": "Basahin muli ang PDF",
+  "Les Word-filen tilbake": "Basahin muli ang Word file",
+  "Leser filen tilbake …": "Binabasa muli ang file …",
+  "Filen kunne ikke lages eller leses: {error}": "Hindi magawa o mabasa ang file: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} sa {all} field ang nabasa gaya ng nasa CV.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: binasa ang “{expected}” bilang “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: hindi nakita ang “{expected}”",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "Ang teksto gaya ng pagkabasa",
+  "Utdanning {n}": "Edukasyon {n}",
+  "Tidsrom": "Panahon",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Ginagawa ang file gaya ng pag-download nito, at binabasa ito gaya ng ATS"
  }
 }

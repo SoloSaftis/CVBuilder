@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "თუ არ შეინახავთ, ეს CV დაიკარგება, როცა CVBuilder დაიხურება.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "თუ არ შეინახავთ, მისი დაბრუნება მხოლოდ გაუქმებით შეიძლება, ისიც მხოლოდ CVBuilder-ის დახურვამდე.",
   "Lagre …": "შენახვა …",
-  "Fortsett å jobbe med CV-en (Esc)": "CV-ზე მუშაობის გაგრძელება (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "CV-ზე მუშაობის გაგრძელება (Esc)",
+  "Hva et ATS leser": "რას კითხულობს ATS",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "ფაილს ხელახლა კითხულობს ისე, როგორც კანდიდატების თვალყურის დევნების სისტემა (ATS), და აჩვენებს, რა გადის. ჩვენი წამკითხველი ბევრ რეალურ სისტემაზე რბილია: რაც აქ აკლია, იქაც სავარაუდოდ აკლია.",
+  "Les PDF-en tilbake": "PDF-ის ხელახლა წაკითხვა",
+  "Les Word-filen tilbake": "Word ფაილის ხელახლა წაკითხვა",
+  "Leser filen tilbake …": "ფაილი იკითხება …",
+  "Filen kunne ikke lages eller leses: {error}": "ფაილის შექმნა ან წაკითხვა ვერ მოხერხდა: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} ველიდან {same} წაიკითხა ისე, როგორც CV-შია.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: “{expected}” წაიკითხა როგორც “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}: “{expected}” ვერ მოიძებნა",
+  "{field}: «{expected}»": "{field}: “{expected}”",
+  "Teksten slik den leses": "ტექსტი, როგორც იკითხება",
+  "Utdanning {n}": "განათლება {n}",
+  "Tidsrom": "პერიოდი",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "ქმნის ფაილს ისე, როგორც ჩამოიტვირთება, და კითხულობს მას ATS-ის მსგავსად"
  }
 }

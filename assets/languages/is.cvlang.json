@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Ef þú vistar ekki hverfur þessi ferilskrá þegar CVBuilder lokast.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Ef þú vistar ekki getur aðeins Afturkalla sótt hana aftur, og aðeins þar til CVBuilder lokast.",
   "Lagre …": "Vista …",
-  "Fortsett å jobbe med CV-en (Esc)": "Halda áfram með ferilskrána (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Halda áfram með ferilskrána (Esc)",
+  "Hva et ATS leser": "Það sem ATS les",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Les skrána aftur eins og ráðningarkerfi (ATS) gerir og sýnir hvað kemst í gegn. Lesarinn okkar er mildari en mörg raunveruleg kerfi: það sem vantar hér vantar líklega líka þar.",
+  "Les PDF-en tilbake": "Lesa PDF-skrána aftur",
+  "Les Word-filen tilbake": "Lesa Word-skrána aftur",
+  "Leser filen tilbake …": "Les skrána aftur …",
+  "Filen kunne ikke lages eller leses: {error}": "Ekki tókst að búa til eða lesa skrána: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} af {all} reitum voru lesnir eins og í ferilskránni.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: „{expected}“ var lesið sem „{read}“",
+  "{field}: «{expected}» ble ikke funnet": "{field}: „{expected}“ fannst ekki",
+  "{field}: «{expected}»": "{field}: „{expected}“",
+  "Teksten slik den leses": "Textinn eins og hann er lesinn",
+  "Utdanning {n}": "Menntun {n}",
+  "Tidsrom": "Tímabil",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Býr til skrána eins og hún er sótt og les hana eins og ATS"
  }
 }

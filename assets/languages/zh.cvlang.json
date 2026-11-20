@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "如果不保存，CVBuilder 关闭后这份简历就会消失。",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "如果不保存，只能用“撤销”找回，而且只能在 CVBuilder 关闭之前。",
   "Lagre …": "保存 …",
-  "Fortsett å jobbe med CV-en (Esc)": "继续编辑简历 (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "继续编辑简历 (Esc)",
+  "Hva et ATS leser": "ATS 读到的内容",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "以求职者跟踪系统（ATS）的方式重新读取文件，并显示哪些内容能被读到。我们的读取器比许多真实系统宽松：这里缺少的，那里多半也缺少。",
+  "Les PDF-en tilbake": "重新读取 PDF",
+  "Les Word-filen tilbake": "重新读取 Word 文件",
+  "Leser filen tilbake …": "正在重新读取文件 …",
+  "Filen kunne ikke lages eller leses: {error}": "无法创建或读取文件：{error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{all} 个字段中有 {same} 个与简历相同。",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}：“{expected}” 被读成 “{read}”",
+  "{field}: «{expected}» ble ikke funnet": "{field}：找不到 “{expected}”",
+  "{field}: «{expected}»": "{field}：“{expected}”",
+  "Teksten slik den leses": "读取到的文本",
+  "Utdanning {n}": "教育背景 {n}",
+  "Tidsrom": "时间段",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "按下载时的样子生成文件，并像 ATS 一样读取"
  }
 }

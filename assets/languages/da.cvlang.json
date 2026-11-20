@@ -1283,6 +1283,20 @@
   "Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.": "Hvis du ikke gemmer, er dette CV væk, når CVBuilder lukkes.",
   "Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.": "Hvis du ikke gemmer, kan kun Fortryd hente det tilbage, og kun indtil CVBuilder lukkes.",
   "Lagre …": "Gem …",
-  "Fortsett å jobbe med CV-en (Esc)": "Fortsæt med at arbejde på CV’et (Esc)"
+  "Fortsett å jobbe med CV-en (Esc)": "Fortsæt med at arbejde på CV’et (Esc)",
+  "Hva et ATS leser": "Hvad et ATS læser",
+  "Leser filen tilbake slik et søknadssystem (ATS) gjør, og viser hva som kommer med. Leseren vår er snillere enn mange ekte systemer: det som mangler her, mangler nok der også.": "Læser filen tilbage, som et rekrutteringssystem (ATS) gør, og viser, hvad der kommer med. Vores læser er mildere end mange rigtige systemer: det, der mangler her, mangler nok også der.",
+  "Les PDF-en tilbake": "Læs PDF’en tilbage",
+  "Les Word-filen tilbake": "Læs Word-filen tilbage",
+  "Leser filen tilbake …": "Læser filen tilbage …",
+  "Filen kunne ikke lages eller leses: {error}": "Filen kunne ikke laves eller læses: {error}",
+  "{same} av {all} felt ble lest som i CV-en.": "{same} af {all} felter blev læst som i CV’et.",
+  "{field}: «{expected}» ble lest som «{read}»": "{field}: »{expected}« blev læst som »{read}«",
+  "{field}: «{expected}» ble ikke funnet": "{field}: »{expected}« blev ikke fundet",
+  "{field}: «{expected}»": "{field}: »{expected}«",
+  "Teksten slik den leses": "Teksten, som den læses",
+  "Utdanning {n}": "Uddannelse {n}",
+  "Tidsrom": "Periode",
+  "Lager filen slik den lastes ned, og leser den som et ATS": "Laver filen, som den downloades, og læser den som et ATS"
  }
 }
