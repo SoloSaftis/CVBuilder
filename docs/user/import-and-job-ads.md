@@ -23,8 +23,34 @@ before can be brought back with **Undo**.
 - Text (`.txt`, `.md`)
 - Web page (`.html`, `.htm`, `.mht`, `.mhtml`)
 - A CVBuilder draft (`.json`) – opens as it is
+- LinkedIn data export (`.zip`) – see below
 
 Files over 50 MB are not read.
+
+### From LinkedIn
+
+If you have no CV file but do have a LinkedIn profile, you can import LinkedIn's
+own copy of your data. Dates and job titles come over exactly, with no AI.
+
+1. On LinkedIn in a web browser, open **Settings & Privacy → Data privacy →
+   Get a copy of your data**.
+2. Choose the larger archive, or tick at least **Profile**, **Positions**,
+   **Education** and **Skills**, and click **Request archive**.
+3. LinkedIn emails you a link when the archive is ready (often within minutes
+   for the smaller one, up to a day for the full one). Download the `.zip` file;
+   the link only works for a few days.
+4. In CVBuilder, choose **Import CV from file** and pick the `.zip` file. There is
+   no need to unzip it.
+
+CVBuilder reads only the profile (name, headline, summary, town), jobs,
+education, skills, languages, certifications, projects, your primary email
+address and phone number. Messages, connections, ads data and everything else
+in the archive are never opened. Everything happens on your computer; the
+archive is not copied or sent anywhere.
+
+LinkedIn descriptions are kept exactly as you wrote them, one line per bullet.
+Long paragraphs often read better as short bullet points – the checklist gives
+advice on that.
 
 ### Without AI
 

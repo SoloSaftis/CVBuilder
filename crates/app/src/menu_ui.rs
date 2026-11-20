@@ -7,6 +7,7 @@ use egui::{CornerRadius, Margin, RichText, Stroke};
 
 use crate::i18n;
 use crate::theme::{self, Tokens};
+use crate::shortcuts;
 use crate::{CvApp, Export, Leave, Side, Views};
 
 /// The version and the exact source it was built from (set by build.rs).
@@ -43,6 +44,7 @@ pub enum Tab {
     Help,
 }
 
+#[derive(Debug)]
 pub(crate) enum Action {
     New,
     Example,
@@ -51,6 +53,7 @@ pub(crate) enum Action {
     SaveAs,
     Export(Export),
     Undo,
+    Redo,
     /// Switch the CV's headings and dates to this language (offline).
     Headings(String),
     Translate,
@@ -68,6 +71,8 @@ pub(crate) enum Action {
     NewChat,
     Chat,
     Checks,
+    /// The «Søknadsskjema» tab in the side panel.
+    FormHelper,
     About,
     CheckUpdates,
     UserGuide,
@@ -151,20 +156,20 @@ impl CvApp {
                 .on_hover_text(i18n::t("Ny CV, åpne og lagre utkast, importer, last ned og innstillinger"));
             egui::Popup::menu(&file).show(|ui| {
                 ui.set_min_width(230.0);
-                if ui.add(menu_item(ui, theme::ph::FILE_PLUS, i18n::t("Ny CV"))).on_hover_text(i18n::t("Start på en tom CV. Den du har nå kan hentes tilbake med Angre.")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::FILE_PLUS, i18n::t("Ny CV")).shortcut_text(shortcuts::text(ui.ctx(), &shortcuts::NEW))).on_hover_text(i18n::t("Start på en tom CV. Den du har nå kan hentes tilbake med Angre.")).clicked() {
                     action = Some(Action::New);
                 }
                 if ui.add(menu_item(ui, theme::ph::LIGHTBULB, i18n::t("Åpne eksempel"))).on_hover_text(i18n::t("Et fiktivt eksempel med anbefalt oppsett og rekkefølge")).clicked() {
                     action = Some(Action::Example);
                 }
                 ui.separator();
-                if ui.add(menu_item(ui, theme::ph::FOLDER_OPEN, i18n::t("Åpne"))).on_hover_text(i18n::t("Åpne et lagret CVBuilder-utkast (.json)")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::FOLDER_OPEN, i18n::t("Åpne")).shortcut_text(shortcuts::text(ui.ctx(), &shortcuts::OPEN))).on_hover_text(i18n::t("Åpne et lagret CVBuilder-utkast (.json)")).clicked() {
                     action = Some(Action::Open);
                 }
-                if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre"))).on_hover_text(i18n::t("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor.")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre")).shortcut_text(shortcuts::text(ui.ctx(), &shortcuts::SAVE))).on_hover_text(shortcuts::keys(ui.ctx(), i18n::t("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor."))).clicked() {
                     action = Some(Action::Save);
                 }
-                if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som"))).on_hover_text(i18n::t("Lagre utkastet som fil")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som")).shortcut_text(shortcuts::text(ui.ctx(), &shortcuts::SAVE_AS))).on_hover_text(i18n::t("Lagre utkastet som fil")).clicked() {
                     action = Some(Action::SaveAs);
                 }
                 if ui.add(menu_item(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV fra fil"))).on_hover_text(i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI")).clicked() {
@@ -173,9 +178,16 @@ impl CvApp {
                 ui.separator();
                 for (kind, icon, name) in [(Export::Pdf, theme::ph::FILE_PDF, i18n::t("Last ned PDF")), (Export::Word, theme::ph::FILE_DOC, i18n::t("Last ned Word")), (Export::Text, theme::ph::COPY, i18n::t("Kopier CV-en som tekst"))] {
                     let tip = export_tip(kind, blocked);
-                    if ui.add(menu_item(ui, icon, name)).on_hover_text(&tip).clicked() {
+                    let mut item = menu_item(ui, icon, name);
+                    if kind == Export::Pdf {
+                        item = item.shortcut_text(shortcuts::text(ui.ctx(), &shortcuts::PDF));
+                    }
+                    if ui.add(item).on_hover_text(&tip).clicked() {
                         action = Some(Action::Export(kind));
                     }
+                }
+                if ui.add(menu_item(ui, theme::ph::ROWS, i18n::t("Søknadsskjema"))).on_hover_text(i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene")).clicked() {
+                    action = Some(Action::FormHelper);
                 }
                 ui.separator();
                 if ui.add(menu_item(ui, theme::ph::GEAR, i18n::t("Innstillinger"))).on_hover_text(i18n::t("Språk i menyene, tema og mer")).clicked() {
@@ -287,7 +299,7 @@ impl CvApp {
     fn home_tab(&mut self, ui: &mut egui::Ui, action: &mut Option<Action>, blocked: bool) {
         group(ui, i18n::t("Fil"), |ui| {
             column(ui, |ui| {
-                if tool(ui, theme::ph::FILE_PLUS, i18n::t("Ny CV"), i18n::t("Start på en tom CV. Den du har nå kan hentes tilbake med Angre."), true) {
+                if tool(ui, theme::ph::FILE_PLUS, i18n::t("Ny CV"), &shortcuts::tip(ui.ctx(), i18n::t("Start på en tom CV. Den du har nå kan hentes tilbake med Angre."), &shortcuts::NEW), true) {
                     *action = Some(Action::New);
                 }
                 if tool(ui, theme::ph::LIGHTBULB, i18n::t("Eksempel"), i18n::t("Et fiktivt eksempel med anbefalt oppsett og rekkefølge"), true) {
@@ -295,10 +307,10 @@ impl CvApp {
                 }
             });
             column(ui, |ui| {
-                if tool(ui, theme::ph::FOLDER_OPEN, i18n::t("Åpne"), i18n::t("Åpne et lagret CVBuilder-utkast (.json)"), true) {
+                if tool(ui, theme::ph::FOLDER_OPEN, i18n::t("Åpne"), &shortcuts::tip(ui.ctx(), i18n::t("Åpne et lagret CVBuilder-utkast (.json)"), &shortcuts::OPEN), true) {
                     *action = Some(Action::Open);
                 }
-                if tool(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre"), i18n::t("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor."), true) {
+                if tool(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre"), &shortcuts::keys(ui.ctx(), i18n::t("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor.")), true) {
                     *action = Some(Action::Save);
                 }
             });
@@ -312,11 +324,16 @@ impl CvApp {
             });
             // Downloading sits with saving; while something is missing, a click shows what.
             column(ui, |ui| {
-                if tool(ui, theme::ph::FILE_PDF, i18n::t("Last ned PDF"), &export_tip(Export::Pdf, blocked), true) {
+                if tool(ui, theme::ph::FILE_PDF, i18n::t("Last ned PDF"), &shortcuts::tip(ui.ctx(), &export_tip(Export::Pdf, blocked), &shortcuts::PDF), true) {
                     *action = Some(Action::Export(Export::Pdf));
                 }
                 if tool(ui, theme::ph::FILE_DOC, i18n::t("Last ned Word"), &export_tip(Export::Word, blocked), true) {
                     *action = Some(Action::Export(Export::Word));
+                }
+            });
+            column(ui, |ui| {
+                if tool(ui, theme::ph::ROWS, i18n::t("Søknadsskjema"), i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene"), true) {
+                    *action = Some(Action::FormHelper);
                 }
             });
         });
@@ -337,8 +354,11 @@ impl CvApp {
         });
         group(ui, i18n::t("Angre"), |ui| {
             column(ui, |ui| {
-                if tool(ui, theme::ph::UNDO, i18n::t("Angre"), i18n::t("Hent tilbake CV-en fra før siste store endring"), self.undo.is_some()) {
+                if tool(ui, theme::ph::UNDO, i18n::t("Angre"), &shortcuts::tip(ui.ctx(), i18n::t("Hent tilbake CV-en fra før siste store endring"), &shortcuts::UNDO), self.undo.is_some()) {
                     *action = Some(Action::Undo);
+                }
+                if tool(ui, theme::ph::REDO, i18n::t("Gjør om"), &shortcuts::tip(ui.ctx(), i18n::t("Gjør om det du angret"), shortcuts::redo(ui.ctx())), self.redo.is_some()) {
+                    *action = Some(Action::Redo);
                 }
             });
         });
@@ -355,22 +375,21 @@ impl CvApp {
                     .selected_text(crate::translate_ui::shown_name(&current))
                     .width(150.0)
                     .height(2000.0)
+                    .close_behavior(egui::PopupCloseBehavior::CloseOnClickOutside)
                     .show_ui(ui, |ui| {
                         // The computer's own language first, then one list A to Z by each
-                        // language's own name (Čeština with C, Íslenska with I).
-                        let (own, rest) = crate::translate_ui::cv_language_list();
-                        let has_own = own.is_some();
-                        for (i, name) in own.into_iter().chain(rest).enumerate() {
-                            if i == 1 && has_own {
-                                ui.separator();
-                            }
+                        // language's name; a search field on top finds one by any of its names.
+                        let (items, pinned) = crate::lang_search::cv_languages(|name| {
                             let tip = match name {
                                 "Bokmål" => i18n::t("Overskrifter og datoer på bokmål"),
                                 "English" => i18n::t("Overskrifter og datoer på engelsk"),
                                 _ => i18n::t("Overskriftene byttes med en gang; teksten oversetter du med «Oversett»"),
                             };
-                            if ui.selectable_label(current == name, crate::translate_ui::shown_name(name)).on_hover_text(tip).clicked() && current != name {
-                                *action = Some(Action::Headings(name.to_string()));
+                            tip.to_string()
+                        });
+                        if let Some(name) = crate::lang_search::list(ui, "cv-language", &items, |n| current == *n, pinned) {
+                            if current != name {
+                                *action = Some(Action::Headings(name));
                             }
                         }
                         ui.separator();
@@ -380,6 +399,7 @@ impl CvApp {
                             .clicked()
                         {
                             *action = Some(Action::Translate);
+                            ui.close();
                         }
                     })
                     .response
@@ -583,12 +603,8 @@ impl CvApp {
             Action::Save => self.save(),
             Action::SaveAs => self.pick("save", None),
             Action::Export(kind) => self.start_export(ctx, kind),
-            Action::Undo => {
-                if let Some((project, example)) = self.undo.take() {
-                    self.load(project, example);
-                    self.status = i18n::t("Angret.").into();
-                }
-            }
+            Action::Undo => self.undo(),
+            Action::Redo => self.redo(),
             Action::Headings(name) => self.switch_cv_language(&name),
             Action::Translate => self.open_translate(None),
             Action::Add("section") => self.ask_section_name(""),
@@ -628,6 +644,10 @@ impl CvApp {
             Action::Checks => {
                 self.views.side = true;
                 self.side = Side::Checks;
+            }
+            Action::FormHelper => {
+                self.views.side = true;
+                self.side = Side::Form;
             }
             Action::About => self.about_open = true,
             Action::CheckUpdates => self.update_check = Some(crate::updates_ui::UpdateCheck::start(ctx)),
@@ -732,7 +752,9 @@ impl CvApp {
                 if ui.button(i18n::t("Kopier versjonsinfo")).on_hover_text(i18n::t("Kopier versjon, bygg og system, f.eks. til en feilmelding")).clicked() {
                     ui.ctx().copy_text(format!("CVBuilder {VERSION} ({BUILD}) {} {}", std::env::consts::OS, std::env::consts::ARCH));
                 }
-                if theme::primary(ui, i18n::t("Lukk"), i18n::t("Lukk vinduet (Esc)"), true).clicked() {
+                let default = theme::primary(ui, i18n::t("Lukk"), i18n::t("Lukk vinduet (Esc)"), true);
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     close = true;
                 }
             });

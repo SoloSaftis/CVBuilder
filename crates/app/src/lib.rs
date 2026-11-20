@@ -12,8 +12,10 @@ mod checklist_ui;
 mod colors_ui;
 mod designs_ui;
 mod form;
+mod form_helper_ui;
 mod i18n;
 mod import_ui;
+mod lang_search;
 mod langpack_ui;
 mod link;
 mod menu_ui;
@@ -21,6 +23,7 @@ mod page_ui;
 mod photo;
 mod preview;
 mod settings_ui;
+mod shortcuts;
 mod storage;
 mod theme;
 #[cfg(test)]
@@ -39,6 +42,7 @@ use std::time::{Duration, Instant};
 use cv_core::checks::{self, Level};
 use cv_core::{Project, document};
 use egui::{CornerRadius, Margin, RichText, Stroke};
+use checklist_ui::{Status, status_line};
 use theme::Tokens;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -99,6 +103,8 @@ impl Default for Views {
 enum Side {
     Chat,
     Checks,
+    /// «Søknadsskjema»: the CV field by field, and the ready answers.
+    Form,
 }
 
 struct CvApp {
@@ -111,6 +117,8 @@ struct CvApp {
     preview: preview::Preview,
     status: String,
     undo: Option<(Project, bool)>,
+    /// The CV as it was before the last undo, for «Gjør om» (Ctrl+Y). Gone at the next edit.
+    redo: Option<(Project, bool)>,
     confirm: Option<Export>,
     picked_tx: Sender<Picked>,
     picked_rx: Receiver<Picked>,
@@ -154,6 +162,7 @@ struct CvApp {
     /// Added interface languages, and the translation that may be running.
     langs: langpack_ui::LangState,
     checklist: checklist_ui::ChecklistState,
+    form_helper: form_helper_ui::FormHelperState,
     /// The name being typed for a new section, while that window is open.
     new_section: Option<String>,
     /// Where the new section goes in the CV: `None` at the bottom, `Some(i)` at position i.
@@ -184,6 +193,7 @@ impl CvApp {
             preview: preview::Preview::new(cc.egui_ctx.clone()),
             status: i18n::t("Dette er et eksempel. Velg «Ny CV» for å starte på din egen, eller skriv rett inn i eksemplet.").into(),
             undo: None,
+            redo: None,
             confirm: None,
             picked_tx,
             picked_rx,
@@ -214,6 +224,7 @@ impl CvApp {
             settings_open: false,
             langs,
             checklist: checklist_ui::ChecklistState::load(),
+            form_helper: form_helper_ui::FormHelperState::load(),
             new_section: None,
             new_section_at: None,
             ribbon_tab: menu_ui::Tab::default(),
@@ -232,6 +243,7 @@ impl CvApp {
             }
             Ok("mcp") => app.chat.mcp_help_open = true,
             Ok("checks") => app.side = Side::Checks,
+            Ok("form") => app.side = Side::Form,
             Ok("about") => app.about_open = true,
             Ok("updates") => app.update_check = Some(updates_ui::UpdateCheck::Done(Ok(cv_ai::updates::Release { version: "9.9.9".into(), page: cv_ai::updates::RELEASES_PAGE.into() }))),
             Ok("insert") => app.ribbon_tab = menu_ui::Tab::Insert,
@@ -294,6 +306,7 @@ impl CvApp {
             self.is_example = false;
             self.status = i18n::t("Nå er dette din CV. Den huskes på denne maskinen mens du skriver.").into();
         }
+        self.redo = None;
         self.save_at = Some(Instant::now());
     }
 
@@ -314,9 +327,29 @@ impl CvApp {
         }
         self.load(project, example);
         self.undo = Some(before);
+        self.redo = None;
         self.status = text.into();
         // Another CV: «Lagre» must not write it over the file of the one before.
         self.set_file(None);
+    }
+
+    /// The big undo: back to the CV from before the last «Ny CV», example, import or translation.
+    /// The CV it leaves is kept for «Gjør om».
+    fn undo(&mut self) {
+        if let Some((project, example)) = self.undo.take() {
+            self.redo = Some((self.project.clone(), self.is_example));
+            self.load(project, example);
+            self.status = if example { i18n::t("Eksemplet er tilbake.").into() } else { i18n::t("CV-en din er tilbake.").into() };
+        }
+    }
+
+    /// Undo the undo: the CV from before it comes back, and can be undone again.
+    fn redo(&mut self) {
+        if let Some((project, example)) = self.redo.take() {
+            self.undo = Some((self.project.clone(), self.is_example));
+            self.load(project, example);
+            self.status = i18n::t("Gjort om.").into();
+        }
     }
 
     fn fingerprint(&self) -> u64 {
@@ -430,7 +463,7 @@ impl CvApp {
         let focus = std::mem::take(&mut self.leave_focus);
         let t = Tokens::get(ctx);
         let (mut save, mut discard, mut cancel) = (false, false, false);
-        let r = egui::Modal::new(egui::Id::new("cvbuilder.close")).show(ctx, |ui| {
+        let r = egui::Modal::new(egui::Id::unique("cvbuilder.close")).show(ctx, |ui| {
             ui.set_width(440.0);
             ui.label(RichText::new(i18n::t("Vil du lagre endringene i CV-en?")).size(17.0).family(theme::bold()));
             ui.add_space(6.0);
@@ -545,7 +578,7 @@ impl CvApp {
             let picked = match (kind, export) {
                 ("open", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).pick_file().map(Picked::OpenProject),
                 ("save", _) => Some(rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).set_file_name(format!("{stem}_utkast.json")).save_file().map_or(Picked::SaveCancelled, Picked::SaveProject)),
-                ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
+                ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, LinkedIn, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
                 ("ad_file", _) => rfd::FileDialog::new().add_filter(i18n::t("Annonse (PDF, Word, tekst, nettside)"), &["pdf", "docx", "txt", "md", "html", "htm"]).pick_file().map(Picked::AdFile),
                 ("checklist_load", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).pick_file().map(Picked::ChecklistLoad),
                 ("checklist_save", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).set_file_name("min-sjekkliste.cvchecklist.json").save_file().map(Picked::ChecklistSave),
@@ -673,11 +706,10 @@ impl CvApp {
             }
             ui.add_space(8.0);
             ui.with_layout(egui::Layout::left_to_right(egui::Align::Center), |ui| {
-                if let Some((project, example)) = self.undo.clone() {
-                    if ui.small_button(i18n::t("Angre")).on_hover_text(i18n::t("Hent tilbake CV-en fra før siste store endring")).clicked() {
-                        self.load(project, example);
-                        self.undo = None;
-                        self.status = if example { i18n::t("Eksemplet er tilbake.").into() } else { i18n::t("CV-en din er tilbake.").into() };
+                if self.undo.is_some() {
+                    let tip = shortcuts::tip(ui.ctx(), i18n::t("Hent tilbake CV-en fra før siste store endring"), &shortcuts::UNDO);
+                    if ui.small_button(i18n::t("Angre")).on_hover_text(tip).clicked() {
+                        self.undo();
                     }
                 }
                 ui.add(egui::Label::new(RichText::new(&self.status).size(12.5).color(t.dim)).truncate());
@@ -693,7 +725,7 @@ impl CvApp {
         egui::Frame::new().fill(t.hover).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin::same(3)).show(ui, |ui| {
             ui.spacing_mut().item_spacing.x = 2.0;
             ui.horizontal(|ui| {
-                let w = ((ui.available_width() - 10.0) / 2.0).floor();
+                let w = ((ui.available_width() - 14.0) / 3.0).floor();
                 for (side, name, tip) in [
                     (Side::Chat, i18n::t("AI-assistent").to_string(), i18n::t("Be AI-en om endringer i CV-en med egne ord")),
                     (
@@ -701,6 +733,7 @@ impl CvApp {
                         if blocking.is_empty() { i18n::t("Sjekkliste").to_string() } else { i18n::tf("Sjekkliste · {n}", &[("n", &blocking.len().to_string())]) },
                         i18n::t("Hva som mangler før nedlasting, og råd fra rekrutterere og ATS"),
                     ),
+                    (Side::Form, i18n::t("Søknadsskjema").to_string(), i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene")),
                 ] {
                     let on = self.side == side;
                     let b = egui::Button::new(RichText::new(name.as_str()).size(13.0).family(theme::medium()).color(if on { t.text } else { t.dim }))
@@ -708,7 +741,7 @@ impl CvApp {
                         .stroke(if on { Stroke::new(1.0, t.border) } else { Stroke::NONE })
                         .corner_radius(CornerRadius::same(theme::R_SM))
                         .truncate();
-                    // Exactly half each, the name shortened if it is longer (one long Icelandic
+                    // Exactly a third each, the name shortened if it is longer (one long Icelandic
                     // word widened the panel; found by ui_qa.rs).
                     if ui.add_sized([w, 28.0], b).on_hover_text(format!("{name}: {tip}")).clicked() {
                         self.side = side;
@@ -722,6 +755,9 @@ impl CvApp {
             Side::Checks => {
                 egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| self.checklist(ui, &blocking));
             }
+            Side::Form => {
+                egui::ScrollArea::vertical().id_salt("form-helper-scroll").auto_shrink([false, false]).show(ui, |ui| self.form_helper(ui));
+            }
         }
     }
 
@@ -734,14 +770,14 @@ impl CvApp {
             theme::section_title(ui, i18n::t("Før nedlasting"));
             let design = cv_core::layouts::effective(&self.project);
             if let Some(w) = design.ats_warning() {
-                status_line(ui, t.warning, &i18n::tdyn(w));
+                status_line(ui, Status::ToDo, &i18n::tdyn(w));
             }
             let (pages, advice) = (self.preview.page_count, self.recommended_pages());
             if pages > advice {
-                let color = if pages > advice + 1 { t.danger } else { t.warning };
+                let status = if pages > advice + 1 { Status::Problem } else { Status::ToDo };
                 status_line(
                     ui,
-                    color,
+                    status,
                     &i18n::tf(
                         "CV-en er {pages} sider. Vi anbefaler sterkt {advice}: rekrutterere leser raskt, og det viktigste må komme først. Kort ned, eller velg «Kompakt».",
                         &[("pages", &pages.to_string()), ("advice", &advice.to_string())],
@@ -749,13 +785,13 @@ impl CvApp {
                 );
             }
             for w in design.color_warnings() {
-                status_line(ui, t.warning, &i18n::tdyn(&w));
+                status_line(ui, Status::ToDo, &i18n::tdyn(&w));
             }
             if blocking.is_empty() {
-                status_line(ui, t.success, i18n::t("Alt nødvendig er fylt ut. Du bekrefter opplysningene når du laster ned."));
+                status_line(ui, Status::Done, i18n::t("Alt nødvendig er fylt ut. Du bekrefter opplysningene når du laster ned."));
             } else {
                 for e in blocking.iter().take(12) {
-                    status_line(ui, t.danger, &i18n::tdyn(e));
+                    status_line(ui, Status::Problem, &i18n::tdyn(e));
                 }
             }
         });
@@ -771,15 +807,10 @@ impl CvApp {
             ui.add_space(4.0);
             let today = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() / 2_629_746).unwrap_or(0) as i32 + 1970 * 12;
             let (list, matched) = checks::audit(&self.project, self.preview.page_count.max(1), today);
-            for c in list {
-                let color = match c.level {
-                    Level::Pass => t.success,
-                    Level::Warn => t.warning,
-                    Level::Info => t.info,
-                };
-                status_line(ui, color, &i18n::tdyn(&c.text));
+            for c in checklist_ui::todo_first(list) {
+                status_line(ui, Status::of_level(c.level), &i18n::tdyn(&c.text));
                 if c.level != Level::Pass && !c.tip.is_empty() {
-                    egui::Frame::new().inner_margin(Margin { left: 16, right: 0, top: 0, bottom: 0 }).show(ui, |ui| {
+                    egui::Frame::new().inner_margin(Margin { left: 20, right: 0, top: 0, bottom: 0 }).show(ui, |ui| {
                         ui.set_width(ui.available_width());
                         theme::hint(ui, &i18n::tdyn(&c.tip));
                     });
@@ -935,11 +966,20 @@ impl CvApp {
                 } else {
                     (i18n::t("Last ned likevel"), i18n::t("Lagre filen selv om noe mangler. Du bekrefter også at det som står i CV-en er sant."))
                 };
-                if theme::primary(ui, label, tip, true).clicked() {
+                // Enter: download when nothing is missing, else look at what is (nothing is lost either way).
+                let download = theme::primary(ui, label, tip, true);
+                if missing.is_empty() {
+                    shortcuts::default_button(ui, &download);
+                }
+                if download.clicked() {
                     return Some(1u8);
                 }
-                if !missing.is_empty() && ui.button(i18n::t("Vis sjekkliste")).on_hover_text(i18n::t("Lukk og se hva som mangler i sjekklisten")).clicked() {
-                    return Some(2);
+                if !missing.is_empty() {
+                    let checklist = ui.button(i18n::t("Vis sjekkliste")).on_hover_text(i18n::t("Lukk og se hva som mangler i sjekklisten"));
+                    shortcuts::default_button(ui, &checklist);
+                    if checklist.clicked() {
+                        return Some(2);
+                    }
                 }
                 if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Gå tilbake uten å laste ned (Esc)")).clicked() {
                     return Some(0);
@@ -977,7 +1017,8 @@ impl CvApp {
             dialog.stale = false;
         }
         let mut done: Option<bool> = None;
-        egui::Modal::new(egui::Id::unique("cvbuilder.photo")).show(ctx, |ui| {
+        let replaces = !self.project.candidate.photo.is_empty();
+        let r = egui::Modal::new(egui::Id::unique("cvbuilder.photo")).show(ctx, |ui| {
             ui.heading(i18n::t("Tilpass portrettet"));
             theme::hint(ui, i18n::t("Beskjær og gjør små justeringer. Originalfilen endres ikke, og posisjonsdata fra kameraet blir ikke med."));
             ui.add_space(6.0);
@@ -1005,14 +1046,21 @@ impl CvApp {
             });
             ui.add_space(8.0);
             ui.horizontal(|ui| {
-                if theme::primary(ui, i18n::t("Bruk bildet"), i18n::t("Legg portrettet inn i CV-en. Originalfilen endres ikke."), true).clicked() {
+                let apply = theme::primary(ui, i18n::t("Bruk bildet"), i18n::t("Legg portrettet inn i CV-en. Originalfilen endres ikke."), true);
+                let cancel = ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre portrettet (Esc)"));
+                // Enter keeps the portrait the CV has; with none yet, it puts this one in.
+                shortcuts::default_button(ui, if replaces { &cancel } else { &apply });
+                if apply.clicked() {
                     done = Some(true);
                 }
-                if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre portrettet (Esc)")).clicked() {
+                if cancel.clicked() {
                     done = Some(false);
                 }
             });
         });
+        if done.is_none() && r.should_close() {
+            done = Some(false);
+        }
         if let Some(apply) = done {
             if apply {
                 match dialog.edit.to_data_url() {
@@ -1047,17 +1095,6 @@ fn logo(ui: &mut egui::Ui, t: &Tokens, size: f32) {
     }
 }
 
-pub(crate) fn status_line(ui: &mut egui::Ui, color: egui::Color32, text: &str) {
-    let t = Tokens::get(ui.ctx());
-    // Indented text with the dot drawn in the margin: the text always wraps to the panel.
-    let r = egui::Frame::new().inner_margin(Margin { left: 16, right: 0, top: 0, bottom: 0 }).show(ui, |ui| {
-        ui.set_width(ui.available_width());
-        ui.add(egui::Label::new(RichText::new(text).size(13.5).color(t.text)).wrap());
-    });
-    let top = r.response.rect.left_top();
-    ui.painter().circle_filled(egui::pos2(top.x + 5.0, top.y + 9.0), 3.5, color);
-}
-
 impl eframe::App for CvApp {
     /// Work that must go on while the window is minimized or covered: an AI app connected over
     /// MCP, or a chat answer, keeps changing the CV, and the draft is still saved.
@@ -1081,18 +1118,14 @@ impl eframe::App for CvApp {
         }
         self.autosave(ctx);
         self.close_check(ctx);
-        if ctx.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::F1)) {
-            ctx.open_url(egui::OpenUrl::new_tab(menu_ui::USER_GUIDE));
-        }
         // Ctrl + plus/minus/0 change the window's text size too: keep it for the next start.
         let size = settings_ui::percent(ctx.zoom_factor());
         if size != self.settings.text_size {
             self.settings.text_size = size;
             storage::save_settings(&self.settings);
         }
-        if ctx.input_mut(|i| i.consume_shortcut(&egui::KeyboardShortcut::new(egui::Modifiers::COMMAND, egui::Key::S))) {
-            self.save();
-        }
+        // Ctrl+S, Ctrl+O, Ctrl+N, Ctrl+Z, F1 and the rest (see shortcuts.rs).
+        self.shortcuts(ctx);
     }
 
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {

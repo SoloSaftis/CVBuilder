@@ -4,7 +4,7 @@
 use std::sync::mpsc::{Receiver, channel};
 
 use cv_core::Project;
-use cv_core::import::{self, AdInfo};
+use cv_core::import::{self, AdInfo, CvFile, CvRead};
 use egui::{CornerRadius, Margin, RichText};
 
 use crate::CvApp;
@@ -12,8 +12,9 @@ use crate::i18n;
 use crate::theme::{self, Tokens};
 
 pub enum Outcome {
-    /// The text of an existing CV, and whether the AI should place it.
-    Cv(Result<String, String>, bool),
+    /// An existing CV (its text, or a LinkedIn export already read), and whether the AI should
+    /// place the text.
+    Cv(Result<CvFile, String>, bool),
     Ad(Result<AdInfo, String>),
 }
 
@@ -54,7 +55,7 @@ impl CvApp {
             return;
         }
         let use_ai = self.import.use_ai && self.chat_backend().is_some();
-        self.run_import(i18n::t("Leser CV-en …"), move || Outcome::Cv(import::text_from_file(&path), use_ai));
+        self.run_import(i18n::t("Leser CV-en …"), move || Outcome::Cv(import::cv_from_file(&path), use_ai));
     }
 
     pub(crate) fn import_ad_file(&mut self, path: std::path::PathBuf) {
@@ -92,6 +93,7 @@ impl CvApp {
         }
         let note = i18n::tdyn(&import::apply_ad(&mut self.project, &ad));
         self.undo = Some(before);
+        self.redo = None;
         self.buffers.remove("keywords");
         self.folded.remove("target");
         self.import.ad_note = note.clone();
@@ -130,7 +132,9 @@ impl CvApp {
                 self.import.ad_note = i18n::tdyn(&e);
             }
             Outcome::Cv(Err(e), _) => self.status = i18n::tdyn(&e),
-            Outcome::Cv(Ok(text), true) => {
+            // A LinkedIn export is structured data: it fills the CV directly, with or without AI.
+            Outcome::Cv(Ok(CvFile::LinkedIn(read)), _) => self.apply_read(read, "Hentet inn fra LinkedIn-eksporten: {found}. Den forrige CV-en kan hentes tilbake med Angre."),
+            Outcome::Cv(Ok(CvFile::Text(text)), true) => {
                 let mut blank = Project::default();
                 blank.options = self.project.options.clone();
                 blank.options.section_order.clear();
@@ -144,19 +148,22 @@ impl CvApp {
                 );
                 self.ask_ai(&ask);
             }
-            Outcome::Cv(Ok(text), false) => {
-                let read = import::read_cv(&text);
-                let mut p = read.project;
-                p.options = self.project.options.clone();
-                p.options.section_order.clear();
-                p.options.section_colors.clear();
-                p.target = self.project.target.clone();
-                let found = if read.found.is_empty() { i18n::t("lite").to_string() } else { read.found.iter().map(|f| i18n::tdyn(f)).collect::<Vec<_>>().join(", ") };
-                self.replace(p, false, &i18n::tf("Hentet inn {found}. Den forrige CV-en kan hentes tilbake med Angre.", &[("found", &found)]));
-                if !read.rest.trim().is_empty() {
-                    self.import.rest = Some(read.rest);
-                }
-            }
+            Outcome::Cv(Ok(CvFile::Text(text)), false) => self.apply_read(import::read_cv(&text), "Hentet inn {found}. Den forrige CV-en kan hentes tilbake med Angre."),
+        }
+    }
+
+    /// A CV read without AI becomes the new CV, keeping the chosen design and the job ad; `done`
+    /// is the status message, with `{found}` for what was read.
+    fn apply_read(&mut self, read: CvRead, done: &'static str) {
+        let mut p = read.project;
+        p.options = self.project.options.clone();
+        p.options.section_order.clear();
+        p.options.section_colors.clear();
+        p.target = self.project.target.clone();
+        let found = if read.found.is_empty() { i18n::t("lite").to_string() } else { read.found.iter().map(|f| found_word(f)).collect::<Vec<_>>().join(", ") };
+        self.replace(p, false, &i18n::tf(done, &[("found", &found)]));
+        if !read.rest.trim().is_empty() {
+            self.import.rest = Some(read.rest);
         }
     }
 
@@ -179,7 +186,9 @@ impl CvApp {
             egui::Frame::new().fill(t.accent_soft).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin::same(10)).show(ui, |ui| {
                 ui.set_width(ui.available_width());
                 ui.label(RichText::new(i18n::t("Filer som kan leses")).family(theme::medium()));
-                ui.add(egui::Label::new(i18n::t("PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)")).wrap());
+                ui.add(egui::Label::new(format!("{} · {}", i18n::t("PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)"), i18n::t("LinkedIn-dataeksport (.zip)"))).wrap());
+                ui.add_space(4.0);
+                ui.add(egui::Label::new(RichText::new(i18n::t("LinkedIn: velg .zip-filen fra «Få en kopi av dataene dine» – den trenger ikke pakkes ut. Bare profilen, jobbene, utdanningen, kompetansen, språkene, sertifiseringene, prosjektene, e-posten og telefonnummeret leses, aldri meldinger eller kontakter. Alt skjer på denne maskinen.")).size(12.0).color(t.dim)).wrap());
             });
             ui.add_space(8.0);
             ui.add_enabled_ui(has_ai, |ui| {
@@ -196,7 +205,9 @@ impl CvApp {
             theme::hint(ui, i18n::t("Du får en ny CV med designet og fargene du har valgt. Den du har nå kan hentes tilbake med Angre. Med AI sendes teksten til tjenesten du har koblet til."));
             ui.add_space(8.0);
             ui.horizontal(|ui| {
-                if theme::primary(ui, i18n::t("Velg fil"), i18n::t("Velg CV-filen du vil hente inn"), true).clicked() {
+                let default = theme::primary(ui, i18n::t("Velg fil"), i18n::t("Velg CV-filen du vil hente inn"), true);
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     pick = true;
                     close = true;
                 }
@@ -258,5 +269,13 @@ impl CvApp {
         if close || r.should_close() {
             self.import.rest = None;
         }
+    }
+}
+
+/// A word from what was read, in the interface language; a count stays («jobber (6)» → «jobs (6)»).
+fn found_word(found: &str) -> String {
+    match found.rsplit_once(" (") {
+        Some((word, count)) if count.trim_end_matches(')').chars().all(|c| c.is_ascii_digit()) => format!("{} ({count}", i18n::tdyn(word)),
+        _ => i18n::tdyn(found),
     }
 }
