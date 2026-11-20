@@ -16,6 +16,7 @@ use egui::{Margin, RichText};
 use serde_json::{Map, Value};
 
 use crate::i18n::{self, Pack, PackError};
+use crate::lang_search::{self, LangItem};
 use crate::theme::{self, Tokens};
 use crate::{CvApp, storage};
 
@@ -289,6 +290,21 @@ fn ask(backend: &Backend, system: &str, user: &str) -> Result<String, String> {
     }
 }
 
+/// The menu languages as list items, A to Z by their names in the menu language now in use
+/// («Tysk» with Norwegian menus); the hover text gives each one's own name.
+pub(crate) fn ui_language_items(packs: &[Pack]) -> Vec<LangItem<String>> {
+    let mut all = vec![
+        LangItem::new("no".to_string(), i18n::menu_language_name("no", "Norsk (bokmål)"), "Norsk (bokmål)", "nb", format!("Norsk (bokmål) · {}", i18n::t("Menyer og knapper på norsk bokmål"))),
+        LangItem::new("en".to_string(), i18n::menu_language_name("en", "English (US)"), "English (US)", "en-US", format!("English (US) · {}", i18n::t("Menyer og knapper på engelsk"))),
+    ];
+    all.extend(packs.iter().map(|p| {
+        let tip = i18n::tf("Menyer og knapper på {name} ({code}). Laget av {who}.", &[("name", &p.name), ("code", &p.code), ("who", if p.made_by.is_empty() { "?" } else { &p.made_by })]);
+        LangItem::new(p.code.clone(), i18n::menu_language_name(&p.code, &p.name), p.name.clone(), p.code.clone(), tip)
+    }));
+    all.sort_by_key(|it| theme::sort_key(&it.shown));
+    all
+}
+
 // ---------- the window ----------
 
 impl CvApp {
@@ -300,30 +316,22 @@ impl CvApp {
         let busy = self.langs.job.is_some();
         // One list A to Z, each language named in the menu language now in use («Tysk» with
         // Norwegian menus); the hover text gives its own name.
-        let mut all: Vec<(String, String, String)> = vec![
-            ("no".into(), i18n::menu_language_name("no", "Norsk (bokmål)"), format!("Norsk (bokmål) · {}", i18n::t("Menyer og knapper på norsk bokmål"))),
-            ("en".into(), i18n::menu_language_name("en", "English (US)"), format!("English (US) · {}", i18n::t("Menyer og knapper på engelsk"))),
-        ];
-        all.extend(self.langs.packs.iter().map(|p| {
-            let tip = i18n::tf("Menyer og knapper på {name} ({code}). Laget av {who}.", &[("name", &p.name), ("code", &p.code), ("who", if p.made_by.is_empty() { "?" } else { &p.made_by })]);
-            (p.code.clone(), i18n::menu_language_name(&p.code, &p.name), tip)
-        }));
-        all.sort_by_key(|(_, name, _)| theme::sort_key(name));
-        let current = all.iter().find(|(c, _, _)| *c == self.settings.ui_language).map(|(_, n, _)| n.clone()).unwrap_or_else(|| i18n::t("Følg systemet").to_string());
+        let all = ui_language_items(&self.langs.packs);
+        let current = all.iter().find(|it| it.key == self.settings.ui_language).map(|it| it.shown.clone()).unwrap_or_else(|| i18n::t("Følg systemet").to_string());
         egui::ComboBox::from_id_salt("ui-language")
             .selected_text(current)
             .width(240.0)
             .height(2000.0)
+            .close_behavior(egui::PopupCloseBehavior::CloseOnClickOutside)
             .show_ui(ui, |ui| {
                 let auto_tip = i18n::t("Samme språk som datamaskinen: norsk hvis den er på norsk, et tilleggsspråk hvis du har lagt til datamaskinens språk, ellers engelsk");
                 if ui.selectable_label(self.settings.ui_language == "auto", i18n::t("Følg systemet")).on_hover_text(auto_tip).clicked() {
                     choose = Some("auto".into());
+                    ui.close();
                 }
                 ui.separator();
-                for (code, name, tip) in &all {
-                    if ui.selectable_label(self.settings.ui_language == *code, name.as_str()).on_hover_text(tip.as_str()).clicked() {
-                        choose = Some(code.clone());
-                    }
+                if let Some(code) = lang_search::list(ui, "ui-language", &all, |c| self.settings.ui_language == *c, 0) {
+                    choose = Some(code);
                 }
                 ui.separator();
                 if ui
@@ -333,9 +341,11 @@ impl CvApp {
                     .clicked()
                 {
                     add = Some("ai");
+                    ui.close();
                 }
                 if ui.add(egui::Button::new(i18n::t("Importer språkfil …")).frame(false)).on_hover_text(i18n::t("Legg til et språk fra en .cvlang.json-fil")).clicked() {
                     add = Some("file");
+                    ui.close();
                 }
             })
             .response

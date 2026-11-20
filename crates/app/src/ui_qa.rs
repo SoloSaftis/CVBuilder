@@ -463,6 +463,99 @@ fn welcome_asks_how_to_start() {
     assert!(h.state().welcome.is_none() && h.state().is_example);
 }
 
+/// Opens the dropdown that now shows `value`, with a real click.
+fn open_dropdown(h: &mut Harness<'_, CvApp>, value: &str) {
+    let at = h
+        .query_all(by().include_labels().predicate(|n| n.role() == Role::ComboBox && n.value().as_deref() == Some(value)))
+        .last()
+        .map(|n| n.rect().center())
+        .unwrap_or_else(|| panic!("no dropdown showing «{value}»"));
+    h.hover_at(at);
+    step(h, 2);
+    h.event(egui::Event::PointerButton { pos: at, button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(h, 1);
+    h.event(egui::Event::PointerButton { pos: at, button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(h, 4);
+}
+
+/// Types into whatever has the keyboard, then steps.
+fn type_text(h: &mut Harness<'_, CvApp>, text: &str) {
+    h.event(egui::Event::Text(text.into()));
+    step(h, 3);
+}
+
+fn press(h: &mut Harness<'_, CvApp>, key: egui::Key) {
+    h.key_press(key);
+    step(h, 3);
+}
+
+/// The texts of the items now shown in an open language list (selectable lines).
+fn has_label(h: &Harness<'_, CvApp>, label: &str) -> bool {
+    h.query_all(by().include_labels().predicate(|n| n.label().as_deref() == Some(label) || n.value().as_deref() == Some(label))).next().is_some()
+}
+
+/// Every language list has a search field that has the keyboard as soon as the list opens:
+/// typing filters by the name in the menu language, the own name or the code, and Enter picks.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn language_lists_search() {
+    use crate::translate_ui::shown_name;
+    private_data_folder("no");
+
+    // Home: the CV language. The own name finds it, and the list shows only what fits.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    open_dropdown(&mut h, &shown_name("Bokmål"));
+    assert!(has_label(&h, &shown_name("Français")), "the list did not open with every language");
+    type_text(&mut h, "Deutsch");
+    assert!(has_label(&h, &shown_name("Deutsch")), "German is not in the list after typing «Deutsch»");
+    assert!(!has_label(&h, &shown_name("Français")), "French is still in the list after typing «Deutsch»");
+    // The arrows move the mark and Enter picks the marked line.
+    press(&mut h, egui::Key::ArrowDown);
+    press(&mut h, egui::Key::ArrowUp);
+    press(&mut h, egui::Key::Enter);
+    assert_eq!(h.state().project.options.headings.as_ref().map(|x| x.language.as_str()), Some("Deutsch"), "Enter did not pick German");
+    // Closed: an open list would show every language again (the search starts afresh).
+    assert!(!has_label(&h, &shown_name("Français")), "the list stayed open after Enter");
+
+    // Nothing fits: the list says so.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    open_dropdown(&mut h, &shown_name("Bokmål"));
+    type_text(&mut h, "qqqq");
+    assert!(has_label(&h, i18n::t("Fant ikke språket")), "no «not found» line");
+    press(&mut h, egui::Key::Enter);
+    assert!(h.state().project.options.headings.is_none(), "Enter with no match changed the CV language");
+
+    // The translate window: the name in the menu language.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.open_translate(None));
+    let now = shown_name(&h.state().translate.as_ref().expect("translate window").language);
+    open_dropdown(&mut h, &now);
+    type_text(&mut h, &shown_name("Français"));
+    press(&mut h, egui::Key::Enter);
+    assert_eq!(h.state().translate.as_ref().map(|t| t.language.as_str()), Some("Français"));
+
+    // The welcome window: the code finds the CV language.
+    let welcome = |a: &mut CvApp| {
+        a.settings.ui_language = "no".into();
+        a.welcome = Some(crate::welcome_ui::Welcome::for_this_computer(&a.langs.packs));
+    };
+    let mut h = harness(Vec2::new(1440.0, 900.0), welcome);
+    let now = shown_name(&h.state().welcome.as_ref().expect("welcome").cv_language);
+    open_dropdown(&mut h, &now);
+    type_text(&mut h, "pl");
+    press(&mut h, egui::Key::Enter);
+    assert_eq!(h.state().welcome.as_ref().map(|w| w.cv_language.as_str()), Some("Polski"));
+
+    // Settings: the menu language, by its English name.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.settings_open = true);
+    let items = crate::langpack_ui::ui_language_items(&h.state().langs.packs);
+    let now = items.iter().find(|it| it.key == "no").map(|it| it.shown.clone()).expect("Norwegian");
+    open_dropdown(&mut h, &now);
+    type_text(&mut h, "Swedish");
+    press(&mut h, egui::Key::Enter);
+    assert_eq!(h.state().settings.ui_language, "sv");
+    i18n::set(i18n::Lang::No);
+}
+
 /// Saving like Word: Ctrl+S into the CV's file, the question on close, the autosave every five
 /// minutes, and the file coming back after a restart.
 #[test]

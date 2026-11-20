@@ -15,6 +15,7 @@ mod form;
 mod form_helper_ui;
 mod i18n;
 mod import_ui;
+mod lang_search;
 mod langpack_ui;
 mod link;
 mod menu_ui;

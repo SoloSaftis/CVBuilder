@@ -373,6 +373,17 @@ pub fn language_name(code: &str) -> Option<String> {
     find(&current_code()).or_else(|| find("en"))
 }
 
+/// A language's English name by its code («de» → «German»), for searching the language lists.
+/// The interface codes «no» and «en» count as «nb» and «en-US».
+pub fn english_language_name(code: &str) -> Option<String> {
+    let code = match code {
+        "no" => "nb",
+        "en" => "en-US",
+        c => c,
+    };
+    LANGUAGE_NAMES.get("en").and_then(|names| names.get(code)).cloned()
+}
+
 /// An interface language ("no", "en" or a pack's code) as shown in the menu-language lists, in
 /// the interface language now in use. Built-in English is US English; `native` is the pack's own
 /// name, used for a pack whose code has no known name.
@@ -826,6 +837,13 @@ static EN: &[(&str, &str)] = &[
     ("Åpne i Microsoft Store", "Open in the Microsoft Store"),
     ("Åpner siden i nettleseren. Ingenting lastes ned av seg selv.", "Opens the page in your browser. Nothing is downloaded by itself."),
     ("Menyer og knapper på dette språket", "Menus and buttons in this language"),
+    // ---- lang_search.rs: the search field in the language lists ----
+    ("Søk etter språk …", "Search for a language …"),
+    (
+        "Skriv navnet på språket, på ditt språk eller på språket selv, eller koden (for eksempel de). Pil ned og Enter velger.",
+        "Type the language's name, in your language or in the language itself, or its code (for example de). Down arrow and Enter pick it.",
+    ),
+    ("Fant ikke språket", "No language found"),
     ("Endres under Innstillinger og i språklisten på Hjem.", "Change them in Settings and in the language list on Home."),
     ("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor.", "Save the CV to its file (Ctrl+S). The first time, you choose where."),
     ("Lagret automatisk i «{file}».", "Saved automatically to «{file}»."),
