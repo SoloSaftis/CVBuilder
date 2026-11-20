@@ -468,6 +468,12 @@ fn english(text: &str) -> Option<String> {
     RULES.iter().find_map(|r| r.re.captures(text).map(|c| (r.english)(&c)))
 }
 
+/// The Norwegian key has an English text (for tests in other modules).
+#[cfg(test)]
+pub fn has_english(no: &str) -> bool {
+    TABLE.contains_key(no)
+}
+
 fn lookup(text: &str) -> Option<&'static str> {
     DYN_TABLE.get(text).or_else(|| TABLE.get(text)).copied()
 }
@@ -1794,6 +1800,43 @@ static EN: &[(&str, &str)] = &[
         "“{code}” is not a valid language code. Use 2–8 lowercase letters, optionally with a region, for example de or pt-BR.",
     ),
     ("Språkkoden «{code}» brukes av de innebygde valgene. Velg en annen.", "The language code “{code}” is used by the built-in choices. Choose another one."),
+    // Søknadsskjema: copy the CV field by field, and ready answers (form_helper_ui.rs).
+    ("Søknadsskjema", "Application form"),
+    ("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene", "Copy the CV field by field into application portals, and keep answers ready for the usual questions"),
+    ("Kopier ett felt om gangen og lim det inn i søknadsskjemaet på nettet.", "Copy one field at a time and paste it into the online application form."),
+    ("Datoformat", "Date format"),
+    ("Punkt («•») foran hver linje", "Bullet (“•”) before each line"),
+    ("Kopiert", "Copied"),
+    ("Kopier «{field}»", "Copy “{field}”"),
+    ("Fra", "From"),
+    ("Til", "To"),
+    ("Sted", "Location"),
+    ("Beskrivelse", "Description"),
+    ("Mine faste svar", "My ready answers"),
+    (
+        "Svar på spørsmålene som ofte avgjør om søknaden blir lest. Svarene lagres bare på denne maskinen: ikke i CV-filen, ikke i CV-en, og de sendes ikke til AI. På en delt maskin: slett dem når du er ferdig.",
+        "Answers to the questions that often decide whether the application gets read. They are kept on this computer only: not in the CV file, not in the CV, and they are not sent to an AI. On a shared computer, delete them when you are done.",
+    ),
+    ("Arbeidstillatelse eller statsborgerskap", "Work permit or citizenship"),
+    ("Førerkort", "Driving licence"),
+    ("Oppsigelsestid", "Notice period"),
+    ("Tidligste oppstart", "Earliest start date"),
+    ("Lønnsforventning", "Salary expectation"),
+    ("Referanser", "References"),
+    ("Sikkerhetsklarering", "Security clearance"),
+    ("Kan flytte eller reise", "Willing to relocate or travel"),
+    ("+ Legg til eget spørsmål", "+ Add your own question"),
+    ("Et spørsmål portalene dine ofte stiller, med svaret ditt", "A question your portals often ask, with your answer"),
+    ("Spørsmålet, f.eks. Kan du jobbe skift?", "The question, e.g. Can you work shifts?"),
+    ("Fjern spørsmålet", "Remove the question"),
+    ("Slett alle svarene", "Delete all answers"),
+    ("Slett de faste svarene fra denne maskinen", "Delete the ready answers from this computer"),
+    ("Slette alle de faste svarene på denne maskinen?", "Delete all the ready answers on this computer?"),
+    ("Behold svarene", "Keep the answers"),
+    ("Annonsen nevner «{what}». Svaret ditt: {answer}", "The ad mentions “{what}”. Your answer: {answer}"),
+    ("Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.", "The ad mentions “{what}”, but you have not written an answer yet."),
+    ("De faste svarene kunne ikke leses: {error}", "The ready answers could not be read: {error}"),
+    ("De faste svarene kunne ikke lagres: {error}", "The ready answers could not be saved: {error}"),
 ];
 
 /// Fixed text that cv-core, cv-ai and cv-mcp produce, with its English.

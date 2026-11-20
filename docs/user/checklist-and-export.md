@@ -127,6 +127,39 @@ name, "CV" and the employer, for example `Kari_Nordmann_CV_Acme_en.pdf`.
   letters are joined or reordered, send the **Word** file to systems that read
   text. See [Troubleshooting](troubleshooting.md#copying-text-from-a-pdf-gives-scrambled-letters).
 
+## Filling in an application form
+
+Most applications end in an online form that asks for the CV again, field by
+field, and then asks a few questions that decide whether anyone reads it. Open
+**Application form** from the **Home** tab, from **File**, or as the third tab
+in the panel on the right.
+
+- **The CV, one field at a time.** Name, email, phone, LinkedIn, each job
+  (title, employer, location, from, to, description), each education, course,
+  your skills and languages. Click the copy button next to a field and paste it
+  into the form. The button says **Copied** for a moment.
+- **Date format.** Choose the format the portal wants: `09/2021`, `2021-09`,
+  `09.2021` or just the year. A current job's end date is copied as "now" in
+  the CV's language.
+- **Bullet before each line.** Tick it if you want the description of a job
+  copied with a "•" before each line.
+
+### My ready answers
+
+Under **My ready answers** you write, once, short answers to the questions
+portals often ask: work permit or citizenship, driving licence, notice period,
+earliest start date, salary expectation, references, security clearance, and
+whether you can relocate or travel. **+ Add your own question** adds more. Each
+answer has its own copy button.
+
+If you have pasted the job ad, CVBuilder checks it for these questions and says,
+for example, **The ad mentions "Driving licence". Your answer: B**.
+
+The ready answers describe you, not one CV, so they are kept in the data folder
+on this computer only: not in the CV file, not in the CV, and they are never
+sent to an AI. On a shared computer, click **Delete all answers** when you are
+done.
+
 ## Page layout
 
 The **Layout** tab sets up the page, like in Word. Everything is saved with the

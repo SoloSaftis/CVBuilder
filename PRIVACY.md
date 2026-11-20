@@ -8,6 +8,9 @@ automatic update check, and it does not send your CV or anything else to the CVB
 - Your CV, drafts, photo and settings. In the portable version they are kept in the
   `CVBuilder-data` folder next to the program; otherwise in your user folder. You can turn off
   "Remember the draft on this computer" in the status bar.
+- Your ready answers for application forms (work permit, notice period, salary expectation,
+  references and the like), if you write any. They are kept in the same data folder, never in
+  the CV file or the CV, and are not sent to an AI. "Delete all answers" removes them.
 - API keys you enter for an AI service are kept in your operating system's keychain (Windows
   Credential Manager, macOS Keychain, Secret Service on Linux), not in a file.
 
