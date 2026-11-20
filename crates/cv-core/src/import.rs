@@ -11,7 +11,7 @@ use crate::checks;
 use crate::model::{Language, Project, Skill};
 
 /// The file types that can be read, for dialogs and messages.
-pub const FILE_TYPES: [&str; 16] = ["pdf", "docx", "doc", "odt", "rtf", "pages", "txt", "md", "html", "htm", "mht", "mhtml", "fodt", "dotx", "docm", "json"];
+pub const FILE_TYPES: [&str; 17] = ["pdf", "docx", "doc", "odt", "rtf", "pages", "txt", "md", "html", "htm", "mht", "mhtml", "fodt", "dotx", "docm", "json", "zip"];
 
 /// Files larger than this are not ads or CVs; reading them would only make the app wait.
 const MAX_FILE: u64 = 50_000_000;
@@ -99,6 +99,28 @@ fn isolated<T: Send + 'static>(job: impl FnOnce() -> T + Send + 'static) -> Opti
         let _ = tx.send(job());
     });
     rx.recv_timeout(READ_TIMEOUT).ok()
+}
+
+/// An existing CV picked by the person: the text of a CV file, or a LinkedIn data export
+/// already read into a CV.
+pub enum CvFile {
+    Text(String),
+    LinkedIn(CvRead),
+}
+
+/// An existing CV from a file. A LinkedIn data export (a .zip, of any size, since only its
+/// profile files are opened) is read straight into the model; other files are read as text.
+pub fn cv_from_file(path: &std::path::Path) -> Result<CvFile, String> {
+    let zip = std::fs::File::open(path).ok().filter(|f| {
+        let mut head = [0u8; 4];
+        std::io::Read::read_exact(&mut &*f, &mut head).is_ok() && head == [b'P', b'K', 3, 4]
+    });
+    if let Some(file) = zip {
+        if crate::linkedin::is_export(std::io::BufReader::new(&file)) {
+            return crate::linkedin::read_export(std::io::BufReader::new(file)).map(CvFile::LinkedIn);
+        }
+    }
+    text_from_file(path).map(CvFile::Text)
 }
 
 /// The text of a file. PDFs must contain real text (a scanned page is an image and gives none).

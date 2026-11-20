@@ -624,7 +624,7 @@ fn split_range(line: &str) -> Option<(String, String, Option<String>)> {
     Some((clean_field(&line[..whole.start()]), month_or_year(&c[1])?, None))
 }
 
-fn month_or_year(text: &str) -> Option<String> {
+pub(crate) fn month_or_year(text: &str) -> Option<String> {
     let t = text.trim().trim_end_matches('.');
     // «März 2021» → «03.2021», which the form's date reader knows.
     let lower = t.to_lowercase();
@@ -1811,7 +1811,7 @@ fn join_lines(lines: &[&str]) -> String {
 }
 
 /// More English than Norwegian words: the CV's headings and dates should be English.
-fn looks_english(text: &str) -> bool {
+pub(crate) fn looks_english(text: &str) -> bool {
     const EN: &[&str] = &["the", "and", "with", "of", "for", "experience", "education", "skills", "present", "university"];
     const NO: &[&str] = &["og", "med", "for", "av", "erfaring", "utdanning", "kompetanse", "nå", "jeg", "har", "som", "til"];
     let lower = text.to_lowercase();

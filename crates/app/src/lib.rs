@@ -486,7 +486,7 @@ impl CvApp {
             let picked = match (kind, export) {
                 ("open", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).pick_file().map(Picked::OpenProject),
                 ("save", _) => Some(rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).set_file_name(format!("{stem}_utkast.json")).save_file().map_or(Picked::SaveCancelled, Picked::SaveProject)),
-                ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
+                ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, LinkedIn, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
                 ("ad_file", _) => rfd::FileDialog::new().add_filter(i18n::t("Annonse (PDF, Word, tekst, nettside)"), &["pdf", "docx", "txt", "md", "html", "htm"]).pick_file().map(Picked::AdFile),
                 ("checklist_load", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).pick_file().map(Picked::ChecklistLoad),
                 ("checklist_save", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).set_file_name("min-sjekkliste.cvchecklist.json").save_file().map(Picked::ChecklistSave),
