@@ -63,6 +63,17 @@ enum Picked {
     DesignSave(PathBuf),
 }
 
+/// What «Vil du lagre endringene?» stands in front of: closing the window, or a step that puts
+/// another CV in this one's place.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub(crate) enum Leave {
+    Close,
+    New,
+    Example,
+    Open,
+    Import,
+}
+
 struct PhotoDialog {
     edit: photo::Edit,
     texture: Option<egui::TextureHandle>,
@@ -111,10 +122,13 @@ struct CvApp {
     /// start: a different one means changes the file does not have.
     saved: u64,
     last_autosave: Instant,
-    /// «Vil du lagre endringene?» is showing, after the window was asked to close.
-    closing: bool,
-    /// Close the window once the save that is under way has finished.
-    close_after_save: bool,
+    /// «Vil du lagre endringene?» is showing: the window was asked to close, or another CV is
+    /// about to take this one's place.
+    leaving: Option<Leave>,
+    /// The question just opened: put the keyboard on its «Lagre» button.
+    leave_focus: bool,
+    /// Go on with this once the save that is under way has finished.
+    after_save: Option<Leave>,
     /// The person chose to close; the next close request goes through.
     may_close: bool,
     sequence: u64,
@@ -178,8 +192,9 @@ impl CvApp {
             file: None,
             saved: 0,
             last_autosave: Instant::now(),
-            closing: false,
-            close_after_save: false,
+            leaving: None,
+            leave_focus: false,
+            after_save: None,
             may_close: false,
             sequence: 0,
             ai: ai_ui::AiState::default(),
@@ -341,14 +356,13 @@ impl CvApp {
                 } else {
                     i18n::tf("Utkastet er lagret i {path}. Filen inneholder dine personopplysninger.", &[("path", &path.display().to_string())])
                 };
-                if self.close_after_save {
-                    self.close_after_save = false;
-                    self.may_close = true;
-                    self.egui_ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                if let Some(leave) = self.after_save.take() {
+                    let ctx = self.egui_ctx.clone();
+                    self.leave(&ctx, leave);
                 }
             }
             Err(e) => {
-                self.close_after_save = false;
+                self.after_save = None;
                 self.status = i18n::tf("Kunne ikke lagre: {e}", &[("e", &e)]);
             }
         }
@@ -378,56 +392,101 @@ impl CvApp {
     fn close_check(&mut self, ctx: &egui::Context) {
         if ctx.input(|i| i.viewport().close_requested()) && !self.may_close && self.unsaved() {
             ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-            self.closing = true;
+            self.ask_to_save(Leave::Close);
         }
     }
 
-    fn close_dialog(&mut self, ctx: &egui::Context) {
-        if !self.closing {
-            return;
+    /// Show «Vil du lagre endringene?» before `leave`. Closing the window wins over a question
+    /// about another CV that is already showing.
+    pub(crate) fn ask_to_save(&mut self, leave: Leave) {
+        if self.leaving.is_none() || (leave == Leave::Close && self.leaving != Some(Leave::Close)) {
+            self.leaving = Some(leave);
+            self.leave_focus = true;
         }
-        let mut choice = None;
-        let r = egui::Modal::new(egui::Id::unique("cvbuilder.close")).show(ctx, |ui| {
-            ui.set_width(420.0);
-            ui.label(RichText::new(i18n::t("Vil du lagre endringene i CV-en?")).size(17.0).family(theme::bold()));
-            ui.add_space(6.0);
-            let about = match &self.file {
-                Some(p) => i18n::tf("Endringene er ikke lagret i «{file}» ennå.", &[("file", &p.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default())]),
-                None => i18n::t("CV-en er ikke lagret som fil ennå.").to_string(),
-            };
-            ui.label(about);
-            if self.settings.remember {
-                theme::hint(ui, i18n::t("Utkastet huskes også på denne maskinen til neste gang."));
-            }
-            ui.add_space(12.0);
-            ui.horizontal(|ui| {
-                if theme::primary(ui, i18n::t("Lagre"), i18n::t("Lagre CV-en og lukk"), true).clicked() {
-                    choice = Some(0);
-                }
-                if ui.button(i18n::t("Ikke lagre")).on_hover_text(i18n::t("Lukk uten å lagre i fil")).clicked() {
-                    choice = Some(1);
-                }
-                if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Fortsett å jobbe med CV-en")).clicked() {
-                    choice = Some(2);
-                }
-            });
-        });
-        if r.should_close() && choice.is_none() {
-            choice = Some(2);
-        }
-        match choice {
-            Some(0) => {
-                self.closing = false;
-                self.close_after_save = true;
-                self.save();
-            }
-            Some(1) => {
-                self.closing = false;
+    }
+
+    /// Do what the person asked for once the question is answered: close the window, or put
+    /// another CV in this one's place.
+    fn leave(&mut self, ctx: &egui::Context, leave: Leave) {
+        match leave {
+            Leave::Close => {
                 self.may_close = true;
                 ctx.send_viewport_cmd(egui::ViewportCommand::Close);
             }
-            Some(_) => self.closing = false,
-            None => {}
+            Leave::New => self.perform(ctx, menu_ui::Action::New),
+            Leave::Example => self.perform(ctx, menu_ui::Action::Example),
+            Leave::Open => self.perform(ctx, menu_ui::Action::Open),
+            Leave::Import => self.perform(ctx, menu_ui::Action::ImportCv),
+        }
+    }
+
+    /// «Vil du lagre endringene i CV-en?» with Lagre / Lukk uten å lagre / Avbryt, in the order
+    /// the computer's own questions use. The keyboard starts on «Lagre» (Enter), Tab moves
+    /// between the buttons, and Esc is «Avbryt».
+    fn close_dialog(&mut self, ctx: &egui::Context) {
+        let Some(leave) = self.leaving else { return };
+        let closing = leave == Leave::Close;
+        let picks_file = self.file.is_none();
+        let focus = std::mem::take(&mut self.leave_focus);
+        let t = Tokens::get(ctx);
+        let (mut save, mut discard, mut cancel) = (false, false, false);
+        let r = egui::Modal::new(egui::Id::new("cvbuilder.close")).show(ctx, |ui| {
+            ui.set_width(440.0);
+            ui.label(RichText::new(i18n::t("Vil du lagre endringene i CV-en?")).size(17.0).family(theme::bold()));
+            ui.add_space(6.0);
+            for (line, warn) in close_text(closing, self.file.as_deref(), self.settings.remember) {
+                let text = if warn { RichText::new(line).color(t.warning) } else { RichText::new(line) };
+                ui.add(egui::Label::new(text).wrap());
+            }
+            if closing && self.settings.remember {
+                theme::hint(ui, i18n::t("Utkastet huskes også på denne maskinen til neste gang."));
+            }
+            ui.add_space(12.0);
+            // «Lagre …» with the dots when a file dialog follows, and buttons named for what they do.
+            let save_text = if picks_file { i18n::t("Lagre …") } else { i18n::t("Lagre") };
+            let save_tip = match (closing, picks_file) {
+                (true, false) => i18n::t("Lagre CV-en og lukk"),
+                (true, true) => i18n::t("Velg hvor CV-en skal lagres, og lukk deretter"),
+                (false, _) => i18n::t("Lagre CV-en først, og fortsett deretter"),
+            };
+            let (discard_text, discard_tip) =
+                if closing { (i18n::t("Lukk uten å lagre"), i18n::t("Lukk uten å lagre i fil")) } else { (i18n::t("Fortsett uten å lagre"), i18n::t("Fortsett uten å lagre CV-en i fil")) };
+            let cancel_text = i18n::t("Avbryt");
+            let cancel_tip = i18n::t("Fortsett å jobbe med CV-en (Esc)");
+            let save_button = |ui: &mut egui::Ui| {
+                let b = theme::primary(ui, save_text, save_tip, true);
+                if focus {
+                    b.request_focus();
+                }
+                b.clicked()
+            };
+            ui.horizontal(|ui| {
+                if theme::affirmative_last() {
+                    // macOS and GNOME: [Lukk uten å lagre]        [Avbryt] [Lagre]. The gap is
+                    // measured rather than laid out right to left, so Tab still goes left to right.
+                    discard = ui.button(discard_text).on_hover_text(discard_tip).clicked();
+                    let right = theme::button_width(ui, cancel_text) + theme::button_width(ui, save_text) + ui.spacing().item_spacing.x;
+                    ui.add_space((ui.available_width() - right).max(ui.spacing().item_spacing.x));
+                    cancel = ui.button(cancel_text).on_hover_text(cancel_tip).clicked();
+                    save = save_button(ui);
+                } else {
+                    // Windows and KDE: [Lagre] [Lukk uten å lagre] [Avbryt]
+                    save = save_button(ui);
+                    discard = ui.button(discard_text).on_hover_text(discard_tip).clicked();
+                    cancel = ui.button(cancel_text).on_hover_text(cancel_tip).clicked();
+                }
+            });
+        });
+        if save {
+            self.leaving = None;
+            self.after_save = Some(leave);
+            self.save();
+        } else if discard {
+            self.leaving = None;
+            self.leave(ctx, leave);
+        } else if cancel || r.should_close() {
+            // Esc, or a click outside the question, is «Avbryt».
+            self.leaving = None;
         }
     }
 
@@ -522,7 +581,7 @@ impl CvApp {
                 },
                 Picked::SaveProject(path) => self.save_to(&path, false),
                 // No file chosen: the window stays open after all.
-                Picked::SaveCancelled => self.close_after_save = false,
+                Picked::SaveCancelled => self.after_save = None,
                 Picked::Export(kind, path) => self.write_export(kind, &path),
                 Picked::ImportCv(path) => self.import_cv_file(path),
                 Picked::AdFile(path) => self.import_ad_file(path),
@@ -1127,6 +1186,26 @@ impl eframe::App for CvApp {
         self.chat.stop_now();
         self.persist();
     }
+}
+
+/// The lines under «Vil du lagre endringene i CV-en?», each with whether it is a warning: what is
+/// not saved, and what is lost if the person does not save.
+fn close_text(closing: bool, file: Option<&std::path::Path>, remember: bool) -> Vec<(String, bool)> {
+    let mut lines = vec![(
+        match file {
+            Some(p) => i18n::tf("Endringene er ikke lagret i «{file}» ennå.", &[("file", &p.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default())]),
+            None => i18n::t("CV-en er ikke lagret som fil ennå.").to_string(),
+        },
+        false,
+    )];
+    if !closing {
+        // Another CV takes this one's place: only Angre can bring it back, and only this time.
+        lines.push((i18n::t("Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.").to_string(), true));
+    } else if file.is_none() && !remember {
+        // Nothing keeps the CV: not a file, and not the remembered draft.
+        lines.push((i18n::t("Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.").to_string(), true));
+    }
+    lines
 }
 
 /// A fingerprint of a CV's content, to tell whether it has changed since it was saved.

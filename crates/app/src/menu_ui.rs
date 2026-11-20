@@ -7,7 +7,7 @@ use egui::{CornerRadius, Margin, RichText, Stroke};
 
 use crate::i18n;
 use crate::theme::{self, Tokens};
-use crate::{CvApp, Export, Side, Views};
+use crate::{CvApp, Export, Leave, Side, Views};
 
 /// The version and the exact source it was built from (set by build.rs).
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -542,7 +542,27 @@ impl CvApp {
         });
     }
 
+    /// Runs a ribbon or menu step. One that puts another CV in this one's place asks first
+    /// whether to save, when the CV has unsaved changes.
     pub(crate) fn run_action(&mut self, ctx: &egui::Context, action: Action) {
+        let leave = match action {
+            Action::New => Some(Leave::New),
+            Action::Example => Some(Leave::Example),
+            Action::Open => Some(Leave::Open),
+            Action::ImportCv => Some(Leave::Import),
+            _ => None,
+        };
+        if let Some(leave) = leave {
+            if self.unsaved() {
+                self.ask_to_save(leave);
+                return;
+            }
+        }
+        self.perform(ctx, action);
+    }
+
+    /// Runs a step without asking first.
+    pub(crate) fn perform(&mut self, ctx: &egui::Context, action: Action) {
         match action {
             Action::New => {
                 let mut blank = Project::default();
