@@ -169,6 +169,9 @@ pub fn contact_value(project: &Project, key: &str, full: bool) -> String {
     let c = &project.candidate;
     match key {
         "email" => c.email.clone(),
+        // In a right-to-left CV a phone number on a line of its own would be laid out from the right,
+        // group by group («4567 123 50 971+»): left-to-right marks keep it in order.
+        "phone" if !full && project.is_right_to_left() && !c.phone.trim().is_empty() => format!("\u{200E}{}\u{200E}", c.phone),
         "phone" => c.phone.clone(),
         "city" => c.city.clone(),
         "linkedin" if full => c.linkedin.clone(),

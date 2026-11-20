@@ -677,6 +677,15 @@ fn split_place(line: &str, home: &str) -> (String, String) {
     }
     if let Some(c) = COUNTRYISH.captures(t) {
         let m = c.get(0).map(|m| m.start()).unwrap_or(t.len());
+        // «Example Technology Company, Dubai»: the word before the comma ends the employer's
+        // name, so only what follows the comma is the place.
+        let before = c[1].split(',').next().unwrap_or("").trim().to_lowercase();
+        const NAME_ENDS: &[&str] = &["company", "group", "corporation", "holding", "holdings", "bank", "agency", "partners", "solutions", "systems", "technologies", "services", "consulting", "university", "college", "hospital", "school", "institute"];
+        if NAME_ENDS.contains(&before.as_str()) || is_company(&before) {
+            if let Some((a, b)) = t.rsplit_once(',') {
+                return (a.trim().to_string(), b.trim().to_string());
+            }
+        }
         return (t[..m].trim().to_string(), c[1].trim().to_string());
     }
     // The person's own town at the end of the line («… AS (fiktiv) Trondheim»).
@@ -1824,6 +1833,12 @@ pub(crate) fn looks_english(text: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn employer_names_ending_in_company_keep_it() {
+        assert_eq!(split_place("Example Technology Company, Dubai", ""), ("Example Technology Company".into(), "Dubai".into()));
+        assert_eq!(split_place("Northstar Health London, UK", ""), ("Northstar Health".into(), "London, UK".into()));
+    }
 
     #[test]
     fn page_marks() {

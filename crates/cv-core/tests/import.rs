@@ -689,3 +689,17 @@ fn pdfs_in_arabic_and_hindi_import_as_their_text() {
         }
     }
 }
+
+/// A phone number on a line of its own in a right-to-left sidebar keeps its order
+/// («+966 50 123 4567», not «4567 123 50 966+»): it is wrapped in left-to-right marks.
+#[test]
+fn phone_in_a_right_to_left_sidebar_keeps_its_order() {
+    let text = std::fs::read_to_string(format!("{}/tests/cv-files/scripts/arabic.txt", env!("CARGO_MANIFEST_DIR"))).expect("test CV");
+    let mut p = import::read_cv(&text).project;
+    p.options.page.columns = Some(cv_core::model::ColumnsChoice::Left);
+    let phone = p.candidate.phone.clone();
+    assert!(!phone.is_empty());
+    let parts = cv_core::text::contact_parts(&p);
+    assert!(parts.iter().any(|x| *x == format!("\u{200E}{phone}\u{200E}")), "{parts:?}");
+    assert!(document::to_pdf(&document::build(&p)).is_ok());
+}
