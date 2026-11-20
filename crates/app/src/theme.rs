@@ -169,6 +169,7 @@ pub mod ph {
     pub const LINK: &str = "\u{e2e2}";
     pub const FILE_ARROW_UP: &str = "\u{e61e}";
     pub const UNDO: &str = "\u{e038}";
+    pub const REDO: &str = "\u{e036}";
     pub const TRANSLATE: &str = "\u{e4a2}";
     pub const BRIEFCASE: &str = "\u{e0ee}";
     pub const GRADUATION_CAP: &str = "\u{e62c}";

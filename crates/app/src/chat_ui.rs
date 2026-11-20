@@ -524,7 +524,9 @@ impl CvApp {
             ui.add_space(6.0);
             theme::hint(ui, i18n::t("CVBuilder må være åpent mens AI-appen jobber. Forbindelsen går bare på denne maskinen (127.0.0.1) og krever en nøkkel som bare CVBuilder kjenner."));
             ui.add_space(8.0);
-            if ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)")).clicked() {
+            let default = ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)"));
+            crate::shortcuts::default_button(ui, &default);
+            if default.clicked() {
                 close = true;
             }
         });

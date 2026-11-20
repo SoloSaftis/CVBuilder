@@ -221,6 +221,15 @@ const SCENES: &[Scene] = &[
     Scene { name: "AI-fanen", setup: |a| a.ribbon_tab = Tab::Ai },
     Scene { name: "Hjelp", setup: |a| a.ribbon_tab = Tab::Help },
     Scene { name: "Sjekkliste", setup: |a| a.side = Side::Checks },
+    Scene { name: "Søknadsskjema", setup: |a| a.side = Side::Form },
+    Scene {
+        name: "Egen sjekkliste",
+        setup: |a| {
+            a.side = Side::Checks;
+            a.settings.own_checklist = true;
+            a.checklist.own = Some(cv_core::checklist::Checklist::starter());
+        },
+    },
     Scene { name: "Alle seksjoner åpne", setup: |a| a.folded.clear() },
     Scene { name: "Oversett-vinduet", setup: |a| a.open_translate(None) },
     Scene { name: "Innstillinger", setup: |a| a.settings_open = true },
@@ -436,6 +445,33 @@ fn every_button_has_a_name() {
     }
 }
 
+/// Every point in the checklist tab tells a screen reader its status in words before the text
+/// («To do: …»), in the standard check and in one's own, so the status is never colour alone
+/// (029). The to-do points of the recruiter check come before the ones that are done.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn checklist_points_say_their_status() {
+    use crate::checklist_ui::Status;
+    private_data_folder("en");
+    i18n::set(i18n::Lang::En);
+    let words: Vec<String> = Status::ALL.iter().map(|s| format!("{}: ", s.word())).collect();
+    let spoken = |h: &Harness<'_, CvApp>| -> Vec<String> { snapshot(h).into_iter().map(|c| c.label).filter(|l| words.iter().any(|w| l.starts_with(w.as_str()))).collect() };
+    let scene = |name: &str| SCENES.iter().find(|s| s.name == name).expect("scene").setup;
+    let h = harness(Vec2::new(1440.0, 900.0), scene("Sjekkliste"));
+    let points = spoken(&h);
+    assert!(points.iter().any(|l| l.starts_with("To do: ")), "no point says «To do»:\n{}", points.join("\n"));
+    assert!(points.iter().any(|l| l.starts_with("Done: ")), "no point says «Done»:\n{}", points.join("\n"));
+    // In the recruiter check (after «Before download»), nothing done comes before a point to do.
+    let recruiter: Vec<&String> = points.iter().skip_while(|l| !l.starts_with("Done: Everything required")).skip(1).collect();
+    let first_done = recruiter.iter().position(|l| l.starts_with("Done: ")).unwrap_or(recruiter.len());
+    assert!(recruiter[first_done..].iter().all(|l| l.starts_with("Done: ")), "a point to do comes after a done one:\n{}", points.join("\n"));
+    // One's own list, before the preview has counted the pages: the page point is not judged yet.
+    let h = harness(Vec2::new(1440.0, 900.0), scene("Egen sjekkliste"));
+    assert!(!spoken(&h).is_empty(), "the own checklist has no spoken points");
+    let labels: Vec<String> = snapshot(&h).into_iter().map(|c| c.label).collect();
+    assert!(labels.iter().any(|l| l == "My own"), "the dropdown does not show «My own»");
+}
+
 /// The welcome window's three ways to start each do what they say, and the answer is kept.
 #[test]
 #[ignore = "slow: part of the ui_qa run"]
@@ -460,6 +496,99 @@ fn welcome_asks_how_to_start() {
     let mut h = harness(Vec2::new(1440.0, 900.0), welcome);
     click(&mut h, "Se et eksempel først");
     assert!(h.state().welcome.is_none() && h.state().is_example);
+}
+
+/// Opens the dropdown that now shows `value`, with a real click.
+fn open_dropdown(h: &mut Harness<'_, CvApp>, value: &str) {
+    let at = h
+        .query_all(by().include_labels().predicate(|n| n.role() == Role::ComboBox && n.value().as_deref() == Some(value)))
+        .last()
+        .map(|n| n.rect().center())
+        .unwrap_or_else(|| panic!("no dropdown showing «{value}»"));
+    h.hover_at(at);
+    step(h, 2);
+    h.event(egui::Event::PointerButton { pos: at, button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(h, 1);
+    h.event(egui::Event::PointerButton { pos: at, button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(h, 4);
+}
+
+/// Types into whatever has the keyboard, then steps.
+fn type_text(h: &mut Harness<'_, CvApp>, text: &str) {
+    h.event(egui::Event::Text(text.into()));
+    step(h, 3);
+}
+
+fn press(h: &mut Harness<'_, CvApp>, key: egui::Key) {
+    h.key_press(key);
+    step(h, 3);
+}
+
+/// The texts of the items now shown in an open language list (selectable lines).
+fn has_label(h: &Harness<'_, CvApp>, label: &str) -> bool {
+    h.query_all(by().include_labels().predicate(|n| n.label().as_deref() == Some(label) || n.value().as_deref() == Some(label))).next().is_some()
+}
+
+/// Every language list has a search field that has the keyboard as soon as the list opens:
+/// typing filters by the name in the menu language, the own name or the code, and Enter picks.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn language_lists_search() {
+    use crate::translate_ui::shown_name;
+    private_data_folder("no");
+
+    // Home: the CV language. The own name finds it, and the list shows only what fits.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    open_dropdown(&mut h, &shown_name("Bokmål"));
+    assert!(has_label(&h, &shown_name("Français")), "the list did not open with every language");
+    type_text(&mut h, "Deutsch");
+    assert!(has_label(&h, &shown_name("Deutsch")), "German is not in the list after typing «Deutsch»");
+    assert!(!has_label(&h, &shown_name("Français")), "French is still in the list after typing «Deutsch»");
+    // The arrows move the mark and Enter picks the marked line.
+    press(&mut h, egui::Key::ArrowDown);
+    press(&mut h, egui::Key::ArrowUp);
+    press(&mut h, egui::Key::Enter);
+    assert_eq!(h.state().project.options.headings.as_ref().map(|x| x.language.as_str()), Some("Deutsch"), "Enter did not pick German");
+    // Closed: an open list would show every language again (the search starts afresh).
+    assert!(!has_label(&h, &shown_name("Français")), "the list stayed open after Enter");
+
+    // Nothing fits: the list says so.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    open_dropdown(&mut h, &shown_name("Bokmål"));
+    type_text(&mut h, "qqqq");
+    assert!(has_label(&h, i18n::t("Fant ikke språket")), "no «not found» line");
+    press(&mut h, egui::Key::Enter);
+    assert!(h.state().project.options.headings.is_none(), "Enter with no match changed the CV language");
+
+    // The translate window: the name in the menu language.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.open_translate(None));
+    let now = shown_name(&h.state().translate.as_ref().expect("translate window").language);
+    open_dropdown(&mut h, &now);
+    type_text(&mut h, &shown_name("Français"));
+    press(&mut h, egui::Key::Enter);
+    assert_eq!(h.state().translate.as_ref().map(|t| t.language.as_str()), Some("Français"));
+
+    // The welcome window: the code finds the CV language.
+    let welcome = |a: &mut CvApp| {
+        a.settings.ui_language = "no".into();
+        a.welcome = Some(crate::welcome_ui::Welcome::for_this_computer(&a.langs.packs));
+    };
+    let mut h = harness(Vec2::new(1440.0, 900.0), welcome);
+    let now = shown_name(&h.state().welcome.as_ref().expect("welcome").cv_language);
+    open_dropdown(&mut h, &now);
+    type_text(&mut h, "pl");
+    press(&mut h, egui::Key::Enter);
+    assert_eq!(h.state().welcome.as_ref().map(|w| w.cv_language.as_str()), Some("Polski"));
+
+    // Settings: the menu language, by its English name.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.settings_open = true);
+    let items = crate::langpack_ui::ui_language_items(&h.state().langs.packs);
+    let now = items.iter().find(|it| it.key == "no").map(|it| it.shown.clone()).expect("Norwegian");
+    open_dropdown(&mut h, &now);
+    type_text(&mut h, "Swedish");
+    press(&mut h, egui::Key::Enter);
+    assert_eq!(h.state().settings.ui_language, "sv");
+    i18n::set(i18n::Lang::No);
 }
 
 /// Saving like Word: Ctrl+S into the CV's file, the question on close, the autosave every five
@@ -545,6 +674,114 @@ fn save_close_and_autosave() {
     assert_eq!(h.state().file.as_deref(), Some(file.as_path()), "the file was not remembered");
     assert!(!h.state().unsaved(), "a fresh start counts as unsaved");
     let _ = std::fs::remove_file(&file);
+}
+
+/// The keyboard: Ctrl+N, Ctrl+Z and Ctrl+Y (Cmd on the Mac) work on the whole CV, but a text field
+/// keeps its own Ctrl+Z; a dialog has the keyboard while it is open; Enter presses the dialog's
+/// safe default and Esc closes it; the language editor does not close and lose edits on Esc or a
+/// click beside it.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn keyboard_shortcuts_and_safe_dialogs() {
+    let cmd = egui::Modifiers::COMMAND;
+    let cmd_shift = egui::Modifiers { shift: true, ..egui::Modifiers::COMMAND };
+    private_data_folder("no");
+    let mut h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    assert!(h.state().is_example);
+
+    // Ctrl+N: a blank CV; Ctrl+Z brings the example back; Ctrl+Y and Ctrl+Shift+Z go forward again.
+    h.key_press_modifiers(cmd, egui::Key::N);
+    step(&mut h, 3);
+    assert!(!h.state().is_example && h.state().project.candidate.name.is_empty(), "Ctrl+N made no new CV");
+    h.key_press_modifiers(cmd, egui::Key::Z);
+    step(&mut h, 3);
+    assert!(h.state().is_example, "Ctrl+Z did not undo the new CV");
+    h.key_press_modifiers(cmd, egui::Key::Y);
+    step(&mut h, 3);
+    assert!(!h.state().is_example, "Ctrl+Y did not redo");
+    h.key_press_modifiers(cmd, egui::Key::Z);
+    step(&mut h, 3);
+    h.key_press_modifiers(cmd_shift, egui::Key::Z);
+    step(&mut h, 3);
+    assert!(!h.state().is_example, "Ctrl+Shift+Z did not redo");
+    assert!(h.state().redo.is_none() && h.state().undo.is_some());
+
+    // In a text field Ctrl+Z is the field's: the CV stays.
+    let field = snapshot(&h).into_iter().find(|c| c.role == Role::TextInput).expect("a text field").rect;
+    h.hover_at(field.center());
+    step(&mut h, 2);
+    h.event(egui::Event::PointerButton { pos: field.center(), button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 1);
+    h.event(egui::Event::PointerButton { pos: field.center(), button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 3);
+    assert!(h.ctx.text_edit_focused(), "the click did not put the cursor in the field");
+    h.key_press_modifiers(cmd, egui::Key::Z);
+    step(&mut h, 3);
+    assert!(!h.state().is_example, "Ctrl+Z in a text field undid the whole CV");
+    h.ctx.memory_mut(|m| m.stop_text_input());
+    step(&mut h, 2);
+
+    // Ctrl+P on a CV with things missing: the question, whose Enter shows the checklist (it
+    // downloads nothing and loses nothing).
+    h.state_mut().side = Side::Chat;
+    h.key_press_modifiers(cmd, egui::Key::P);
+    step(&mut h, 3);
+    assert!(h.state().confirm.is_some(), "Ctrl+P did not ask before downloading");
+    // While it is open, the main window's keys do nothing.
+    h.key_press_modifiers(cmd, egui::Key::Z);
+    step(&mut h, 3);
+    assert!(!h.state().is_example, "Ctrl+Z went through the dialog");
+    h.key_press(egui::Key::Enter);
+    step(&mut h, 3);
+    assert!(h.state().confirm.is_none() && h.state().side == Side::Checks, "Enter did not pick «Vis sjekkliste»");
+
+    // Esc closes a dialog, and Enter presses its «Lukk».
+    h.state_mut().about_open = true;
+    step(&mut h, 3);
+    h.key_press(egui::Key::Escape);
+    step(&mut h, 3);
+    assert!(!h.state().about_open, "Esc did not close «Om CVBuilder»");
+    h.state_mut().about_open = true;
+    step(&mut h, 3);
+    h.key_press(egui::Key::Enter);
+    step(&mut h, 3);
+    assert!(!h.state().about_open, "Enter did not press «Lukk»");
+
+    // The language editor with a changed translation stays open on Esc and on a click beside it;
+    // «Avbryt» closes it.
+    h.state_mut().open_editor("de");
+    step(&mut h, 3);
+    assert!(h.state().langs.editor.is_some());
+    h.key_press(egui::Key::Escape);
+    step(&mut h, 3);
+    assert!(h.state().langs.editor.is_none(), "Esc did not close the unchanged editor");
+    h.state_mut().open_editor("de");
+    step(&mut h, 3);
+    // The first field is the search; the second is a translation.
+    let mut fields: Vec<Rect> = snapshot(&h).into_iter().filter(|c| c.role == Role::TextInput).map(|c| c.rect).collect();
+    fields.sort_by(|a, b| a.top().total_cmp(&b.top()));
+    let row = fields.get(1).copied().expect("a translation field");
+    h.event(egui::Event::PointerButton { pos: row.center(), button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 1);
+    h.event(egui::Event::PointerButton { pos: row.center(), button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 2);
+    h.event(egui::Event::Text("x".into()));
+    step(&mut h, 2);
+    h.ctx.memory_mut(|m| m.stop_text_input());
+    step(&mut h, 2);
+    h.key_press(egui::Key::Escape);
+    step(&mut h, 3);
+    assert!(h.state().langs.editor.is_some(), "Esc closed the editor and lost the edit");
+    let beside = Pos2::new(5.0, 450.0);
+    h.hover_at(beside);
+    step(&mut h, 2);
+    h.event(egui::Event::PointerButton { pos: beside, button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 1);
+    h.event(egui::Event::PointerButton { pos: beside, button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 3);
+    assert!(h.state().langs.editor.is_some(), "a click beside the editor closed it and lost the edit");
+    click(&mut h, "Avbryt");
+    assert!(h.state().langs.editor.is_none(), "«Avbryt» did not close the editor");
 }
 
 /// The preview is made on its own thread after a short pause: wait for the pages (at most ten
