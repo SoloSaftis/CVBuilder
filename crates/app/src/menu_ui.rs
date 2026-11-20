@@ -355,22 +355,21 @@ impl CvApp {
                     .selected_text(crate::translate_ui::shown_name(&current))
                     .width(150.0)
                     .height(2000.0)
+                    .close_behavior(egui::PopupCloseBehavior::CloseOnClickOutside)
                     .show_ui(ui, |ui| {
                         // The computer's own language first, then one list A to Z by each
-                        // language's own name (Čeština with C, Íslenska with I).
-                        let (own, rest) = crate::translate_ui::cv_language_list();
-                        let has_own = own.is_some();
-                        for (i, name) in own.into_iter().chain(rest).enumerate() {
-                            if i == 1 && has_own {
-                                ui.separator();
-                            }
+                        // language's name; a search field on top finds one by any of its names.
+                        let (items, pinned) = crate::lang_search::cv_languages(|name| {
                             let tip = match name {
                                 "Bokmål" => i18n::t("Overskrifter og datoer på bokmål"),
                                 "English" => i18n::t("Overskrifter og datoer på engelsk"),
                                 _ => i18n::t("Overskriftene byttes med en gang; teksten oversetter du med «Oversett»"),
                             };
-                            if ui.selectable_label(current == name, crate::translate_ui::shown_name(name)).on_hover_text(tip).clicked() && current != name {
-                                *action = Some(Action::Headings(name.to_string()));
+                            tip.to_string()
+                        });
+                        if let Some(name) = crate::lang_search::list(ui, "cv-language", &items, |n| current == *n, pinned) {
+                            if current != name {
+                                *action = Some(Action::Headings(name));
                             }
                         }
                         ui.separator();
@@ -380,6 +379,7 @@ impl CvApp {
                             .clicked()
                         {
                             *action = Some(Action::Translate);
+                            ui.close();
                         }
                     })
                     .response

@@ -14,6 +14,7 @@ mod designs_ui;
 mod form;
 mod i18n;
 mod import_ui;
+mod lang_search;
 mod langpack_ui;
 mod link;
 mod menu_ui;

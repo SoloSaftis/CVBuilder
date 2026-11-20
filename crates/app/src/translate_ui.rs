@@ -142,16 +142,11 @@ impl CvApp {
                     .selected_text(shown_name(&state.language))
                     .width(200.0)
                     .height(2000.0)
+                    .close_behavior(egui::PopupCloseBehavior::CloseOnClickOutside)
                     .show_ui(ui, |ui| {
-                        let (own, rest) = cv_language_list();
-                        let has_own = own.is_some();
-                        for (i, name) in own.into_iter().chain(rest).enumerate() {
-                            if i == 1 && has_own {
-                                ui.separator();
-                            }
-                            if ui.selectable_label(state.language == name, shown_name(name)).on_hover_text(i18n::t("Overskriftene finnes ferdig på dette språket")).clicked() {
-                                picked = Some(name.to_string());
-                            }
+                        let (items, pinned) = crate::lang_search::cv_languages(|_| i18n::t("Overskriftene finnes ferdig på dette språket").to_string());
+                        if let Some(name) = crate::lang_search::list(ui, "translate-language", &items, |n| state.language == *n, pinned) {
+                            picked = Some(name);
                         }
                     })
                     .response
