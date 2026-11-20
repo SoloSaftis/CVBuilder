@@ -93,7 +93,14 @@ fn heading(parts: &[&str], fallback: &'static str) -> (String, bool) {
 pub fn groups(project: &Project, format: DateFormat, dots: bool) -> Vec<Group> {
     let c = &project.candidate;
     let mut out = Vec::new();
-    let mut contact = vec![field("Navn", &c.name), field("E-post", &c.email), field("Telefon", &c.phone), field("By og land", &c.city), field("LinkedIn", &c.linkedin), field("Faglig overskrift", &c.headline)];
+    let mut contact = vec![
+        field("Fullt navn", &c.name),
+        field("E-post", &c.email),
+        field("Telefon", &c.phone),
+        field("By og land", &c.city),
+        Field { key: "Kontaktinformasjon", own_label: Some("LinkedIn".into()), value: c.linkedin.clone() },
+        field("Tittel", &c.headline),
+    ];
     contact.extend(c.extra.iter().map(|f| {
         let own = f.label.trim();
         Field { key: "Kontaktinformasjon", own_label: (!own.is_empty()).then(|| own.to_string()), value: f.value.clone() }
@@ -166,7 +173,11 @@ pub const QUESTIONS: &[(&str, &str, &[&str])] = &[
     ("salary", "Lønnsforventning", &["lønnsforventning", "lønnskrav", "salary expectation", "salary requirement", "löneanspråk", "lønforventning", "gehaltsvorstellung"]),
     ("references", "Referanser", &[]),
     ("clearance", "Sikkerhetsklarering", &["sikkerhetsklarering", "security clearance", "säkerhetsprövning", "sikkerhedsgodkendelse", "sicherheitsüberprüfung"]),
-    ("travel", "Kan flytte eller reise", &["reisevirksomhet", "reiseaktivitet", "villig til å reise", "relocat", "willing to travel", "travel required", "resor i tjänsten", "rejseaktivitet", "reisebereitschaft"]),
+    (
+        "travel",
+        "Kan flytte eller reise",
+        &["reisevirksomhet", "reiseaktivitet", "villig til å reise", "relocat", "willing to travel", "travel required", "resor i tjänsten", "rejseaktivitet", "reisebereitschaft"],
+    ),
 ];
 
 /// The ready questions the job ad asks about, by id, in [`QUESTIONS`] order.
@@ -295,12 +306,12 @@ impl CvApp {
         ui.horizontal_wrapped(|ui| {
             ui.label(RichText::new(i18n::t("Datoformat")).size(12.5).color(t.dim));
             for f in DateFormat::ALL {
-                if ui.radio(self.form_helper.format == f, f.example()).clicked() {
+                if ui.radio(self.form_helper.format == f, f.example()).on_hover_text(i18n::t("Datoformat")).clicked() {
                     self.form_helper.format = f;
                 }
             }
         });
-        ui.checkbox(&mut self.form_helper.dots, i18n::t("Punkt («•») foran hver linje"));
+        ui.checkbox(&mut self.form_helper.dots, i18n::t("Punkt («•») foran hver linje")).on_hover_text(i18n::t("Beskrivelse"));
         ui.add_space(8.0);
         let groups = groups(&self.project, self.form_helper.format, self.form_helper.dots);
         for (g, group) in groups.iter().enumerate() {
@@ -335,46 +346,48 @@ impl CvApp {
             // What the job ad asks about, and whether an answer is ready.
             for id in asked_in(&self.project.target.description) {
                 let Some((_, key, _)) = QUESTIONS.iter().find(|(q, _, _)| *q == id) else { continue };
-                let what = i18n::t(*key);
+                let what = i18n::t(key);
                 let answer = self.form_helper.ready.answer(id);
                 if answer.is_empty() {
-                    status_line(ui, t.warning, &i18n::tf("Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.", &[("what", &what)]));
+                    status_line(ui, t.warning, &i18n::tf("Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.", &[("what", what)]));
                 } else {
-                    status_line(ui, t.success, &i18n::tf("Annonsen nevner «{what}». Svaret ditt: {answer}", &[("what", &what), ("answer", answer)]));
+                    status_line(ui, t.success, &i18n::tf("Annonsen nevner «{what}». Svaret ditt: {answer}", &[("what", what), ("answer", answer)]));
                 }
             }
             ui.add_space(4.0);
+            // Each answer: its question and copy button on one row, the text over the full width
+            // under it. The text fields get an exact width so they can never widen the panel.
             for (id, key, _) in QUESTIONS {
-                let name = i18n::t(*key);
-                ui.horizontal(|ui| {
-                    ui.vertical(|ui| {
-                        ui.set_width((ui.available_width() - 40.0).max(60.0));
-                        ui.add(egui::Label::new(RichText::new(name).size(12.0).color(t.dim)).truncate());
-                        let text = self.form_helper.ready.answers.entry(id.to_string()).or_default();
-                        changed |= ui.add(egui::TextEdit::multiline(text).desired_rows(1).desired_width(f32::INFINITY)).on_hover_text(name).changed();
-                    });
-                    let value = self.form_helper.ready.answer(id).to_string();
+                let name = i18n::t(key);
+                let value = self.form_helper.ready.answer(id).to_string();
+                ui.allocate_ui_with_layout(egui::vec2(ui.available_width(), 26.0), egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     self.copy_button(ui, &format!("ready.{id}"), name, &value);
+                    ui.add(egui::Label::new(RichText::new(name).size(12.0).color(t.dim)).truncate());
                 });
+                let width = ui.available_width();
+                let text = self.form_helper.ready.answers.entry(id.to_string()).or_default();
+                changed |= ui.add(egui::TextEdit::multiline(text).desired_rows(1).desired_width(width)).on_hover_text(name).changed();
+                ui.add_space(2.0);
             }
             let mut remove = None;
             for i in 0..self.form_helper.ready.own.len() {
                 ui.add_space(4.0);
-                ui.horizontal(|ui| {
-                    ui.vertical(|ui| {
-                        ui.set_width((ui.available_width() - 40.0).max(60.0));
-                        let own = &mut self.form_helper.ready.own[i];
-                        changed |= ui.add(egui::TextEdit::singleline(&mut own.question).hint_text(i18n::t("Spørsmålet, f.eks. Kan du jobbe skift?")).desired_width(f32::INFINITY)).changed();
-                        changed |= ui.add(egui::TextEdit::multiline(&mut own.answer).desired_rows(1).desired_width(f32::INFINITY)).changed();
-                    });
-                    ui.vertical(|ui| {
-                        let own = self.form_helper.ready.own[i].clone();
-                        self.copy_button(ui, &format!("own.{i}"), &own.question, own.answer.trim());
-                        if theme::remove_button(ui, i18n::t("Fjern spørsmålet")).clicked() {
-                            remove = Some(i);
-                        }
-                    });
+                let own = self.form_helper.ready.own[i].clone();
+                ui.allocate_ui_with_layout(egui::vec2(ui.available_width(), 30.0), egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                    if theme::remove_button(ui, i18n::t("Fjern spørsmålet")).clicked() {
+                        remove = Some(i);
+                    }
+                    self.copy_button(ui, &format!("own.{i}"), &own.question, own.answer.trim());
+                    let width = ui.available_width();
+                    let q = &mut self.form_helper.ready.own[i].question;
+                    changed |= ui
+                        .add(egui::TextEdit::singleline(q).hint_text(i18n::t("Spørsmålet, f.eks. Kan du jobbe skift?")).desired_width(width))
+                        .on_hover_text(i18n::t("Spørsmålet, f.eks. Kan du jobbe skift?"))
+                        .changed();
                 });
+                let width = ui.available_width();
+                let answer = &mut self.form_helper.ready.own[i].answer;
+                changed |= ui.add(egui::TextEdit::multiline(answer).desired_rows(1).desired_width(width)).on_hover_text(i18n::t("Et spørsmål portalene dine ofte stiller, med svaret ditt")).changed();
             }
             if let Some(i) = remove {
                 self.form_helper.ready.own.remove(i);
@@ -429,7 +442,7 @@ mod tests {
         // A bare year stays a year; text the person typed some other way is kept as it is.
         assert_eq!(date("2016", DateFormat::Slash), "2016");
         assert_eq!(date(" 2016 ", DateFormat::Dot), "2016");
-        assert_eq!(date("", DateFormat::Slash), "");
+        assert_eq!(date("  ", DateFormat::Slash), "");
         assert_eq!(date("2019-2021", DateFormat::Slash), "2019-2021");
     }
 
@@ -468,7 +481,7 @@ mod tests {
         assert_eq!(titles, ["Kontaktinformasjon", "Koordinator – Fjellvegg AS", "Bygg AS", "Bachelor – NTNU", "Truckførerbevis", "Kjernekompetanse"]);
         // Empty fields are left out; the person's own contact field keeps its own label.
         let contact = &groups[0];
-        assert_eq!(value(contact, "Navn"), Some("Kari Nordmann"));
+        assert_eq!(value(contact, "Fullt navn"), Some("Kari Nordmann"));
         assert_eq!(value(contact, "Telefon"), None);
         assert!(contact.fields.iter().any(|f| f.own_label.as_deref() == Some("GitHub") && f.value == "github.com/kari"));
         // A current job ends «now» in the CV's language; dates follow the chosen format.
@@ -503,7 +516,10 @@ mod tests {
     fn the_ad_is_checked_for_knockout_questions() {
         let ad = "Vi ser etter deg som har førerkort klasse B og kan bli sikkerhetsklarert. Oppgi lønnsforventning. Referansenr. 2024/17.";
         assert_eq!(asked_in(ad), ["licence", "salary"]);
-        assert_eq!(asked_in("Must have the right to work in the UK, a valid driving licence and a notice period of max 3 months. Security clearance required."), ["permit", "licence", "notice", "clearance"]);
+        assert_eq!(
+            asked_in("Must have the right to work in the UK, a valid driving licence and a notice period of max 3 months. Security clearance required."),
+            ["permit", "licence", "notice", "clearance"]
+        );
         assert_eq!(asked_in("Sikkerhetsklarering kreves. Tiltredelse etter avtale."), ["start", "clearance"]);
         // A reference number and Swedish «visa» (show) are not questions.
         assert!(asked_in("Reference number 17. Visa att du kan.").is_empty());
@@ -519,7 +535,7 @@ mod tests {
             }
             keys.extend(g.fields.iter().filter(|f| f.own_label.is_none()).map(|f| f.key.to_string()));
         }
-        keys.extend(["Arbeidserfaring", "Utdanning", "Kurs eller sertifisering", "Telefon", "By og land", "LinkedIn", "Faglig overskrift", "Profil", "Sted"].map(String::from));
+        keys.extend(["Arbeidserfaring", "Utdanning", "Kurs eller sertifisering", "Telefon", "By og land", "Tittel", "Profil", "Sted", "Kontaktinformasjon"].map(String::from));
         for key in keys {
             assert!(crate::i18n::has_english(&key), "«{key}» has no English");
         }
