@@ -663,3 +663,29 @@ fn reads_profile_and_one_line_education_in_arabic_and_hindi() {
     let edu = p.education.first().expect("education");
     assert_eq!((edu.qualification.as_str(), edu.institution.as_str(), edu.end.as_str()), ("BSc Computer Science", "University of Example", "2016"));
 }
+
+/// An Arabic or Hindi CV exported as PDF imports again as from its text (129): pdf-extract read
+/// Arabic backwards and Hindi in pieces; such PDFs are now read in reading order.
+#[test]
+fn pdfs_in_arabic_and_hindi_import_as_their_text() {
+    for file in ["arabic.txt", "hindi.txt"] {
+        let text = std::fs::read_to_string(format!("{}/tests/cv-files/scripts/{file}", env!("CARGO_MANIFEST_DIR"))).expect("test CV");
+        let from_text = import::read_cv(&text).project;
+        for layout in ["classic", "rr-pikachu", "rr-onyx"] {
+            let mut p = from_text.clone();
+            p.options.layout = layout.into();
+            let pdf = document::to_pdf(&document::build(&p)).expect("pdf");
+            let read = import::text_from_bytes(&pdf, "pdf").expect("PDF text");
+            let back = import::read_cv(&read).project;
+            let c = (&back.candidate, &from_text.candidate);
+            assert_eq!(c.0.name, c.1.name, "{file} {layout}: name\n{read}");
+            assert_eq!(c.0.email, c.1.email, "{file} {layout}: e-mail");
+            assert_eq!(c.0.phone, c.1.phone, "{file} {layout}: phone");
+            let (Some(job), Some(want)) = (back.experience.first(), from_text.experience.first()) else { panic!("{file} {layout}: no job read from
+{read}") };
+            assert_eq!((&job.title, &job.company), (&want.title, &want.company), "{file} {layout}: job\n{read}");
+            let (edu, want) = (back.education.first().expect("education"), from_text.education.first().expect("education"));
+            assert_eq!((&edu.qualification, &edu.institution), (&want.qualification, &want.institution), "{file} {layout}: education\n{read}");
+        }
+    }
+}

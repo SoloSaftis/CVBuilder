@@ -175,6 +175,14 @@ fn pdf_text(bytes: &[u8]) -> Result<String, String> {
     let owned = bytes.to_vec();
     let encrypted = bytes.windows(8).any(|w| w == b"/Encrypt");
     match isolated(move || pdf_extract::extract_text_from_mem(&owned)) {
+        Some(Ok(t)) if crate::pdfread::needs_layout_reading(&t) => {
+            // Right-to-left or Indic text: read again in reading order (pdf-extract reads it backwards or in pieces).
+            let owned = bytes.to_vec();
+            match isolated(move || crate::pdfread::read(&owned)) {
+                Some(Some(read)) if read.chars().any(char::is_alphanumeric) => Ok(read),
+                _ => Ok(t),
+            }
+        }
         Some(Ok(t)) if t.chars().any(char::is_alphanumeric) || !encrypted => Ok(t),
         _ if encrypted => Err("PDF-en er passordbeskyttet eller låst. Åpne den, kopier teksten og lim den inn i stedet.".into()),
         Some(_) => Err("PDF-en kunne ikke leses. Den kan være skadet. Åpne den, kopier teksten og lim den inn i stedet.".into()),

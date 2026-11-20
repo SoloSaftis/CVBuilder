@@ -21,3 +21,8 @@ thiserror.workspace = true
 base64 = "0.22"
 regex = "1"
 pdf-extract = "0.12"
+# Right-to-left and Indic PDFs: read with ActualText and in reading order (pdfread.rs).
+hayro-syntax = "0.7.2"
+hayro-interpret = { version = "0.7.0", default-features = false, features = ["embed-fonts"] }
+hayro-cmap = "0.1"
+kurbo = "0.13"
