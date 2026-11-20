@@ -948,7 +948,8 @@ fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
     // line with the year it was finished, which has no date range for `entries` to find.
     static ONE_YEAR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(.+?)[\s,،–\-(]+((?:19|20)\d{2})\)?\.?$").expect("regex"));
     let mut rest = Vec::new();
-    for line in loose {
+    let mut lines = loose.into_iter().peekable();
+    while let Some(line) = lines.next() {
         let t = unbullet(&line).to_string();
         let Some(c) = ONE_YEAR.captures(&t) else {
             rest.push(line);
@@ -957,7 +958,16 @@ fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
         let text = c[1].trim().trim_end_matches([',', '،']).trim().to_string();
         let mut parts: Vec<String> = text.split([',', '،']).map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect();
         let school_at = parts.iter().rposition(|p| is_school(p)).or(if parts.len() >= 2 { Some(parts.len() - 1) } else { None });
-        let institution = school_at.map(|i| parts.remove(i)).unwrap_or_default();
+        let mut institution = school_at.map(|i| parts.remove(i)).unwrap_or_default();
+        // «Bachelor … 2016» with the school on the next line («جامعة المثال», as a PDF lays it out).
+        if institution.is_empty() {
+            if let Some(next) = lines.peek().map(|n| unbullet(n).to_string()) {
+                if is_label(&next) && !ONE_YEAR.is_match(&next) && (is_school(&next) || !is_degree(&next)) {
+                    institution = next;
+                    lines.next();
+                }
+            }
+        }
         out.push(Education { qualification: parts.join(", "), institution, start: String::new(), end: c[2].to_string() });
     }
     let loose = rest;

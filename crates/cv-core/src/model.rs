@@ -388,6 +388,22 @@ impl Project {
 }
 
 impl Project {
+    /// Anything the person has written: a CV with none of it (a new, untouched one) has nothing to lose.
+    pub fn has_content(&self) -> bool {
+        let c = &self.candidate;
+        let t = &self.target;
+        [&c.name, &c.email, &c.phone, &c.city, &c.headline, &c.linkedin, &c.summary, &c.photo, &t.role, &t.company, &t.url, &t.description].iter().any(|v| !v.trim().is_empty())
+            || !c.extra.is_empty()
+            || !t.keywords.is_empty()
+            || !self.experience.is_empty()
+            || !self.education.is_empty()
+            || !self.skills.is_empty()
+            || !self.languages.is_empty()
+            || !self.certifications.is_empty()
+            || !self.interests.is_empty()
+            || !self.custom_sections.is_empty()
+    }
+
     /// The fictional example the app opens with (the same one as the HTML builder).
     pub fn example() -> Project {
         Project::from_json(include_str!("example.json")).unwrap_or_default()

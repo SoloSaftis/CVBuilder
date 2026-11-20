@@ -128,7 +128,7 @@ fn line_text(mut words: Vec<Word>) -> String {
     // The line's direction from its letters (digits go either way).
     let latin = |w: &Word| w.text.chars().any(|c| c.is_alphabetic() && !is_rtl(c));
     if words.iter().filter(|w| rtl(w)).count() <= words.iter().filter(|w| latin(w) && !rtl(w)).count() {
-        return words.into_iter().map(|w| w.text).collect::<Vec<_>>().join(" ");
+        return join(words.into_iter().map(|w| w.text));
     }
     // Runs: right-to-left words, and everything else between them.
     let mut runs: Vec<(bool, Vec<String>)> = Vec::new();
@@ -140,15 +140,26 @@ fn line_text(mut words: Vec<Word>) -> String {
         }
     }
     runs.reverse();
-    runs.into_iter()
-        .flat_map(|(r, mut run)| {
-            if r {
-                run.reverse();
-            }
-            run
-        })
-        .collect::<Vec<_>>()
-        .join(" ")
+    join(runs.into_iter().flat_map(|(r, mut run)| {
+        if r {
+            run.reverse();
+        }
+        run
+    }))
+}
+
+/// Words joined with spaces, but punctuation drawn apart sticks to the word before it
+/// («الدفع.», «40٪.», «पुणे, भारत»), as it was written.
+fn join(words: impl Iterator<Item = String>) -> String {
+    let mut out = String::new();
+    for w in words {
+        let sticks = w.chars().all(|c| matches!(c, '.' | ',' | '،' | ':' | ';' | '!' | '?' | '؟' | '٪' | '%' | ')' | '।'));
+        if !out.is_empty() && !sticks {
+            out.push(' ');
+        }
+        out.push_str(&w);
+    }
+    out
 }
 
 /// The PDF's text, line by line, or `None` when it cannot be read this way.

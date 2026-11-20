@@ -359,9 +359,10 @@ impl CvApp {
         fingerprint(&self.project)
     }
 
-    /// The CV has changes its file does not have (or it has no file yet). The example never does.
+    /// The CV has changes its file does not have (or it has no file yet). The example never does,
+    /// nor does a new CV nothing has been written in.
     fn unsaved(&self) -> bool {
-        !self.is_example && self.fingerprint() != self.saved
+        !self.is_example && self.project.has_content() && self.fingerprint() != self.saved
     }
 
     fn set_file(&mut self, file: Option<PathBuf>) {

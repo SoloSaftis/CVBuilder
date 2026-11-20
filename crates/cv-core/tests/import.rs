@@ -703,3 +703,35 @@ fn phone_in_a_right_to_left_sidebar_keeps_its_order() {
     assert!(parts.iter().any(|x| *x == format!("\u{200E}{phone}\u{200E}")), "{parts:?}");
     assert!(document::to_pdf(&document::build(&p)).is_ok());
 }
+
+/// A degree with only the year it was finished, and the school on the line under it, as a PDF
+/// lays it out («بكالوريوس علوم الحاسوب 2016» / «جامعة المثال»): the school is placed (Ubuntu retest).
+#[test]
+fn pdf_education_with_one_year_keeps_the_school() {
+    for file in ["arabic.txt", "hindi.txt"] {
+        let text = std::fs::read_to_string(format!("{}/tests/cv-files/scripts/{file}", env!("CARGO_MANIFEST_DIR"))).expect("test CV");
+        let mut p = import::read_cv(&text).project;
+        let edu = p.education.first_mut().expect("education");
+        edu.start.clear();
+        edu.end = "2016".into();
+        let want = (edu.qualification.clone(), edu.institution.clone());
+        let pdf = document::to_pdf(&document::build(&p)).expect("pdf");
+        let read = import::text_from_bytes(&pdf, "pdf").expect("PDF text");
+        let r = import::read_cv(&read);
+        let got = r.project.education.first().expect("education read");
+        assert_eq!((got.qualification.clone(), got.institution.clone()), want, "{file}\n{read}");
+        assert_eq!(got.end, "2016", "{file}");
+        assert!(!read.contains(" .") && !read.contains(" ,") && !read.contains(" ،"), "{file}: space before punctuation\n{read}");
+    }
+}
+
+/// A new CV has nothing to lose; the example and anything written in it does (no needless
+/// «Vil du lagre endringene?» before Import on a blank CV, Ubuntu retest).
+#[test]
+fn a_blank_cv_has_no_content() {
+    assert!(!Project::default().has_content());
+    assert!(Project::example().has_content());
+    let mut p = Project::default();
+    p.candidate.name = "Kari".into();
+    assert!(p.has_content());
+}
