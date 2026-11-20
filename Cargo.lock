@@ -5939,7 +5939,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-doc"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "base64 0.23.1",
  "log",
@@ -5953,7 +5953,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-docbin"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "cfb",
  "chrono",
@@ -5969,7 +5969,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-docx"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "aes 0.9.4",
  "base64 0.23.1",
@@ -5992,7 +5992,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-fonts"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "brotli-decompressor 5.0.3",
  "harfrust 0.13.3",
@@ -6007,7 +6007,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-formats"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "aes 0.9.4",
  "base64 0.23.1",
@@ -6034,7 +6034,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-geom"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "image",
  "serde",
@@ -6043,7 +6043,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-layout"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "craft-proof",
  "image",
@@ -6064,7 +6064,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-metafile"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "kurbo",
  "thiserror 2.0.21",
@@ -6073,7 +6073,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-pdf"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "chrono",
  "craft-pdf",
@@ -6092,7 +6092,7 @@ dependencies = [
 [[package]]
 name = "wordcraft-render"
 version = "0.15.1"
-source = "git+https://github.com/SoloSaftis/wordcraft?rev=9ff6b202d4dc69decbcee8442b95cd1e719cc3d9#9ff6b202d4dc69decbcee8442b95cd1e719cc3d9"
+source = "git+https://github.com/SoloSaftis/wordcraft?rev=aeeb2b62438d806e01f6ec5d59db337c725cdae7#aeeb2b62438d806e01f6ec5d59db337c725cdae7"
 dependencies = [
  "image",
  "log",
