@@ -121,6 +121,7 @@ impl CvApp {
         }
         self.buffers.clear();
         self.undo = Some(before);
+        self.redo = None;
         self.touched();
     }
 
@@ -236,7 +237,9 @@ impl CvApp {
                 {
                     choice = Some(2);
                 }
-                if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre noe")).clicked() {
+                let default = ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre noe"));
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     choice = Some(0);
                 }
             });

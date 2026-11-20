@@ -73,7 +73,7 @@ pub(crate) struct LangState {
     job: Option<Job>,
     message: Option<String>,
     confirm_delete: bool,
-    editor: Option<Editor>,
+    pub(crate) editor: Option<Editor>,
     picks_tx: Sender<LangPick>,
     picks_rx: Receiver<LangPick>,
 }
@@ -114,7 +114,7 @@ enum LangPick {
     Export(String, PathBuf),
 }
 
-struct Editor {
+pub(crate) struct Editor {
     code: String,
     /// (key, English, translation) for every text.
     rows: Vec<(&'static str, &'static str, String)>,
@@ -440,7 +440,9 @@ impl CvApp {
                 if ui.button(i18n::t("Slett")).on_hover_text(i18n::t("Slett språkfilen. Menyene går tilbake til «Følg systemet».")).clicked() {
                     self.delete_language(code);
                 }
-                if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre noe (Esc)")).clicked() {
+                let default = ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre noe (Esc)"));
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     self.langs.confirm_delete = false;
                 }
             });
@@ -681,7 +683,9 @@ impl CvApp {
                         start = Some((c.clone(), name.clone()));
                     }
                 }
-                if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre noe (Esc)")).clicked() {
+                let default = ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre noe (Esc)"));
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     close = true;
                 }
             });
@@ -701,7 +705,7 @@ impl CvApp {
         }
     }
 
-    fn open_editor(&mut self, code: &str) {
+    pub(crate) fn open_editor(&mut self, code: &str) {
         let Some(pack) = self.langs.packs.iter().find(|p| p.code == code) else {
             return;
         };
@@ -747,12 +751,17 @@ impl CvApp {
                 if theme::primary(ui, i18n::t("Lagre"), i18n::t("Lagre språket og bruk endringene med en gang"), true).clicked() {
                     done = Some(true);
                 }
-                if ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre noe (Esc)")).clicked() {
+                let default = ui.button(i18n::t("Avbryt")).on_hover_text(i18n::t("Lukk uten å endre noe (Esc)"));
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     done = Some(false);
                 }
             });
         });
-        match done.or(r.should_close().then_some(false)) {
+        // A click beside the window or Esc closes it only when no translation would be lost, like
+        // the checklist editor; «Avbryt» always does.
+        let closing = r.should_close() && self.langs.editor.as_ref().is_some_and(|e| !self.editor_changed(e));
+        match done.or(closing.then_some(false)) {
             Some(true) => {
                 if let Some(editor) = self.langs.editor.take() {
                     self.save_edited(editor);
@@ -761,6 +770,14 @@ impl CvApp {
             Some(false) => self.langs.editor = None,
             None => {}
         }
+    }
+
+    /// The editor has a translation that is not in the language yet.
+    fn editor_changed(&self, editor: &Editor) -> bool {
+        let Some(pack) = self.langs.packs.iter().find(|p| p.code == editor.code) else {
+            return false;
+        };
+        editor.rows.iter().any(|(key, _, value)| pack.strings.get(*key).map_or("", String::as_str) != value)
     }
 
     fn save_edited(&mut self, editor: Editor) {

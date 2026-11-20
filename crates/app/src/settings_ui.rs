@@ -66,7 +66,7 @@ impl CvApp {
                 theme::section_title(ui, i18n::t("Tekststørrelse i vinduet"));
                 ui.horizontal(|ui| {
                     for value in [90u16, 100, 125, 150] {
-                        let tip = i18n::t("Gjør menyer, knapper og skjema større eller mindre. Ctrl + pluss og minus gjør det samme. Tekststørrelsen i selve CV-en velges under Sideoppsett.");
+                        let tip = crate::shortcuts::keys(ui.ctx(), i18n::t("Gjør menyer, knapper og skjema større eller mindre. Ctrl + pluss og minus gjør det samme. Tekststørrelsen i selve CV-en velges under Sideoppsett."));
                         if ui.radio(self.settings.text_size == value, format!("{value} %")).on_hover_text(tip).clicked() && self.settings.text_size != value {
                             self.settings.text_size = value;
                             ctx.set_zoom_factor(zoom(value));
@@ -114,7 +114,9 @@ impl CvApp {
                 });
             });
             ui.add_space(12.0);
-            if theme::primary(ui, i18n::t("Lukk"), i18n::t("Lukk vinduet. Innstillingene er alt lagret."), true).clicked() {
+            let default = theme::primary(ui, i18n::t("Lukk"), i18n::t("Lukk vinduet. Innstillingene er alt lagret."), true);
+            crate::shortcuts::default_button(ui, &default);
+            if default.clicked() {
                 close = true;
             }
         });

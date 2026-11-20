@@ -92,6 +92,7 @@ impl CvApp {
         }
         let note = i18n::tdyn(&import::apply_ad(&mut self.project, &ad));
         self.undo = Some(before);
+        self.redo = None;
         self.buffers.remove("keywords");
         self.folded.remove("target");
         self.import.ad_note = note.clone();
@@ -196,7 +197,9 @@ impl CvApp {
             theme::hint(ui, i18n::t("Du får en ny CV med designet og fargene du har valgt. Den du har nå kan hentes tilbake med Angre. Med AI sendes teksten til tjenesten du har koblet til."));
             ui.add_space(8.0);
             ui.horizontal(|ui| {
-                if theme::primary(ui, i18n::t("Velg fil"), i18n::t("Velg CV-filen du vil hente inn"), true).clicked() {
+                let default = theme::primary(ui, i18n::t("Velg fil"), i18n::t("Velg CV-filen du vil hente inn"), true);
+                crate::shortcuts::default_button(ui, &default);
+                if default.clicked() {
                     pick = true;
                     close = true;
                 }

@@ -68,6 +68,7 @@ impl CvApp {
                         let before = (self.project.clone(), self.is_example);
                         let gone = self.project.custom_sections.remove(at);
                         self.undo = Some(before);
+                        self.redo = None;
                         self.status = i18n::tf("Seksjonen «{title}» er slettet. Angre hvis det var feil.", &[("title", &gone.title)]);
                     }
                 }
@@ -327,7 +328,7 @@ impl CvApp {
                 full_text_hint(r, i18n::t("Lim inn lenken til annonsen, så kan CVBuilder hente teksten"), &self.project.target.url);
             });
             ui.add_space(2.0);
-            theme::label(ui, i18n::t("Annonseteksten · lim inn med Ctrl+V"));
+            theme::label(ui, &crate::shortcuts::keys(ui.ctx(), i18n::t("Annonseteksten · lim inn med Ctrl+V")));
             // The text before this frame's edit, so a pasted new ad can replace what the old one filled in.
             let before = self.project.target.description.clone();
             let r = ui.add(egui::TextEdit::multiline(&mut self.project.target.description).id_salt("ad-text").hint_text(i18n::t("Lim inn hele stillingsannonsen her …")).desired_rows(6).desired_width(f32::INFINITY).margin(Margin::symmetric(8, 6))).on_hover_text(i18n::t("Hele annonsen. CVBuilder finner stilling, arbeidsgiver og fagord. Annonsen kommer ikke med i CV-en."));
@@ -514,6 +515,7 @@ impl CvApp {
             let before = (self.project.clone(), self.is_example);
             let gone = self.project.experience.remove(i);
             self.undo = Some(before);
+            self.redo = None;
             self.status = i18n::tf("Jobben «{title}» er slettet. Angre hvis det var feil.", &[("title", &gone.title)]);
             *changed = true;
         }

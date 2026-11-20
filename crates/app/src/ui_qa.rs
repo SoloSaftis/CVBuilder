@@ -548,6 +548,114 @@ fn save_close_and_autosave() {
     let _ = std::fs::remove_file(&file);
 }
 
+/// The keyboard: Ctrl+N, Ctrl+Z and Ctrl+Y (Cmd on the Mac) work on the whole CV, but a text field
+/// keeps its own Ctrl+Z; a dialog has the keyboard while it is open; Enter presses the dialog's
+/// safe default and Esc closes it; the language editor does not close and lose edits on Esc or a
+/// click beside it.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn keyboard_shortcuts_and_safe_dialogs() {
+    let cmd = egui::Modifiers::COMMAND;
+    let cmd_shift = egui::Modifiers { shift: true, ..egui::Modifiers::COMMAND };
+    private_data_folder("no");
+    let mut h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    assert!(h.state().is_example);
+
+    // Ctrl+N: a blank CV; Ctrl+Z brings the example back; Ctrl+Y and Ctrl+Shift+Z go forward again.
+    h.key_press_modifiers(cmd, egui::Key::N);
+    step(&mut h, 3);
+    assert!(!h.state().is_example && h.state().project.candidate.name.is_empty(), "Ctrl+N made no new CV");
+    h.key_press_modifiers(cmd, egui::Key::Z);
+    step(&mut h, 3);
+    assert!(h.state().is_example, "Ctrl+Z did not undo the new CV");
+    h.key_press_modifiers(cmd, egui::Key::Y);
+    step(&mut h, 3);
+    assert!(!h.state().is_example, "Ctrl+Y did not redo");
+    h.key_press_modifiers(cmd, egui::Key::Z);
+    step(&mut h, 3);
+    h.key_press_modifiers(cmd_shift, egui::Key::Z);
+    step(&mut h, 3);
+    assert!(!h.state().is_example, "Ctrl+Shift+Z did not redo");
+    assert!(h.state().redo.is_none() && h.state().undo.is_some());
+
+    // In a text field Ctrl+Z is the field's: the CV stays.
+    let field = snapshot(&h).into_iter().find(|c| c.role == Role::TextInput).expect("a text field").rect;
+    h.hover_at(field.center());
+    step(&mut h, 2);
+    h.event(egui::Event::PointerButton { pos: field.center(), button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 1);
+    h.event(egui::Event::PointerButton { pos: field.center(), button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 3);
+    assert!(h.ctx.text_edit_focused(), "the click did not put the cursor in the field");
+    h.key_press_modifiers(cmd, egui::Key::Z);
+    step(&mut h, 3);
+    assert!(!h.state().is_example, "Ctrl+Z in a text field undid the whole CV");
+    h.ctx.memory_mut(|m| m.stop_text_input());
+    step(&mut h, 2);
+
+    // Ctrl+P on a CV with things missing: the question, whose Enter shows the checklist (it
+    // downloads nothing and loses nothing).
+    h.state_mut().side = Side::Chat;
+    h.key_press_modifiers(cmd, egui::Key::P);
+    step(&mut h, 3);
+    assert!(h.state().confirm.is_some(), "Ctrl+P did not ask before downloading");
+    // While it is open, the main window's keys do nothing.
+    h.key_press_modifiers(cmd, egui::Key::Z);
+    step(&mut h, 3);
+    assert!(!h.state().is_example, "Ctrl+Z went through the dialog");
+    h.key_press(egui::Key::Enter);
+    step(&mut h, 3);
+    assert!(h.state().confirm.is_none() && h.state().side == Side::Checks, "Enter did not pick «Vis sjekkliste»");
+
+    // Esc closes a dialog, and Enter presses its «Lukk».
+    h.state_mut().about_open = true;
+    step(&mut h, 3);
+    h.key_press(egui::Key::Escape);
+    step(&mut h, 3);
+    assert!(!h.state().about_open, "Esc did not close «Om CVBuilder»");
+    h.state_mut().about_open = true;
+    step(&mut h, 3);
+    h.key_press(egui::Key::Enter);
+    step(&mut h, 3);
+    assert!(!h.state().about_open, "Enter did not press «Lukk»");
+
+    // The language editor with a changed translation stays open on Esc and on a click beside it;
+    // «Avbryt» closes it.
+    h.state_mut().open_editor("de");
+    step(&mut h, 3);
+    assert!(h.state().langs.editor.is_some());
+    h.key_press(egui::Key::Escape);
+    step(&mut h, 3);
+    assert!(h.state().langs.editor.is_none(), "Esc did not close the unchanged editor");
+    h.state_mut().open_editor("de");
+    step(&mut h, 3);
+    // The first field is the search; the second is a translation.
+    let mut fields: Vec<Rect> = snapshot(&h).into_iter().filter(|c| c.role == Role::TextInput).map(|c| c.rect).collect();
+    fields.sort_by(|a, b| a.top().total_cmp(&b.top()));
+    let row = fields.get(1).copied().expect("a translation field");
+    h.event(egui::Event::PointerButton { pos: row.center(), button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 1);
+    h.event(egui::Event::PointerButton { pos: row.center(), button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 2);
+    h.event(egui::Event::Text("x".into()));
+    step(&mut h, 2);
+    h.ctx.memory_mut(|m| m.stop_text_input());
+    step(&mut h, 2);
+    h.key_press(egui::Key::Escape);
+    step(&mut h, 3);
+    assert!(h.state().langs.editor.is_some(), "Esc closed the editor and lost the edit");
+    let beside = Pos2::new(5.0, 450.0);
+    h.hover_at(beside);
+    step(&mut h, 2);
+    h.event(egui::Event::PointerButton { pos: beside, button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 1);
+    h.event(egui::Event::PointerButton { pos: beside, button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 3);
+    assert!(h.state().langs.editor.is_some(), "a click beside the editor closed it and lost the edit");
+    click(&mut h, "Avbryt");
+    assert!(h.state().langs.editor.is_none(), "«Avbryt» did not close the editor");
+}
+
 /// The preview is made on its own thread after a short pause: wait for the pages (at most ten
 /// seconds), so pictures show the CV rather than «Creating preview …».
 fn wait_for_preview(h: &mut Harness<'_, CvApp>) {
