@@ -70,7 +70,9 @@ fn failed_dialog(ctx: &egui::Context) {
             if theme::primary(ui, i18n::t("Kopier"), i18n::t("Kopier til utklippstavlen"), true).clicked() {
                 ui.ctx().copy_text(url.clone());
             }
-            if ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)")).clicked() {
+            let default = ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)"));
+            crate::shortcuts::default_button(ui, &default);
+            if default.clicked() {
                 close = true;
             }
         });

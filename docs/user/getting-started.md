@@ -127,7 +127,8 @@ CVBuilder keeps everything on your own computer. Nothing goes to the internet.
 ### Portable mode or the normal data folder
 
 CVBuilder keeps its own things (the remembered draft, a backup copy, settings,
-your own designs, language files and checklist) in a data folder.
+your own designs, language files, checklist and ready answers for application
+forms) in a data folder.
 
 **Portable mode.** If there is a folder named `CVBuilder-data` next to the
 program, everything is kept in that folder. The status bar then shows

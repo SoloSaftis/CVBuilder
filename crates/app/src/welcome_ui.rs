@@ -5,7 +5,9 @@ use egui::RichText;
 
 use crate::i18n::{self, Choice};
 use crate::theme::{self, Tokens};
-use crate::translate_ui::{cv_language_list, set_cv_language, shown_name, system_cv_language};
+use crate::lang_search::{self, LangItem};
+use crate::langpack_ui::ui_language_items;
+use crate::translate_ui::{set_cv_language, shown_name, system_cv_language};
 use crate::menu_ui::Action;
 use crate::{CvApp, storage};
 
@@ -59,17 +61,26 @@ impl CvApp {
                 "en" => i18n::menu_language_name("en", "English (US)"),
                 c => packs.iter().find(|p| p.code == c).map(|p| i18n::menu_language_name(c, &p.name)).unwrap_or_else(|| c.to_string()),
             };
-            let mut menu: Vec<(String, String)> = vec![("no".into(), name_of("no")), ("en".into(), name_of("en"))];
-            menu.extend(packs.iter().map(|p| (p.code.clone(), name_of(&p.code))));
-            menu.sort_by_key(|(_, n)| theme::sort_key(n));
+            let menu: Vec<LangItem<String>> = ui_language_items(packs)
+                .into_iter()
+                .map(|it| {
+                    let tip = if theme::sort_key(&it.own) == theme::sort_key(&it.shown) {
+                        i18n::t("Menyer og knapper på dette språket").to_string()
+                    } else {
+                        format!("{} · {}", it.own, i18n::t("Menyer og knapper på dette språket"))
+                    };
+                    LangItem { tip, ..it }
+                })
+                .collect();
             egui::ComboBox::from_id_salt("welcome-ui-language")
                 .selected_text(name_of(&w.ui_language))
                 .width(300.0)
                 .height(2000.0)
+                .close_behavior(egui::PopupCloseBehavior::CloseOnClickOutside)
                 .show_ui(ui, |ui| {
-                    for (code, name) in &menu {
-                        if ui.selectable_label(w.ui_language == *code, name.as_str()).on_hover_text(i18n::t("Menyer og knapper på dette språket")).clicked() && w.ui_language != *code {
-                            w.ui_language = code.clone();
+                    if let Some(code) = lang_search::list(ui, "welcome-ui-language", &menu, |c| w.ui_language == *c, 0) {
+                        if w.ui_language != code {
+                            w.ui_language = code;
                             ui_changed = true;
                         }
                     }
@@ -83,16 +94,11 @@ impl CvApp {
                 .selected_text(shown_name(&w.cv_language))
                 .width(300.0)
                 .height(2000.0)
+                .close_behavior(egui::PopupCloseBehavior::CloseOnClickOutside)
                 .show_ui(ui, |ui| {
-                    let (own, rest) = cv_language_list();
-                    let has_own = own.is_some();
-                    for (i, name) in own.into_iter().chain(rest).enumerate() {
-                        if i == 1 && has_own {
-                            ui.separator();
-                        }
-                        if ui.selectable_label(w.cv_language == name, shown_name(name)).on_hover_text(i18n::t("Overskriftene finnes ferdig på dette språket")).clicked() {
-                            w.cv_language = name.to_string();
-                        }
+                    let (items, pinned) = lang_search::cv_languages(|_| i18n::t("Overskriftene finnes ferdig på dette språket").to_string());
+                    if let Some(name) = lang_search::list(ui, "welcome-cv-language", &items, |n| w.cv_language == *n, pinned) {
+                        w.cv_language = name;
                     }
                 })
                 .response

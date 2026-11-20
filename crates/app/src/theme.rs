@@ -169,6 +169,7 @@ pub mod ph {
     pub const LINK: &str = "\u{e2e2}";
     pub const FILE_ARROW_UP: &str = "\u{e61e}";
     pub const UNDO: &str = "\u{e038}";
+    pub const REDO: &str = "\u{e036}";
     pub const TRANSLATE: &str = "\u{e4a2}";
     pub const BRIEFCASE: &str = "\u{e0ee}";
     pub const GRADUATION_CAP: &str = "\u{e62c}";
@@ -366,6 +367,35 @@ pub fn primary(ui: &mut egui::Ui, text: &str, tip: &str, enabled: bool) -> egui:
         .on_disabled_hover_text(tip)
 }
 
+/// Where the button that does the thing goes in a question with several buttons: last (on the
+/// right) on macOS and on GNOME-like Linux desktops, first on Windows and KDE.
+pub fn affirmative_last() -> bool {
+    match BUTTON_ORDER.load(std::sync::atomic::Ordering::Relaxed) {
+        1 => false,
+        2 => true,
+        _ => affirmative_last_on(std::env::consts::OS, &std::env::var("XDG_CURRENT_DESKTOP").unwrap_or_default()),
+    }
+}
+
+/// 0 = the computer's own order, 1 = affirmative first, 2 = affirmative last (for the screen
+/// checks, which run on one computer but must see both).
+pub static BUTTON_ORDER: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(0);
+
+pub fn affirmative_last_on(os: &str, desktop: &str) -> bool {
+    match os {
+        "macos" => true,
+        "windows" => false,
+        // XDG_CURRENT_DESKTOP is a list such as «ubuntu:GNOME» or «KDE».
+        _ => !desktop.split(':').any(|d| ["KDE", "LXQT", "TRINITY"].contains(&d.trim().to_ascii_uppercase().as_str())),
+    }
+}
+
+/// How wide a plain button with this text is drawn.
+pub fn button_width(ui: &egui::Ui, text: &str) -> f32 {
+    let galley = egui::WidgetText::from(text).into_galley(ui, Some(egui::TextWrapMode::Extend), f32::INFINITY, TextStyle::Button);
+    (galley.size().x + 2.0 * ui.spacing().button_padding.x).max(ui.spacing().interact_size.x)
+}
+
 /// A quiet button without a frame until hovered, with its tip on hover.
 pub fn ghost(ui: &mut egui::Ui, text: &str, tip: &str) -> egui::Response {
     debug_assert!(!tip.trim().is_empty(), "the button «{text}» needs a tip");
@@ -545,5 +575,19 @@ mod tests {
             }
         }
         assert!(problems.is_empty(), "letters no font has:\n{}", problems.join("\n"));
+    }
+
+    /// Save / Don't save / Cancel come in the order each desktop's own questions use.
+    #[test]
+    fn button_order_follows_the_desktop() {
+        use super::affirmative_last_on as last;
+        assert!(!last("windows", ""));
+        assert!(last("macos", ""));
+        assert!(last("linux", "GNOME"));
+        assert!(last("linux", "ubuntu:GNOME"));
+        assert!(last("linux", ""), "an unknown Linux desktop gets the GNOME order");
+        assert!(!last("linux", "KDE"));
+        assert!(!last("freebsd", "kde"));
+        assert!(!last("linux", "LXQt"));
     }
 }

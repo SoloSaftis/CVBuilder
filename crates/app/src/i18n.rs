@@ -373,6 +373,17 @@ pub fn language_name(code: &str) -> Option<String> {
     find(&current_code()).or_else(|| find("en"))
 }
 
+/// A language's English name by its code («de» → «German»), for searching the language lists.
+/// The interface codes «no» and «en» count as «nb» and «en-US».
+pub fn english_language_name(code: &str) -> Option<String> {
+    let code = match code {
+        "no" => "nb",
+        "en" => "en-US",
+        c => c,
+    };
+    LANGUAGE_NAMES.get("en").and_then(|names| names.get(code)).cloned()
+}
+
 /// An interface language ("no", "en" or a pack's code) as shown in the menu-language lists, in
 /// the interface language now in use. Built-in English is US English; `native` is the pack's own
 /// name, used for a pack whose code has no known name.
@@ -466,6 +477,12 @@ fn english(text: &str) -> Option<String> {
         return Some(en.to_string());
     }
     RULES.iter().find_map(|r| r.re.captures(text).map(|c| (r.english)(&c)))
+}
+
+/// The Norwegian key has an English text (for tests in other modules).
+#[cfg(test)]
+pub fn has_english(no: &str) -> bool {
+    TABLE.contains_key(no)
 }
 
 fn lookup(text: &str) -> Option<&'static str> {
@@ -686,7 +703,7 @@ static EN: &[(&str, &str)] = &[
     ),
     ("Nå er dette din CV. Den huskes på denne maskinen mens du skriver.", "This is now your CV. It is remembered on this computer as you type."),
     ("CVBuilder-utkast", "CVBuilder draft"),
-    ("CV (PDF, Word, tekst, nettside, CVBuilder)", "CV (PDF, Word, text, web page, CVBuilder)"),
+    ("CV (PDF, Word, tekst, nettside, LinkedIn, CVBuilder)", "CV (PDF, Word, text, web page, LinkedIn, CVBuilder)"),
     ("Annonse (PDF, Word, tekst, nettside)", "Job ad (PDF, Word, text, web page)"),
     ("CVBuilder-design", "CVBuilder design"),
     ("Bilde", "Photo"),
@@ -820,6 +837,13 @@ static EN: &[(&str, &str)] = &[
     ("Åpne i Microsoft Store", "Open in the Microsoft Store"),
     ("Åpner siden i nettleseren. Ingenting lastes ned av seg selv.", "Opens the page in your browser. Nothing is downloaded by itself."),
     ("Menyer og knapper på dette språket", "Menus and buttons in this language"),
+    // ---- lang_search.rs: the search field in the language lists ----
+    ("Søk etter språk …", "Search for a language …"),
+    (
+        "Skriv navnet på språket, på ditt språk eller på språket selv, eller koden (for eksempel de). Pil ned og Enter velger.",
+        "Type the language's name, in your language or in the language itself, or its code (for example de). Down arrow and Enter pick it.",
+    ),
+    ("Fant ikke språket", "No language found"),
     ("Endres under Innstillinger og i språklisten på Hjem.", "Change them in Settings and in the language list on Home."),
     ("Lagre CV-en i filen sin (Ctrl+S). Første gang velger du hvor.", "Save the CV to its file (Ctrl+S). The first time, you choose where."),
     ("Lagret automatisk i «{file}».", "Saved automatically to «{file}»."),
@@ -828,9 +852,16 @@ static EN: &[(&str, &str)] = &[
     ("CV-en er ikke lagret som fil ennå.", "The CV has not been saved as a file yet."),
     ("Utkastet huskes også på denne maskinen til neste gang.", "The draft is also remembered on this computer until next time."),
     ("Lagre CV-en og lukk", "Save the CV and close"),
-    ("Ikke lagre", "Don't save"),
+    ("Lagre …", "Save …"),
+    ("Lukk uten å lagre", "Close without saving"),
+    ("Fortsett uten å lagre", "Continue without saving"),
+    ("Velg hvor CV-en skal lagres, og lukk deretter", "Choose where to save the CV, then close"),
+    ("Lagre CV-en først, og fortsett deretter", "Save the CV first, then continue"),
+    ("Fortsett uten å lagre CV-en i fil", "Continue without saving the CV to a file"),
+    ("Fortsett å jobbe med CV-en (Esc)", "Keep working on the CV (Esc)"),
+    ("Hvis du ikke lagrer, er denne CV-en borte når CVBuilder lukkes.", "If you don't save, this CV is gone when CVBuilder closes."),
+    ("Hvis du ikke lagrer, kan du bare hente den tilbake med Angre, og bare til CVBuilder lukkes.", "If you don't save, only Undo can bring it back, and only until CVBuilder closes."),
     ("Lukk uten å lagre i fil", "Close without saving to a file"),
-    ("Fortsett å jobbe med CV-en", "Keep working on the CV"),
     ("Lagre automatisk hvert 5. minutt", "Save automatically every 5 minutes"),
     ("Når CV-en er lagret som fil, lagres endringene i den filen hvert 5. minutt, som i Word.", "Once the CV is saved as a file, changes are saved to that file every 5 minutes, like in Word."),
     ("Importer CV fra fil", "Import CV from file"),
@@ -923,6 +954,9 @@ static EN: &[(&str, &str)] = &[
     ("Tom CV klar. Den forrige kan hentes tilbake med Angre.", "Blank CV ready. The previous one can be brought back with Undo."),
     ("Du ser eksemplet. CV-en din kan hentes tilbake med Angre.", "You are looking at the example. Your CV can be brought back with Undo."),
     ("Angret.", "Undone."),
+    ("Gjør om", "Redo"),
+    ("Gjør om det du angret", "Bring back what you undid"),
+    ("Gjort om.", "Redone."),
     ("Lagt til. Fyll ut feltene i skjemaet.", "Added. Fill in the fields in the form."),
     ("CV-er som rekrutterere og søknadssystemer leser riktig", "CVs that recruiters and applicant tracking systems read correctly"),
     ("Versjon", "Version"),
@@ -1266,6 +1300,14 @@ static EN: &[(&str, &str)] = &[
     ("Vises som overskrift i sjekkliste-fanen", "Shown as the heading in the Checklist tab"),
     ("{done} av {all} punkter er i orden.", "{done} of {all} points are met."),
     ("«{name}» er lastet inn og brukes nå.", "“{name}” has been loaded and is now in use."),
+    // The status of a checklist point, said by screen readers and shown on hover (029).
+    ("Ferdig", "Done"),
+    ("Å gjøre", "To do"),
+    ("Må rettes", "Must be fixed"),
+    ("Tips", "Tip"),
+    ("Ikke sjekket ennå", "Not checked yet"),
+    ("{status}: {text}", "{status}: {text}"),
+    ("Hvilken sjekkliste du ser, og verktøy for din egen", "Which checklist you see, and the tools for your own"),
     ("Innstillinger", "Settings"),
     ("Språk i menyene, tema og mer", "Menu language, theme and more"),
     ("Utkast", "Draft"),
@@ -1457,7 +1499,13 @@ static EN: &[(&str, &str)] = &[
     ),
     ("lite", "very little"),
     ("Hentet inn {found}. Den forrige CV-en kan hentes tilbake med Angre.", "Imported {found}. The previous CV can be brought back with Undo."),
+    ("Hentet inn fra LinkedIn-eksporten: {found}. Den forrige CV-en kan hentes tilbake med Angre.", "Imported from the LinkedIn export: {found}. The previous CV can be brought back with Undo."),
     ("Hent inn en CV du har fra før", "Import a CV you already have"),
+    ("LinkedIn-dataeksport (.zip)", "LinkedIn data export (.zip)"),
+    (
+        "LinkedIn: velg .zip-filen fra «Få en kopi av dataene dine» – den trenger ikke pakkes ut. Bare profilen, jobbene, utdanningen, kompetansen, språkene, sertifiseringene, prosjektene, e-posten og telefonnummeret leses, aldri meldinger eller kontakter. Alt skjer på denne maskinen.",
+        "LinkedIn: choose the .zip file from «Get a copy of your data» – no need to unzip it. Only the profile, jobs, education, skills, languages, certifications, projects, email and phone number are read, never messages or contacts. Everything happens on this computer.",
+    ),
     ("Filer som kan leses", "Files that can be read"),
     (
         "PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)",
@@ -1794,6 +1842,43 @@ static EN: &[(&str, &str)] = &[
         "“{code}” is not a valid language code. Use 2–8 lowercase letters, optionally with a region, for example de or pt-BR.",
     ),
     ("Språkkoden «{code}» brukes av de innebygde valgene. Velg en annen.", "The language code “{code}” is used by the built-in choices. Choose another one."),
+    // Søknadsskjema: copy the CV field by field, and ready answers (form_helper_ui.rs).
+    ("Søknadsskjema", "Application form"),
+    ("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene", "Copy the CV field by field into application portals, and keep answers ready for the usual questions"),
+    ("Kopier ett felt om gangen og lim det inn i søknadsskjemaet på nettet.", "Copy one field at a time and paste it into the online application form."),
+    ("Datoformat", "Date format"),
+    ("Punkt («•») foran hver linje", "Bullet (“•”) before each line"),
+    ("Kopiert", "Copied"),
+    ("Kopier «{field}»", "Copy “{field}”"),
+    ("Fra", "From"),
+    ("Til", "To"),
+    ("Sted", "Location"),
+    ("Beskrivelse", "Description"),
+    ("Mine faste svar", "My ready answers"),
+    (
+        "Svar på spørsmålene som ofte avgjør om søknaden blir lest. Svarene lagres bare på denne maskinen: ikke i CV-filen, ikke i CV-en, og de sendes ikke til AI. På en delt maskin: slett dem når du er ferdig.",
+        "Answers to the questions that often decide whether the application gets read. They are kept on this computer only: not in the CV file, not in the CV, and they are not sent to an AI. On a shared computer, delete them when you are done.",
+    ),
+    ("Arbeidstillatelse eller statsborgerskap", "Work permit or citizenship"),
+    ("Førerkort", "Driving licence"),
+    ("Oppsigelsestid", "Notice period"),
+    ("Tidligste oppstart", "Earliest start date"),
+    ("Lønnsforventning", "Salary expectation"),
+    ("Referanser", "References"),
+    ("Sikkerhetsklarering", "Security clearance"),
+    ("Kan flytte eller reise", "Willing to relocate or travel"),
+    ("+ Legg til eget spørsmål", "+ Add your own question"),
+    ("Et spørsmål portalene dine ofte stiller, med svaret ditt", "A question your portals often ask, with your answer"),
+    ("Spørsmålet, f.eks. Kan du jobbe skift?", "The question, e.g. Can you work shifts?"),
+    ("Fjern spørsmålet", "Remove the question"),
+    ("Slett alle svarene", "Delete all answers"),
+    ("Slett de faste svarene fra denne maskinen", "Delete the ready answers from this computer"),
+    ("Slette alle de faste svarene på denne maskinen?", "Delete all the ready answers on this computer?"),
+    ("Behold svarene", "Keep the answers"),
+    ("Annonsen nevner «{what}». Svaret ditt: {answer}", "The ad mentions “{what}”. Your answer: {answer}"),
+    ("Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.", "The ad mentions “{what}”, but you have not written an answer yet."),
+    ("De faste svarene kunne ikke leses: {error}", "The ready answers could not be read: {error}"),
+    ("De faste svarene kunne ikke lagres: {error}", "The ready answers could not be saved: {error}"),
 ];
 
 /// Fixed text that cv-core, cv-ai and cv-mcp produce, with its English.
@@ -2099,6 +2184,8 @@ static DYN: &[(&str, &str)] = &[
     ("Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.", "The Word file is password-protected. Open it in Word, remove the password and save it again."),
     ("Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.", "The older Word file (.doc) could not be read. Open it in Word and save it as .docx."),
     ("Pages-filen kunne ikke åpnes.", "The Pages file could not be opened."),
+    ("ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.", "The ZIP file could not be opened. It may be damaged or only partly downloaded."),
+    ("LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.", "The LinkedIn export has no profile, jobs or education to import."),
     ("Pages-filen har ingen forhåndsvisning å lese. I Pages: Fil → Eksporter til → Word eller PDF.", "The Pages file has no preview to read. In Pages: File → Export To → Word or PDF."),
     ("Filen er en ZIP-pakke, men ikke en Word-, OpenDocument- eller Pages-fil, og kan ikke leses.", "The file is a ZIP archive, but not a Word, OpenDocument or Pages file, and cannot be read."),
     ("Filen heter .pdf, men er ikke en PDF. Den kan være skadet eller bare delvis lastet ned.", "The file is named .pdf but is not a PDF. It may be damaged or only partly downloaded."),

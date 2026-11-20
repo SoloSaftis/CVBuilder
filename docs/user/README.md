@@ -21,7 +21,8 @@ language.
 3. [Importing an old CV and using the job ad](import-and-job-ads.md) – bring in
    a CV you already have, paste or fetch the job ad, and find its keywords.
 4. [The checklist and downloading](checklist-and-export.md) – what recruiters
-   look for, what is still missing, and how to get your PDF or Word file.
+   look for, what is still missing, how to get your PDF or Word file, and
+   filling in online application forms field by field.
 
 ## Make it look right
 
