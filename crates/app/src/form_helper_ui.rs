@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::i18n;
 use crate::theme::{self, Tokens};
+use crate::checklist_ui::Status;
 use crate::{CvApp, status_line, storage};
 
 /// How long a copy button says «Kopiert».
@@ -341,7 +342,7 @@ impl CvApp {
                 i18n::t("Svar på spørsmålene som ofte avgjør om søknaden blir lest. Svarene lagres bare på denne maskinen: ikke i CV-filen, ikke i CV-en, og de sendes ikke til AI. På en delt maskin: slett dem når du er ferdig."),
             );
             if !self.form_helper.message.is_empty() {
-                status_line(ui, t.warning, &self.form_helper.message.clone());
+                status_line(ui, Status::ToDo, &self.form_helper.message.clone());
             }
             // What the job ad asks about, and whether an answer is ready.
             for id in asked_in(&self.project.target.description) {
@@ -349,9 +350,9 @@ impl CvApp {
                 let what = i18n::t(key);
                 let answer = self.form_helper.ready.answer(id);
                 if answer.is_empty() {
-                    status_line(ui, t.warning, &i18n::tf("Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.", &[("what", what)]));
+                    status_line(ui, Status::ToDo, &i18n::tf("Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.", &[("what", what)]));
                 } else {
-                    status_line(ui, t.success, &i18n::tf("Annonsen nevner «{what}». Svaret ditt: {answer}", &[("what", what), ("answer", answer)]));
+                    status_line(ui, Status::Done, &i18n::tf("Annonsen nevner «{what}». Svaret ditt: {answer}", &[("what", what), ("answer", answer)]));
                 }
             }
             ui.add_space(4.0);

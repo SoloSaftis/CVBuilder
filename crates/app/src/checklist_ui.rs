@@ -101,7 +101,9 @@ fn paint_status(painter: &egui::Painter, c: egui::Pos2, status: Status, t: &Toke
     }
     painter.circle_filled(c, R, color);
     match status {
-        Status::Done => painter.line(vec![c + vec2(-3.2, 0.2), c + vec2(-0.9, 2.6), c + vec2(3.3, -2.3)], mark),
+        Status::Done => {
+            painter.line(vec![c + vec2(-3.2, 0.2), c + vec2(-0.9, 2.6), c + vec2(3.3, -2.3)], mark);
+        }
         Status::ToDo => {
             painter.line_segment([c + vec2(0.0, -3.6), c + vec2(0.0, 0.9)], mark);
             painter.circle_filled(c + vec2(0.0, 3.1), 1.0, t.card);
@@ -127,7 +129,7 @@ pub(crate) fn status_line(ui: &mut egui::Ui, status: Status, text: &str) {
         ui.add(egui::Label::new(RichText::new(text).size(13.5).color(t.text)).wrap())
     });
     let spoken = status.spoken(text);
-    r.inner.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Label, true, &spoken));
+    r.inner.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &spoken));
     r.inner.on_hover_text(status.word());
     let top = r.response.rect.left_top();
     paint_status(ui.painter(), pos2(top.x + 7.0, top.y + 9.5), status, &t);
@@ -282,7 +284,6 @@ impl CvApp {
 
     /// The person's own checklist, evaluated for this CV, with manual points to tick.
     pub(crate) fn own_checklist(&mut self, ui: &mut egui::Ui) {
-        let t = Tokens::get(ui.ctx());
         let Some(list) = self.checklist.own.clone() else {
             theme::card(ui).show(ui, |ui| {
                 ui.set_width(ui.available_width());

@@ -718,7 +718,7 @@ impl CvApp {
                 let status = if pages > advice + 1 { Status::Problem } else { Status::ToDo };
                 status_line(
                     ui,
-                    color,
+                    status,
                     &i18n::tf(
                         "CV-en er {pages} sider. Vi anbefaler sterkt {advice}: rekrutterere leser raskt, og det viktigste må komme først. Kort ned, eller velg «Kompakt».",
                         &[("pages", &pages.to_string()), ("advice", &advice.to_string())],
