@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "ਇਸ਼ਤਿਹਾਰ ਵਿੱਚ “{what}” ਦਾ ਜ਼ਿਕਰ ਹੈ। ਤੁਹਾਡਾ ਜਵਾਬ: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "ਇਸ਼ਤਿਹਾਰ ਵਿੱਚ “{what}” ਦਾ ਜ਼ਿਕਰ ਹੈ, ਪਰ ਤੁਸੀਂ ਅਜੇ ਜਵਾਬ ਨਹੀਂ ਲਿਖਿਆ।",
   "De faste svarene kunne ikke leses: {error}": "ਤਿਆਰ ਜਵਾਬ ਪੜ੍ਹੇ ਨਹੀਂ ਜਾ ਸਕੇ: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "ਤਿਆਰ ਜਵਾਬ ਸੰਭਾਲੇ ਨਹੀਂ ਜਾ ਸਕੇ: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "ਤਿਆਰ ਜਵਾਬ ਸੰਭਾਲੇ ਨਹੀਂ ਜਾ ਸਕੇ: {error}",
+  "Ferdig": "ਪੂਰਾ",
+  "Å gjøre": "ਕਰਨਾ ਬਾਕੀ",
+  "Må rettes": "ਠੀਕ ਕਰਨਾ ਜ਼ਰੂਰੀ",
+  "Tips": "ਸੁਝਾਅ",
+  "Ikke sjekket ennå": "ਅਜੇ ਜਾਂਚਿਆ ਨਹੀਂ ਗਿਆ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "ਤੁਸੀਂ ਕਿਹੜੀ ਚੈੱਕਲਿਸਟ ਵੇਖ ਰਹੇ ਹੋ, ਅਤੇ ਆਪਣੀ ਚੈੱਕਲਿਸਟ ਲਈ ਟੂਲ"
  }
 }

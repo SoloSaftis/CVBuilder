@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Огласот спомнува „{what}“. Вашиот одговор: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Огласот спомнува „{what}“, но сè уште немате напишано одговор.",
   "De faste svarene kunne ikke leses: {error}": "Подготвените одговори не можеа да се прочитаат: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Подготвените одговори не можеа да се зачуваат: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Подготвените одговори не можеа да се зачуваат: {error}",
+  "Ferdig": "Готово",
+  "Å gjøre": "За правење",
+  "Må rettes": "Мора да се поправи",
+  "Tips": "Совет",
+  "Ikke sjekket ennå": "Сè уште не е проверено",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Која контролна листа ја гледате и алатките за вашата сопствена"
  }
 }

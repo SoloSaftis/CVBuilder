@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Tin tuyển dụng có nhắc đến “{what}”. Câu trả lời của bạn: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Tin tuyển dụng có nhắc đến “{what}”, nhưng bạn chưa viết câu trả lời.",
   "De faste svarene kunne ikke leses: {error}": "Không thể đọc các câu trả lời soạn sẵn: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Không thể lưu các câu trả lời soạn sẵn: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Không thể lưu các câu trả lời soạn sẵn: {error}",
+  "Ferdig": "Xong",
+  "Å gjøre": "Cần làm",
+  "Må rettes": "Phải sửa",
+  "Tips": "Mẹo",
+  "Ikke sjekket ennå": "Chưa kiểm tra",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Danh sách kiểm tra bạn đang xem và công cụ cho danh sách của riêng bạn"
  }
 }

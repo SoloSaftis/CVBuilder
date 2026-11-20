@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "求人広告に「{what}」とあります。あなたの回答: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "求人広告に「{what}」とありますが、まだ回答を書いていません。",
   "De faste svarene kunne ikke leses: {error}": "用意した回答を読み込めませんでした: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "用意した回答を保存できませんでした: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "用意した回答を保存できませんでした: {error}",
+  "Ferdig": "完了",
+  "Å gjøre": "要対応",
+  "Må rettes": "修正が必要",
+  "Tips": "ヒント",
+  "Ikke sjekket ennå": "未確認",
+  "{status}: {text}": "{status}：{text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "表示するチェックリストと、自分のチェックリスト用のツール"
  }
 }

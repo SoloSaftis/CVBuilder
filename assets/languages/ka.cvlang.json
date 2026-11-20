@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "ვაკანსიაში ნახსენებია “{what}”. თქვენი პასუხი: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "ვაკანსიაში ნახსენებია “{what}”, მაგრამ პასუხი ჯერ არ დაგიწერიათ.",
   "De faste svarene kunne ikke leses: {error}": "მზა პასუხების წაკითხვა ვერ მოხერხდა: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "მზა პასუხების შენახვა ვერ მოხერხდა: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "მზა პასუხების შენახვა ვერ მოხერხდა: {error}",
+  "Ferdig": "შესრულებულია",
+  "Å gjøre": "გასაკეთებელი",
+  "Må rettes": "უნდა გასწორდეს",
+  "Tips": "რჩევა",
+  "Ikke sjekket ennå": "ჯერ არ შემოწმებულა",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "რომელ საკონტროლო სიას ხედავთ და ხელსაწყოები თქვენი საკუთარისთვის"
  }
 }

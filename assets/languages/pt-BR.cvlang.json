@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "A vaga menciona “{what}”. Sua resposta: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "A vaga menciona “{what}”, mas você ainda não escreveu uma resposta.",
   "De faste svarene kunne ikke leses: {error}": "Não foi possível ler as respostas prontas: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Não foi possível salvar as respostas prontas: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Não foi possível salvar as respostas prontas: {error}",
+  "Ferdig": "Concluído",
+  "Å gjøre": "A fazer",
+  "Må rettes": "Precisa ser corrigido",
+  "Tips": "Dica",
+  "Ikke sjekket ennå": "Ainda não verificado",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Qual lista de verificação você vê e as ferramentas para a sua"
  }
 }

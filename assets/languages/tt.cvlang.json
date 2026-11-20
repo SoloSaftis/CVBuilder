@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Вакансиядә «{what}» искә алына. Сезнең җавап: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Вакансиядә «{what}» искә алына, ләкин сез әле җавап язмадыгыз.",
   "De faste svarene kunne ikke leses: {error}": "Әзер җавапларны укып булмады: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Әзер җавапларны саклап булмады: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Әзер җавапларны саклап булмады: {error}",
+  "Ferdig": "Әзер",
+  "Å gjøre": "Эшлисе",
+  "Må rettes": "Төзәтергә кирәк",
+  "Tips": "Киңәш",
+  "Ikke sjekket ennå": "Әле тикшерелмәгән",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Сез кайсы тикшерү исемлеген күрәсез, һәм үз исемлегегез өчен кораллар"
  }
 }

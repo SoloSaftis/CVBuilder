@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "விளம்பரம் “{what}” பற்றிக் குறிப்பிடுகிறது. உங்கள் பதில்: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "விளம்பரம் “{what}” பற்றிக் குறிப்பிடுகிறது, ஆனால் நீங்கள் இன்னும் பதில் எழுதவில்லை.",
   "De faste svarene kunne ikke leses: {error}": "தயார் பதில்களைப் படிக்க முடியவில்லை: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "தயார் பதில்களைச் சேமிக்க முடியவில்லை: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "தயார் பதில்களைச் சேமிக்க முடியவில்லை: {error}",
+  "Ferdig": "முடிந்தது",
+  "Å gjøre": "செய்ய வேண்டியது",
+  "Må rettes": "சரிசெய்ய வேண்டும்",
+  "Tips": "குறிப்பு",
+  "Ikke sjekket ennå": "இன்னும் சரிபார்க்கவில்லை",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "நீங்கள் பார்க்கும் சரிபார்ப்புப் பட்டியல், உங்கள் சொந்தப் பட்டியலுக்கான கருவிகள்"
  }
 }

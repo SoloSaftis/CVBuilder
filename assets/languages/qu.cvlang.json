@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Willakuyqa “{what}” nisqata rimarin. Kutichiyniyki: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Willakuyqa “{what}” nisqata rimarin, ichaqa manaraqmi kutichiyta qillqankichu.",
   "De faste svarene kunne ikke leses: {error}": "Listo kutichiykunataqa manam ñawinchayta atikurqanchu: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Listo kutichiykunataqa manam waqaychayta atikurqanchu: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Listo kutichiykunataqa manam waqaychayta atikurqanchu: {error}",
+  "Ferdig": "Tukusqa",
+  "Å gjøre": "Ruwanapaq",
+  "Må rettes": "Allichanan tiyan",
+  "Tips": "Yuyaychay",
+  "Ikke sjekket ennå": "Manaraq qhawasqachu",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Mayqin qhawana sutisqatam rikunki, hinaspa kikiykipa llamk'anankuna"
  }
 }

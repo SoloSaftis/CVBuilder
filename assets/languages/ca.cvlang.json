@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "L'oferta esmenta «{what}». La teva resposta: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "L'oferta esmenta «{what}», però encara no has escrit cap resposta.",
   "De faste svarene kunne ikke leses: {error}": "No s'han pogut llegir les respostes preparades: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "No s'han pogut desar les respostes preparades: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "No s'han pogut desar les respostes preparades: {error}",
+  "Ferdig": "Fet",
+  "Å gjøre": "Per fer",
+  "Må rettes": "Cal corregir-ho",
+  "Tips": "Consell",
+  "Ikke sjekket ennå": "Encara no s'ha comprovat",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Quina llista de comprovació veus, i les eines per a la teva"
  }
 }

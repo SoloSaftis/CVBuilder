@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "В вакансии упоминается «{what}». Ваш ответ: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "В вакансии упоминается «{what}», но вы ещё не написали ответ.",
   "De faste svarene kunne ikke leses: {error}": "Не удалось прочитать готовые ответы: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Не удалось сохранить готовые ответы: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Не удалось сохранить готовые ответы: {error}",
+  "Ferdig": "Готово",
+  "Å gjøre": "Сделать",
+  "Må rettes": "Нужно исправить",
+  "Tips": "Совет",
+  "Ikke sjekket ennå": "Ещё не проверено",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Какой контрольный список вы видите, и инструменты для вашего собственного"
  }
 }

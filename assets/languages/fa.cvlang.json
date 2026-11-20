@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "آگهی به «{what}» اشاره می‌کند. پاسخ شما: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "آگهی به «{what}» اشاره می‌کند، اما هنوز پاسخی ننوشته‌اید.",
   "De faste svarene kunne ikke leses: {error}": "پاسخ‌های آماده خوانده نشدند: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "پاسخ‌های آماده ذخیره نشدند: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "پاسخ‌های آماده ذخیره نشدند: {error}",
+  "Ferdig": "انجام شد",
+  "Å gjøre": "باید انجام شود",
+  "Må rettes": "باید اصلاح شود",
+  "Tips": "نکته",
+  "Ikke sjekket ennå": "هنوز بررسی نشده",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "چک‌لیستی که می‌بینید و ابزارهای چک‌لیست خودتان"
  }
 }

@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "У вакансіі згадваецца «{what}». Ваш адказ: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "У вакансіі згадваецца «{what}», але вы яшчэ не напісалі адказ.",
   "De faste svarene kunne ikke leses: {error}": "Не ўдалося прачытаць гатовыя адказы: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Не ўдалося захаваць гатовыя адказы: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Не ўдалося захаваць гатовыя адказы: {error}",
+  "Ferdig": "Гатова",
+  "Å gjøre": "Трэба зрабіць",
+  "Må rettes": "Трэба выправіць",
+  "Tips": "Парада",
+  "Ikke sjekket ennå": "Яшчэ не праверана",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Які кантрольны спіс вы бачыце, і інструменты для вашага ўласнага"
  }
 }

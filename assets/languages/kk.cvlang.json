@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Вакансияда «{what}» айтылған. Сіздің жауабыңыз: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Вакансияда «{what}» айтылған, бірақ сіз әлі жауап жазбадыңыз.",
   "De faste svarene kunne ikke leses: {error}": "Дайын жауаптарды оқу мүмкін болмады: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Дайын жауаптарды сақтау мүмкін болмады: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Дайын жауаптарды сақтау мүмкін болмады: {error}",
+  "Ferdig": "Дайын",
+  "Å gjøre": "Орындау керек",
+  "Må rettes": "Түзету қажет",
+  "Tips": "Кеңес",
+  "Ikke sjekket ennå": "Әлі тексерілмеген",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Қай тексеру тізімін көресіз және өз тізіміңізге арналған құралдар"
  }
 }

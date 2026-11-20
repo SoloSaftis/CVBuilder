@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "ಜಾಹೀರಾತಿನಲ್ಲಿ “{what}” ಉಲ್ಲೇಖವಿದೆ. ನಿಮ್ಮ ಉತ್ತರ: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "ಜಾಹೀರಾತಿನಲ್ಲಿ “{what}” ಉಲ್ಲೇಖವಿದೆ, ಆದರೆ ನೀವು ಇನ್ನೂ ಉತ್ತರ ಬರೆದಿಲ್ಲ.",
   "De faste svarene kunne ikke leses: {error}": "ಸಿದ್ಧ ಉತ್ತರಗಳನ್ನು ಓದಲು ಆಗಲಿಲ್ಲ: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "ಸಿದ್ಧ ಉತ್ತರಗಳನ್ನು ಉಳಿಸಲು ಆಗಲಿಲ್ಲ: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "ಸಿದ್ಧ ಉತ್ತರಗಳನ್ನು ಉಳಿಸಲು ಆಗಲಿಲ್ಲ: {error}",
+  "Ferdig": "ಮುಗಿದಿದೆ",
+  "Å gjøre": "ಮಾಡಬೇಕಿದೆ",
+  "Må rettes": "ಸರಿಪಡಿಸಬೇಕು",
+  "Tips": "ಸಲಹೆ",
+  "Ikke sjekket ennå": "ಇನ್ನೂ ಪರಿಶೀಲಿಸಿಲ್ಲ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "ನೀವು ನೋಡುವ ಪರಿಶೀಲನಾ ಪಟ್ಟಿ, ಮತ್ತು ನಿಮ್ಮದೇ ಪಟ್ಟಿಗಾಗಿ ಉಪಕರಣಗಳು"
  }
 }

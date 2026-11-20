@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Kuulutuses mainitakse „{what}“. Sinu vastus: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Kuulutuses mainitakse „{what}“, aga sa pole veel vastust kirjutanud.",
   "De faste svarene kunne ikke leses: {error}": "Valmis vastuseid ei õnnestunud lugeda: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Valmis vastuseid ei õnnestunud salvestada: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Valmis vastuseid ei õnnestunud salvestada: {error}",
+  "Ferdig": "Tehtud",
+  "Å gjøre": "Teha",
+  "Må rettes": "Tuleb parandada",
+  "Tips": "Nõuanne",
+  "Ikke sjekket ennå": "Veel kontrollimata",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Milline kontrollnimekiri on näha ja tööriistad oma nimekirja jaoks"
  }
 }

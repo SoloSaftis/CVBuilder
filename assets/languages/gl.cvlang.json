@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "A oferta menciona «{what}». A túa resposta: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "A oferta menciona «{what}», pero aínda non escribiches unha resposta.",
   "De faste svarene kunne ikke leses: {error}": "Non se puideron ler as respostas listas: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Non se puideron gardar as respostas listas: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Non se puideron gardar as respostas listas: {error}",
+  "Ferdig": "Feito",
+  "Å gjøre": "Por facer",
+  "Må rettes": "Hai que corrixilo",
+  "Tips": "Consello",
+  "Ikke sjekket ennå": "Aínda sen comprobar",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Que lista de comprobación ves, e as ferramentas para a túa"
  }
 }

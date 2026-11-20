@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "İlanda “{what}” geçiyor. Cevabınız: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "İlanda “{what}” geçiyor ama henüz bir cevap yazmadınız.",
   "De faste svarene kunne ikke leses: {error}": "Hazır cevaplar okunamadı: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Hazır cevaplar kaydedilemedi: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Hazır cevaplar kaydedilemedi: {error}",
+  "Ferdig": "Tamam",
+  "Å gjøre": "Yapılacak",
+  "Må rettes": "Düzeltilmeli",
+  "Tips": "İpucu",
+  "Ikke sjekket ennå": "Henüz kontrol edilmedi",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Gördüğünüz kontrol listesi ve kendi listeniz için araçlar"
  }
 }

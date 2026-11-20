@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Elanda «{what}» qeyd olunur. Cavabınız: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Elanda «{what}» qeyd olunur, amma hələ cavab yazmamısınız.",
   "De faste svarene kunne ikke leses: {error}": "Hazır cavabları oxumaq mümkün olmadı: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Hazır cavabları saxlamaq mümkün olmadı: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Hazır cavabları saxlamaq mümkün olmadı: {error}",
+  "Ferdig": "Hazırdır",
+  "Å gjøre": "Ediləcək",
+  "Må rettes": "Düzəldilməlidir",
+  "Tips": "Məsləhət",
+  "Ikke sjekket ennå": "Hələ yoxlanılmayıb",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Gördüyünüz yoxlama siyahısı və özünüzünkü üçün alətlər"
  }
 }

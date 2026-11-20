@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "The ad mentions “{what}”. Your answer: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "The ad mentions “{what}”, but you have not written an answer yet.",
   "De faste svarene kunne ikke leses: {error}": "The ready answers could not be read: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "The ready answers could not be saved: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "The ready answers could not be saved: {error}",
+  "Ferdig": "Done",
+  "Å gjøre": "To do",
+  "Må rettes": "Must be fixed",
+  "Tips": "Tip",
+  "Ikke sjekket ennå": "Not checked yet",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Which checklist you see, and the tools for your own"
  }
 }

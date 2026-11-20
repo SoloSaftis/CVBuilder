@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Oglas spominje „{what}“. Vaš odgovor: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Oglas spominje „{what}“, ali još niste napisali odgovor.",
   "De faste svarene kunne ikke leses: {error}": "Spremni odgovori nisu mogli biti učitani: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Spremni odgovori nisu mogli biti sačuvani: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Spremni odgovori nisu mogli biti sačuvani: {error}",
+  "Ferdig": "Gotovo",
+  "Å gjøre": "Za uraditi",
+  "Må rettes": "Mora se ispraviti",
+  "Tips": "Savjet",
+  "Ikke sjekket ennå": "Još nije provjereno",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Koju kontrolnu listu vidite i alati za vašu vlastitu"
  }
 }

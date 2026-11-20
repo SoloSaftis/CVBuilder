@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "विज्ञापन में “{what}” का ज़िक्र है। आपका जवाब: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "विज्ञापन में “{what}” का ज़िक्र है, लेकिन आपने अभी तक जवाब नहीं लिखा है।",
   "De faste svarene kunne ikke leses: {error}": "तैयार जवाब पढ़े नहीं जा सके: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "तैयार जवाब सहेजे नहीं जा सके: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "तैयार जवाब सहेजे नहीं जा सके: {error}",
+  "Ferdig": "पूरा",
+  "Å gjøre": "करना है",
+  "Må rettes": "ठीक करना ज़रूरी",
+  "Tips": "सुझाव",
+  "Ikke sjekket ennå": "अभी जाँचा नहीं गया",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "आप कौन-सी चेकलिस्ट देख रहे हैं, और अपनी चेकलिस्ट के टूल"
  }
 }

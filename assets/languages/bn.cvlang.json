@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "বিজ্ঞাপনে “{what}” উল্লেখ আছে। আপনার উত্তর: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "বিজ্ঞাপনে “{what}” উল্লেখ আছে, কিন্তু আপনি এখনও উত্তর লেখেননি।",
   "De faste svarene kunne ikke leses: {error}": "তৈরি উত্তরগুলো পড়া যায়নি: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "তৈরি উত্তরগুলো সংরক্ষণ করা যায়নি: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "তৈরি উত্তরগুলো সংরক্ষণ করা যায়নি: {error}",
+  "Ferdig": "সম্পন্ন",
+  "Å gjøre": "করণীয়",
+  "Må rettes": "ঠিক করতে হবে",
+  "Tips": "পরামর্শ",
+  "Ikke sjekket ennå": "এখনও যাচাই করা হয়নি",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "আপনি কোন চেকলিস্ট দেখছেন, আর আপনার নিজের চেকলিস্টের টুল"
  }
 }

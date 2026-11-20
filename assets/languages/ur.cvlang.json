@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "اشتہار میں “{what}” کا ذکر ہے۔ آپ کا جواب: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "اشتہار میں “{what}” کا ذکر ہے، لیکن آپ نے ابھی تک جواب نہیں لکھا۔",
   "De faste svarene kunne ikke leses: {error}": "تیار جوابات پڑھے نہیں جا سکے: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "تیار جوابات محفوظ نہیں کیے جا سکے: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "تیار جوابات محفوظ نہیں کیے جا سکے: {error}",
+  "Ferdig": "مکمل",
+  "Å gjøre": "کرنا ہے",
+  "Må rettes": "درست کرنا ضروری",
+  "Tips": "مشورہ",
+  "Ikke sjekket ennå": "ابھی جانچا نہیں گیا",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "آپ کون سی چیک لسٹ دیکھ رہے ہیں، اور اپنی چیک لسٹ کے ٹولز"
  }
 }

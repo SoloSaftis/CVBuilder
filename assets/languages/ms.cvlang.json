@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Iklan menyebut “{what}”. Jawapan anda: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Iklan menyebut “{what}”, tetapi anda belum menulis jawapan.",
   "De faste svarene kunne ikke leses: {error}": "Jawapan sedia tidak dapat dibaca: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Jawapan sedia tidak dapat disimpan: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Jawapan sedia tidak dapat disimpan: {error}",
+  "Ferdig": "Selesai",
+  "Å gjøre": "Perlu dibuat",
+  "Må rettes": "Mesti dibetulkan",
+  "Tips": "Petua",
+  "Ikke sjekket ennå": "Belum disemak",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Senarai semak yang anda lihat, dan alat untuk senarai anda sendiri"
  }
 }

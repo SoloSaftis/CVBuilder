@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "പരസ്യത്തിൽ “{what}” പരാമർശിക്കുന്നു. നിങ്ങളുടെ ഉത്തരം: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "പരസ്യത്തിൽ “{what}” പരാമർശിക്കുന്നു, പക്ഷേ നിങ്ങൾ ഇതുവരെ ഉത്തരം എഴുതിയിട്ടില്ല.",
   "De faste svarene kunne ikke leses: {error}": "തയ്യാറാക്കിയ ഉത്തരങ്ങൾ വായിക്കാനായില്ല: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "തയ്യാറാക്കിയ ഉത്തരങ്ങൾ സേവ് ചെയ്യാനായില്ല: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "തയ്യാറാക്കിയ ഉത്തരങ്ങൾ സേവ് ചെയ്യാനായില്ല: {error}",
+  "Ferdig": "പൂർത്തിയായി",
+  "Å gjøre": "ചെയ്യാനുണ്ട്",
+  "Må rettes": "തിരുത്തണം",
+  "Tips": "നുറുങ്ങ്",
+  "Ikke sjekket ennå": "ഇതുവരെ പരിശോധിച്ചിട്ടില്ല",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "നിങ്ങൾ കാണുന്ന ചെക്ക്‌ലിസ്റ്റും നിങ്ങളുടെ സ്വന്തം ലിസ്റ്റിനുള്ള ഉപകരണങ്ങളും"
  }
 }

@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Anunțul menționează „{what}”. Răspunsul dvs.: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Anunțul menționează „{what}”, dar încă nu ați scris un răspuns.",
   "De faste svarene kunne ikke leses: {error}": "Răspunsurile pregătite nu au putut fi citite: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Răspunsurile pregătite nu au putut fi salvate: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Răspunsurile pregătite nu au putut fi salvate: {error}",
+  "Ferdig": "Gata",
+  "Å gjøre": "De făcut",
+  "Må rettes": "Trebuie corectat",
+  "Tips": "Sfat",
+  "Ikke sjekket ennå": "Încă neverificat",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Ce listă de verificare vedeți și instrumentele pentru lista proprie"
  }
 }

@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Inzerát zmiňuje „{what}“. Vaše odpověď: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Inzerát zmiňuje „{what}“, ale zatím jste nenapsali odpověď.",
   "De faste svarene kunne ikke leses: {error}": "Připravené odpovědi se nepodařilo načíst: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Připravené odpovědi se nepodařilo uložit: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Připravené odpovědi se nepodařilo uložit: {error}",
+  "Ferdig": "Hotovo",
+  "Å gjøre": "K vyřízení",
+  "Må rettes": "Nutno opravit",
+  "Tips": "Tip",
+  "Ikke sjekket ennå": "Zatím nezkontrolováno",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Který kontrolní seznam vidíte a nástroje pro váš vlastní"
  }
 }

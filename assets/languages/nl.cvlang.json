@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "De vacature noemt “{what}”. Je antwoord: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "De vacature noemt “{what}”, maar je hebt nog geen antwoord geschreven.",
   "De faste svarene kunne ikke leses: {error}": "De vaste antwoorden konden niet worden gelezen: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "De vaste antwoorden konden niet worden opgeslagen: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "De vaste antwoorden konden niet worden opgeslagen: {error}",
+  "Ferdig": "Klaar",
+  "Å gjøre": "Te doen",
+  "Må rettes": "Moet worden verbeterd",
+  "Tips": "Tip",
+  "Ikke sjekket ennå": "Nog niet gecontroleerd",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Welke checklist je ziet, en de hulpmiddelen voor je eigen lijst"
  }
 }

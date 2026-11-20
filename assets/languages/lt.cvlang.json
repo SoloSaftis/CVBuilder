@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Skelbime minima „{what}“. Jūsų atsakymas: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Skelbime minima „{what}“, bet atsakymo dar neparašėte.",
   "De faste svarene kunne ikke leses: {error}": "Nepavyko nuskaityti paruoštų atsakymų: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Nepavyko įrašyti paruoštų atsakymų: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Nepavyko įrašyti paruoštų atsakymų: {error}",
+  "Ferdig": "Atlikta",
+  "Å gjøre": "Reikia atlikti",
+  "Må rettes": "Būtina pataisyti",
+  "Tips": "Patarimas",
+  "Ikke sjekket ennå": "Dar nepatikrinta",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Kurį kontrolinį sąrašą matote ir įrankiai jūsų sąrašui"
  }
 }

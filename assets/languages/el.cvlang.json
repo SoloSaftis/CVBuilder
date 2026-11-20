@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Η αγγελία αναφέρει «{what}». Η απάντησή σας: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Η αγγελία αναφέρει «{what}», αλλά δεν έχετε γράψει ακόμη απάντηση.",
   "De faste svarene kunne ikke leses: {error}": "Δεν ήταν δυνατή η ανάγνωση των έτοιμων απαντήσεων: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Δεν ήταν δυνατή η αποθήκευση των έτοιμων απαντήσεων: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Δεν ήταν δυνατή η αποθήκευση των έτοιμων απαντήσεων: {error}",
+  "Ferdig": "Ολοκληρώθηκε",
+  "Å gjøre": "Προς υλοποίηση",
+  "Må rettes": "Πρέπει να διορθωθεί",
+  "Tips": "Συμβουλή",
+  "Ikke sjekket ennå": "Δεν έχει ελεγχθεί ακόμα",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Ποια λίστα ελέγχου βλέπετε και τα εργαλεία για τη δική σας"
  }
 }

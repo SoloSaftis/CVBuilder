@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "職缺提到「{what}」。你的回答：{answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "職缺提到「{what}」，但你還沒有寫回答。",
   "De faste svarene kunne ikke leses: {error}": "無法讀取常用回答：{error}",
-  "De faste svarene kunne ikke lagres: {error}": "無法儲存常用回答：{error}"
+  "De faste svarene kunne ikke lagres: {error}": "無法儲存常用回答：{error}",
+  "Ferdig": "已完成",
+  "Å gjøre": "待辦",
+  "Må rettes": "必須修正",
+  "Tips": "提示",
+  "Ikke sjekket ennå": "尚未檢查",
+  "{status}: {text}": "{status}：{text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "顯示哪份檢查清單，以及自訂清單的工具"
  }
 }

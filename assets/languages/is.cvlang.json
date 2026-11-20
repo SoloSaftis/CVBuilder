@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Auglýsingin nefnir „{what}“. Svarið þitt: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Auglýsingin nefnir „{what}“ en þú hefur ekki skrifað svar enn.",
   "De faste svarene kunne ikke leses: {error}": "Ekki tókst að lesa tilbúnu svörin: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Ekki tókst að vista tilbúnu svörin: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Ekki tókst að vista tilbúnu svörin: {error}",
+  "Ferdig": "Lokið",
+  "Å gjøre": "Ógert",
+  "Må rettes": "Þarf að laga",
+  "Tips": "Ábending",
+  "Ikke sjekket ennå": "Ekki athugað enn",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Hvaða gátlista þú sérð, og verkfærin fyrir þinn eigin"
  }
 }

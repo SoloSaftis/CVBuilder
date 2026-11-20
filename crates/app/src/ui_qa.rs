@@ -222,6 +222,14 @@ const SCENES: &[Scene] = &[
     Scene { name: "Hjelp", setup: |a| a.ribbon_tab = Tab::Help },
     Scene { name: "Sjekkliste", setup: |a| a.side = Side::Checks },
     Scene { name: "Søknadsskjema", setup: |a| a.side = Side::Form },
+    Scene {
+        name: "Egen sjekkliste",
+        setup: |a| {
+            a.side = Side::Checks;
+            a.settings.own_checklist = true;
+            a.checklist.own = Some(cv_core::checklist::Checklist::starter());
+        },
+    },
     Scene { name: "Alle seksjoner åpne", setup: |a| a.folded.clear() },
     Scene { name: "Oversett-vinduet", setup: |a| a.open_translate(None) },
     Scene { name: "Innstillinger", setup: |a| a.settings_open = true },
@@ -435,6 +443,33 @@ fn every_button_has_a_name() {
     for wanted in ["Move up in the CV", "Move down in the CV", "Delete the job"] {
         assert!(names.iter().any(|n| n == wanted), "no button named «{wanted}» (a drawn button lost its name or its button role)");
     }
+}
+
+/// Every point in the checklist tab tells a screen reader its status in words before the text
+/// («To do: …»), in the standard check and in one's own, so the status is never colour alone
+/// (029). The to-do points of the recruiter check come before the ones that are done.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn checklist_points_say_their_status() {
+    use crate::checklist_ui::Status;
+    private_data_folder("en");
+    i18n::set(i18n::Lang::En);
+    let words: Vec<String> = Status::ALL.iter().map(|s| format!("{}: ", s.word())).collect();
+    let spoken = |h: &Harness<'_, CvApp>| -> Vec<String> { snapshot(h).into_iter().map(|c| c.label).filter(|l| words.iter().any(|w| l.starts_with(w.as_str()))).collect() };
+    let scene = |name: &str| SCENES.iter().find(|s| s.name == name).expect("scene").setup;
+    let h = harness(Vec2::new(1440.0, 900.0), scene("Sjekkliste"));
+    let points = spoken(&h);
+    assert!(points.iter().any(|l| l.starts_with("To do: ")), "no point says «To do»:\n{}", points.join("\n"));
+    assert!(points.iter().any(|l| l.starts_with("Done: ")), "no point says «Done»:\n{}", points.join("\n"));
+    // In the recruiter check (after «Before download»), nothing done comes before a point to do.
+    let recruiter: Vec<&String> = points.iter().skip_while(|l| !l.starts_with("Done: Everything required")).skip(1).collect();
+    let first_done = recruiter.iter().position(|l| l.starts_with("Done: ")).unwrap_or(recruiter.len());
+    assert!(recruiter[first_done..].iter().all(|l| l.starts_with("Done: ")), "a point to do comes after a done one:\n{}", points.join("\n"));
+    // One's own list, before the preview has counted the pages: the page point is not judged yet.
+    let h = harness(Vec2::new(1440.0, 900.0), scene("Egen sjekkliste"));
+    assert!(!spoken(&h).is_empty(), "the own checklist has no spoken points");
+    let labels: Vec<String> = snapshot(&h).into_iter().map(|c| c.label).collect();
+    assert!(labels.iter().any(|l| l == "My own"), "the dropdown does not show «My own»");
 }
 
 /// The welcome window's three ways to start each do what they say, and the answer is kept.

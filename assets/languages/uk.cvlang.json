@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "В оголошенні згадано «{what}». Ваша відповідь: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "В оголошенні згадано «{what}», але ви ще не написали відповідь.",
   "De faste svarene kunne ikke leses: {error}": "Не вдалося прочитати готові відповіді: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Не вдалося зберегти готові відповіді: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Не вдалося зберегти готові відповіді: {error}",
+  "Ferdig": "Готово",
+  "Å gjøre": "Зробити",
+  "Må rettes": "Треба виправити",
+  "Tips": "Порада",
+  "Ikke sjekket ennå": "Ще не перевірено",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Який контрольний список ви бачите, та інструменти для власного"
  }
 }

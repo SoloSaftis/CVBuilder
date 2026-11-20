@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "જાહેરાતમાં “{what}”નો ઉલ્લેખ છે. તમારો જવાબ: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "જાહેરાતમાં “{what}”નો ઉલ્લેખ છે, પણ તમે હજી જવાબ લખ્યો નથી.",
   "De faste svarene kunne ikke leses: {error}": "તૈયાર જવાબો વાંચી શકાયા નહીં: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "તૈયાર જવાબો સાચવી શકાયા નહીં: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "તૈયાર જવાબો સાચવી શકાયા નહીં: {error}",
+  "Ferdig": "પૂર્ણ",
+  "Å gjøre": "કરવાનું બાકી",
+  "Må rettes": "સુધારવું જરૂરી",
+  "Tips": "સૂચન",
+  "Ikke sjekket ennå": "હજી તપાસ્યું નથી",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "તમે કઈ ચેકલિસ્ટ જુઓ છો, અને તમારી પોતાની માટેનાં સાધનો"
  }
 }

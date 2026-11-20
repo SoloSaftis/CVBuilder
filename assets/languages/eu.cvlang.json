@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Eskaintzak “{what}” aipatzen du. Zure erantzuna: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Eskaintzak “{what}” aipatzen du, baina oraindik ez duzu erantzunik idatzi.",
   "De faste svarene kunne ikke leses: {error}": "Ezin izan dira erantzun prestatuak irakurri: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Ezin izan dira erantzun prestatuak gorde: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Ezin izan dira erantzun prestatuak gorde: {error}",
+  "Ferdig": "Eginda",
+  "Å gjøre": "Egiteko",
+  "Må rettes": "Zuzendu behar da",
+  "Tips": "Aholkua",
+  "Ikke sjekket ennå": "Oraindik egiaztatu gabe",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Zein egiaztapen-zerrenda ikusten duzun, eta zure zerrendarako tresnak"
  }
 }

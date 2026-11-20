@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Eʼlonda «{what}» tilga olingan. Javobingiz: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Eʼlonda «{what}» tilga olingan, lekin siz hali javob yozmagansiz.",
   "De faste svarene kunne ikke leses: {error}": "Tayyor javoblarni oʻqib boʻlmadi: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Tayyor javoblarni saqlab boʻlmadi: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Tayyor javoblarni saqlab boʻlmadi: {error}",
+  "Ferdig": "Bajarildi",
+  "Å gjøre": "Bajarish kerak",
+  "Må rettes": "Tuzatish kerak",
+  "Tips": "Maslahat",
+  "Ikke sjekket ennå": "Hali tekshirilmagan",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Qaysi nazorat roʻyxatini koʻrasiz va oʻz roʻyxatingiz uchun vositalar"
  }
 }

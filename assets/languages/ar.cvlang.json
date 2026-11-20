@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "يذكر الإعلان «{what}». إجابتك: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "يذكر الإعلان «{what}»، لكنك لم تكتب إجابة بعد.",
   "De faste svarene kunne ikke leses: {error}": "تعذّرت قراءة الإجابات الجاهزة: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "تعذّر حفظ الإجابات الجاهزة: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "تعذّر حفظ الإجابات الجاهزة: {error}",
+  "Ferdig": "تم",
+  "Å gjøre": "مطلوب",
+  "Må rettes": "يجب إصلاحه",
+  "Tips": "نصيحة",
+  "Ikke sjekket ennå": "لم يُفحص بعد",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "قائمة التحقق التي تراها، وأدوات قائمتك الخاصة"
  }
 }

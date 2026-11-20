@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Inzerát spomína „{what}“. Vaša odpoveď: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Inzerát spomína „{what}“, ale odpoveď ste ešte nenapísali.",
   "De faste svarene kunne ikke leses: {error}": "Pripravené odpovede sa nepodarilo načítať: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Pripravené odpovede sa nepodarilo uložiť: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Pripravené odpovede sa nepodarilo uložiť: {error}",
+  "Ferdig": "Hotovo",
+  "Å gjøre": "Treba urobiť",
+  "Må rettes": "Treba opraviť",
+  "Tips": "Tip",
+  "Ikke sjekket ennå": "Zatiaľ nekontrolované",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Ktorý kontrolný zoznam vidíte a nástroje pre váš vlastný"
  }
 }

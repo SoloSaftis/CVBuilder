@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Mae’r hysbyseb yn sôn am “{what}”. Eich ateb: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Mae’r hysbyseb yn sôn am “{what}”, ond nid ydych wedi ysgrifennu ateb eto.",
   "De faste svarene kunne ikke leses: {error}": "Doedd dim modd darllen yr atebion parod: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Doedd dim modd cadw’r atebion parod: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Doedd dim modd cadw’r atebion parod: {error}",
+  "Ferdig": "Wedi'i wneud",
+  "Å gjøre": "I'w wneud",
+  "Må rettes": "Rhaid ei gywiro",
+  "Tips": "Awgrym",
+  "Ikke sjekket ennå": "Heb ei wirio eto",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Pa restr wirio a welwch, a'r offer ar gyfer eich un eich hun"
  }
 }

@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Binabanggit ng ad ang “{what}”. Ang sagot mo: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Binabanggit ng ad ang “{what}”, pero wala ka pang naisusulat na sagot.",
   "De faste svarene kunne ikke leses: {error}": "Hindi mabasa ang mga handang sagot: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Hindi ma-save ang mga handang sagot: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Hindi ma-save ang mga handang sagot: {error}",
+  "Ferdig": "Tapos na",
+  "Å gjøre": "Gagawin",
+  "Må rettes": "Kailangang ayusin",
+  "Tips": "Tip",
+  "Ikke sjekket ennå": "Hindi pa nasusuri",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Aling checklist ang nakikita mo, at ang mga tool para sa sarili mong checklist"
  }
 }

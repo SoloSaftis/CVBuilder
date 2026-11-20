@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "L’annuncio menziona “{what}”. La tua risposta: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "L’annuncio menziona “{what}”, ma non hai ancora scritto una risposta.",
   "De faste svarene kunne ikke leses: {error}": "Impossibile leggere le risposte pronte: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Impossibile salvare le risposte pronte: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Impossibile salvare le risposte pronte: {error}",
+  "Ferdig": "Fatto",
+  "Å gjøre": "Da fare",
+  "Må rettes": "Da correggere",
+  "Tips": "Suggerimento",
+  "Ikke sjekket ennå": "Non ancora verificato",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Quale lista di controllo vedi e gli strumenti per la tua"
  }
 }

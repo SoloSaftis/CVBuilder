@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Ilmoituksessa mainitaan ”{what}”. Vastauksesi: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Ilmoituksessa mainitaan ”{what}”, mutta et ole vielä kirjoittanut vastausta.",
   "De faste svarene kunne ikke leses: {error}": "Valmiita vastauksia ei voitu lukea: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Valmiita vastauksia ei voitu tallentaa: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Valmiita vastauksia ei voitu tallentaa: {error}",
+  "Ferdig": "Valmis",
+  "Å gjøre": "Tehtävänä",
+  "Må rettes": "Korjattava",
+  "Tips": "Vinkki",
+  "Ikke sjekket ennå": "Ei vielä tarkistettu",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Mikä tarkistuslista näkyy, ja työkalut omaa listaasi varten"
  }
 }

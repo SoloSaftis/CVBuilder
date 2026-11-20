@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "जायरातींत “{what}” हाचो उल्लेख आसा. तुमची जाप: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "जायरातींत “{what}” हाचो उल्लेख आसा, पूण तुमी अजून जाप बरोवंक ना.",
   "De faste svarene kunne ikke leses: {error}": "तयार जापो वाचूंक जाल्यो नात: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "तयार जापो सांबाळूंक जाल्यो नात: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "तयार जापो सांबाळूंक जाल्यो नात: {error}",
+  "Ferdig": "पूर्ण",
+  "Å gjøre": "करपाक आसा",
+  "Må rettes": "सुदारपाक जाय",
+  "Tips": "सुचोवणी",
+  "Ikke sjekket ennå": "अजून तपासूंक ना",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "तुमी खंयची तपासणी वळेरी पळयतात, आनी तुमच्या स्वताच्या वळेरीचीं साधनां"
  }
 }

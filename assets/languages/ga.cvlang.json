@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Luann an fógra “{what}”. Do fhreagra: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Luann an fógra “{what}”, ach níor scríobh tú freagra fós.",
   "De faste svarene kunne ikke leses: {error}": "Níorbh fhéidir na freagraí réidh a léamh: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Níorbh fhéidir na freagraí réidh a shábháil: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Níorbh fhéidir na freagraí réidh a shábháil: {error}",
+  "Ferdig": "Déanta",
+  "Å gjøre": "Le déanamh",
+  "Må rettes": "Caithfear é a cheartú",
+  "Tips": "Leid",
+  "Ikke sjekket ennå": "Gan seiceáil fós",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "An seicliosta atá á fheiceáil agat, agus na huirlisí do do cheann féin"
  }
 }

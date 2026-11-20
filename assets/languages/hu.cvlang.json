@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "A hirdetés említi ezt: „{what}”. Az Ön válasza: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "A hirdetés említi ezt: „{what}”, de még nem írt rá választ.",
   "De faste svarene kunne ikke leses: {error}": "A kész válaszokat nem sikerült beolvasni: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "A kész válaszokat nem sikerült menteni: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "A kész válaszokat nem sikerült menteni: {error}",
+  "Ferdig": "Kész",
+  "Å gjøre": "Teendő",
+  "Må rettes": "Javítani kell",
+  "Tips": "Tipp",
+  "Ikke sjekket ennå": "Még nincs ellenőrizve",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Melyik ellenőrzőlistát látja, és a saját listája eszközei"
  }
 }

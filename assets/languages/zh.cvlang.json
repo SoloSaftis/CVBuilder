@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "招聘广告提到了“{what}”。您的回答：{answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "招聘广告提到了“{what}”，但您还没有写回答。",
   "De faste svarene kunne ikke leses: {error}": "无法读取常用回答：{error}",
-  "De faste svarene kunne ikke lagres: {error}": "无法保存常用回答：{error}"
+  "De faste svarene kunne ikke lagres: {error}": "无法保存常用回答：{error}",
+  "Ferdig": "已完成",
+  "Å gjøre": "待办",
+  "Må rettes": "必须修正",
+  "Tips": "提示",
+  "Ikke sjekket ennå": "尚未检查",
+  "{status}: {text}": "{status}：{text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "显示哪份检查清单，以及自定义清单的工具"
  }
 }

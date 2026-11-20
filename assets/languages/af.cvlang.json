@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Die advertensie noem “{what}”. Jou antwoord: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Die advertensie noem “{what}”, maar jy het nog nie 'n antwoord geskryf nie.",
   "De faste svarene kunne ikke leses: {error}": "Die voorbereide antwoorde kon nie gelees word nie: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Die voorbereide antwoorde kon nie gestoor word nie: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Die voorbereide antwoorde kon nie gestoor word nie: {error}",
+  "Ferdig": "Klaar",
+  "Å gjøre": "Om te doen",
+  "Må rettes": "Moet reggemaak word",
+  "Tips": "Wenk",
+  "Ikke sjekket ennå": "Nog nie nagegaan nie",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Watter kontrolelys jy sien, en die gereedskap vir jou eie"
  }
 }

@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Sludinājumā minēts «{what}». Jūsu atbilde: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Sludinājumā minēts «{what}», bet atbilde vēl nav uzrakstīta.",
   "De faste svarene kunne ikke leses: {error}": "Gatavās atbildes nevarēja nolasīt: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Gatavās atbildes nevarēja saglabāt: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Gatavās atbildes nevarēja saglabāt: {error}",
+  "Ferdig": "Gatavs",
+  "Å gjøre": "Jāizdara",
+  "Må rettes": "Jāizlabo",
+  "Tips": "Padoms",
+  "Ikke sjekket ennå": "Vēl nav pārbaudīts",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Kuru kontrolsarakstu redzat, un rīki jūsu pašu sarakstam"
  }
 }

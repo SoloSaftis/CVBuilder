@@ -2,11 +2,136 @@
 //! recruiter check, tick off points, edit it, load one from a file or save it as a file.
 //! The list lives in the data folder; the ticks belong to each CV.
 use cv_core::checklist::{self, Checklist, Item, Kind, State};
-use egui::{CornerRadius, Margin, RichText};
+use cv_core::checks::{Check, Level};
+use egui::{Color32, CornerRadius, Margin, RichText, Stroke, pos2, vec2};
 
 use crate::i18n;
 use crate::theme::{self, Icon, Tokens};
 use crate::{CvApp, storage};
+
+/// How a point in the checklist stands. Shown three ways, so it never rests on colour alone:
+/// the colour, a symbol with its own shape (✓, !, ✕, i, ○), and a word that screen readers say
+/// before the point («Done: …») and the pointer shows on hover.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub(crate) enum Status {
+    Done,
+    ToDo,
+    /// Must be fixed before the CV can be downloaded.
+    Problem,
+    Tip,
+    /// Cannot be judged yet (the page count before the preview is made).
+    Open,
+}
+
+impl Status {
+    #[cfg(test)]
+    pub(crate) const ALL: [Status; 5] = [Status::Done, Status::ToDo, Status::Problem, Status::Tip, Status::Open];
+
+    pub(crate) fn of_level(level: Level) -> Status {
+        match level {
+            Level::Pass => Status::Done,
+            Level::Warn => Status::ToDo,
+            Level::Info => Status::Tip,
+        }
+    }
+
+    pub(crate) fn of_state(state: State) -> Status {
+        match state {
+            State::Done => Status::Done,
+            State::NotDone => Status::ToDo,
+            State::Open => Status::Open,
+        }
+    }
+
+    /// The word for the status, in the interface language.
+    pub(crate) fn word(self) -> &'static str {
+        match self {
+            Status::Done => i18n::t("Ferdig"),
+            Status::ToDo => i18n::t("Å gjøre"),
+            Status::Problem => i18n::t("Må rettes"),
+            Status::Tip => i18n::t("Tips"),
+            Status::Open => i18n::t("Ikke sjekket ennå"),
+        }
+    }
+
+    /// What a screen reader says for the point: the status word, then the text.
+    pub(crate) fn spoken(self, text: &str) -> String {
+        i18n::tf("{status}: {text}", &[("status", self.word()), ("text", text)])
+    }
+
+    pub(crate) fn color(self, t: &Tokens) -> Color32 {
+        match self {
+            Status::Done => t.success,
+            Status::ToDo => t.warning,
+            Status::Problem => t.danger,
+            Status::Tip => t.info,
+            Status::Open => t.faint,
+        }
+    }
+
+    /// The order in a list: what must be fixed first, what is done last.
+    fn rank(self) -> u8 {
+        match self {
+            Status::Problem => 0,
+            Status::ToDo => 1,
+            Status::Tip => 2,
+            Status::Open => 3,
+            Status::Done => 4,
+        }
+    }
+}
+
+/// The recruiter check with the points to do first and the ones in order last; otherwise in the
+/// order cv-core gives them.
+pub(crate) fn todo_first(mut list: Vec<Check>) -> Vec<Check> {
+    list.sort_by_key(|c| Status::of_level(c.level).rank());
+    list
+}
+
+/// The status symbol: a disc in the status colour with a mark cut out in the card colour, or an
+/// empty ring for a point not judged yet. The shapes differ, so they can be told apart without
+/// seeing colour, and in high contrast.
+fn paint_status(painter: &egui::Painter, c: egui::Pos2, status: Status, t: &Tokens) {
+    const R: f32 = 6.5;
+    let color = status.color(t);
+    let mark = Stroke::new(1.7, t.card);
+    if status == Status::Open {
+        painter.circle_stroke(c, R - 0.75, Stroke::new(1.5, color));
+        return;
+    }
+    painter.circle_filled(c, R, color);
+    match status {
+        Status::Done => painter.line(vec![c + vec2(-3.2, 0.2), c + vec2(-0.9, 2.6), c + vec2(3.3, -2.3)], mark),
+        Status::ToDo => {
+            painter.line_segment([c + vec2(0.0, -3.6), c + vec2(0.0, 0.9)], mark);
+            painter.circle_filled(c + vec2(0.0, 3.1), 1.0, t.card);
+        }
+        Status::Problem => {
+            painter.line_segment([c + vec2(-2.6, -2.6), c + vec2(2.6, 2.6)], mark);
+            painter.line_segment([c + vec2(-2.6, 2.6), c + vec2(2.6, -2.6)], mark);
+        }
+        Status::Tip => {
+            painter.circle_filled(c + vec2(0.0, -3.1), 1.0, t.card);
+            painter.line_segment([c + vec2(0.0, -0.9), c + vec2(0.0, 3.6)], mark);
+        }
+        Status::Open => {}
+    }
+}
+
+/// One point of a checklist: the status symbol in the margin and the text beside it. The text
+/// always wraps to the panel; screen readers hear «status: text», the pointer shows the status.
+pub(crate) fn status_line(ui: &mut egui::Ui, status: Status, text: &str) {
+    let t = Tokens::get(ui.ctx());
+    let r = egui::Frame::new().inner_margin(Margin { left: 20, right: 0, top: 0, bottom: 0 }).show(ui, |ui| {
+        ui.set_width(ui.available_width());
+        ui.add(egui::Label::new(RichText::new(text).size(13.5).color(t.text)).wrap())
+    });
+    let spoken = status.spoken(text);
+    r.inner.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Label, true, &spoken));
+    r.inner.on_hover_text(status.word());
+    let top = r.response.rect.left_top();
+    paint_status(ui.painter(), pos2(top.x + 7.0, top.y + 9.5), status, &t);
+}
 
 #[derive(Default)]
 pub struct ChecklistState {
@@ -96,36 +221,60 @@ fn kind_name(k: Kind) -> &'static str {
 impl CvApp {
     /// The row at the top of the «Sjekkliste» tab: which list, and the tools for one's own.
     pub(crate) fn checklist_choice(&mut self, ui: &mut egui::Ui) {
-        ui.horizontal_wrapped(|ui| {
-            let own = self.settings.own_checklist;
-            if ui.radio(!own, i18n::t("Standard")).on_hover_text(i18n::t("Rekrutterersjekken CVBuilder har innebygd")).clicked() && own {
+        // One dropdown instead of five controls: most people keep the standard check, so the
+        // tools for one's own list stay out of the way until asked for.
+        let own = self.settings.own_checklist;
+        let current = if own { i18n::t("Min egen") } else { i18n::t("Standard") };
+        let dots = |s: &str| format!("{s} …");
+        let mut choice = None;
+        egui::ComboBox::from_id_salt("checklist_choice")
+            .selected_text(current)
+            .width(ui.available_width().min(220.0))
+            .show_ui(ui, |ui| {
+                if ui.selectable_label(!own, i18n::t("Standard")).on_hover_text(i18n::t("Rekrutterersjekken CVBuilder har innebygd")).clicked() {
+                    choice = Some("standard");
+                }
+                if ui.selectable_label(own, i18n::t("Min egen")).on_hover_text(i18n::t("Din egen sjekkliste i stedet for standardsjekken")).clicked() {
+                    choice = Some("own");
+                }
+                ui.separator();
+                if ui.selectable_label(false, dots(i18n::t("Rediger"))).on_hover_text(i18n::t("Legg til, endre og fjern punkter i din egen sjekkliste")).clicked() {
+                    choice = Some("edit");
+                }
+                if ui.selectable_label(false, dots(i18n::t("Last inn"))).on_hover_text(i18n::t("Hent en sjekkliste fra en .cvchecklist.json-fil")).clicked() {
+                    choice = Some("load");
+                }
+                if ui
+                    .add_enabled(self.checklist.own.is_some(), egui::Button::selectable(false, dots(i18n::t("Lagre som fil"))))
+                    .on_hover_text(i18n::t("Lagre sjekklisten din som fil, for å dele den eller ta vare på den"))
+                    .on_disabled_hover_text(i18n::t("Lag en egen sjekkliste først"))
+                    .clicked()
+                {
+                    choice = Some("save");
+                }
+            })
+            .response
+            .on_hover_text(i18n::t("Hvilken sjekkliste du ser, og verktøy for din egen"));
+        match choice {
+            Some("standard") if own => {
                 self.settings.own_checklist = false;
                 storage::save_settings(&self.settings);
             }
-            if ui.radio(own, i18n::t("Min egen")).on_hover_text(i18n::t("Din egen sjekkliste i stedet for standardsjekken")).clicked() && !own {
+            Some("own") if !own => {
                 if self.checklist.own.is_none() {
                     self.checklist.editing = Some(Checklist::starter());
                 }
                 self.settings.own_checklist = true;
                 storage::save_settings(&self.settings);
             }
-            ui.add_space(8.0);
-            if ui.button(i18n::t("Rediger")).on_hover_text(i18n::t("Legg til, endre og fjern punkter i din egen sjekkliste")).clicked() {
+            Some("edit") => {
                 self.checklist.editing = Some(self.checklist.own.clone().unwrap_or_else(Checklist::starter));
                 self.checklist.message.clear();
             }
-            if ui.button(i18n::t("Last inn")).on_hover_text(i18n::t("Hent en sjekkliste fra en .cvchecklist.json-fil")).clicked() {
-                self.pick("checklist_load", None);
-            }
-            if ui
-                .add_enabled(self.checklist.own.is_some(), egui::Button::new(i18n::t("Lagre som fil")))
-                .on_hover_text(i18n::t("Lagre sjekklisten din som fil, for å dele den eller ta vare på den"))
-                .on_disabled_hover_text(i18n::t("Lag en egen sjekkliste først"))
-                .clicked()
-            {
-                self.pick("checklist_save", None);
-            }
-        });
+            Some("load") => self.pick("checklist_load", None),
+            Some("save") => self.pick("checklist_save", None),
+            _ => {}
+        }
         if !self.checklist.message.is_empty() {
             theme::hint(ui, &self.checklist.message);
         }
@@ -162,12 +311,7 @@ impl CvApp {
                         self.save_at = Some(std::time::Instant::now());
                     }
                 } else {
-                    let color = match state {
-                        State::Done => t.success,
-                        State::NotDone => t.warning,
-                        State::Open => t.faint,
-                    };
-                    crate::status_line(ui, color, &item.text);
+                    status_line(ui, Status::of_state(state), &item.text);
                 }
             }
         });
@@ -416,6 +560,43 @@ mod tests {
         assert!(read_file(&path).expect_err("binary").contains("UTF-8"));
         assert!(read_file(&dir.join("finnes-ikke.json")).is_err());
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// Each status has its own word, and the word comes before the point for screen readers, so
+    /// the status never rests on colour alone (029).
+    #[test]
+    fn every_status_has_its_own_word() {
+        i18n::set(i18n::Lang::En);
+        let words: Vec<&str> = Status::ALL.iter().map(|s| s.word()).collect();
+        assert_eq!(words, ["Done", "To do", "Must be fixed", "Tip", "Not checked yet"]);
+        assert_eq!(Status::ToDo.spoken("The profile is short"), "To do: The profile is short");
+        i18n::set(i18n::Lang::No);
+        assert_eq!(Status::Done.spoken("Profilen er fin"), "Ferdig: Profilen er fin");
+        i18n::set(i18n::Lang::En);
+    }
+
+    /// The colours stay those of 1.2.0, whose contrast on the card theme.rs tests (018): the
+    /// symbol and the word come on top of the colour, not instead of it.
+    #[test]
+    fn statuses_keep_their_colours() {
+        for t in [crate::theme::LIGHT, crate::theme::DARK] {
+            let colors: Vec<Color32> = Status::ALL.iter().map(|s| s.color(&t)).collect();
+            assert_eq!(colors, [t.success, t.warning, t.danger, t.info, t.faint]);
+        }
+        assert_eq!(Status::of_level(Level::Pass), Status::Done);
+        assert_eq!(Status::of_level(Level::Warn), Status::ToDo);
+        assert_eq!(Status::of_level(Level::Info), Status::Tip);
+        assert_eq!(Status::of_state(State::NotDone), Status::ToDo);
+        assert_eq!(Status::of_state(State::Open), Status::Open);
+    }
+
+    /// The recruiter check lists what is left to do first, and keeps cv-core's order otherwise.
+    #[test]
+    fn points_to_do_come_first() {
+        let c = |level, text: &str| Check { level, text: text.into(), tip: String::new() };
+        let list = vec![c(Level::Pass, "a"), c(Level::Info, "b"), c(Level::Warn, "c"), c(Level::Pass, "d"), c(Level::Warn, "e")];
+        let order: Vec<String> = todo_first(list).into_iter().map(|c| c.text).collect();
+        assert_eq!(order, ["c", "e", "b", "a", "d"]);
     }
 
     #[test]

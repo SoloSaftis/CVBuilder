@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Ir-reklam isemmi “{what}”. It-tweġiba tiegħek: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Ir-reklam isemmi “{what}”, imma għadek ma ktibtx tweġiba.",
   "De faste svarene kunne ikke leses: {error}": "It-tweġibiet lesti ma setgħux jinqraw: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "It-tweġibiet lesti ma setgħux jiġu salvati: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "It-tweġibiet lesti ma setgħux jiġu salvati: {error}",
+  "Ferdig": "Lest",
+  "Å gjøre": "Biex isir",
+  "Må rettes": "Irid jiġi korrett",
+  "Tips": "Ħjiel",
+  "Ikke sjekket ennå": "Għadu ma ġiex iċċekkjat",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Liema checklist qed tara, u l-għodod għal tiegħek"
  }
 }

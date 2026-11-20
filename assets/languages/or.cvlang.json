@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "ବିଜ୍ଞାପନରେ “{what}” ଉଲ୍ଲେଖ ଅଛି। ଆପଣଙ୍କ ଉତ୍ତର: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "ବିଜ୍ଞାପନରେ “{what}” ଉଲ୍ଲେଖ ଅଛି, କିନ୍ତୁ ଆପଣ ଏପର୍ଯ୍ୟନ୍ତ ଉତ୍ତର ଲେଖିନାହାନ୍ତି।",
   "De faste svarene kunne ikke leses: {error}": "ପ୍ରସ୍ତୁତ ଉତ୍ତର ପଢ଼ିହେଲା ନାହିଁ: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "ପ୍ରସ୍ତୁତ ଉତ୍ତର ସଞ୍ଚୟ କରିହେଲା ନାହିଁ: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "ପ୍ରସ୍ତୁତ ଉତ୍ତର ସଞ୍ଚୟ କରିହେଲା ନାହିଁ: {error}",
+  "Ferdig": "ସମ୍ପୂର୍ଣ୍ଣ",
+  "Å gjøre": "କରିବାକୁ ଅଛି",
+  "Må rettes": "ସଂଶୋଧନ କରିବା ଆବଶ୍ୟକ",
+  "Tips": "ପରାମର୍ଶ",
+  "Ikke sjekket ennå": "ଏପର୍ଯ୍ୟନ୍ତ ଯାଞ୍ଚ ହୋଇନାହିଁ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "ଆପଣ କେଉଁ ଚେକଲିଷ୍ଟ ଦେଖୁଛନ୍ତି, ଏବଂ ନିଜ ଚେକଲିଷ୍ଟ ପାଇଁ ଉପକରଣ"
  }
 }

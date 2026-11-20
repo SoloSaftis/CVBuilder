@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "המודעה מזכירה את “{what}”. התשובה שלך: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "המודעה מזכירה את “{what}”, אבל עדיין לא כתבת תשובה.",
   "De faste svarene kunne ikke leses: {error}": "לא ניתן לקרוא את התשובות המוכנות: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "לא ניתן לשמור את התשובות המוכנות: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "לא ניתן לשמור את התשובות המוכנות: {error}",
+  "Ferdig": "בוצע",
+  "Å gjøre": "לביצוע",
+  "Må rettes": "חובה לתקן",
+  "Tips": "טיפ",
+  "Ikke sjekket ennå": "עדיין לא נבדק",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "איזו רשימת בדיקה מוצגת, והכלים לרשימה משלך"
  }
 }

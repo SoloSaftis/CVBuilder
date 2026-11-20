@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Njoftimi përmend «{what}». Përgjigjja juaj: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Njoftimi përmend «{what}», por ende nuk keni shkruar përgjigje.",
   "De faste svarene kunne ikke leses: {error}": "Përgjigjet e gatshme nuk mund të lexoheshin: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Përgjigjet e gatshme nuk mund të ruheshin: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Përgjigjet e gatshme nuk mund të ruheshin: {error}",
+  "Ferdig": "U krye",
+  "Å gjøre": "Për t'u bërë",
+  "Må rettes": "Duhet ndrequr",
+  "Tips": "Këshillë",
+  "Ikke sjekket ennå": "Ende i pakontrolluar",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Cilën listë kontrolli shihni dhe mjetet për tuajën"
  }
 }

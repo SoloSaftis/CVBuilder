@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "D'Annonce ernimmt „{what}“. Deng Äntwert: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "D'Annonce ernimmt „{what}“, mee du hues nach keng Äntwert geschriwwen.",
   "De faste svarene kunne ikke leses: {error}": "Déi prett Äntwerte konnten net gelies ginn: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Déi prett Äntwerte konnten net gespäichert ginn: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Déi prett Äntwerte konnten net gespäichert ginn: {error}",
+  "Ferdig": "Fäerdeg",
+  "Å gjøre": "Ze maachen",
+  "Må rettes": "Muss verbessert ginn",
+  "Tips": "Tipp",
+  "Ikke sjekket ennå": "Nach net iwwerpréift",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Wéi eng Checklëscht Dir gesitt, an d'Tools fir Är eege"
  }
 }

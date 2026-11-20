@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "ประกาศกล่าวถึง “{what}” คำตอบของคุณ: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "ประกาศกล่าวถึง “{what}” แต่คุณยังไม่ได้เขียนคำตอบ",
   "De faste svarene kunne ikke leses: {error}": "ไม่สามารถอ่านคำตอบที่เตรียมไว้ได้: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "ไม่สามารถบันทึกคำตอบที่เตรียมไว้ได้: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "ไม่สามารถบันทึกคำตอบที่เตรียมไว้ได้: {error}",
+  "Ferdig": "เสร็จแล้ว",
+  "Å gjøre": "ต้องทำ",
+  "Må rettes": "ต้องแก้ไข",
+  "Tips": "เคล็ดลับ",
+  "Ikke sjekket ennå": "ยังไม่ได้ตรวจ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "รายการตรวจสอบที่คุณเห็น และเครื่องมือสำหรับรายการของคุณเอง"
  }
 }

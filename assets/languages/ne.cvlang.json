@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "विज्ञापनमा “{what}” उल्लेख छ। तपाईंको उत्तर: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "विज्ञापनमा “{what}” उल्लेख छ, तर तपाईंले अझै उत्तर लेख्नुभएको छैन।",
   "De faste svarene kunne ikke leses: {error}": "तयार उत्तरहरू पढ्न सकिएन: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "तयार उत्तरहरू सेभ गर्न सकिएन: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "तयार उत्तरहरू सेभ गर्न सकिएन: {error}",
+  "Ferdig": "सम्पन्न",
+  "Å gjøre": "गर्न बाँकी",
+  "Må rettes": "सच्याउनुपर्छ",
+  "Tips": "सुझाव",
+  "Ikke sjekket ennå": "अझै जाँच गरिएको छैन",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "तपाईं कुन चेकलिस्ट हेर्दै हुनुहुन्छ, र आफ्नै चेकलिस्टका उपकरणहरू"
  }
 }

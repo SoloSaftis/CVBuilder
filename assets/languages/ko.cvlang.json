@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "공고에 “{what}”이(가) 언급되어 있습니다. 내 답변: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "공고에 “{what}”이(가) 언급되어 있지만 아직 답변을 작성하지 않았습니다.",
   "De faste svarene kunne ikke leses: {error}": "준비한 답변을 읽을 수 없습니다: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "준비한 답변을 저장할 수 없습니다: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "준비한 답변을 저장할 수 없습니다: {error}",
+  "Ferdig": "완료",
+  "Å gjøre": "할 일",
+  "Må rettes": "수정 필요",
+  "Tips": "팁",
+  "Ikke sjekket ennå": "아직 확인 안 됨",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "표시할 체크리스트와 나만의 체크리스트 도구"
  }
 }

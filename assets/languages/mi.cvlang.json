@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "E whakahua ana te pānui i te “{what}”. Tō whakautu: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "E whakahua ana te pānui i te “{what}”, engari kāore anō koe kia tuhi whakautu.",
   "De faste svarene kunne ikke leses: {error}": "Kāore i taea te pānui i ngā whakautu rite: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Kāore i taea te tiaki i ngā whakautu rite: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Kāore i taea te tiaki i ngā whakautu rite: {error}",
+  "Ferdig": "Kua oti",
+  "Å gjøre": "Hei mahi",
+  "Må rettes": "Me whakatika",
+  "Tips": "Tohutohu",
+  "Ikke sjekket ennå": "Kāore anō kia tirohia",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Te rārangi arowhai e kitea ana e koe, me ngā taputapu mō tōu ake"
  }
 }

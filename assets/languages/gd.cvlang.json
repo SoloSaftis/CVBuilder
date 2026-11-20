@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Tha an sanas a’ toirt iomradh air “{what}”. An fhreagairt agad: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Tha an sanas a’ toirt iomradh air “{what}”, ach cha do sgrìobh thu freagairt fhathast.",
   "De faste svarene kunne ikke leses: {error}": "Cha b’ urrainn dhuinn na freagairtean deiseil a leughadh: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Cha b’ urrainn dhuinn na freagairtean deiseil a shàbhaladh: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Cha b’ urrainn dhuinn na freagairtean deiseil a shàbhaladh: {error}",
+  "Ferdig": "Deiseil",
+  "Å gjøre": "Ri dhèanamh",
+  "Må rettes": "Feumar a cheartachadh",
+  "Tips": "Gliocas",
+  "Ikke sjekket ennå": "Gun sgrùdadh fhathast",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Dè an liosta-sgrùdaidh a chì thu, agus na h-innealan airson an tè agad fhèin"
  }
 }

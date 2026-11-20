@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Հայտարարությունում նշված է «{what}»։ Ձեր պատասխանը՝ {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Հայտարարությունում նշված է «{what}», բայց դուք դեռ պատասխան չեք գրել։",
   "De faste svarene kunne ikke leses: {error}": "Չհաջողվեց կարդալ պատրաստի պատասխանները՝ {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Չհաջողվեց պահել պատրաստի պատասխանները՝ {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Չհաջողվեց պահել պատրաստի պատասխանները՝ {error}",
+  "Ferdig": "Արված է",
+  "Å gjøre": "Անելիք",
+  "Må rettes": "Պետք է ուղղել",
+  "Tips": "Խորհուրդ",
+  "Ikke sjekket ennå": "Դեռ ստուգված չէ",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Որ ստուգաթերթն եք տեսնում, և ձեր սեփականի գործիքները"
  }
 }

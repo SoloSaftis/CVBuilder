@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "Annoncen nævner »{what}«. Dit svar: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "Annoncen nævner »{what}«, men du har ikke skrevet et svar endnu.",
   "De faste svarene kunne ikke leses: {error}": "De faste svar kunne ikke læses: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "De faste svar kunne ikke gemmes: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "De faste svar kunne ikke gemmes: {error}",
+  "Ferdig": "Færdig",
+  "Å gjøre": "Mangler",
+  "Må rettes": "Skal rettes",
+  "Tips": "Tip",
+  "Ikke sjekket ennå": "Ikke tjekket endnu",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Hvilken tjekliste du ser, og værktøjerne til din egen"
  }
 }

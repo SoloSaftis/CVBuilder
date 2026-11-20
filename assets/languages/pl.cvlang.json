@@ -1264,6 +1264,13 @@
   "Annonsen nevner «{what}». Svaret ditt: {answer}": "W ogłoszeniu pojawia się „{what}”. Twoja odpowiedź: {answer}",
   "Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.": "W ogłoszeniu pojawia się „{what}”, ale nie masz jeszcze odpowiedzi.",
   "De faste svarene kunne ikke leses: {error}": "Nie udało się odczytać gotowych odpowiedzi: {error}",
-  "De faste svarene kunne ikke lagres: {error}": "Nie udało się zapisać gotowych odpowiedzi: {error}"
+  "De faste svarene kunne ikke lagres: {error}": "Nie udało się zapisać gotowych odpowiedzi: {error}",
+  "Ferdig": "Gotowe",
+  "Å gjøre": "Do zrobienia",
+  "Må rettes": "Wymaga poprawy",
+  "Tips": "Wskazówka",
+  "Ikke sjekket ennå": "Jeszcze nie sprawdzono",
+  "{status}: {text}": "{status}: {text}",
+  "Hvilken sjekkliste du ser, og verktøy for din egen": "Którą listę kontrolną widzisz i narzędzia do własnej listy"
  }
 }
