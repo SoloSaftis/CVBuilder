@@ -417,8 +417,43 @@ fn ui_text(pack: Option<&HashMap<&'static str, &'static str>>, no: &'static str)
 fn dyn_text(pack: Option<&HashMap<&'static str, &'static str>>, text: &str) -> String {
     match pack.and_then(|p| p.get(text)) {
         Some(t) => t.to_string(),
-        None => pack.and_then(|p| pack_rule(p, text)).or_else(|| english(text)).unwrap_or_else(|| text.to_string()),
+        None => match with_cause(text) {
+            Some((head, cause)) => format!("{} {}", dyn_text(pack, head), dyn_text(pack, cause)),
+            None => pack.and_then(|p| pack_rule(p, text)).or_else(|| english(text)).unwrap_or_else(|| text.to_string()),
+        },
     }
+}
+
+/// «Filen kunne ikke leses.» and the plain cause after it ([`cv_core::plain::CAUSES`]), each
+/// translated on its own.
+fn with_cause(text: &str) -> Option<(&str, &'static str)> {
+    cv_core::plain::CAUSES.iter().find_map(|cause| text.strip_suffix(cause).and_then(|head| head.strip_suffix(' ')).filter(|head| !head.trim().is_empty()).map(|head| (head, *cause)))
+}
+
+/// `text`, then the technical text on a «Detaljer: …» line of its own (left out when empty).
+pub fn details(text: &str, technical: &str) -> String {
+    let technical = technical.trim();
+    if technical.is_empty() { text.to_string() } else { format!("{text}\n{}", tf("Detaljer: {detail}", &[("detail", technical)])) }
+}
+
+/// A failed read or save in plain words: `what` happened (already translated), why, and the
+/// technical text on a «Detaljer» line. `otherwise` says what to try when the cause is unknown
+/// ([`cv_core::plain::TRY_ANOTHER_FILE`] or [`cv_core::plain::TRY_ANOTHER_PLACE`]).
+pub fn failed(what: &str, technical: &str, otherwise: &'static str) -> String {
+    let why = cv_core::plain::file_cause(technical).unwrap_or(otherwise);
+    details(&format!("{what} {}", tdyn(why)), technical)
+}
+
+/// Several cv-core messages, one per line, each translated on its own; a «Detaljer» line stays last.
+pub fn tdyn_lines(text: &str) -> String {
+    let (main, technical) = cv_core::plain::split(text);
+    let main = main.lines().map(tdyn).collect::<Vec<_>>().join("\n");
+    details(&main, technical.unwrap_or_default())
+}
+
+/// The first line of a message, for the one-line status bar; the rest goes in its tooltip.
+pub fn first_line(text: &str) -> &str {
+    text.split('\n').next().unwrap_or(text)
 }
 
 /// The interface text for a Norwegian string: itself, its English entry, or the pack's text
@@ -460,11 +495,17 @@ fn fill(template: &str, args: &[(&str, &str)]) -> String {
 
 /// Text produced by cv-core (and cv-ai / cv-mcp) while the app runs, in the interface language.
 /// Unknown text is shown as it is.
+/// A «Detaljer: …» line ([`cv_core::plain::DETAILS`]) keeps its technical text as it is.
 pub fn tdyn(text: &str) -> String {
-    match get() {
-        Lang::No => text.to_string(),
-        Lang::En => english(text).unwrap_or_else(|| text.to_string()),
-        Lang::Pack => dyn_text(pack_table(), text),
+    let (main, technical) = cv_core::plain::split(text);
+    let main = match get() {
+        Lang::No => main.to_string(),
+        Lang::En => english(main).unwrap_or_else(|| main.to_string()),
+        Lang::Pack => dyn_text(pack_table(), main),
+    };
+    match technical {
+        Some(t) => details(&main, t),
+        None => main,
     }
 }
 
@@ -475,6 +516,11 @@ fn english(text: &str) -> Option<String> {
     }
     if let Some(en) = lookup(text) {
         return Some(en.to_string());
+    }
+    if let Some((head, cause)) = with_cause(text) {
+        if let (Some(head), Some(cause)) = (english(head), lookup(cause)) {
+            return Some(format!("{head} {cause}"));
+        }
     }
     RULES.iter().find_map(|r| r.re.captures(text).map(|c| (r.english)(&c)))
 }
@@ -575,9 +621,6 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         rule(r"^«\.(\w+)» kan ikke leses\. Bruk PDF, Word \(\.docx eller \.doc\), OpenDocument \(\.odt\), RTF, tekst \(\.txt/\.md\) eller en nettside \(\.html\)\.$", |c| {
             format!("«.{}» cannot be read. Use PDF, Word (.docx or .doc), OpenDocument (.odt), RTF, text (.txt/.md) or a web page (.html).", &c[1])
         }).t("«.{a}» kan ikke leses. Bruk PDF, Word (.docx eller .doc), OpenDocument (.odt), RTF, tekst (.txt/.md) eller en nettside (.html).", "«.{a}» cannot be read. Use PDF, Word (.docx or .doc), OpenDocument (.odt), RTF, text (.txt/.md) or a web page (.html)."),
-        rule(r"^Den eldre Word-filen \(\.doc\) kunne ikke leses: (.+)\. Åpne den i Word og lagre den som \.docx\.$", |c| {
-            format!("The older Word file (.doc) could not be read: {}. Open it in Word and save it as .docx.", &c[1])
-        }).t("Den eldre Word-filen (.doc) kunne ikke leses: {a}. Åpne den i Word og lagre den som .docx.", "The older Word file (.doc) could not be read: {a}. Open it in Word and save it as .docx."),
         rule(r"^(RTF-filen|Nettarkivet \(\.mht\)|OpenDocument-filen) kunne ikke leses(?:: (.+))?\. Lagre den som Word \(\.docx\) eller PDF og prøv igjen\.$", |c| {
             let what = match &c[1] {
                 "RTF-filen" => "The RTF file",
@@ -593,7 +636,6 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         rule(r"Punkt (\d+): skriv ordet CV-en skal \(eller ikke skal\) nevne\.", |c| format!("Point {}: write the word the CV should (or should not) mention.", &c[1])).t("Punkt {a}: skriv ordet CV-en skal (eller ikke skal) nevne.", "Point {a}: write the word the CV should (or should not) mention."),
         rule(r"Punkt (\d+): antall sider må være et tall fra 1 til 10\.", |c| format!("Point {}: the number of pages must be from 1 to 10.", &c[1])).t("Punkt {a}: antall sider må være et tall fra 1 til 10.", "Point {a}: the number of pages must be from 1 to 10."),
         rule(r"Punkt (\d+): feltet må være ett av (.+)\.", |c| format!("Point {}: the field must be one of {}.", &c[1], &c[2])).t("Punkt {a}: feltet må være ett av {b}.", "Point {a}: the field must be one of {b}."),
-        rule(r"Filen er ikke en CVBuilder-sjekkliste: (.*)", |c| format!("The file is not a CVBuilder checklist: {}", &c[1])).t("Filen er ikke en CVBuilder-sjekkliste: {a}", "The file is not a CVBuilder checklist: {a}"),
         // ---- cv-core: release check ----
         rule(r"(.+) må fylles ut\.", |c| format!("{} is required.", word(&c[1]))).t("{a} må fylles ut.", "{a} is required."),
         rule(r"(Jobb \d+(?: \(.*\))?|Utdanning \d+): (.+)", |c| format!("{}: {}", item_name(&c[1]), word(&c[2]))),
@@ -628,7 +670,6 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         rule(r"Basert på temaet «(.+)» i RenderCV \(MIT-lisens\), © Sina Atalay og bidragsyterne", |c| {
             format!("Based on the “{}” theme in RenderCV (MIT license), © Sina Atalay and contributors", &c[1])
         }).t("Basert på temaet «{a}» i RenderCV (MIT-lisens), © Sina Atalay og bidragsyterne", "Based on the “{a}” theme in RenderCV (MIT license), © Sina Atalay and contributors"),
-        rule(r"Filen er ikke en CVBuilder-design: (.*)", |c| format!("The file is not a CVBuilder design: {}", &c[1])).t("Filen er ikke en CVBuilder-design: {a}", "The file is not a CVBuilder design: {a}"),
         rule(r"«format» må være «(.+)»\.", |c| format!("“format” must be “{}”.", &c[1])).t("«format» må være «{a}».", "“format” must be “{a}”."),
         rule(r"«id» «(.+)» brukes allerede av et innebygd design\. Velg en annen id\.", |c| format!("“id” “{}” is already used by a built-in design. Choose another id.", &c[1])).t("«id» «{a}» brukes allerede av et innebygd design. Velg en annen id.", "“id” “{a}” is already used by a built-in design. Choose another id."),
         rule(r"«(\w+)»: «(.+)» er ikke en av de tillatte skriftene \((.+)\)\.", |c| format!("“{}”: “{}” is not one of the allowed fonts ({}).", &c[1], &c[2], &c[3])).t("«{a}»: «{b}» er ikke en av de tillatte skriftene ({c}).", "“{a}”: “{b}” is not one of the allowed fonts ({c})."),
@@ -639,13 +680,6 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         rule(r"«columns\.sections»: «(.+)» er ikke en seksjon\.", |c| format!("“columns.sections”: “{}” is not a section.", &c[1])).t("«columns.sections»: «{a}» er ikke en seksjon.", "“columns.sections”: “{a}” is not a section."),
         rule(r"«(\w+)» må være en farge som «#2F4A66»\.", |c| format!("“{}” must be a color like “#2F4A66”.", &c[1])).t("«{a}» må være en farge som «#2F4A66».", "“{a}” must be a color like “#2F4A66”."),
         // ---- cv-core: import ----
-        rule(r"Filen kunne ikke leses: (.*)", |c| format!("The file could not be read: {}", &c[1])).t("Filen kunne ikke leses: {a}", "The file could not be read: {a}"),
-        rule(r"Word-filen kunne ikke leses: (.*)", |c| format!("The Word file could not be read: {}", &c[1])).t("Word-filen kunne ikke leses: {a}", "The Word file could not be read: {a}"),
-        rule(r"PDF-en kunne ikke leses: (.*)", |c| format!("The PDF could not be read: {}", &c[1])).t("PDF-en kunne ikke leses: {a}", "The PDF could not be read: {a}"),
-        rule(r"«\.(.*)» kan ikke leses\. Bruk PDF, Word \(\.docx\), tekst \(\.txt/\.md\) eller en nettside \(\.html\)\.", |c| {
-            format!("“.{}” cannot be read. Use PDF, Word (.docx), text (.txt/.md) or a web page (.html).", &c[1])
-        }).t("«.{a}» kan ikke leses. Bruk PDF, Word (.docx), tekst (.txt/.md) eller en nettside (.html).", "“.{a}” cannot be read. Use PDF, Word (.docx), text (.txt/.md) or a web page (.html)."),
-        rule(r"^Claude Code stoppet: (.+)$", |c| format!("Claude Code stopped: {}", &c[1])).t("Claude Code stoppet: {a}", "Claude Code stopped: {a}"),
         rule(r"(Annonsen er lagt inn\.|Fra annonsen: .+?\.)(?: (\d+) fagord står allerede i CV-en din og er lagt til i kompetanse: (.+)\.)?", |c| {
             static COUNT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(\d+) fagord$").expect("i18n pattern"));
             let head = match c[1].strip_prefix("Fra annonsen: ").and_then(|s| s.strip_suffix('.')) {
@@ -671,7 +705,8 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         rule(r"Fikk ikke kontakt med (.+)\. Sjekk internettforbindelsen\.", |c| format!("Could not reach {}. Check your internet connection.", &c[1])).t("Fikk ikke kontakt med {a}. Sjekk internettforbindelsen.", "Could not reach {a}. Check your internet connection."),
         rule(r"(.+) er opptatt eller har nådd en grense\. Vent litt og prøv igjen\.", |c| format!("{} is busy or has reached a limit. Wait a moment and try again.", &c[1])).t("{a} er opptatt eller har nådd en grense. Vent litt og prøv igjen.", "{a} is busy or has reached a limit. Wait a moment and try again."),
         rule(r"(.+) avslo forespørselen\. Prøv en annen formulering eller en annen tjeneste\.", |c| format!("{} refused the request. Try different wording or another service.", &c[1])).t("{a} avslo forespørselen. Prøv en annen formulering eller en annen tjeneste.", "{a} refused the request. Try different wording or another service."),
-        rule(r"(.+) svarte, men ikke i formatet CVBuilder trenger\. Prøv igjen\.", |c| format!("{} answered, but not in the format CVBuilder needs. Try again.", &c[1])).t("{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.", "{a} answered, but not in the format CVBuilder needs. Try again."),
+        rule(r"(.+) svarte med en feil\. Prøv igjen om litt, eller velg en annen modell\.", |c| format!("{} answered with an error. Try again in a moment, or choose another model.", &c[1])).t("{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.", "{a} answered with an error. Try again in a moment, or choose another model."),
+        rule(r"(.+) svarte, men ikke i formatet CVBuilder trenger\. Prøv igjen\.", |c|format!("{} answered, but not in the format CVBuilder needs. Try again.", &c[1])).t("{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.", "{a} answered, but not in the format CVBuilder needs. Try again."),
         rule(r"([^:]+): fikk ikke kontakt med (.+)\. Kjører Ollama, LM Studio eller serveren din\?", |c| {
             format!("{}: could not reach {}. Is Ollama, LM Studio or your server running?", &c[1], &c[2])
         }).t("{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?", "{a}: could not reach {b}. Is Ollama, LM Studio or your server running?"),
@@ -694,6 +729,28 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
 
 /// The interface: every Norwegian string the app passes to [`t`] or [`tf`], with its English.
 static EN: &[(&str, &str)] = &[
+    // ---- errors in plain words: what happened and what to do; the technical text on a «Detaljer» line ----
+    ("Detaljer: {detail}", "Details: {detail}"),
+    ("Utkastet ble ikke lagret.", "The draft was not saved."),
+    ("Filen ble ikke lagret.", "The file was not saved."),
+    ("Portrettet ble ikke lagt inn.", "The portrait was not added."),
+    ("«{file}» er ikke et CVBuilder-utkast. Her åpner du utkast lagret med «Lagre som fil»; en CV i PDF eller Word henter du inn med «Importer CV».", "“{file}” is not a CVBuilder draft. Here you open drafts saved with “Save as file”; bring in a CV in PDF or Word with “Import CV”."),
+    ("Bildet kunne ikke åpnes.", "The picture could not be opened."),
+    ("Velg et bilde i JPG eller PNG.", "Choose a picture in JPG or PNG."),
+    ("Sjekklisten din kunne ikke brukes.", "Your checklist could not be used."),
+    ("Sjekklisten ble ikke lagret.", "The checklist was not saved."),
+    ("Designet er gyldig, men ble ikke lagret.", "The design is valid, but it was not saved."),
+    ("Mal-filen ble ikke lagret.", "The template file was not saved."),
+    ("De faste svarene på denne maskinen kunne ikke leses og er lagt til side. Skriv dem inn på nytt.", "The ready answers on this computer could not be read and have been set aside. Type them in again."),
+    ("De faste svarene ble ikke lagret.", "The ready answers were not saved."),
+    ("Filen er ikke en CVBuilder-språkfil, eller den er skadet. Velg en fil som slutter på .cvlang.json, eller lag en ny fra malen.", "The file is not a CVBuilder language file, or it is damaged. Choose a file whose name ends in .cvlang.json, or make a new one from the template."),
+    ("AI-en svarte, men ikke i formatet CVBuilder trenger. Prøv igjen, eller velg en annen modell.", "The AI answered, but not in the format CVBuilder needs. Try again, or choose another model."),
+    ("Språkfilen ble ikke lagret.", "The language file was not saved."),
+    ("Språkfilen ble ikke slettet.", "The language file was not deleted."),
+    ("Oversettelsen til {name} ble ikke ferdig. {why}", "The translation into {name} was not finished. {why}"),
+    ("Filen kunne ikke lages eller leses tilbake. {why}", "The file could not be made or read back. {why}"),
+    ("Prøv igjen", "Try again"),
+    ("Spør GitHub på nytt om den nyeste versjonen", "Ask GitHub again for the newest version"),
     // ---- lib.rs: window, status bar, checklist, dialogs ----
     ("Dette er et eksempel. Velg «Ny CV» for å starte på din egen, eller skriv rett inn i eksemplet.", "This is an example. Choose “New CV” to start your own, or type straight into the example."),
     ("Velkommen tilbake. Utkastet ditt er hentet fra denne maskinen.", "Welcome back. Your draft was restored from this computer."),
@@ -708,12 +765,9 @@ static EN: &[(&str, &str)] = &[
     ("CVBuilder-design", "CVBuilder design"),
     ("Bilde", "Photo"),
     ("Utkastet er åpnet. Bekreft opplysningene når du laster ned.", "The draft is open. Confirm the details when you download."),
-    ("«{file}» kunne ikke åpnes. Her åpner du bare .json-utkast lagret med «Lagre som fil».", "“{file}” could not be opened. Only .json drafts saved with “Save as” can be opened here."),
     ("Utkastet er lagret i {path}. Filen inneholder dine personopplysninger.", "The draft is saved in {path}. The file contains your personal data."),
-    ("Kunne ikke lagre: {e}", "Could not save: {e}"),
     ("Word-filen er lagret: {path}. Åpne den og se over sidebrytingen før du sender den.", "The Word file is saved: {path}. Open it and check the page breaks before you send it."),
     ("PDF-en er lagret med ekte, søkbar tekst: {path}", "The PDF is saved with real, searchable text: {path}"),
-    ("Kunne ikke lagre filen: {e}", "Could not save the file: {e}"),
     ("CV-teksten er kopiert. Lim den inn der søknadsportalen ber om CV som tekst.", "The CV text is copied. Paste it where the application portal asks for your CV as text."),
     ("Skjul (vis igjen fra «Vis:» øverst)", "Hide (show it again from “View” at the top)"),
     ("Angre", "Undo"),
@@ -797,7 +851,6 @@ static EN: &[(&str, &str)] = &[
     ("Tilbakestill", "Reset"),
     ("Bruk bildet", "Use photo"),
     ("Portrettet er lagt inn.", "The portrait has been added."),
-    ("Bildet kunne ikke lagres: {e}", "The photo could not be saved: {e}"),
     ("Alle visningene er skjult", "All views are hidden"),
     ("Velg hva du vil se under «Vis:» øverst.", "Choose what to see under “View” at the top."),
     ("Vis alt", "Show all"),
@@ -829,7 +882,6 @@ static EN: &[(&str, &str)] = &[
     ("Et sidefelt (valgfritt): side, bredde, farger og hvilke deler som står der. Utelat det for én spalte, som leses sikrest av ATS. Se DESIGN-FORMAT.md.", "A sidebar (optional): side, width, colours and which sections go there. Leave it out for one column, which an ATS reads most reliably. See DESIGN-FORMAT.md."),
     ("Spør GitHub om det finnes en nyere versjon. Ingenting lastes ned av seg selv.", "Asks GitHub whether there is a newer version. Nothing is downloaded by itself."),
     ("Ser etter oppdateringer …", "Checking for updates …"),
-    ("Fikk ikke sjekket: {error}", "Could not check: {error}"),
     ("Åpne nedlastingssiden", "Open the download page"),
     ("CVBuilder {new} er ute. Du har {old}.", "CVBuilder {new} is out. You have {old}."),
     ("Du har den nyeste versjonen ({version}).", "You have the newest version ({version})."),
@@ -1268,8 +1320,6 @@ static EN: &[(&str, &str)] = &[
     ("Høyst antall sider", "At most this many pages"),
     ("Jeg krysser av selv", "I tick it myself"),
     ("Kryss av når du har gjort dette. Avkrysningen lagres med denne CV-en.", "Tick this when you have done it. The tick is saved with this CV."),
-    ("Kunne ikke lagre sjekklisten: {error}", "Could not save the checklist: {error}"),
-    ("Sjekklisten din kunne ikke leses: {error}", "Your checklist could not be read: {error}"),
     ("Listen har så mange punkter som den kan ha", "The list has as many points as it can have"),
     ("Lag en egen sjekkliste først", "Make a checklist of your own first"),
     ("Lagre sjekklisten din som fil, for å dele den eller ta vare på den", "Save your checklist as a file, to share it or keep it"),
@@ -1452,12 +1502,9 @@ static EN: &[(&str, &str)] = &[
     ("To spalter", "Two columns"),
     ("Importer eget design …", "Import your own design …"),
     ("Lagre dette designet som mal-fil …", "Save this design as a template file …"),
-    ("Filen kunne ikke leses: {e}", "The file could not be read: {e}"),
     ("«{name}» er importert og valgt. Den ligger under «Dine designs».", "“{name}” is imported and selected. You'll find it under “Your designs”."),
-    ("Designet er gyldig, men kunne ikke lagres: {e}", "The design is valid, but could not be saved: {e}"),
     ("Kunne ikke importere «{file}»:\n{e}", "Could not import “{file}”:\n{e}"),
     ("Mal-filen er lagret: {path}. Endre den og importer den igjen.", "The template file is saved: {path}. Edit it and import it again."),
-    ("Kunne ikke lagre mal-filen: {e}", "Could not save the template file: {e}"),
     ("Importer eget design", "Import your own design"),
     ("Et design bestemmer skrift, størrelser, farger, toppfelt og overskrifter, og eventuelt et sidefelt. Teksten og rekkefølgen er lik i alle design. Én spalte leses sikrest av søknadssystemer (ATS).", "A design sets the fonts, sizes, colours, header and headings, and optionally a sidebar. The text and its order are the same in every design. One column is read most reliably by applicant tracking systems (ATS)."),
     ("Filformat: .cvdesign.json", "File format: .cvdesign.json"),
@@ -1507,7 +1554,6 @@ static EN: &[(&str, &str)] = &[
     ("Gi seksjonen sin egen farge", "Give the section its own color"),
     // ---- import_ui.rs: importing a CV or a job ad ----
     ("CV-en er hentet inn. Den forrige kan hentes tilbake med Angre.", "The CV has been imported. The previous one can be brought back with Undo."),
-    ("JSON-filen er ikke et CVBuilder-utkast.", "The JSON file is not a CVBuilder draft."),
     ("Leser CV-en …", "Reading the CV …"),
     ("Leser annonsen …", "Reading the ad …"),
     ("Lim inn lenken til annonsen i feltet over først.", "Paste the link to the ad in the field above first."),
@@ -1555,7 +1601,6 @@ static EN: &[(&str, &str)] = &[
         "Add these parts of my CV (jobs with dates and bullet points, education, courses and the rest). Use only what is here and keep all numbers:\n\n---\n{cut}",
     ),
     // ---- photo.rs, theme.rs ----
-    ("Bildet kunne ikke åpnes: {e}", "The photo could not be opened: {e}"),
     ("Bildet er for stort. Velg et mindre bilde.", "The photo is too large. Choose a smaller one."),
     // ---- tooltips (every control explains itself on hover; see tooltips.rs) ----
     // menu_ui.rs
@@ -1801,12 +1846,9 @@ static EN: &[(&str, &str)] = &[
     ("Slett språkfilen. Menyene går tilbake til «Følg systemet».", "Delete the language file. The menus go back to “Follow the system”."),
     ("Koble til en AI først, eller eksporter malen og oversett den selv.", "Connect an AI first, or export the template and translate it yourself."),
     ("Oversettelsen stoppet uventet.", "The translation stopped unexpectedly."),
-    ("AI-en svarte ikke med JSON.", "The AI did not answer with JSON."),
     ("Stoppet. {n} tekster ble oversatt til {name} og er lagret.", "Stopped. {n} texts were translated into {name} and have been saved."),
     ("{name} er klart: {n} tekster ble oversatt.", "{name} is ready: {n} texts were translated."),
     ("{n} tekster ble ikke oversatt og vises som før, eller på engelsk.", "{n} texts were not translated and are shown as before, or in English."),
-    ("Kunne ikke lagre språkfilen: {e}", "Could not save the language file: {e}"),
-    ("Oversettelsen til {name} feilet: {e}", "The translation into {name} failed: {e}"),
     ("Legg til språk", "Add language"),
     (
         "AI-en oversetter alle de {n} tekstene i CVBuilder til språket du velger. Det tar noen minutter, og du kan bruke programmet imens.",
@@ -1843,18 +1885,15 @@ static EN: &[(&str, &str)] = &[
     ("{name} er lagret.", "{name} has been saved."),
     ("{n} tekster hadde feil plassholdere og vises på engelsk.", "{n} texts had wrong placeholders and are shown in English."),
     ("{name} er slettet.", "{name} has been deleted."),
-    ("Kunne ikke slette språkfilen: {e}", "Could not delete the language file: {e}"),
     ("CVBuilder-språkfil", "CVBuilder language file"),
     (
         "Malen er lagret: {path}. Oversett verdiene, fyll inn «code» og «name», og importer filen.",
         "The template is saved: {path}. Translate the values, fill in “code” and “name”, and import the file.",
     ),
     ("Språket er lagret: {path}", "The language is saved: {path}"),
-    ("Kunne ikke lese filen: {e}", "Could not read the file: {e}"),
     ("{name} er importert med {n} tekster.", "{name} has been imported with {n} texts."),
     ("{n} tekster var tomme eller hadde feil plassholdere og vises på engelsk.", "{n} texts were empty or had wrong placeholders and are shown in English."),
     ("{n} tekster finnes ikke i denne versjonen av CVBuilder og ble hoppet over.", "{n} texts do not exist in this version of CVBuilder and were skipped."),
-    ("Filen er ikke gyldig JSON: {e}", "The file is not valid JSON: {e}"),
     ("Filen er ikke en CVBuilder-språkfil (feltet «format» må være «{format}»).", "The file is not a CVBuilder language file (the “format” field must be “{format}”)."),
     ("Fyll inn språkets navn i feltet «name».", "Fill in the language's name in the “name” field."),
     ("Fyll inn språkkoden i feltet «code», for eksempel de eller pt-BR.", "Fill in the language code in the “code” field, for example de or pt-BR."),
@@ -1880,7 +1919,6 @@ static EN: &[(&str, &str)] = &[
     ("Les Word-filen tilbake", "Read the Word file back"),
     ("Lager filen slik den lastes ned, og leser den som et ATS", "Makes the file as it is downloaded, and reads it like an ATS"),
     ("Leser filen tilbake …", "Reading the file back …"),
-    ("Filen kunne ikke lages eller leses: {error}", "The file could not be made or read: {error}"),
     ("{same} av {all} felt ble lest som i CV-en.", "{same} of {all} fields were read as in the CV."),
     ("{field}: «{expected}»", "{field}: “{expected}”"),
     ("{field}: «{expected}» ble lest som «{read}»", "{field}: “{expected}” was read as “{read}”"),
@@ -1915,12 +1953,41 @@ static EN: &[(&str, &str)] = &[
     ("Behold svarene", "Keep the answers"),
     ("Annonsen nevner «{what}». Svaret ditt: {answer}", "The ad mentions “{what}”. Your answer: {answer}"),
     ("Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.", "The ad mentions “{what}”, but you have not written an answer yet."),
-    ("De faste svarene kunne ikke leses: {error}", "The ready answers could not be read: {error}"),
-    ("De faste svarene kunne ikke lagres: {error}", "The ready answers could not be saved: {error}"),
 ];
 
 /// Fixed text that cv-core, cv-ai and cv-mcp produce, with its English.
 static DYN: &[(&str, &str)] = &[
+    // ---- cv-core: plain causes for failed files and connections (plain.rs) ----
+    ("CVBuilder har ikke tilgang til filen eller mappen. Velg en annen mappe, for eksempel Dokumenter.", "CVBuilder has no access to the file or folder. Choose another folder, for example Documents."),
+    ("Filen er åpen i et annet program. Lukk den der og prøv igjen.", "The file is open in another program. Close it there and try again."),
+    ("Filen eller mappen finnes ikke lenger. Den kan være flyttet eller slettet.", "The file or folder is no longer there. It may have been moved or deleted."),
+    ("Det er ikke nok plass på disken. Frigjør litt plass, eller lagre et annet sted.", "There is not enough space on the disk. Free up some space, or save somewhere else."),
+    ("Det går ikke an å lagre her. Velg et annet sted.", "Files cannot be saved here. Choose another place."),
+    ("Filnavnet er for langt eller har tegn som ikke er tillatt. Velg et kortere navn.", "The file name is too long or has characters that are not allowed. Choose a shorter name."),
+    ("Innholdet er ikke slik CVBuilder venter. Filen kan være skadet eller laget for noe annet.", "The content is not what CVBuilder expects. The file may be damaged or made for something else."),
+    ("Fikk ikke kontakt over internett. Sjekk internettforbindelsen og prøv igjen.", "Could not connect over the internet. Check your internet connection and try again."),
+    ("Det tok for lang tid å få svar. Sjekk internettforbindelsen og prøv igjen.", "It took too long to get an answer. Check your internet connection and try again."),
+    ("Prøv igjen, eller velg en annen fil.", "Try again, or choose another file."),
+    ("Prøv igjen, eller lagre et annet sted.", "Try again, or save somewhere else."),
+    ("Prøv igjen. Hjelper det ikke, start CVBuilder på nytt.", "Try again. If that does not help, restart CVBuilder."),
+    ("Filen kunne ikke leses.", "The file could not be read."),
+    (
+        "Filen er ikke en CVBuilder-sjekkliste, eller den er skadet. Velg en fil som slutter på .cvchecklist.json.",
+        "The file is not a CVBuilder checklist, or it is damaged. Choose a file whose name ends in .cvchecklist.json.",
+    ),
+    ("Filen er ikke en CVBuilder-design, eller den har en feil. Sammenlign den med mal-filen.", "The file is not a CVBuilder design, or it has a mistake. Compare it with the template file."),
+    // ---- cv-ai: Claude Code and the update check ----
+    (
+        "Claude Code stoppet med en feil. Prøv igjen. Hjelper det ikke, åpne en terminal og kjør «claude» for å se hva som er galt.",
+        "Claude Code stopped with an error. Try again. If that does not help, open a terminal and run “claude” to see what is wrong.",
+    ),
+    ("Fikk ikke kontakt med GitHub. Sjekk internettforbindelsen og prøv igjen.", "Could not reach GitHub. Check your internet connection and try again."),
+    ("GitHub kunne ikke nås akkurat nå. Det går som regel fort over – prøv igjen om noen minutter.", "GitHub cannot be reached just now. This usually passes quickly – try again in a few minutes."),
+    (
+        "GitHub har fått mange spørsmål fra denne maskinen og svarer ikke en stund. Prøv igjen om en time, eller åpne nedlastingssiden.",
+        "GitHub has had many requests from this computer and will not answer for a while. Try again in an hour, or open the download page.",
+    ),
+    ("GitHub svarte, men uten en versjon CVBuilder kan lese. Åpne nedlastingssiden for å se den nyeste versjonen.", "GitHub answered, but without a version CVBuilder can read. Open the download page to see the newest version."),
     // ---- names from cv-core and cv-ai ----
     ("Klassisk", "Classic"),
     ("Moderne", "Modern"),
@@ -2317,11 +2384,39 @@ mod tests {
     fn names_and_notes_from_other_crates_have_english() {
         assert_eq!(super::english("Klassisk").as_deref(), Some("Classic"));
         assert_eq!(super::english("Lokal modell").as_deref(), Some("Local model"));
-        assert_eq!(super::english("Claude Code stoppet: rate limit").as_deref(), Some("Claude Code stopped: rate limit"));
+        assert!(super::english("Claude Code stoppet med en feil. Prøv igjen. Hjelper det ikke, åpne en terminal og kjør «claude» for å se hva som er galt.").is_some());
         // Every built-in design's name has English.
         for d in cv_core::layouts::all().iter().filter(|d| !d.id.contains('-')) {
             assert!(super::english(&d.name).is_some(), "{}", d.name);
         }
+    }
+
+    #[test]
+    fn errors_are_plain_words_with_details() {
+        use super::*;
+        // English: the message and its cause each translated, the technical text kept as it is.
+        set(Lang::En);
+        let raw = "Filen kunne ikke leses. Filen er åpen i et annet program. Lukk den der og prøv igjen.\nDetaljer: The process cannot access the file (os error 32)";
+        assert_eq!(tdyn(raw), "The file could not be read. The file is open in another program. Close it there and try again.\nDetails: The process cannot access the file (os error 32)");
+        assert_eq!(tdyn("ChatGPT svarte med en feil. Prøv igjen om litt, eller velg en annen modell.\nDetaljer: HTTP 500"), "ChatGPT answered with an error. Try again in a moment, or choose another model.\nDetails: HTTP 500");
+        // The app's own failures: what happened, why in plain words, then the details.
+        let saved = failed(t("Utkastet ble ikke lagret."), "Access is denied. (os error 5)", cv_core::plain::TRY_ANOTHER_PLACE);
+        assert!(saved.starts_with("The draft was not saved. "), "{saved}");
+        assert!(saved.ends_with("\nDetails: Access is denied. (os error 5)"), "{saved}");
+        assert_eq!(first_line(&saved), saved.split('\n').next().unwrap_or_default());
+        assert!(!first_line(&saved).contains("os error"));
+        let unknown = failed(t("Filen ble ikke lagret."), "something odd", cv_core::plain::TRY_ANOTHER_PLACE);
+        assert_eq!(unknown, "The file was not saved. Try again, or save somewhere else.\nDetails: something odd");
+        // Every cause and every update-check message has English.
+        for text in cv_core::plain::CAUSES.iter().chain(&[cv_ai::updates::OFFLINE, cv_ai::updates::DOWN, cv_ai::updates::LIMITED, cv_ai::updates::UNCLEAR]) {
+            assert!(english(text).is_some(), "{text}");
+        }
+        // A language pack translates the parts it knows.
+        let mut strings = BTreeMap::new();
+        strings.insert("Filen kunne ikke leses.".to_string(), "Die Datei konnte nicht gelesen werden.".to_string());
+        strings.insert("Detaljer: {detail}".to_string(), "Einzelheiten: {detail}".to_string());
+        let table = leak_table(&Pack { code: "de".into(), name: "Deutsch".into(), made_by: "test".into(), strings });
+        assert_eq!(dyn_text(Some(&table), "Filen kunne ikke leses. Prøv igjen, eller velg en annen fil."), "Die Datei konnte nicht gelesen werden. Try again, or choose another file.");
     }
 
     #[test]
@@ -2466,8 +2561,10 @@ mod tests {
     fn cv_core_messages_have_english() {
         set(Lang::En);
         let mut missing = Vec::new();
+        // A «Detaljer» line is the technical text, shown as it is.
         let mut check = |text: &str| {
-            if !translated(text) {
+            let (main, _) = cv_core::plain::split(text);
+            if !main.starts_with(cv_core::plain::DETAILS) && !translated(main) {
                 missing.push(text.to_string());
             }
         };
@@ -2562,7 +2659,7 @@ mod tests {
     fn german() -> Pack {
         let mut strings = BTreeMap::new();
         strings.insert("Angre".to_string(), "Rückgängig".to_string());
-        strings.insert("Kunne ikke lagre: {e}".to_string(), "Konnte nicht speichern: {e}".to_string());
+        strings.insert("Detaljer: {detail}".to_string(), "Einzelheiten: {detail}".to_string());
         strings.insert("Navn".to_string(), "Name (DE)".to_string());
         Pack { code: "de".into(), name: "Deutsch".into(), made_by: "AI (test)".into(), strings }
     }
@@ -2590,8 +2687,8 @@ mod tests {
     fn bad_entries_are_dropped_and_counted() {
         let text = r#"{"format": "cvbuilder-language/1", "code": "pl", "name": "Polski", "strings": {
             "Angre": "Cofnij",
-            "Kunne ikke lagre: {e}": "Nie udało się zapisać",
-            "«{file}» kunne ikke åpnes. Her åpner du bare .json-utkast lagret med «Lagre som fil».": "{plik} {file}",
+            "Detaljer: {detail}": "Szczegóły",
+            "«{file}» er ikke et CVBuilder-utkast. Her åpner du utkast lagret med «Lagre som fil»; en CV i PDF eller Word henter du inn med «Importer CV».": "{plik} {file}",
             "Bilde": "   ",
             "Lukk": 3,
             "Finnes ikke i appen": "x"
@@ -2599,7 +2696,7 @@ mod tests {
         let checked = parse_pack(text).expect("parse");
         assert_eq!(checked.pack.strings.len(), 1);
         assert_eq!(checked.pack.strings["Angre"], "Cofnij");
-        // A lost {e}, an extra {plik}, blank text and a number are dropped; one key is unknown.
+        // A lost {detail}, an extra {plik}, blank text and a number are dropped; one key is unknown.
         assert_eq!(checked.dropped, 4);
         assert_eq!(checked.unknown, 1);
     }
@@ -2631,7 +2728,7 @@ mod tests {
         let table = leak_table(&german());
         let text: &'static str = ui_text(Some(&table), "Angre");
         assert_eq!(text, "Rückgängig");
-        assert_eq!(fill(ui_text(Some(&table), "Kunne ikke lagre: {e}"), &[("e", "Disk voll")]), "Konnte nicht speichern: Disk voll");
+        assert_eq!(fill(ui_text(Some(&table), "Detaljer: {detail}"), &[("detail", "os error 5")]), "Einzelheiten: os error 5");
         // Missing in the pack: English; unknown everywhere: the key itself.
         assert_eq!(ui_text(Some(&table), "Bilde"), "Photo");
         assert_eq!(ui_text(Some(&table), "Ingen slik tekst"), "Ingen slik tekst");

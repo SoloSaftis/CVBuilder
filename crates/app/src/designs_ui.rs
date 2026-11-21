@@ -139,7 +139,7 @@ impl CvApp {
 
     /// Reads a picked design file and keeps a copy in the data folder.
     pub(crate) fn import_design(&mut self, path: &std::path::Path) {
-        let result = std::fs::read_to_string(path).map_err(|e| i18n::tf("Filen kunne ikke leses: {e}", &[("e", &e.to_string())])).and_then(|t| layouts::parse(&t));
+        let result = std::fs::read_to_string(path).map_err(|e| cv_core::import::unreadable(&e)).and_then(|t| layouts::parse(&t));
         match result {
             Ok(d) => {
                 let dir = designs_dir();
@@ -154,13 +154,13 @@ impl CvApp {
                         self.designs.message_error = false;
                     }
                     Err(e) => {
-                        self.designs.message = i18n::tf("Designet er gyldig, men kunne ikke lagres: {e}", &[("e", &e.to_string())]);
+                        self.designs.message = i18n::failed(i18n::t("Designet er gyldig, men ble ikke lagret."), &e.to_string(), cv_core::plain::TRY_AGAIN);
                         self.designs.message_error = true;
                     }
                 }
             }
             Err(e) => {
-                let problems = e.lines().map(i18n::tdyn).collect::<Vec<_>>().join("\n");
+                let problems = i18n::tdyn_lines(&e);
                 self.designs.message = i18n::tf("Kunne ikke importere «{file}»:\n{e}", &[("file", &path.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default()), ("e", &problems)]);
                 self.designs.message_error = true;
             }
@@ -176,7 +176,7 @@ impl CvApp {
         }
         self.status = match std::fs::write(path, layouts::to_file(&d)) {
             Ok(()) => i18n::tf("Mal-filen er lagret: {path}. Endre den og importer den igjen.", &[("path", &path.display().to_string())]),
-            Err(e) => i18n::tf("Kunne ikke lagre mal-filen: {e}", &[("e", &e.to_string())]),
+            Err(e) => i18n::failed(i18n::t("Mal-filen ble ikke lagret."), &e.to_string(), cv_core::plain::TRY_ANOTHER_PLACE),
         };
     }
 

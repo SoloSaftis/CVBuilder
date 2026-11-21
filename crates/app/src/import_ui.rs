@@ -48,9 +48,9 @@ impl CvApp {
     /// A picked existing CV. CVBuilder files open as they are; other files are read as text.
     pub(crate) fn import_cv_file(&mut self, path: std::path::PathBuf) {
         if path.extension().is_some_and(|e| e.eq_ignore_ascii_case("json")) {
-            match std::fs::read_to_string(&path).map_err(|e| e.to_string()).and_then(|t| Project::from_json(&t).map_err(|e| e.to_string())) {
+            match crate::open_project(&path) {
                 Ok(p) => self.replace(p, false, i18n::t("CV-en er hentet inn. Den forrige kan hentes tilbake med Angre.")),
-                Err(_) => self.status = i18n::t("JSON-filen er ikke et CVBuilder-utkast.").into(),
+                Err(e) => self.status = e,
             }
             return;
         }
