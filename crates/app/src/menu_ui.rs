@@ -568,7 +568,7 @@ impl CvApp {
                 if tool(ui, theme::ph::PLUGS_CONNECTED, i18n::t("Koble til AI"), i18n::t("Claude, ChatGPT, Gemini, Grok eller en lokal modell"), true) {
                     *action = Some(Action::ConnectAi);
                 }
-                if tool(ui, theme::ph::PLUG, i18n::t("MCP for andre apper"), i18n::t("Bruk CVBuilder fra Claude Code, Claude Desktop m.fl."), true) {
+                if tool(ui, theme::ph::PLUG, i18n::t("Bruk fra andre AI-apper …"), i18n::t("Bruk CVBuilder fra Claude Code, Claude Desktop m.fl."), true) {
                     *action = Some(Action::Mcp);
                 }
             });
