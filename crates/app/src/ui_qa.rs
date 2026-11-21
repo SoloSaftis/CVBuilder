@@ -259,7 +259,14 @@ const SCENES: &[Scene] = &[
         name: "Oppdatering finnes",
         setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Ok(cv_ai::updates::Release { version: "9.9.9".into(), page: cv_ai::updates::RELEASES_PAGE.into() }))),
     },
-    Scene { name: "Sjekk feilet", setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Err("GitHub answered 503".into()))) },
+    Scene { name: "Sjekk feilet", setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Err(cv_ai::updates::failure(Some(503), "GitHub answered 503")))) },
+    // A save that failed: the plain message in the status bar, the technical text on hover.
+    Scene {
+        name: "Lagring feilet",
+        setup: |a| {
+            a.status = crate::i18n::failed(crate::i18n::t("Utkastet ble ikke lagret."), "Access is denied. (os error 5)", cv_core::plain::TRY_ANOTHER_PLACE);
+        },
+    },
     Scene {
         name: "Lagre før lukking",
         setup: |a| {

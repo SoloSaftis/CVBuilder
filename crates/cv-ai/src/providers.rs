@@ -142,6 +142,9 @@ pub enum AiFailure {
     Unreadable(&'static str),
     #[error("{0}: {1}")]
     Other(&'static str, String),
+    /// The service answered with an error of its own; its words go on the «Detaljer» line.
+    #[error("{0} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.\nDetaljer: {1}")]
+    Failed(&'static str, String),
 }
 
 /// Overridable addresses, so tests can point at a local server.
@@ -171,7 +174,7 @@ pub(crate) fn status_error(service: Service, status: u16, body: &str) -> AiFailu
         _ => {
             // Never echo a body that could contain the key; keep only the service's own message.
             let message = serde_json::from_str::<serde_json::Value>(body).ok().and_then(|v| v["error"]["message"].as_str().map(str::to_string)).unwrap_or_else(|| format!("HTTP {status}"));
-            AiFailure::Other(service.name(), message.chars().take(240).collect())
+            AiFailure::Failed(service.name(), message.chars().take(240).collect())
         }
     }
 }
@@ -224,7 +227,7 @@ fn openai_error(service: Service, error: &craft_ai_core::AiError) -> AiFailure {
         ErrorKind::Auth => AiFailure::BadKey,
         ErrorKind::RateLimited | ErrorKind::Quota => AiFailure::Busy(service.name()),
         ErrorKind::Network => AiFailure::Network(service.name()),
-        _ => AiFailure::Other(service.name(), error.message.chars().take(240).collect()),
+        _ => AiFailure::Failed(service.name(), error.message.chars().take(240).collect()),
     }
 }
 
@@ -236,8 +239,8 @@ pub fn complete(endpoint: &Endpoint, model: &str, system: &str, user: &str) -> R
     }
     let config = OpenAiConfig::new(endpoint.base_url.clone()).with_key(endpoint.key.clone());
     let provider = OpenAiProvider::new(config).map_err(|e| openai_error(service, &e))?;
-    let model_id = ModelId::new(model).map_err(|e| AiFailure::Other(service.name(), e.to_string()))?;
-    let capability = CapabilityId::parse("text.complete").map_err(|e| AiFailure::Other(service.name(), e.to_string()))?;
+    let model_id = ModelId::new(model).map_err(|e| AiFailure::Failed(service.name(), e.to_string()))?;
+    let capability = CapabilityId::parse("text.complete").map_err(|e| AiFailure::Failed(service.name(), e.to_string()))?;
     let request = Request::new(capability)
         .with_input(InputRole::System, Payload::text(system))
         .with_input(InputRole::Prompt, Payload::text(user))
