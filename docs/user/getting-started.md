@@ -52,6 +52,11 @@ The first time, the Mac may say Apple "could not verify" CVBuilder. See
    program. (In a terminal: `chmod +x CVBuilder-linux-x86_64.AppImage`.)
 3. Double-click it.
 
+The first time it starts, CVBuilder adds itself to your app menu (with its own icon
+in the dock). If you move the file, start it once from the new place and the menu entry
+follows. When you stop using the AppImage, delete it and
+`~/.local/share/applications/cvbuilder.desktop` to remove the entry.
+
 **Folder version**
 
 1. Download
