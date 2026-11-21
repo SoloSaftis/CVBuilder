@@ -149,6 +149,8 @@ struct CvApp {
     side: Side,
     /// Form sections the person has folded away.
     folded: HashSet<String>,
+    /// The job-ad card shown in full although the CV has no ad yet (it is one line until then).
+    ad_open: bool,
     views: Views,
     /// The CV as it was before its language was switched, shown under the fields to translate from.
     reference: Option<Project>,
@@ -216,6 +218,7 @@ impl CvApp {
             egui_ctx: cc.egui_ctx.clone(),
             side: Side::Chat,
             folded: ["certifications", "languages", "interests"].into_iter().map(String::from).collect(),
+            ad_open: false,
             views: Views::default(),
             reference: None,
             translate: None,
@@ -294,6 +297,8 @@ impl CvApp {
     fn load(&mut self, project: Project, example: bool) {
         self.project = project;
         self.is_example = example;
+        // A CV without an ad starts with the job-ad card as one line, and the name first.
+        self.ad_open = false;
         self.buffers.clear();
         self.bad_dates.clear();
         self.preview.changed();
