@@ -1,5 +1,6 @@
-//! «Innstillinger» under Fil: the app's own settings, set once and kept – menu language, theme,
-//! remembering the draft, the AI connection and where the data is. Plus the window that asks
+//! «Innstillinger» under Fil: the app's own settings, set once and kept, in four groups – the
+//! menu language (with the translators' tools folded away), how the window looks, saving, and
+//! the AI connection and where the data is. Plus the window that asks
 //! for a new section's name.
 use cv_core::model::{CustomItem, CustomSection};
 use egui::{CornerRadius, Margin, RichText};
@@ -8,7 +9,6 @@ use crate::i18n;
 use crate::theme::{self, Tokens};
 use crate::{CvApp, storage};
 
-/// The theme setting as egui's preference.
 /// The window's zoom for a text size in percent (kept within what the window can show).
 pub fn zoom(percent: u16) -> f32 {
     f32::from(percent.clamp(50, 300)) / 100.0
@@ -19,12 +19,23 @@ pub fn percent(zoom: f32) -> u16 {
     (zoom * 100.0).round().clamp(50.0, 300.0) as u16
 }
 
+/// The theme setting as egui's preference.
 pub fn theme_preference(value: &str) -> egui::ThemePreference {
     match value {
         "light" => egui::ThemePreference::Light,
         "dark" => egui::ThemePreference::Dark,
         _ => egui::ThemePreference::System,
     }
+}
+
+/// A group's heading in the settings window, with a line and some room above all but the first.
+fn group(ui: &mut egui::Ui, title: &str, first: bool) {
+    if !first {
+        ui.add_space(10.0);
+        ui.separator();
+        ui.add_space(4.0);
+    }
+    theme::section_title(ui, title);
 }
 
 impl CvApp {
@@ -41,14 +52,18 @@ impl CvApp {
             // Scrolls on a small screen, with «Lukk» always in view below.
             let height = (ui.ctx().content_rect().height() - 200.0).max(160.0);
             egui::ScrollArea::vertical().max_height(height).show(ui, |ui| {
-                theme::section_title(ui, i18n::t("Språk i menyene"));
+                // Four groups, the ones most people come for first: the menu language, how the
+                // window looks, saving, and the AI and data. The translators' tools are folded.
+                group(ui, i18n::t("Språk"), true);
                 theme::hint(ui, i18n::t("Språket i menyene og knappene. CV-ens eget språk velger du under Hjem."));
-                // The choices, added languages and their buttons: langpack_ui.rs.
+                // The choice and a running translation: langpack_ui.rs.
                 self.language_settings(ui);
-                ui.add_space(10.0);
+                ui.add_space(4.0);
+                self.language_tools(ui);
 
-                theme::section_title(ui, i18n::t("Tema"));
-                ui.horizontal(|ui| {
+                group(ui, i18n::t("Utseende"), false);
+                theme::label(ui, i18n::t("Tema"));
+                ui.horizontal_wrapped(|ui| {
                     for (value, name, tip) in [
                         ("system", i18n::t("Følg systemet"), i18n::t("Lyst eller mørkt, slik datamaskinen er innstilt")),
                         ("light", i18n::t("Lyst"), i18n::t("Lys bakgrunn")),
@@ -61,26 +76,37 @@ impl CvApp {
                         }
                     }
                 });
-                ui.add_space(10.0);
-
-                theme::section_title(ui, i18n::t("Tekststørrelse i vinduet"));
-                ui.horizontal(|ui| {
+                ui.add_space(6.0);
+                theme::label(ui, i18n::t("Tekststørrelse i vinduet"));
+                let size_tip = crate::shortcuts::keys(
+                    ui.ctx(),
+                    i18n::t("Gjør menyer, knapper og skjema større eller mindre. Ctrl + pluss og minus gjør det samme. Tekststørrelsen i selve CV-en velges under Sideoppsett."),
+                );
+                ui.horizontal_wrapped(|ui| {
                     for value in [90u16, 100, 125, 150] {
-                        let tip = crate::shortcuts::keys(ui.ctx(), i18n::t("Gjør menyer, knapper og skjema større eller mindre. Ctrl + pluss og minus gjør det samme. Tekststørrelsen i selve CV-en velges under Sideoppsett."));
-                        if ui.radio(self.settings.text_size == value, format!("{value} %")).on_hover_text(tip).clicked() && self.settings.text_size != value {
+                        if ui.radio(self.settings.text_size == value, format!("{value} %")).on_hover_text(&size_tip).clicked() && self.settings.text_size != value {
                             self.settings.text_size = value;
                             ctx.set_zoom_factor(zoom(value));
                             storage::save_settings(&self.settings);
                         }
                     }
                 });
-                ui.add_space(10.0);
+                theme::hint(ui, i18n::t("Gjelder menyene og skjemaet, ikke CV-en."));
 
-                theme::section_title(ui, i18n::t("Utkast"));
+                group(ui, i18n::t("Lagring"), false);
                 let mut remember = self.settings.remember;
                 if ui.checkbox(&mut remember, i18n::t("Husk utkastet på denne maskinen")).on_hover_text(i18n::t("Utkastet lagres her mens du skriver. Slå av på en delt maskin.")).changed() {
                     self.set_remember(remember);
                 }
+                theme::hint(
+                    ui,
+                    if self.settings.remember {
+                        i18n::t("CV-en er her neste gang du åpner CVBuilder, også om du ikke har lagret den som fil.")
+                    } else {
+                        i18n::t("Av: det du ikke har lagret som fil, er borte når du lukker CVBuilder.")
+                    },
+                );
+                ui.add_space(4.0);
                 if ui
                     .checkbox(&mut self.settings.autosave, i18n::t("Lagre automatisk hvert 5. minutt"))
                     .on_hover_text(i18n::t("Når CV-en er lagret som fil, lagres endringene i den filen hvert 5. minutt, som i Word."))
@@ -88,10 +114,11 @@ impl CvApp {
                 {
                     storage::save_settings(&self.settings);
                 }
-                ui.add_space(10.0);
+                theme::hint(ui, i18n::t("Gjelder når CV-en er lagret som fil."));
 
-                theme::section_title(ui, "AI");
-                ui.horizontal(|ui| {
+                group(ui, i18n::t("AI og data"), false);
+                theme::label(ui, "AI");
+                ui.horizontal_wrapped(|ui| {
                     let now = match self.chat_backend() {
                         Some(b) => i18n::tf("Tilkoblet: {name}", &[("name", &i18n::tdyn(&b.name()))]),
                         None => i18n::t("Ingen AI tilkoblet").to_string(),
@@ -103,9 +130,9 @@ impl CvApp {
                         close = true;
                     }
                 });
-                ui.add_space(10.0);
-
-                theme::section_title(ui, i18n::t("Data"));
+                theme::hint(ui, i18n::t("AI er valgfritt. Alt annet i CVBuilder virker uten."));
+                ui.add_space(6.0);
+                theme::label(ui, i18n::t("Hvor dataene ligger"));
                 egui::Frame::new().fill(t.hover).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin::same(10)).show(ui, |ui| {
                     ui.set_width(ui.available_width());
                     ui.label(if storage::portable() { i18n::t("Bærbar modus: alt lagres i mappen ved siden av programmet.") } else { i18n::t("Lagres i brukerens egen datamappe.") });

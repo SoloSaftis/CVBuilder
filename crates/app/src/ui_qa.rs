@@ -251,6 +251,15 @@ const SCENES: &[Scene] = &[
     },
     Scene { name: "Oversett-vinduet", setup: |a| a.open_translate(None) },
     Scene { name: "Innstillinger", setup: |a| a.settings_open = true },
+    // The translators' tools unfolded, and the draft not remembered (the hint about the risk).
+    Scene {
+        name: "Innstillinger med språkverktøy",
+        setup: |a| {
+            a.settings_open = true;
+            a.settings.remember = false;
+            a.langs.tools_open = true;
+        },
+    },
     Scene { name: "Ny seksjon", setup: |a| a.new_section = Some(String::new()) },
     Scene { name: "Sjekklisteredigering", setup: |a| a.checklist.editing = Some(cv_core::checklist::Checklist::starter()) },
     Scene { name: "Om CVBuilder", setup: |a| a.about_open = true },
@@ -714,6 +723,38 @@ fn language_lists_search() {
     press(&mut h, egui::Key::Enter);
     assert_eq!(h.state().settings.ui_language, "sv");
     i18n::set(i18n::Lang::No);
+}
+
+/// The settings window: the four groups are there, the translators' tools are folded until
+/// asked for, and the fold opens and closes from the keyboard too.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn settings_groups_and_language_tools() {
+    private_data_folder("no");
+    i18n::set(i18n::Lang::No);
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.settings_open = true);
+    for group in ["Språk", "Utseende", "Lagring", "AI og data"] {
+        assert!(has_label(&h, group), "no group «{group}»");
+    }
+    assert!(!has_label(&h, "Eksporter mal for oversettelse …"), "the language tools are not folded");
+    click(&mut h, "Språkverktøy");
+    assert!(h.state().langs.tools_open && has_label(&h, "Eksporter mal for oversettelse …"), "«Språkverktøy» did not unfold");
+    // Norwegian has no pack: the buttons for an added language are hidden, with a hint saying why.
+    assert!(!has_label(&h, "Rediger …"));
+    // From the keyboard: Tab reaches the fold's header, and Space folds it again.
+    let at = h.query_all(by().include_labels().predicate(|n| n.label().as_deref() == Some("Språkverktøy"))).last().map(|n| n.rect().center()).expect("header");
+    let mut found = false;
+    for _ in 0..40 {
+        press(&mut h, egui::Key::Tab);
+        let focused = h.ctx.memory(|m| m.focused()).and_then(|id| h.ctx.read_response(id));
+        if focused.is_some_and(|r| r.rect.contains(at)) {
+            found = true;
+            break;
+        }
+    }
+    assert!(found, "Tab never reached «Språkverktøy»");
+    press(&mut h, egui::Key::Space);
+    assert!(!h.state().langs.tools_open, "Space on «Språkverktøy» did not fold it");
 }
 
 /// Saving like Word: Ctrl+S into the CV's file, the question on close, the autosave every five
