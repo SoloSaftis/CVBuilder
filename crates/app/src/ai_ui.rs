@@ -7,6 +7,7 @@ use egui::RichText;
 
 use crate::CvApp;
 use crate::i18n;
+use crate::theme;
 
 pub enum Outcome {
     Models(Service, Result<Vec<String>, AiFailure>),
@@ -28,6 +29,8 @@ pub struct AiState {
     /// The address typed for a local server.
     pub local_url: String,
     pub detected: Option<Vec<(String, String, usize)>>,
+    /// The Claude Code tab is shown (only when Claude Code is on this computer).
+    pub claude_code_tab: bool,
 }
 
 impl CvApp {
@@ -104,13 +107,26 @@ impl CvApp {
             ui.horizontal(|ui| {
                 for s in SERVICES {
                     let tip = if s == Service::Local { i18n::t("En modell på din egen maskin, f.eks. med Ollama. Ingen nøkkel og ingen kostnad.").to_string() } else { i18n::tf("Bruk {service} med din egen API-nøkkel fra {company}", &[("service", &i18n::tdyn(s.name())), ("company", s.company())]) };
-                    if ui.selectable_label(self.ai.choice == Some(s), i18n::tdyn(s.name())).on_hover_text(tip).clicked() {
+                    if ui.selectable_label(self.ai.choice == Some(s) && !self.ai.claude_code_tab, i18n::tdyn(s.name())).on_hover_text(tip).clicked() {
+                        self.ai.claude_code_tab = false;
                         self.ai.choice = Some(s);
                         self.ai.models.clear();
                         self.ai.note.clear();
                     }
                 }
+                // Claude Code is chosen in the chat; it gets a tab here too, so every way to
+                // connect is in one place.
+                if self.chat.claude_code.is_some()
+                    && ui.selectable_label(self.ai.claude_code_tab, "Claude Code").on_hover_text(i18n::t("Bruk Claude Code på denne maskinen, med kontoen du er logget inn med")).clicked()
+                {
+                    self.ai.claude_code_tab = true;
+                    self.ai.note.clear();
+                }
             });
+            if self.ai.claude_code_tab {
+                close = self.claude_code_steps(ui);
+                return;
+            }
             let Some(service) = self.ai.choice else {
                 ui.label(RichText::new(i18n::t("Velg tjenesten du har en API-nøkkel til.")).weak());
                 return;
@@ -123,8 +139,9 @@ impl CvApp {
             // The link on its own line: wrapped after the text it was split in two and hard to hit.
             ui.label(i18n::tf("1. Lag en API-nøkkel hos {company}:", &[("company", service.company())]));
             ui.indent("key-link", |ui| {
-                ui.hyperlink_to(service.key_page(), service.key_page()).on_hover_text(i18n::t("Åpner siden i nettleseren, der du lager nøkkelen"));
+                ui.hyperlink_to(i18n::tf("Åpne nøkkelsiden til {company}", &[("company", service.company())]), service.key_page()).on_hover_text(i18n::tf("Åpner {url} i nettleseren, der du lager nøkkelen", &[("url", service.key_page())]));
             });
+            theme::hint(ui, &i18n::tf("En API-nøkkel er noe annet enn et ChatGPT- eller Claude-abonnement. Du betaler {company} per bruk, vanligvis noen få cent per CV, og de fleste krever at du fyller på kreditt først.", &[("company", service.company())]));
             ui.label(i18n::t("2. Lim inn nøkkelen her:"));
             ui.add(egui::TextEdit::singleline(&mut self.ai.key_input).password(true).hint_text(i18n::t("API-nøkkel")).desired_width(f32::INFINITY)).on_hover_text(i18n::t("Lim inn nøkkelen. Den lagres i maskinens nøkkelring, aldri i CV-filen."));
             ui.add_space(4.0);
@@ -181,6 +198,29 @@ impl CvApp {
             self.ai.connect_open = false;
             self.ai.key_input.clear();
         }
+    }
+
+    /// The Claude Code tab: no key, the person's own sign-in. Returns true for «Lukk».
+    fn claude_code_steps(&mut self, ui: &mut egui::Ui) -> bool {
+        ui.add_space(4.0);
+        ui.add(egui::Label::new(i18n::t("Claude Code er funnet på denne maskinen. CVBuilder kan bruke det i chatten med kontoen du er logget inn med i Claude Code, uten API-nøkkel.")).wrap());
+        ui.add_space(4.0);
+        theme::hint(ui, crate::ai_notice::notice(&crate::ai_notice::Destination::ClaudeCode, cv_ai::cost::Work::Chat, 0, 0).as_str());
+        ui.add_space(6.0);
+        let in_use = self.settings.chat_backend == "claude-code" || self.ai_endpoint().is_none();
+        let mut close = false;
+        ui.horizontal(|ui| {
+            if in_use {
+                ui.label(RichText::new(i18n::t("Chatten bruker Claude Code.")).strong());
+            } else if theme::primary(ui, i18n::t("Bruk Claude Code i chatten"), i18n::t("Chatten bruker Claude Code i stedet for tjenesten med API-nøkkel"), true).clicked() {
+                self.settings.chat_backend = "claude-code".into();
+                crate::storage::save_settings(&self.settings);
+            }
+            if ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)")).clicked() {
+                close = true;
+            }
+        });
+        close
     }
 
     /// Connecting a model on this computer (or the network) through an OpenAI-compatible server.

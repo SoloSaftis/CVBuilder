@@ -146,7 +146,7 @@ impl CvApp {
                     "Her er teksten fra en CV jeg har fra før. Fyll ut CV-en i CVBuilder med disse opplysningene: kontaktinfo, overskrift, profil, alle jobber med datoer og punkter, utdanning, kompetanse, kurs, språk og interesser. Bruk bare det som står i teksten, og skriv punktene kort med verb først. Behold alle tall. Si til slutt hva jeg bør sjekke.\n\n---\n{cut}",
                     &[("cut", &cut)],
                 );
-                self.ask_ai(&ask);
+                self.ask_ai(cv_ai::cost::Work::Import, &ask);
             }
             Outcome::Cv(Ok(CvFile::Text(text)), false) => self.apply_read(import::read_cv(&text), "Hentet inn {found}. Den forrige CV-en kan hentes tilbake med Angre."),
         }
@@ -198,6 +198,8 @@ impl CvApp {
             });
             if !has_ai {
                 ui.label(RichText::new(i18n::t("Koble til AI under AI-fanen for å bruke dette.")).size(12.0).color(t.faint));
+            } else if self.import.use_ai {
+                ui.indent("import-ai-notice", |ui| self.notice_line(ui, cv_ai::cost::Work::Import, AI_LIMIT / 2));
             }
             ui.radio_value(&mut self.import.use_ai, false, i18n::t("Uten AI – på denne maskinen: kontaktinfo, profil, jobber, utdanning, kompetanse, språk, kurs og interesser."))
                 .on_hover_text(i18n::t("Leses på denne maskinen, og ingenting sendes. Sjekk resultatet; det som ikke kunne plasseres, vises til slutt."));
@@ -217,6 +219,10 @@ impl CvApp {
             });
         });
         if pick {
+            if self.import.use_ai {
+                // The window said where the text goes and what it costs.
+                self.ai_seen(cv_ai::cost::Work::Import);
+            }
             self.pick("import_cv", None);
         }
         if close || r.should_close() {
@@ -229,7 +235,7 @@ impl CvApp {
         let Some(rest) = self.import.rest.clone() else {
             return;
         };
-        let has_ai = self.chat_backend().is_some();
+        let notice = self.ai_notice(cv_ai::cost::Work::Import, rest.len());
         let mut close = false;
         let mut to_ai = false;
         let r = egui::Modal::new(egui::Id::unique("cvbuilder.import-rest")).show(ctx, |ui| {
@@ -246,12 +252,21 @@ impl CvApp {
                 ui.add(egui::Label::new(RichText::new(&rest).size(12.5)).wrap().selectable(true));
             });
             ui.add_space(8.0);
+            // The CV was read without AI, by choice: copying is the main way on, and the AI
+            // button says where the text would go.
+            if notice.is_some() {
+                self.notice_line(ui, cv_ai::cost::Work::Import, rest.len());
+                ui.add_space(4.0);
+            }
             ui.horizontal(|ui| {
-                if has_ai && theme::primary(ui, i18n::t("La AI-en legge det inn"), i18n::t("AI-en legger jobbene, utdanningen og resten inn i skjemaet"), true).clicked() {
-                    to_ai = true;
-                }
-                if ui.button(i18n::t("Kopier teksten")).on_hover_text(i18n::t("Kopier teksten, så du kan lime den inn i skjemaet selv")).clicked() {
+                if theme::primary(ui, i18n::t("Kopier teksten"), i18n::t("Kopier teksten, så du kan lime den inn i skjemaet selv"), true).clicked() {
                     ui.ctx().copy_text(rest.clone());
+                }
+                if let Some((destination, _)) = &notice {
+                    let label = i18n::tf("La AI-en legge det inn (sendes til {name})", &[("name", &destination.name())]);
+                    if ui.button(label).on_hover_text(i18n::t("AI-en legger jobbene, utdanningen og resten inn i skjemaet")).clicked() {
+                        to_ai = true;
+                    }
                 }
                 if ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)")).clicked() {
                     close = true;
@@ -259,8 +274,10 @@ impl CvApp {
             });
         });
         if to_ai {
+            // The button and the line above it said where the text goes.
+            self.ai_seen(cv_ai::cost::Work::Import);
             let cut: String = rest.chars().take(AI_LIMIT).collect();
-            self.ask_ai(&i18n::tf(
+            self.ask_ai(cv_ai::cost::Work::Import, &i18n::tf(
                 "Legg inn disse delene fra CV-en min (jobber med datoer og punkter, utdanning, kurs og annet). Bruk bare det som står her og behold alle tall:\n\n---\n{cut}",
                 &[("cut", &cut)],
             ));

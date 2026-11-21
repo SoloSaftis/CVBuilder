@@ -355,6 +355,8 @@ impl CvApp {
         }
         if let Some(text) = send {
             self.chat.input.clear();
+            // The line under the AI picker says where it goes and what it costs.
+            self.ai_seen(cv_ai::cost::Work::Chat);
             self.chat_send(&text);
         }
     }
@@ -402,15 +404,8 @@ impl CvApp {
                 .response
                 .on_hover_text(i18n::t("Hvilken AI du snakker med. Du kan bytte når som helst."));
         });
-        let privacy = match backend {
-            Some(Backend::Api { endpoint, .. }) if endpoint.service == cv_ai::Service::Local && cv_ai::is_local_address(&endpoint.base_url) => {
-                i18n::tf("Kjører på denne maskinen ({url}). CV-en forlater ikke maskinen.", &[("url", &endpoint.base_url)])
-            }
-            Some(Backend::Api { endpoint, .. }) if endpoint.service == cv_ai::Service::Local => i18n::tf("Sendes til din AI-server på {url}.", &[("url", &endpoint.base_url)]),
-            Some(Backend::Api { endpoint, .. }) => i18n::tf("Meldinger og CV-tekst sendes til {company} med din nøkkel.", &[("company", endpoint.service.company())]),
-            Some(Backend::ClaudeCode { .. }) => i18n::t("Kjører i Claude Code på denne maskinen, med kontoen du er logget inn med.").into(),
-            None => String::new(),
-        };
+        // Where the messages go and what each one costs (the same words as the other windows).
+        let privacy = backend.map(|b| crate::ai_notice::notice(&crate::ai_notice::Destination::of(b), cv_ai::cost::Work::Chat, self.cv_chars(), 0)).unwrap_or_default();
         if !privacy.is_empty() {
             ui.label(RichText::new(privacy).size(11.5).color(t.faint));
         }

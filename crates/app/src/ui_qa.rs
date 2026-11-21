@@ -269,7 +269,54 @@ Som koordinator i Fjellvegg Bygg AS 2021 – nå".into()) },
             a.ai.choice = Some(cv_ai::Service::Claude);
         },
     },
+    // Where the CV goes and what it costs (to-do 030).
+    Scene { name: "Før AI-en starter", setup: |a| {
+        with_provider(a);
+        a.ask_ai(cv_ai::cost::Work::Tailor, "Tilpass CV-en til stillingsannonsen.");
+    } },
+    Scene { name: "Oversett med AI-tjeneste", setup: |a| {
+        with_provider(a);
+        a.open_translate(None);
+    } },
+    Scene { name: "Oversett med lokal modell", setup: |a| {
+        with_local(a);
+        a.open_translate(None);
+    } },
+    Scene { name: "Importer CV med AI", setup: |a| {
+        with_provider(a);
+        a.import.cv_open = true;
+        a.import.use_ai = true;
+    } },
+    Scene { name: "Importrest med AI", setup: |a| {
+        with_provider(a);
+        a.import.rest = Some("ERFARING\nSom koordinator i Fjellvegg Bygg AS 2021 – nå".into());
+    } },
+    Scene { name: "AI-panel med nøkkel", setup: |a| {
+        with_provider(a);
+        a.side = Side::Chat;
+    } },
+    Scene { name: "Koble til Claude Code", setup: |a| {
+        a.chat.claude_code = Some("claude".into());
+        a.ai.connect_open = true;
+        a.ai.claude_code_tab = true;
+    } },
 ];
+
+/// A cloud AI connected with a key kept only in memory (never the keychain), and the API chosen.
+fn with_provider(a: &mut CvApp) {
+    a.ai.keys.keep_for_session(cv_ai::Service::ChatGpt, "sk-test-not-a-real-key");
+    a.settings.ai_service = Some(cv_ai::Service::ChatGpt);
+    a.settings.ai_model = "gpt-5".into();
+    a.settings.chat_backend = "api".into();
+}
+
+/// A model on this computer (Ollama's address), with no key.
+fn with_local(a: &mut CvApp) {
+    a.settings.ai_service = Some(cv_ai::Service::Local);
+    a.settings.local_url = "http://localhost:11434/v1".into();
+    a.settings.ai_model = "qwen3".into();
+    a.settings.chat_backend = "api".into();
+}
 
 fn harness(size: Vec2, setup: fn(&mut CvApp)) -> Harness<'static, CvApp> {
     let mut h = Harness::builder().with_size(size).build_eframe(move |cc| {
@@ -848,4 +895,47 @@ fn store_shots() {
         let image = h.render().expect("render");
         image.save(dir.join(format!("{lang}-{name}.png"))).expect("save");
     }
+}
+
+/// Before a one-click AI button sends the CV to a company, «Før AI-en starter» names it and the
+/// cost; «Avbryt» sends nothing, «Send» is remembered for that kind of work, and a model on this
+/// computer never asks (to-do 030).
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn ai_asks_before_the_cv_leaves() {
+    use cv_ai::cost::Work;
+    private_data_folder("no");
+    i18n::set(i18n::Lang::No);
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| {
+        with_provider(a);
+        a.ask_ai(Work::Tailor, "Tilpass CV-en til stillingsannonsen.");
+    });
+    assert!(h.state().ai_pending.is_some(), "nothing asked before sending");
+    assert!(!h.state().chat.running, "the request went out before the person said yes");
+    // (snapshot() shortens long labels, so read the whole text here.)
+    let texts: Vec<String> = h.query_all(by().include_labels().predicate(|_| true)).map(|n| { let ak = n.accesskit_node(); format!("{} {}", ak.label().unwrap_or_default(), ak.value().unwrap_or_default()) }).collect();
+    let named = texts.iter().any(|l| l.contains("OpenAI") && l.contains("US$"));
+    assert!(named, "the window does not name OpenAI and the cost:\n{}", texts.iter().filter(|l| l.contains("OpenAI") || l.contains("AI")).cloned().collect::<Vec<_>>().join("\n"));
+    assert!(has_label(&h, "Send til OpenAI"), "no «Send til OpenAI»");
+    click(&mut h, "Avbryt");
+    assert!(h.state().ai_pending.is_none() && !h.state().chat.running && h.state().chat.items.is_empty(), "«Avbryt» did not stop the request");
+    // Once said yes to, the same kind of work goes straight on; another kind asks again.
+    h.state_mut().ai_seen(Work::Tailor);
+    assert!(h.state().must_ask(Work::Tailor).is_none());
+    assert!(h.state().must_ask(Work::Translate).is_some());
+    // A model on this computer: nothing leaves, nothing to ask.
+    let h = harness(Vec2::new(1440.0, 900.0), with_local);
+    assert!(h.state().must_ask(Work::Tailor).is_none());
+    // The translate window says where the CV goes before «Oversett med AI».
+    let h = harness(Vec2::new(1440.0, 900.0), |a| {
+        with_provider(a);
+        a.open_translate(None);
+    });
+    assert!(snapshot(&h).iter().any(|c| c.label.contains("OpenAI")), "the translate window does not say where the CV goes");
+    // The leftovers after an import without AI: copying is the main button, the AI one says where.
+    let h = harness(Vec2::new(1440.0, 900.0), |a| {
+        with_provider(a);
+        a.import.rest = Some("ERFARING".into());
+    });
+    assert!(has_label(&h, "La AI-en legge det inn (sendes til OpenAI)"));
 }

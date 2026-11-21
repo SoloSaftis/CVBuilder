@@ -353,7 +353,7 @@ impl CvApp {
                     self.pick("ad_file", None);
                 }
                 if ai_button(ui, i18n::t("Tilpass CV-en med AI"), i18n::t("AI-en går gjennom CV-en mot annonsen, uten å finne på noe")).clicked() {
-                    self.ask_ai(i18n::t("Tilpass CV-en til stillingsannonsen: bruk annonsens ord der de stemmer med det CV-en allerede sier, løft frem det mest relevante i profil og punkter, og lagre fagordene. Ikke legg til noe jeg ikke har. Si til slutt hva jeg kan legge til selv."));
+                    self.ask_ai(cv_ai::cost::Work::Tailor, i18n::t("Tilpass CV-en til stillingsannonsen: bruk annonsens ord der de stemmer med det CV-en allerede sier, løft frem det mest relevante i profil og punkter, og lagre fagordene. Ikke legg til noe jeg ikke har. Si til slutt hva jeg kan legge til selv."));
                 }
             });
             // Fetching and reading run on a worker; show that something is happening.
@@ -380,7 +380,7 @@ impl CvApp {
             });
             *changed |= lines(ui, &mut self.buffers, "keywords", i18n::t("Viktige fagord fra annonsen · ett per linje"), i18n::t("Ordene ATS og rekrutterere ser etter. Bruk dem i CV-en der de stemmer."), &mut self.project.target.keywords);
             if ai_button(ui, i18n::t("Finn fagord med AI"), i18n::t("AI-en leser annonsen og lagrer de viktigste fagordene, høyst 25")).clicked() {
-                self.ask_ai(i18n::t("Les stillingsannonsen og lagre de viktigste fagordene fra den (høyst 25)."));
+                self.ask_ai(cv_ai::cost::Work::Chat, i18n::t("Les stillingsannonsen og lagre de viktigste fagordene fra den (høyst 25)."));
             }
         });
         ui.add_space(10.0);
@@ -394,7 +394,7 @@ impl CvApp {
             reference_hint(ui, &original);
         }
         if ai_button(ui, i18n::t("Skriv profil med AI"), i18n::t("AI-en skriver en profil ut fra det som allerede står i CV-en")).clicked() {
-            self.ask_ai(i18n::t("Skriv en kort profiltekst (30–70 ord) ut fra det som står i CV-en, rettet mot stillingen jeg søker."));
+            self.ask_ai(cv_ai::cost::Work::Chat, i18n::t("Skriv en kort profiltekst (30–70 ord) ut fra det som står i CV-en, rettet mot stillingen jeg søker."));
         }
     }
 
@@ -525,7 +525,7 @@ impl CvApp {
                 "Forbedre punktene for jobben «{title}» hos {company} (id {id}), slik at de viser handling og resultat og bruker annonsens ord der det stemmer.",
                 &[("title", &j.title), ("company", &j.company), ("id", &j.id)],
             );
-            self.ask_ai(&ask);
+            self.ask_ai(cv_ai::cost::Work::Chat, &ask);
         }
         if ui.button(i18n::t("+ Legg til jobb")).on_hover_text(i18n::t("Ny jobb i arbeidserfaringen")).clicked() {
             let id = self.next_id("job");

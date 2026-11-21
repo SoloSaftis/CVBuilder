@@ -207,6 +207,8 @@ impl CvApp {
             ui.add_space(6.0);
             if has_ai {
                 ui.add(egui::Label::new(i18n::t("AI-en oversetter all teksten og overskriftene. Du ser endringene mens den jobber og kan angre dem.")).wrap());
+                ui.add_space(2.0);
+                self.notice_line(ui, cv_ai::cost::Work::Translate, 0);
             } else {
                 egui::Frame::new().fill(t.warning.gamma_multiply(0.14)).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin::same(10)).show(ui, |ui| {
                     ui.set_width(ui.available_width());
@@ -221,7 +223,7 @@ impl CvApp {
                 if has_ai && theme::primary(ui, i18n::t("Oversett med AI"), i18n::t("AI-en oversetter hele CV-en og overskriftene"), ok).clicked() {
                     choice = Some(1);
                 }
-                if !has_ai && theme::primary(ui, i18n::t("Koble til AI"), i18n::t("Koble til en AI-tjeneste eller en lokal modell for å oversette automatisk"), true).clicked() {
+                if !has_ai && theme::primary(ui, i18n::t("Koble til AI for å oversette …"), i18n::t("Koble til en AI-tjeneste eller en lokal modell for å oversette automatisk"), true).clicked() {
                     choice = Some(3);
                 }
                 if ui
@@ -262,7 +264,9 @@ impl CvApp {
                     "Oversett hele CV-en til {language}: overskrift, profil, alle jobbpunkter og titler, kompetanse, utdanning, kurs, språk, interesser og egne seksjoner. Sett CV-ens overskrifter med cv_set_headings (language «{language}»).{headings} Behold alle fakta, navn på firma og tall.",
                     &[("language", &lang), ("headings", &headings)],
                 );
-                self.ask_ai(&ask);
+                // The window said where the CV goes and what it costs.
+                self.ai_seen(cv_ai::cost::Work::Translate);
+                self.ask_ai(cv_ai::cost::Work::Translate, &ask);
             }
             Some(2) => {
                 self.apply_headings(&state);
