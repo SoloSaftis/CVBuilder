@@ -499,7 +499,11 @@ fn checklist_points_say_their_status() {
     let words: Vec<String> = Status::ALL.iter().map(|s| format!("{}: ", s.word())).collect();
     let spoken = |h: &Harness<'_, CvApp>| -> Vec<String> { snapshot(h).into_iter().map(|c| c.label).filter(|l| words.iter().any(|w| l.starts_with(w.as_str()))).collect() };
     let scene = |name: &str| SCENES.iter().find(|s| s.name == name).expect("scene").setup;
-    let h = harness(Vec2::new(1440.0, 900.0), scene("Sjekkliste"));
+    // The example passes nearly every point; without a headline one is left to do.
+    let h = harness(Vec2::new(1440.0, 900.0), |a| {
+        a.side = Side::Checks;
+        a.project.candidate.headline.clear();
+    });
     let points = spoken(&h);
     assert!(points.iter().any(|l| l.starts_with("To do: ")), "no point says «To do»:\n{}", points.join("\n"));
     assert!(points.iter().any(|l| l.starts_with("Done: ")), "no point says «Done»:\n{}", points.join("\n"));
@@ -511,7 +515,9 @@ fn checklist_points_say_their_status() {
     let h = harness(Vec2::new(1440.0, 900.0), scene("Egen sjekkliste"));
     assert!(!spoken(&h).is_empty(), "the own checklist has no spoken points");
     let labels: Vec<String> = snapshot(&h).into_iter().map(|c| c.label).collect();
-    assert!(labels.iter().any(|l| l == "My own"), "the dropdown does not show «My own»");
+    // The dropdown is named for what it does (029); with one's own list chosen, that list shows.
+    assert!(labels.iter().any(|l| l.starts_with("Which checklist you see")), "the checklist dropdown has no name:\n{}", labels.join("\n"));
+    assert!(labels.iter().any(|l| l.ends_with("points are met.")), "one's own list is not shown:\n{}", labels.join("\n"));
 }
 
 /// The welcome window's three ways to start each do what they say, and the answer is kept.
