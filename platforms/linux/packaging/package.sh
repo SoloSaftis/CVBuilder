@@ -20,6 +20,7 @@ Comment=CV-er som rekrutterere og søknadssystemer leser riktig
 Exec=CVBuilder
 Icon=cvbuilder
 Categories=Office;
+StartupWMClass=cvbuilder
 DESKTOP
 cp platforms/linux/packaging/LES-MEG.txt "$stage/LES MEG.txt"
 echo "Her lagrer CVBuilder utkast og innstillinger i bærbar modus." > "$stage/CVBuilder-data/Om denne mappen.txt"
