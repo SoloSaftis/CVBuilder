@@ -74,6 +74,8 @@ pub(crate) struct LangState {
     job: Option<Job>,
     message: Option<String>,
     confirm_delete: bool,
+    /// «Språkverktøy» in the settings is unfolded (folded by default: they are for translators).
+    pub(crate) tools_open: bool,
     pub(crate) editor: Option<Editor>,
     picks_tx: Sender<LangPick>,
     picks_rx: Receiver<LangPick>,
@@ -126,7 +128,7 @@ impl LangState {
     /// Reads the installed packs and sets the interface language from the saved setting.
     pub fn load(setting: &str) -> LangState {
         let (picks_tx, picks_rx) = channel();
-        let state = LangState { packs: load_packs(), adding: None, job: None, message: None, confirm_delete: false, editor: None, picks_tx, picks_rx };
+        let state = LangState { packs: load_packs(), adding: None, job: None, message: None, confirm_delete: false, tools_open: false, editor: None, picks_tx, picks_rx };
         i18n::apply(setting, &state.packs);
         state
     }
@@ -308,7 +310,8 @@ pub(crate) fn ui_language_items(packs: &[Pack]) -> Vec<LangItem<String>> {
 // ---------- the window ----------
 
 impl CvApp {
-    /// The «Språk i menyene» part of the settings window.
+    /// The menu language in the settings window: the choice, and a translation's progress.
+    /// The tools for translators are in [`Self::language_tools`].
     pub(crate) fn language_settings(&mut self, ui: &mut egui::Ui) {
         let t = Tokens::get(ui.ctx());
         let mut choose: Option<String> = None;
@@ -381,7 +384,31 @@ impl CvApp {
             });
         }
 
+        if let Some(message) = &self.langs.message {
+            ui.add(egui::Label::new(RichText::new(message).size(12.5).color(t.dim)).wrap());
+        }
+    }
+
+    /// «Språkverktøy» in the settings: adding, remaking, editing, exporting and deleting
+    /// languages. Folded by default, since they are for people who translate CVBuilder.
+    pub(crate) fn language_tools(&mut self, ui: &mut egui::Ui) {
+        let t = Tokens::get(ui.ctx());
+        // Kept open while it asks about deleting.
+        let open = self.langs.tools_open || self.langs.confirm_delete;
+        let header = egui::CollapsingHeader::new(i18n::t("Språkverktøy")).id_salt("language-tools").open(Some(open)).show(ui, |ui| self.language_tool_buttons(ui, &t));
+        let header = header.header_response.on_hover_text(i18n::t("Legg til, rett, eksporter eller slett språk i menyene. For deg som vil oversette CVBuilder."));
+        if header.clicked() {
+            self.langs.tools_open = !open;
+            self.langs.confirm_delete = false;
+        }
+    }
+
+    fn language_tool_buttons(&mut self, ui: &mut egui::Ui, t: &Tokens) {
+        let active = i18n::active_pack();
         let busy = self.langs.job.is_some();
+        if active.is_none() {
+            theme::hint(ui, i18n::t("Rette, lage på nytt og eksportere gjelder tilleggsspråk. Velg et annet språk enn norsk og engelsk i lista over for å bruke dem."));
+        }
         ui.horizontal_wrapped(|ui| {
             if ui
                 .add_enabled(!busy, egui::Button::new(i18n::t("Legg til språk med AI …")))
@@ -392,32 +419,29 @@ impl CvApp {
                 self.langs.adding = Some(Adding::default());
             }
             let has = active.is_some();
-            if ui
-                .add_enabled(has && !busy, egui::Button::new(i18n::t("Lag på nytt")))
-                .on_hover_text(i18n::t("La AI-en oversette det valgte språket på nytt. Det gamle beholdes til hver del er ferdig."))
-                .on_disabled_hover_text(i18n::t("Velg et tilleggsspråk først, og vent til en oversettelse er ferdig"))
-                .clicked()
+            if has
+                && ui
+                    .add_enabled(!busy, egui::Button::new(i18n::t("Lag på nytt")))
+                    .on_hover_text(i18n::t("La AI-en oversette det valgte språket på nytt. Det gamle beholdes til hver del er ferdig."))
+                    .on_disabled_hover_text(i18n::t("Vent til oversettelsen er ferdig"))
+                    .clicked()
             {
                 if let Some((code, name)) = &active {
                     self.start_translation(code.clone(), name.clone());
                 }
             }
-            if ui
-                .add_enabled(has && !busy, egui::Button::new(i18n::t("Rediger …")))
-                .on_hover_text(i18n::t("Rett tekstene i det valgte språket selv"))
-                .on_disabled_hover_text(i18n::t("Velg et tilleggsspråk først, og vent til en oversettelse er ferdig"))
-                .clicked()
+            if has
+                && ui
+                    .add_enabled(!busy, egui::Button::new(i18n::t("Rediger …")))
+                    .on_hover_text(i18n::t("Rett tekstene i det valgte språket selv"))
+                    .on_disabled_hover_text(i18n::t("Vent til oversettelsen er ferdig"))
+                    .clicked()
             {
                 if let Some((code, _)) = &active {
                     self.open_editor(code);
                 }
             }
-            if ui
-                .add_enabled(has, egui::Button::new(i18n::t("Eksporter språket …")))
-                .on_hover_text(i18n::t("Lagre det valgte språket som fil, for å dele det eller rette det i et annet program"))
-                .on_disabled_hover_text(i18n::t("Velg et tilleggsspråk først"))
-                .clicked()
-            {
+            if has && ui.button(i18n::t("Eksporter språket …")).on_hover_text(i18n::t("Lagre det valgte språket som fil, for å dele det eller rette det i et annet program")).clicked() {
                 if let Some((code, _)) = &active {
                     self.pick_language_file("export", Some(code.clone()));
                 }
@@ -435,11 +459,12 @@ impl CvApp {
             } else {
                 (i18n::t("Slett språk"), i18n::t("Fjern det valgte språket fra denne maskinen"))
             };
-            if ui
-                .add_enabled(has && own && !busy, egui::Button::new(label))
-                .on_hover_text(tip)
-                .on_disabled_hover_text(i18n::t("Språk som følger med CVBuilder kan ikke slettes; bare endringer du har gjort"))
-                .clicked()
+            if has
+                && ui
+                    .add_enabled(own && !busy, egui::Button::new(label))
+                    .on_hover_text(tip)
+                    .on_disabled_hover_text(i18n::t("Språk som følger med CVBuilder kan ikke slettes; bare endringer du har gjort"))
+                    .clicked()
             {
                 self.langs.confirm_delete = true;
             }
@@ -456,9 +481,6 @@ impl CvApp {
                     self.langs.confirm_delete = false;
                 }
             });
-        }
-        if let Some(message) = &self.langs.message {
-            ui.add(egui::Label::new(RichText::new(message).size(12.5).color(t.dim)).wrap());
         }
     }
 
