@@ -289,7 +289,7 @@ fn claude_code_failure(text: &str) -> String {
         "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.".into()
     } else {
         let short: String = text.trim().chars().take(400).collect();
-        format!("Claude Code stoppet: {short}")
+        cv_core::plain::with_details("Claude Code stoppet med en feil. Prøv igjen. Hjelper det ikke, åpne en terminal og kjør «claude» for å se hva som er galt.", &short)
     }
 }
 
