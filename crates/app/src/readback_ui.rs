@@ -33,7 +33,7 @@ impl ReadBackState {
 pub fn run(project: &Project, word: bool) -> Result<ReadBack, String> {
     let doc = document::build(project);
     let (bytes, ext) = if word { (document::to_docx(&doc), "docx") } else { (document::to_pdf(&doc), "pdf") };
-    let bytes = bytes.map_err(|e| e.to_string())?;
+    let bytes = bytes.map_err(|e| cv_core::plain::with_details(cv_core::plain::TRY_AGAIN, &e.to_string()))?;
     readback::read_back(project, &bytes, ext)
 }
 
@@ -111,7 +111,7 @@ impl CvApp {
             }
             match &self.readback.result {
                 None => {}
-                Some(Err(e)) => status_line(ui, Status::Problem, &i18n::tf("Filen kunne ikke lages eller leses: {error}", &[("error", &i18n::tdyn(e))])),
+                Some(Err(e)) => status_line(ui, Status::Problem, &i18n::tf("Filen kunne ikke lages eller leses tilbake. {why}", &[("why", &i18n::tdyn(e))])),
                 Some(Ok(back)) => {
                     ui.add_space(4.0);
                     theme::label(ui, &self.readback.from);

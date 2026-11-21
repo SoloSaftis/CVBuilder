@@ -131,11 +131,17 @@ pub fn text_from_file(path: &std::path::Path) -> Result<String, String> {
 }
 
 fn read_file(path: &std::path::Path) -> Result<Vec<u8>, String> {
-    let size = std::fs::metadata(path).map_err(|e| format!("Filen kunne ikke leses: {e}"))?.len();
+    let size = std::fs::metadata(path).map_err(|e| unreadable(&e))?.len();
     if size > MAX_FILE {
         return Err("Filen er for stor (over 50 MB) til å være en annonse eller en CV.".into());
     }
-    std::fs::read(path).map_err(|e| format!("Filen kunne ikke leses: {e}"))
+    std::fs::read(path).map_err(|e| unreadable(&e))
+}
+
+/// «Filen kunne ikke leses.», why in plain words, and the technical text on a «Detaljer» line.
+pub fn unreadable(e: &std::io::Error) -> String {
+    let why = crate::plain::io_cause(e).unwrap_or(crate::plain::TRY_ANOTHER_FILE);
+    crate::plain::with_details(&format!("Filen kunne ikke leses. {why}"), &e.to_string())
 }
 
 /// The text of a file's bytes; `ext` is the file's extension in lower case, used when the
@@ -194,7 +200,7 @@ fn docx_text(bytes: &[u8]) -> Result<String, String> {
     let owned = bytes.to_vec();
     match isolated(move || wordcraft_docx::read_with(&owned, &Default::default()).map(|doc| doc.plain_text(wordcraft_doc::StoryRef::Body)).map_err(|e| e.to_string())) {
         Some(Ok(t)) => Ok(t),
-        Some(Err(e)) => Err(format!("Word-filen kunne ikke leses: {e}")),
+        Some(Err(e)) => Err(crate::plain::with_details("Word-filen kunne ikke leses. Den kan være skadet. Åpne den i Word og lagre den på nytt.", &e)),
         None => Err("Word-filen kunne ikke leses. Den kan være skadet. Åpne den i Word og lagre den på nytt.".into()),
     }
 }
@@ -207,7 +213,7 @@ fn doc_text(bytes: &[u8]) -> Result<String, String> {
     let owned = bytes.to_vec();
     match isolated(move || wordcraft_docbin::read(&owned).map(|doc| doc.plain_text(wordcraft_doc::StoryRef::Body)).map_err(|e| e.to_string())) {
         Some(Ok(t)) => Ok(t),
-        Some(Err(e)) => Err(format!("Den eldre Word-filen (.doc) kunne ikke leses: {e}. Åpne den i Word og lagre den som .docx.")),
+        Some(Err(e)) => Err(crate::plain::with_details("Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.", &e)),
         None => Err("Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.".into()),
     }
 }
@@ -222,7 +228,7 @@ fn formats_text(ext: &'static str, bytes: &[u8]) -> Result<String, String> {
     };
     match isolated(move || wordcraft_formats::import(ext, &owned).unwrap_or_else(|| Err("ukjent format".into())).map(|doc| doc.plain_text(wordcraft_doc::StoryRef::Body))) {
         Some(Ok(t)) => Ok(t),
-        Some(Err(e)) => Err(format!("{name} kunne ikke leses: {e}. Lagre den som Word (.docx) eller PDF og prøv igjen.")),
+        Some(Err(e)) => Err(crate::plain::with_details(&format!("{name} kunne ikke leses. Lagre den som Word (.docx) eller PDF og prøv igjen."), &e)),
         None => Err(format!("{name} kunne ikke leses. Lagre den som Word (.docx) eller PDF og prøv igjen.")),
     }
 }

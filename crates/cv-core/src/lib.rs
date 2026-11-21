@@ -11,6 +11,7 @@ pub mod document;
 pub mod headings;
 pub mod layouts;
 pub mod model;
+pub mod plain;
 mod pdfread;
 pub mod text;
 pub use model::{Language, Project, ProjectError};

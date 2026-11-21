@@ -425,7 +425,7 @@ pub fn set_imported(designs: Vec<Design>) {
 
 /// Reads a `.cvdesign.json` file. The error lists everything to fix, in plain Norwegian.
 pub fn parse(text: &str) -> Result<Design, String> {
-    let design: Design = serde_json::from_str(text).map_err(|e| format!("Filen er ikke en CVBuilder-design: {e}"))?;
+    let design: Design = serde_json::from_str(text).map_err(|e| crate::plain::with_details("Filen er ikke en CVBuilder-design, eller den har en feil. Sammenlign den med mal-filen.", &e.to_string()))?;
     let mut problems = design.problems();
     if BUILT_IN.iter().any(|b| b.id == design.id) {
         problems.push(format!("«id» «{}» brukes allerede av et innebygd design. Velg en annen id.", design.id));
