@@ -8,6 +8,8 @@
 use std::io::{BufRead, BufReader, Write};
 use std::net::{TcpListener, TcpStream};
 use std::path::PathBuf;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::time::Duration;
 
@@ -24,6 +26,8 @@ pub struct LinkCall {
 pub struct Link {
     pub calls: Receiver<LinkCall>,
     file: PathBuf,
+    /// AI apps connected now (a running `--mcp` bridge keeps one connection open).
+    open: Arc<AtomicUsize>,
 }
 
 impl Drop for Link {
@@ -59,21 +63,40 @@ impl Link {
         std::fs::create_dir_all(file.parent()?).ok()?;
         std::fs::write(&file, json!({"port": port, "token": token, "pid": std::process::id()}).to_string()).ok()?;
         let (tx, rx) = channel();
+        let open = Arc::new(AtomicUsize::new(0));
+        let counter = open.clone();
         std::thread::spawn(move || {
             for stream in listener.incoming().flatten() {
-                let (tx, ctx, token) = (tx.clone(), ctx.clone(), token.clone());
-                std::thread::spawn(move || serve(stream, &tx, &ctx, &token));
+                let (tx, ctx, token, counter) = (tx.clone(), ctx.clone(), token.clone(), counter.clone());
+                std::thread::spawn(move || serve(stream, &tx, &ctx, &token, &counter));
             }
         });
-        Some(Link { calls: rx, file })
+        Some(Link { calls: rx, file, open })
+    }
+
+    /// Whether an AI app is connected to this window now: a bridge that has made a call with the
+    /// right token and is still running.
+    pub fn connected(&self) -> bool {
+        self.open.load(Ordering::Relaxed) > 0
     }
 }
 
-fn serve(stream: TcpStream, tx: &Sender<LinkCall>, ctx: &egui::Context, token: &str) {
+/// Counts one connection while it lives, and asks for a repaint when it comes and goes.
+struct Open<'a>(&'a AtomicUsize, &'a egui::Context);
+
+impl Drop for Open<'_> {
+    fn drop(&mut self) {
+        self.0.fetch_sub(1, Ordering::Relaxed);
+        self.1.request_repaint();
+    }
+}
+
+fn serve(stream: TcpStream, tx: &Sender<LinkCall>, ctx: &egui::Context, token: &str, open: &AtomicUsize) {
     let _ = stream.set_read_timeout(Some(Duration::from_secs(600)));
     let Ok(mut writer) = stream.try_clone() else {
         return;
     };
+    let mut counted = None;
     for line in BufReader::new(stream).lines().map_while(Result::ok) {
         let Ok(v) = serde_json::from_str::<Value>(&line) else {
             break;
@@ -81,6 +104,10 @@ fn serve(stream: TcpStream, tx: &Sender<LinkCall>, ctx: &egui::Context, token: &
         if v["token"].as_str() != Some(token) {
             let _ = writeln!(writer, "{}", json!({"text": "Refused: wrong token.", "is_error": true}));
             break;
+        }
+        if counted.is_none() {
+            open.fetch_add(1, Ordering::Relaxed);
+            counted = Some(Open(open, ctx));
         }
         let (reply, answer) = channel();
         let call = LinkCall { name: v["name"].as_str().unwrap_or_default().to_string(), arguments: v["arguments"].clone(), reply };
