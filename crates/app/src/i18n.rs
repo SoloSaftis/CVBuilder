@@ -2346,11 +2346,39 @@ mod tests {
     fn names_and_notes_from_other_crates_have_english() {
         assert_eq!(super::english("Klassisk").as_deref(), Some("Classic"));
         assert_eq!(super::english("Lokal modell").as_deref(), Some("Local model"));
-        assert_eq!(super::english("Claude Code stoppet: rate limit").as_deref(), Some("Claude Code stopped: rate limit"));
+        assert!(super::english("Claude Code stoppet med en feil. Prøv igjen. Hjelper det ikke, åpne en terminal og kjør «claude» for å se hva som er galt.").is_some());
         // Every built-in design's name has English.
         for d in cv_core::layouts::all().iter().filter(|d| !d.id.contains('-')) {
             assert!(super::english(&d.name).is_some(), "{}", d.name);
         }
+    }
+
+    #[test]
+    fn errors_are_plain_words_with_details() {
+        use super::*;
+        // English: the message and its cause each translated, the technical text kept as it is.
+        set(Lang::En);
+        let raw = "Filen kunne ikke leses. Filen er åpen i et annet program. Lukk den der og prøv igjen.\nDetaljer: The process cannot access the file (os error 32)";
+        assert_eq!(tdyn(raw), "The file could not be read. The file is open in another program. Close it there and try again.\nDetails: The process cannot access the file (os error 32)");
+        assert_eq!(tdyn("ChatGPT svarte med en feil. Prøv igjen om litt, eller velg en annen modell.\nDetaljer: HTTP 500"), "ChatGPT answered with an error. Try again in a moment, or choose another model.\nDetails: HTTP 500");
+        // The app's own failures: what happened, why in plain words, then the details.
+        let saved = failed(t("Utkastet ble ikke lagret."), "Access is denied. (os error 5)", cv_core::plain::TRY_ANOTHER_PLACE);
+        assert!(saved.starts_with("The draft was not saved. "), "{saved}");
+        assert!(saved.ends_with("\nDetails: Access is denied. (os error 5)"), "{saved}");
+        assert_eq!(first_line(&saved), saved.split('\n').next().unwrap_or_default());
+        assert!(!first_line(&saved).contains("os error"));
+        let unknown = failed(t("Filen ble ikke lagret."), "something odd", cv_core::plain::TRY_ANOTHER_PLACE);
+        assert_eq!(unknown, "The file was not saved. Try again, or save somewhere else.\nDetails: something odd");
+        // Every cause and every update-check message has English.
+        for text in cv_core::plain::CAUSES.iter().chain(&[cv_ai::updates::OFFLINE, cv_ai::updates::DOWN, cv_ai::updates::LIMITED, cv_ai::updates::UNCLEAR]) {
+            assert!(english(text).is_some(), "{text}");
+        }
+        // A language pack translates the parts it knows.
+        let mut strings = BTreeMap::new();
+        strings.insert("Filen kunne ikke leses.".to_string(), "Die Datei konnte nicht gelesen werden.".to_string());
+        strings.insert("Detaljer: {detail}".to_string(), "Einzelheiten: {detail}".to_string());
+        let table = leak_table(&Pack { code: "de".into(), name: "Deutsch".into(), made_by: "test".into(), strings });
+        assert_eq!(dyn_text(Some(&table), "Filen kunne ikke leses. Prøv igjen, eller velg en annen fil."), "Die Datei konnte nicht gelesen werden. Try again, or choose another file.");
     }
 
     #[test]
@@ -2495,8 +2523,10 @@ mod tests {
     fn cv_core_messages_have_english() {
         set(Lang::En);
         let mut missing = Vec::new();
+        // A «Detaljer» line is the technical text, shown as it is.
         let mut check = |text: &str| {
-            if !translated(text) {
+            let (main, _) = cv_core::plain::split(text);
+            if !main.starts_with(cv_core::plain::DETAILS) && !translated(main) {
                 missing.push(text.to_string());
             }
         };
