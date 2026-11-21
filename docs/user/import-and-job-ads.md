@@ -89,7 +89,9 @@ This option is only available when an AI is connected (see
 A CV that uses the job ad's own words does better with both recruiters and
 applicant tracking systems (ATS). The first card in the form,
 **The job ad you are applying to**, is for this. The ad itself is never printed
-in your CV.
+in your CV. The ad is optional: while your CV has none, the card is a single
+line, **Applying for a specific job? Paste the ad here (optional)**. Click it to
+open the card, or use **Paste ad** on the **Home** tab.
 
 ### Three ways to bring in the ad
 

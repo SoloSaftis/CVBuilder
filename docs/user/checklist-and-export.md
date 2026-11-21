@@ -89,13 +89,14 @@ The **Before download** card is always shown, also with your own checklist.
 
 ## Downloading your CV
 
-You can download from **File** or from the **Home** tab:
+You can download from **File**, or from the **Download** group at the right end
+of the **Home** tab, where **Download PDF** is the blue button:
 
 - **Download PDF** – a PDF with real, searchable text. This is the form
   applicant tracking systems read most reliably.
 - **Download Word** – a Word file (`.docx`), for portals and recruiters that ask
   for Word.
-- **Copy text** (**File → Copy the CV as text**) – copies the CV as plain text,
+- **Copy text** (in the same group, or **File → Copy the CV as text**) – copies the CV as plain text,
   for job portals that ask you to paste your CV into a box.
 
 ### What happens when you click download

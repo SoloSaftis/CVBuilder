@@ -9,9 +9,10 @@ rest the mouse pointer on it to read what to write.
 
 From the top, the form has:
 
-1. **The job ad you are applying to** – paste the job ad here first. It is not
-   printed in the CV; it helps CVBuilder fill in the job title and find the
-   keywords. See [Importing an old CV and using the job ad](import-and-job-ads.md).
+1. **The job ad you are applying to** – optional. If you are applying for a
+   particular job, paste the ad here first. It is not printed in the CV; it
+   helps CVBuilder fill in the job title and find the keywords. Without an ad
+   the card is one line, so a new CV starts with your name. See [Importing an old CV and using the job ad](import-and-job-ads.md).
 2. **Contact details** – your name, headline, contact line and photo.
 3. **The CV's sections** – in the same order as in the CV.
 

@@ -267,6 +267,14 @@ pub fn tool_button<'a>(ui: &egui::Ui, icon: &str, text: &str, enabled: bool, car
     b.wrap_mode(egui::TextWrapMode::Extend).frame_when_inactive(false).corner_radius(CornerRadius::same(R_SM)).min_size(egui::vec2(0.0, 26.0))
 }
 
+/// The one filled tool in a ribbon tab (Download PDF): white on the accent, like `primary`.
+pub fn tool_button_filled<'a>(ui: &egui::Ui, icon: &str, text: &str) -> egui::Button<'a> {
+    let t = Tokens::get(ui.ctx());
+    let icon = egui::RichText::new(icon).family(icons()).size(17.0).color(t.on_accent);
+    let label = egui::RichText::new(text).size(13.0).color(t.on_accent).family(medium());
+    egui::Button::new((icon, label)).wrap_mode(egui::TextWrapMode::Extend).fill(t.accent_fill).stroke(Stroke::NONE).corner_radius(CornerRadius::same(R_SM)).min_size(egui::vec2(0.0, 26.0))
+}
+
 fn visuals(t: &Tokens, dark: bool) -> Visuals {
     let mut v = if dark { Visuals::dark() } else { Visuals::light() };
     let r = CornerRadius::same(R);
