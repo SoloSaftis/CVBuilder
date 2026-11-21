@@ -276,6 +276,23 @@ Som koordinator i Fjellvegg Bygg AS 2021 – nå".into()) },
             a.ai.choice = Some(cv_ai::Service::Claude);
         },
     },
+    Scene {
+        name: "Koble til lokal AI",
+        setup: |a| {
+            a.ai.connect_open = true;
+            a.ai.choice = Some(cv_ai::Service::Local);
+        },
+    },
+    // The AI panel with an AI connected: the intro above the suggestions, whole and wrapped.
+    Scene {
+        name: "AI-panelet tilkoblet",
+        setup: |a| {
+            a.settings.ai_service = Some(cv_ai::Service::Local);
+            a.settings.ai_model = "qwen3".into();
+            a.settings.chat_backend = "api".into();
+        },
+    },
+    Scene { name: "Bruk fra andre AI-apper", setup: |a| a.chat.mcp_help_open = true },
 ];
 
 fn harness(size: Vec2, setup: fn(&mut CvApp)) -> Harness<'static, CvApp> {
@@ -512,6 +529,38 @@ fn welcome_asks_how_to_start() {
     let mut h = harness(Vec2::new(1440.0, 900.0), welcome);
     click(&mut h, "Se et eksempel først");
     assert!(h.state().welcome.is_none() && h.state().is_example);
+}
+
+/// The AI panel's intro is read whole: it sits between the header and the first suggestion,
+/// inside the window, in a long language and a small window too. The header has no «MCP».
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn ai_intro_is_whole() {
+    let connected = |a: &mut CvApp| {
+        a.settings.ai_service = Some(cv_ai::Service::Local);
+        a.settings.ai_model = "qwen3".into();
+        a.settings.chat_backend = "api".into();
+    };
+    for lang in ["no", "de", "ta"] {
+        for size in [Vec2::new(1440.0, 900.0), Vec2::new(1100.0, 640.0)] {
+            private_data_folder(lang);
+            let h = harness(size, connected);
+            let ppp = h.ctx.pixels_per_point();
+            let rect = |text: &'static str| {
+                h.query_all(by().include_labels().predicate(move |n| n.label().or_else(|| n.value()).as_deref() == Some(i18n::t(text))))
+                    .find_map(|n| n.accesskit_node().bounding_box())
+                    .map(|b| Rect::from_min_max(Pos2::new(b.x0 as f32 / ppp, b.y0 as f32 / ppp), Pos2::new(b.x1 as f32 / ppp, b.y1 as f32 / ppp)))
+            };
+            let header = rect("Du snakker med").expect("header");
+            let intro = rect("AI-en endrer CV-en direkte. Du kan angre hver endring. Den finner aldri på fakta: mangler et tall, skriver den [tall] som du fyller inn.").expect("intro");
+            let first = rect("Skreddersy CV-en til stillingsannonsen").expect("first suggestion");
+            let at = format!("{lang} {}×{}", size.x, size.y);
+            assert!(intro.top() > header.bottom() && intro.bottom() <= first.top() + 1.0, "{at}: the intro {intro:?} is not between the header {header:?} and the suggestions {first:?}");
+            assert!(Rect::from_min_size(Pos2::ZERO, size).contains_rect(intro), "{at}: the intro {intro:?} runs out of the window");
+            assert!(!has_label(&h, "MCP"), "{at}: «MCP» is still in the AI panel");
+        }
+    }
+    i18n::set(i18n::Lang::No);
 }
 
 /// Opens the dropdown that now shows `value`, with a real click.

@@ -6,6 +6,7 @@
 pub use eframe::Result;
 
 mod ai_ui;
+mod appimage;
 mod browser;
 mod chat_ui;
 mod checklist_ui;
@@ -700,8 +701,12 @@ impl CvApp {
             if storage::portable() {
                 theme::pill(ui, i18n::t("Bærbar modus"), t.hover, t.dim).on_hover_text(i18n::t("Bærbar modus: alt lagres i mappen ved siden av programmet."));
             }
-            if self.link.is_some() {
-                theme::pill(ui, i18n::t("MCP på"), t.hover, t.dim).on_hover_text(i18n::t("AI-apper på denne maskinen kan koble til CVBuilder. Se «MCP» i AI-panelet."));
+            // Only while another AI app is really connected. Claude Code in the chat uses the same
+            // connection while it answers; that is the chat, not another app.
+            let claude_code_answering = self.chat.running && matches!(self.chat_backend(), Some(cv_ai::chat::Backend::ClaudeCode { .. }));
+            if self.link.as_ref().is_some_and(link::Link::connected) && !claude_code_answering {
+                theme::pill(ui, i18n::t("AI-app tilkoblet"), t.hover, t.dim)
+                    .on_hover_text(i18n::t("En annen AI-app på denne maskinen er koblet til og kan endre CV-en. Endringene vises i AI-panelet og kan angres der."));
             }
             ui.add_space(8.0);
             ui.with_layout(egui::Layout::left_to_right(egui::Align::Center), |ui| {
@@ -1276,6 +1281,9 @@ pub fn run() -> eframe::Result {
         link::serve_stdio();
         return Ok(());
     }
+    // Started from the AppImage: give GNOME a desktop entry and icon for the dock.
+    #[cfg(target_os = "linux")]
+    appimage::integrate();
     let options = eframe::NativeOptions {
         // The app id is the desktop file's name (cvbuilder.desktop): on Wayland it is how GNOME
         // and KDE find the icon and name for the window. Decorations are on explicitly: GNOME

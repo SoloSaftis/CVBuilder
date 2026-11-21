@@ -6,7 +6,7 @@ use cv_ai::{AiFailure, Endpoint, Keys, SERVICES, Service};
 use egui::RichText;
 
 use crate::CvApp;
-use crate::i18n;
+use crate::{i18n, theme};
 
 pub enum Outcome {
     Models(Service, Result<Vec<String>, AiFailure>),
@@ -112,7 +112,7 @@ impl CvApp {
                 }
             });
             let Some(service) = self.ai.choice else {
-                ui.label(RichText::new(i18n::t("Velg tjenesten du har en API-nøkkel til.")).weak());
+                ui.label(RichText::new(i18n::t("Velg AI-tjenesten du vil bruke.")).weak());
                 return;
             };
             ui.add_space(4.0);
@@ -120,6 +120,8 @@ impl CvApp {
                 self.local_steps(ui);
                 return;
             }
+            theme::hint(ui, i18n::t("En API-nøkkel er en lang kode du lager på kontoen din hos AI-tjenesten. Med den kan CVBuilder bruke AI-en for deg, uten passordet ditt."));
+            ui.add_space(2.0);
             // The link on its own line: wrapped after the text it was split in two and hard to hit.
             ui.label(i18n::tf("1. Lag en API-nøkkel hos {company}:", &[("company", service.company())]));
             ui.indent("key-link", |ui| {
@@ -170,7 +172,7 @@ impl CvApp {
                     }
                 })
                 .response
-                .on_hover_text(i18n::t("Modellen chatten bruker. Større modeller svarer ofte bedre, men tregere."));
+                .on_hover_text(i18n::t("Hvilken versjon av AI-en chatten bruker. Større modeller svarer ofte bedre, men tregere."));
             }
             ui.add_space(6.0);
             if ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)")).clicked() {
@@ -189,7 +191,7 @@ impl CvApp {
         if self.ai.local_url.is_empty() {
             self.ai.local_url = if self.settings.local_url.is_empty() { service.base_url().to_string() } else { self.settings.local_url.clone() };
         }
-        ui.add(egui::Label::new(i18n::t("Bruk en AI-modell som kjører på din egen maskin, for eksempel med Ollama eller LM Studio. Ingen nøkkel og ingen kostnad, og CV-en forlater ikke maskinen. Modellen endrer CV-en med de samme verktøyene (MCP-verktøyene til CVBuilder) som de andre tjenestene.")).wrap());
+        ui.add(egui::Label::new(i18n::t("Bruk en AI-modell som kjører på din egen maskin, for eksempel med Ollama eller LM Studio. Ingen nøkkel og ingen kostnad, og CV-en forlater ikke maskinen. Modellen endrer CV-en på samme måte som de andre tjenestene.")).wrap());
         ui.add_space(4.0);
         ui.horizontal_wrapped(|ui| {
             ui.label(i18n::t("Har du ikke en lokal server?"));
@@ -197,7 +199,7 @@ impl CvApp {
             ui.label(i18n::t("og kjør for eksempel «ollama pull qwen3»."));
         });
         ui.add_space(6.0);
-        ui.label(i18n::t("1. Adressen til serveren (OpenAI-kompatibel, slutter vanligvis på /v1):"));
+        ui.label(i18n::t("1. Adressen til AI-programmet (slutter vanligvis på /v1). Knappene under fyller den inn:"));
         ui.add(egui::TextEdit::singleline(&mut self.ai.local_url).hint_text("http://localhost:11434/v1").desired_width(f32::INFINITY))
             .on_hover_text(i18n::t("Adressen til den lokale serveren. Ollama bruker http://localhost:11434/v1."));
         ui.horizontal_wrapped(|ui| {
@@ -276,7 +278,7 @@ impl CvApp {
                     }
                 })
                 .response
-                .on_hover_text(i18n::t("Modellen chatten bruker. Større modeller svarer ofte bedre, men tregere."));
+                .on_hover_text(i18n::t("Hvilken versjon av AI-en chatten bruker. Større modeller svarer ofte bedre, men tregere."));
         }
     }
 }
