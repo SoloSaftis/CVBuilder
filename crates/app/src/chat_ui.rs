@@ -152,7 +152,7 @@ impl CvApp {
             self.chat.history_owner = owner;
         }
         if matches!(backend, Backend::ClaudeCode { .. }) && self.link.is_none() {
-            self.chat.items.push(Item::Note { text: i18n::t("MCP-forbindelsen kunne ikke startes på denne maskinen, så Claude Code kan ikke endre CV-en.").into(), error: true });
+            self.chat.items.push(Item::Note { text: i18n::t("Claude Code fikk ikke kontakt med CVBuilder på denne maskinen, så det kan svare, men ikke endre CV-en.").into(), error: true });
         }
         self.chat.items.push(Item::User(text.clone()));
         let (event_tx, event_rx) = channel();
@@ -302,9 +302,6 @@ impl CvApp {
         ui.horizontal(|ui| {
             theme::label(ui, i18n::t("Du snakker med"));
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                if theme::ghost(ui, "MCP", i18n::t("Bruk CVBuilder fra Claude Code, Claude Desktop eller en annen AI-app")).clicked() {
-                    self.chat.mcp_help_open = true;
-                }
                 if !self.chat.items.is_empty() && !self.chat.running && theme::ghost(ui, i18n::t("Ny samtale"), i18n::t("Start en ny samtale. CV-en endres ikke.")).clicked() {
                     self.chat.items.clear();
                     self.chat.history = History::default();
@@ -314,12 +311,32 @@ impl CvApp {
         self.backend_picker(ui, backend.as_ref());
         ui.add_space(4.0);
         let composer_h = ui.data(|d| d.get_temp::<f32>(egui::Id::unique("cvbuilder.composer-h"))).unwrap_or(120.0);
+        // The intro stays above the list and never scrolls, so it is read whole, from the start,
+        // however narrow the panel and however long the language. In a low window that would
+        // push the input field out of the panel; then it is the first thing in the list, which
+        // starts at the top until a conversation begins.
+        let intro_id = egui::Id::unique("cvbuilder.chat-intro-h");
+        let intro_h = ui.data(|d| d.get_temp::<f32>(intro_id)).unwrap_or(90.0);
+        let empty = self.chat.items.is_empty();
+        let intro_fixed = empty && ui.available_height() - intro_h - composer_h - 8.0 >= 150.0;
+        if intro_fixed {
+            let top = ui.cursor().top();
+            intro(ui, &t);
+            ui.data_mut(|d| d.insert_temp(intro_id, ui.cursor().top() - top));
+        }
         let feed_h = (ui.available_height() - composer_h - 8.0).max(80.0);
         let mut send: Option<String> = None;
         let mut undo: Option<usize> = None;
-        egui::ScrollArea::vertical().id_salt("chat-feed").max_height(feed_h).min_scrolled_height(feed_h).auto_shrink([false, false]).stick_to_bottom(true).show(ui, |ui| {
+        // The suggestions read from the top; a conversation follows its newest message.
+        let follow = !self.chat.items.is_empty();
+        egui::ScrollArea::vertical().id_salt("chat-feed").max_height(feed_h).min_scrolled_height(feed_h).auto_shrink([false, false]).stick_to_bottom(follow).show(ui, |ui| {
             ui.set_width(ui.available_width());
-            if self.chat.items.is_empty() {
+            if empty {
+                if !intro_fixed {
+                    let top = ui.cursor().top();
+                    intro(ui, &t);
+                    ui.data_mut(|d| d.insert_temp(intro_id, ui.cursor().top() - top));
+                }
                 self.greeting(ui, backend.is_some(), &mut send);
             }
             for (i, item) in self.chat.items.iter().enumerate() {
@@ -388,7 +405,7 @@ impl CvApp {
                     }
                     if self.chat.claude_code.is_some()
                         && ui
-                            .selectable_label(matches!(backend, Some(Backend::ClaudeCode { .. })), i18n::t("Claude Code · din egen innlogging, via MCP"))
+                            .selectable_label(matches!(backend, Some(Backend::ClaudeCode { .. })), i18n::t("Claude Code · din egen innlogging"))
                             .on_hover_text(i18n::t("Bruk Claude Code på denne maskinen, med kontoen du er logget inn med"))
                             .clicked()
                     {
@@ -396,7 +413,7 @@ impl CvApp {
                         crate::storage::save_settings(&self.settings);
                     }
                     ui.separator();
-                    if ui.selectable_label(false, i18n::t("Koble til AI-tjeneste med API-nøkkel …")).on_hover_text(i18n::t("Velg en AI-tjeneste og legg inn API-nøkkelen din")).clicked() {
+                    if ui.selectable_label(false, i18n::t("Koble til AI …")).on_hover_text(i18n::t("Velg en AI-tjeneste og legg inn API-nøkkelen din")).clicked() {
                         self.ai.connect_open = true;
                         self.ai.choice = self.settings.ai_service.or(Some(cv_ai::Service::Claude));
                     }
@@ -413,22 +430,12 @@ impl CvApp {
 
     fn greeting(&mut self, ui: &mut egui::Ui, connected: bool, send: &mut Option<String>) {
         let t = Tokens::get(ui.ctx());
-        ui.add_space(18.0);
-        ui.label(RichText::new(i18n::t("Hva vil du gjøre med CV-en?")).size(18.0).family(theme::bold()).color(t.text));
-        ui.add_space(2.0);
-        ui.add(
-            egui::Label::new(
-                RichText::new(i18n::t("Skriv med egne ord. AI-en endrer CV-en direkte, du ser endringene med en gang, og kan angre dem. Den finner aldri på fakta: der et tall mangler, skriver den [tall] som du fyller inn."))
-                    .color(t.dim),
-            )
-            .wrap(),
-        );
-        ui.add_space(12.0);
+        ui.add_space(4.0);
         if !connected {
             theme::card(ui).show(ui, |ui| {
                 ui.set_width(ui.available_width());
-                ui.label(RichText::new(i18n::t("Koble til en AI først")).family(theme::medium()));
-                theme::hint(ui, i18n::t("Bruk Claude, ChatGPT, Gemini eller Grok med din egen API-nøkkel. Har du Claude Code installert, kan du bruke det i stedet."));
+                ui.add(egui::Label::new(RichText::new(i18n::t("Koble til en AI først")).family(theme::medium())).wrap());
+                theme::hint(ui, i18n::t("Bruk Claude, ChatGPT, Gemini, Grok eller en AI på din egen maskin. Vinduet viser deg hvert steg."));
                 ui.add_space(4.0);
                 if theme::primary(ui, i18n::t("Koble til AI …"), i18n::t("Velg en AI-tjeneste og legg inn API-nøkkelen din"), true).clicked() {
                     self.ai.connect_open = true;
@@ -504,7 +511,7 @@ impl CvApp {
             ui.add_space(4.0);
             ui.add(
                 egui::Label::new(
-                    i18n::t("CVBuilder er en MCP-server. AI-apper som støtter MCP, som Claude Code og Claude Desktop, kan lese og endre CV-en som er åpen her, og du ser endringene med en gang. Hver endring kan angres i chatten."),
+                    i18n::t("AI-apper på denne maskinen, som Claude Code og Claude Desktop, kan lese og endre CV-en som er åpen her. Du ser endringene med en gang, og hver endring kan angres i AI-panelet. Appen må støtte MCP, en felles måte for AI-apper å bruke andre programmer på."),
                 )
                 .wrap(),
             );
@@ -517,7 +524,7 @@ impl CvApp {
             theme::label(ui, i18n::t("Andre apper (f.eks. Claude Desktop): legg dette inn i MCP-innstillingene"));
             code_box(ui, &snippet, &t);
             ui.add_space(6.0);
-            theme::hint(ui, i18n::t("CVBuilder må være åpent mens AI-appen jobber. Forbindelsen går bare på denne maskinen (127.0.0.1) og krever en nøkkel som bare CVBuilder kjenner."));
+            theme::hint(ui, i18n::t("CVBuilder må være åpent mens AI-appen jobber. Forbindelsen går bare på denne maskinen og er låst med en kode som bare CVBuilder kjenner."));
             ui.add_space(8.0);
             let default = ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk vinduet (Esc)"));
             crate::shortcuts::default_button(ui, &default);
@@ -529,6 +536,20 @@ impl CvApp {
             self.chat.mcp_help_open = false;
         }
     }
+}
+
+/// What the AI does, in three short sentences, above the suggestions. Every line wraps.
+fn intro(ui: &mut egui::Ui, t: &Tokens) {
+    ui.add_space(10.0);
+    ui.add(egui::Label::new(RichText::new(i18n::t("Hva vil du gjøre med CV-en?")).size(18.0).family(theme::bold()).color(t.text)).wrap());
+    ui.add_space(2.0);
+    ui.add(
+        egui::Label::new(
+            RichText::new(i18n::t("AI-en endrer CV-en direkte. Du kan angre hver endring. Den finner aldri på fakta: mangler et tall, skriver den [tall] som du fyller inn.")).color(t.dim),
+        )
+        .wrap(),
+    );
+    ui.add_space(6.0);
 }
 
 fn code_box(ui: &mut egui::Ui, text: &str, t: &Tokens) {
@@ -579,7 +600,7 @@ fn item_ui(ui: &mut egui::Ui, item: &Item, index: usize, undo: &mut Option<usize
             ui.add_space(4.0);
             egui::Frame::new().fill(t.accent_soft).corner_radius(CornerRadius::same(theme::R_LG)).inner_margin(Margin::same(12)).show(ui, |ui| {
                 ui.set_width(ui.available_width());
-                let title = if *external { i18n::t("Endret av en AI-app over MCP") } else { i18n::t("Endringer i CV-en") };
+                let title = if *external { i18n::t("Endret av en annen AI-app") } else { i18n::t("Endringer i CV-en") };
                 ui.label(RichText::new(title).family(theme::medium()).color(t.text));
                 for l in lines {
                     // Indented, with the bullet in the margin, so long lines wrap to the panel.
