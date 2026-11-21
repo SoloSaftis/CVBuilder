@@ -202,7 +202,7 @@ pub fn parse(text: &str) -> Result<Checklist, String> {
     }
     // Notepad on Windows saves UTF-8 with a byte-order mark, which JSON readers refuse.
     let text = text.strip_prefix('\u{feff}').unwrap_or(text);
-    let mut list: Checklist = serde_json::from_str(text).map_err(|e| format!("Filen er ikke en CVBuilder-sjekkliste: {e}"))?;
+    let mut list: Checklist = serde_json::from_str(text).map_err(|e| crate::plain::with_details("Filen er ikke en CVBuilder-sjekkliste, eller den er skadet. Velg en fil som slutter på .cvchecklist.json.", &e.to_string()))?;
     list.repair_ids();
     if list.name.trim().is_empty() {
         list.name = Checklist::default().name;
@@ -216,7 +216,7 @@ pub fn parse_bytes(bytes: &[u8]) -> Result<Checklist, String> {
     if bytes.len() > MAX_FILE_BYTES {
         return Err("Filen er for stor til å være en CVBuilder-sjekkliste.".into());
     }
-    let text = std::str::from_utf8(bytes).map_err(|_| "Filen er ikke en CVBuilder-sjekkliste: den er ikke tekst i UTF-8.".to_string())?;
+    let text = std::str::from_utf8(bytes).map_err(|_| crate::plain::with_details("Filen er ikke en CVBuilder-sjekkliste, eller den er skadet. Velg en fil som slutter på .cvchecklist.json.", "not UTF-8 text"))?;
     parse(text)
 }
 

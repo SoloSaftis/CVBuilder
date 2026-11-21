@@ -240,6 +240,15 @@ const SCENES: &[Scene] = &[
         },
     },
     Scene { name: "Alle seksjoner åpne", setup: |a| a.folded.clear() },
+    // A CV without a job ad: the ad card is one line and the contact details come first (028).
+    Scene { name: "Tom CV", setup: |a| a.load(cv_core::Project::default(), false) },
+    Scene {
+        name: "Tom CV med annonsefeltene",
+        setup: |a| {
+            a.load(cv_core::Project::default(), false);
+            a.ad_open = true;
+        },
+    },
     Scene { name: "Oversett-vinduet", setup: |a| a.open_translate(None) },
     Scene { name: "Innstillinger", setup: |a| a.settings_open = true },
     Scene { name: "Ny seksjon", setup: |a| a.new_section = Some(String::new()) },
@@ -250,7 +259,14 @@ const SCENES: &[Scene] = &[
         name: "Oppdatering finnes",
         setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Ok(cv_ai::updates::Release { version: "9.9.9".into(), page: cv_ai::updates::RELEASES_PAGE.into() }))),
     },
-    Scene { name: "Sjekk feilet", setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Err("GitHub answered 503".into()))) },
+    Scene { name: "Sjekk feilet", setup: |a| a.update_check = Some(crate::updates_ui::UpdateCheck::Done(Err(cv_ai::updates::failure(Some(503), "GitHub answered 503")))) },
+    // A save that failed: the plain message in the status bar, the technical text on hover.
+    Scene {
+        name: "Lagring feilet",
+        setup: |a| {
+            a.status = crate::i18n::failed(crate::i18n::t("Utkastet ble ikke lagret."), "Access is denied. (os error 5)", cv_core::plain::TRY_ANOTHER_PLACE);
+        },
+    },
     Scene {
         name: "Lagre før lukking",
         setup: |a| {
@@ -536,6 +552,51 @@ fn welcome_asks_how_to_start() {
     let mut h = harness(Vec2::new(1440.0, 900.0), welcome);
     click(&mut h, "Se et eksempel først");
     assert!(h.state().welcome.is_none() && h.state().is_example);
+}
+
+/// A CV without a job ad starts with the name: the ad card is one line until it is clicked, and
+/// the example (which has an ad) shows the whole card. Download PDF has its own group, last on
+/// Home, and can be seen without scrolling the ribbon (028).
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn form_starts_with_the_name_without_an_ad() {
+    let line = "Søker du på en bestemt jobb? Lim inn annonsen her (valgfritt)";
+    private_data_folder("no");
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.load(cv_core::Project::default(), false));
+    assert!(has_label(&h, line), "no one-line job-ad card on an empty CV");
+    assert!(!has_label(&h, "Lenke til annonsen"), "the ad fields show on an empty CV");
+    assert!(has_label(&h, "Start her: navnet ditt og hvordan en arbeidsgiver når deg."), "no «start here» on the contact details");
+    // Above the name, and the name is in the first screen of the form.
+    let top = |h: &Harness<'_, CvApp>, l: &str| h.query_all(by().include_labels().predicate(|n| n.label().as_deref() == Some(l) || n.value().as_deref() == Some(l))).next().map(|n| n.rect().min.y).unwrap_or_else(|| panic!("no «{l}»"));
+    let name = top(&h, "Fullt navn");
+    assert!(top(&h, line) < name && name < 400.0, "the name is not near the top of the form ({name})");
+    click(&mut h, line);
+    assert!(h.state().ad_open && has_label(&h, "Lenke til annonsen"), "a click on the line did not open the ad card");
+    // Folded while still empty: back to one line.
+    click(&mut h, "Klikk for å skjule annonsefeltene");
+    assert!(has_label(&h, line), "folding the empty ad card did not make it one line again");
+    // «Lim inn annonse» on the ribbon opens it too.
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.load(cv_core::Project::default(), false));
+    let ctx = h.ctx.clone();
+    h.state_mut().run_action(&ctx, crate::menu_ui::Action::PasteAd);
+    step(&mut h, 4);
+    assert!(has_label(&h, "Lenke til annonsen"), "«Lim inn annonse» did not open the ad card");
+    // The example has an ad: the whole card.
+    let h = harness(Vec2::new(1440.0, 900.0), |_| {});
+    assert!(has_label(&h, "Lenke til annonsen") && !has_label(&h, line), "the example's ad card is not shown in full");
+    // Download PDF: in view in every language and window size the screen check uses.
+    let langs: Vec<String> = std::env::var("CVBUILDER_QA_LANGS").map(|s| s.split(',').map(String::from).collect()).unwrap_or_else(|_| vec!["no".into(), "en".into()]);
+    for lang in &langs {
+        private_data_folder(lang);
+        for size in [Vec2::new(1440.0, 900.0), Vec2::new(1100.0, 640.0)] {
+            let h = harness(size, |_| {});
+            let pdf = i18n::t("Last ned PDF");
+            let r = h.query_all(by().include_labels().predicate(|n| n.role() == Role::Button && n.label().is_some_and(|l| l.ends_with(pdf)))).next().map(|n| n.rect()).unwrap_or_else(|| panic!("{lang}: no «{pdf}» button"));
+            println!("{lang} {}: «{pdf}» at {:.0}–{:.0}", size.x, r.min.x, r.max.x);
+            assert!(r.max.x <= size.x - 8.0, "{lang} at {}: «{pdf}» is outside the window ({:.0})", size.x, r.max.x);
+        }
+    }
+    i18n::set(i18n::Lang::No);
 }
 
 /// The AI panel's intro is read whole: it sits between the header and the first suggestion,

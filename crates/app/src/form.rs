@@ -163,9 +163,16 @@ impl CvApp {
 
     fn contact_card(&mut self, ui: &mut egui::Ui, changed: &mut bool) {
         let t = Tokens::get(ui.ctx());
-        theme::card(ui).show(ui, |ui| {
+        // With no ad and no name yet, this is the first step: say so, and mark it like the ad
+        // card is marked when it comes first.
+        let first = self.ad_compact() && self.project.candidate.name.trim().is_empty();
+        let card = if first { theme::card(ui).stroke(Stroke::new(1.5, t.accent)) } else { theme::card(ui) };
+        card.show(ui, |ui| {
             ui.set_width(ui.available_width());
             theme::section_title(ui, i18n::t("Kontaktinformasjon"));
+            if first {
+                theme::hint(ui, i18n::t("Start her: navnet ditt og hvordan en arbeidsgiver når deg."));
+            }
             ui.add_space(4.0);
             ui.horizontal_top(|ui| {
                 self.portrait(ui, changed);
@@ -292,8 +299,30 @@ impl CvApp {
     /// the CV already shows to the skills.
     fn target_card(&mut self, ui: &mut egui::Ui, changed: &mut bool) {
         let key = "target";
-        let open = !self.folded.contains(key);
         let t = Tokens::get(ui.ctx());
+        // No ad yet: one line, so a CV without a particular job in mind starts with the name
+        // (028). It opens for good once clicked, or when the ribbon goes to the ad.
+        if self.ad_compact() {
+            let text = i18n::t("Søker du på en bestemt jobb? Lim inn annonsen her (valgfritt)");
+            let r = egui::Frame::new().fill(t.card).stroke(Stroke::new(1.0, t.border)).corner_radius(CornerRadius::same(theme::R_LG)).inner_margin(Margin::symmetric(16, 10)).show(ui, |ui| {
+                ui.set_width(ui.available_width());
+                ui.horizontal(|ui| {
+                    ui.label(RichText::new("+").size(16.0).color(t.faint));
+                    ui.add(egui::Label::new(RichText::new(text).size(13.5).color(t.dim)).wrap());
+                });
+            });
+            let tip = i18n::t("Vis feltene for stillingsannonsen");
+            let click = ui.interact(r.response.rect, ui.scope_id().with("open-target"), egui::Sense::click());
+            if theme::named(click, text).on_hover_cursor(egui::CursorIcon::PointingHand).on_hover_text(tip).clicked() {
+                self.ad_open = true;
+                self.folded.remove(key);
+            }
+            ui.add_space(10.0);
+            return;
+        }
+        // Shown in full once: it stays so, even if the ad is cleared while typing.
+        self.ad_open = true;
+        let open = !self.folded.contains(key);
         egui::Frame::new().fill(t.card).stroke(Stroke::new(1.5, t.accent)).corner_radius(CornerRadius::same(theme::R_LG)).inner_margin(Margin::same(16)).show(ui, |ui| {
             ui.set_width(ui.available_width());
             let header = ui.horizontal(|ui| {
@@ -302,7 +331,10 @@ impl CvApp {
             });
             let fold_tip = if open { i18n::t("Klikk for å skjule annonsefeltene") } else { i18n::t("Klikk for å vise annonsefeltene") };
             if theme::named(ui.interact(header.response.rect, ui.scope_id().with("fold-target"), egui::Sense::click()), fold_tip).on_hover_cursor(egui::CursorIcon::PointingHand).on_hover_text(fold_tip).clicked() {
-                if open {
+                if open && target_is_empty(&self.project.target) {
+                    // Still no ad: back to the one line.
+                    self.ad_open = false;
+                } else if open {
                     self.folded.insert(key.into());
                 } else {
                     self.folded.remove(key);
@@ -382,6 +414,11 @@ impl CvApp {
             }
         });
         ui.add_space(10.0);
+    }
+
+    /// The job-ad card as one line: the CV has no ad and the person has not opened the card.
+    pub(crate) fn ad_compact(&self) -> bool {
+        !self.ad_open && target_is_empty(&self.project.target) && self.import.busy.is_none() && self.import.ad_note.is_empty() && !self.import.focus_ad
     }
 
     // ---------- the sections ----------
@@ -862,4 +899,9 @@ fn pair(ui: &mut egui::Ui, mut field: impl FnMut(&mut egui::Ui, usize)) {
         field(ui, 0);
         field(ui, 1);
     }
+}
+
+/// Nothing about a job ad in the CV yet.
+fn target_is_empty(t: &cv_core::model::Target) -> bool {
+    t.role.trim().is_empty() && t.company.trim().is_empty() && t.url.trim().is_empty() && t.description.trim().is_empty() && t.keywords.iter().all(|k| k.trim().is_empty())
 }

@@ -155,7 +155,7 @@ fn load_packs() -> Vec<Pack> {
 
 fn pack_error(e: &PackError) -> String {
     match e {
-        PackError::NotJson(e) => i18n::tf("Filen er ikke gyldig JSON: {e}", &[("e", e)]),
+        PackError::NotJson(e) => i18n::details(i18n::t("Filen er ikke en CVBuilder-språkfil, eller den er skadet. Velg en fil som slutter på .cvlang.json, eller lag en ny fra malen."), e),
         PackError::Format => i18n::tf("Filen er ikke en CVBuilder-språkfil (feltet «format» må være «{format}»).", &[("format", i18n::PACK_FORMAT)]),
         PackError::NoName => i18n::t("Fyll inn språkets navn i feltet «name».").to_string(),
         PackError::BadCode(c) if c.is_empty() => i18n::t("Fyll inn språkkoden i feltet «code», for eksempel de eller pt-BR.").to_string(),
@@ -252,7 +252,7 @@ pub(crate) fn translate_all(
                 Ok(reply) => match extract_json(&reply) {
                     Some(map) => map,
                     None => {
-                        error = Some(i18n::t("AI-en svarte ikke med JSON.").to_string());
+                        error = Some(i18n::t("AI-en svarte, men ikke i formatet CVBuilder trenger. Prøv igjen, eller velg en annen modell.").to_string());
                         continue;
                     }
                 },
@@ -583,7 +583,7 @@ impl CvApp {
                 }
                 if let Some(e) = save_error {
                     message.push(' ');
-                    message.push_str(&i18n::tf("Kunne ikke lagre språkfilen: {e}", &[("e", &e)]));
+                    message.push_str(&i18n::failed(i18n::t("Språkfilen ble ikke lagret."), &e, cv_core::plain::TRY_AGAIN));
                 }
                 if !pack.strings.is_empty() {
                     self.langs.packs.retain(|p| p.code != pack.code);
@@ -595,7 +595,7 @@ impl CvApp {
                 }
                 self.langs.message = Some(message);
             }
-            Progress::Failed(e) => self.langs.message = Some(i18n::tf("Oversettelsen til {name} feilet: {e}", &[("name", &name), ("e", &e)])),
+            Progress::Failed(e) => self.langs.message = Some(i18n::tf("Oversettelsen til {name} ble ikke ferdig. {why}", &[("name", &name), ("why", &e)])),
             Progress::Saved { .. } => {}
         }
         ctx.request_repaint();
@@ -812,7 +812,7 @@ impl CvApp {
         let saved = storage::save_language(&pack.code, &i18n::pack_to_json(pack));
         let mut message = match saved {
             Ok(_) => i18n::tf("{name} er lagret.", &[("name", &pack.name)]),
-            Err(e) => i18n::tf("Kunne ikke lagre språkfilen: {e}", &[("e", &e)]),
+            Err(e) => i18n::failed(i18n::t("Språkfilen ble ikke lagret."), &e, cv_core::plain::TRY_AGAIN),
         };
         if skipped > 0 {
             message.push(' ');
@@ -836,7 +836,7 @@ impl CvApp {
                 i18n::apply(&self.settings.ui_language, &self.langs.packs);
                 self.langs.message = Some(i18n::tf("{name} er slettet.", &[("name", &name)]));
             }
-            Err(e) => self.langs.message = Some(i18n::tf("Kunne ikke slette språkfilen: {e}", &[("e", &e)])),
+            Err(e) => self.langs.message = Some(i18n::failed(i18n::t("Språkfilen ble ikke slettet."), &e, cv_core::plain::TRY_AGAIN)),
         }
     }
 
@@ -863,12 +863,12 @@ impl CvApp {
         let message = match pick {
             LangPick::Template(path) => match std::fs::write(&path, i18n::template_json()) {
                 Ok(()) => i18n::tf("Malen er lagret: {path}. Oversett verdiene, fyll inn «code» og «name», og importer filen.", &[("path", &path.display().to_string())]),
-                Err(e) => i18n::tf("Kunne ikke lagre filen: {e}", &[("e", &e.to_string())]),
+                Err(e) => i18n::failed(i18n::t("Filen ble ikke lagret."), &e.to_string(), cv_core::plain::TRY_ANOTHER_PLACE),
             },
             LangPick::Export(code, path) => match self.langs.packs.iter().find(|p| p.code == code) {
                 Some(pack) => match std::fs::write(&path, i18n::pack_to_json(pack)) {
                     Ok(()) => i18n::tf("Språket er lagret: {path}", &[("path", &path.display().to_string())]),
-                    Err(e) => i18n::tf("Kunne ikke lagre filen: {e}", &[("e", &e.to_string())]),
+                    Err(e) => i18n::failed(i18n::t("Filen ble ikke lagret."), &e.to_string(), cv_core::plain::TRY_ANOTHER_PLACE),
                 },
                 None => return,
             },
@@ -880,7 +880,7 @@ impl CvApp {
     fn import_language(&mut self, path: &std::path::Path) -> String {
         let text = match std::fs::read_to_string(path) {
             Ok(t) => t,
-            Err(e) => return i18n::tf("Kunne ikke lese filen: {e}", &[("e", &e.to_string())]),
+            Err(e) => return i18n::tdyn(&cv_core::import::unreadable(&e)),
         };
         let checked = match i18n::parse_pack(&text) {
             Ok(c) => c,
@@ -888,7 +888,7 @@ impl CvApp {
         };
         let pack = checked.pack;
         if let Err(e) = storage::save_language(&pack.code, &i18n::pack_to_json(&pack)) {
-            return i18n::tf("Kunne ikke lagre språkfilen: {e}", &[("e", &e)]);
+            return i18n::failed(i18n::t("Språkfilen ble ikke lagret."), &e, cv_core::plain::TRY_AGAIN);
         }
         let mut message = i18n::tf("{name} er importert med {n} tekster.", &[("name", &pack.name), ("n", &pack.strings.len().to_string())]);
         if checked.dropped > 0 {

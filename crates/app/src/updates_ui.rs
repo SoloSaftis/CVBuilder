@@ -46,11 +46,14 @@ impl CvApp {
             }
         }
         let mut close = false;
+        let mut again = false;
         let r = egui::Modal::new(egui::Id::unique("cvbuilder.updates")).show(ctx, |ui| {
             ui.set_max_width(440.0);
             ui.label(RichText::new(i18n::t("Se etter oppdateringer")).size(18.0).family(theme::bold()));
             ui.add_space(8.0);
             let mut link: Option<(String, &'static str)> = None;
+            // The check failed: «Prøv igjen» is the main button, the download page comes second.
+            let mut failed = false;
             match check {
                 UpdateCheck::Checking(_) => {
                     ui.horizontal(|ui| {
@@ -59,7 +62,13 @@ impl CvApp {
                     });
                 }
                 UpdateCheck::Done(Err(e)) => {
-                    ui.label(i18n::tf("Fikk ikke sjekket: {error}", &[("error", e)]));
+                    let (text, technical) = cv_core::plain::split(e);
+                    ui.label(i18n::tdyn(text));
+                    if let Some(technical) = technical {
+                        ui.add_space(4.0);
+                        theme::hint(ui, &i18n::tf("Detaljer: {detail}", &[("detail", technical)]));
+                    }
+                    failed = true;
                     link = Some((cv_ai::updates::RELEASES_PAGE.to_string(), i18n::t("Åpne nedlastingssiden")));
                 }
                 UpdateCheck::Done(Ok(release)) if cv_ai::updates::is_newer(&release.version, VERSION) => {
@@ -79,8 +88,13 @@ impl CvApp {
             }
             ui.add_space(12.0);
             ui.horizontal(|ui| {
+                if failed && theme::primary(ui, i18n::t("Prøv igjen"), i18n::t("Spør GitHub på nytt om den nyeste versjonen"), true).clicked() {
+                    again = true;
+                }
                 if let Some((url, label)) = &link {
-                    if theme::primary(ui, label, i18n::t("Åpner siden i nettleseren. Ingenting lastes ned av seg selv."), true).clicked() {
+                    let tip = i18n::t("Åpner siden i nettleseren. Ingenting lastes ned av seg selv.");
+                    let open = if failed { ui.button(*label).on_hover_text(tip) } else { theme::primary(ui, label, tip, true) };
+                    if open.clicked() {
                         ui.ctx().open_url(egui::OpenUrl::new_tab(url));
                     }
                 }
@@ -91,7 +105,9 @@ impl CvApp {
                 }
             });
         });
-        if close || r.should_close() {
+        if again {
+            self.update_check = Some(UpdateCheck::start(ctx));
+        } else if close || r.should_close() {
             self.update_check = None;
         }
     }

@@ -111,8 +111,35 @@ fn export_tip(kind: Export, blocked: bool) -> String {
     if blocked { format!("{what}\n\n{}", i18n::t("Se «Sjekkliste» for hva som mangler før nedlasting.")) } else { what.to_string() }
 }
 
+/// The finished CV, in its own group with the one filled button on Home, so the goal is found
+/// without looking (028). While something is missing, a click shows what.
+fn download_group(ui: &mut egui::Ui, action: &mut Option<Action>, blocked: bool) {
+    // A line before it, since the groups before it may be scrolled away underneath.
+    let t = Tokens::get(ui.ctx());
+    let (rect, _) = ui.allocate_exact_size(egui::vec2(13.0, 74.0), egui::Sense::hover());
+    ui.painter().line_segment([rect.center_top() + egui::vec2(0.0, 6.0), rect.center_bottom()], Stroke::new(1.0, t.border));
+    group_with(ui, i18n::t("Last ned"), false, |ui| {
+        // One column, so the group is narrow enough to keep the others in view.
+        column(ui, |ui| {
+            let b = theme::tool_button_filled(ui, theme::ph::FILE_PDF, i18n::t("Last ned PDF"));
+            let tip = shortcuts::tip(ui.ctx(), &export_tip(Export::Pdf, blocked), &shortcuts::PDF);
+            if ui.add(b).on_hover_text(tip).clicked() {
+                *action = Some(Action::Export(Export::Pdf));
+            }
+            if tool(ui, theme::ph::FILE_DOC, i18n::t("Last ned Word"), &export_tip(Export::Word, blocked), true) {
+                *action = Some(Action::Export(Export::Word));
+            }
+        });
+    });
+}
+
 /// One group of tools with its name underneath and a thin line after it, like Word.
 pub(crate) fn group(ui: &mut egui::Ui, name: &str, body: impl FnOnce(&mut egui::Ui)) {
+    group_with(ui, name, true, body);
+}
+
+/// A group, with or without the line after it (the last group before the Download group).
+fn group_with(ui: &mut egui::Ui, name: &str, line_after: bool, body: impl FnOnce(&mut egui::Ui)) {
     let t = Tokens::get(ui.ctx());
     ui.vertical(|ui| {
         // Tools on top, the group's name at the same height in every group.
@@ -126,6 +153,9 @@ pub(crate) fn group(ui: &mut egui::Ui, name: &str, body: impl FnOnce(&mut egui::
             ui.add(egui::Label::new(RichText::new(name).size(11.5).color(t.faint)).wrap_mode(egui::TextWrapMode::Extend));
         });
     });
+    if !line_after {
+        return;
+    }
     let (rect, _) = ui.allocate_exact_size(egui::vec2(13.0, 74.0), egui::Sense::hover());
     ui.painter().line_segment([rect.center_top() + egui::vec2(0.0, 6.0), rect.center_bottom()], Stroke::new(1.0, t.border));
 }
@@ -255,40 +285,53 @@ impl CvApp {
         egui::Frame::new().fill(t.card).stroke(Stroke::new(1.0, t.border)).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin { left: 10, right: 10, top: 6, bottom: 4 }).show(ui, |ui| {
             ui.set_width(ui.available_width());
             ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Extend);
-            egui::ScrollArea::horizontal().id_salt("ribbon-scroll").show(ui, |ui| {
-                ui.horizontal_top(|ui| match self.ribbon_tab {
-                    Tab::Home => self.home_tab(ui, &mut action, blocked),
-                    Tab::Insert => self.insert_tab(ui, &mut action),
-                    Tab::Page => self.page_tab(ui),
-                    Tab::Design => self.design_tab(ui, &mut action),
-                    Tab::View => self.view_tab(ui, &mut action),
-                    Tab::Ai => self.ai_tab(ui, &mut action),
-                    Tab::Help => {
-                        group(ui, i18n::t("Hjelp"), |ui| {
-                            column(ui, |ui| {
-                                if tool(ui, theme::ph::NOTEPAD, i18n::t("Brukerveiledning"), i18n::t("Slik bruker du CVBuilder, steg for steg (F1). Åpnes i nettleseren."), true) {
-                                    action = Some(Action::UserGuide);
-                                }
-                                if tool(ui, theme::ph::CHAT_DOTS, i18n::t("Meld fra om et problem"), i18n::t("Åpner GitHub i nettleseren med versjonen fylt inn. Ikke legg ved en ekte CV eller personopplysninger."), true) {
-                                    action = Some(Action::ReportProblem);
-                                }
+            // On Home the Download group stays in view on the right while the other groups
+            // scroll in a narrow window or a long language (028). Its width from the last frame
+            // is kept free for it.
+            let pinned = self.ribbon_tab == Tab::Home;
+            let width_id = egui::Id::unique("cvbuilder.ribbon-download-width");
+            let reserve = if pinned { ui.ctx().data(|d| d.get_temp::<f32>(width_id)).unwrap_or(260.0) } else { 0.0 };
+            ui.horizontal_top(|ui| {
+                egui::ScrollArea::horizontal().id_salt("ribbon-scroll").max_width((ui.available_width() - reserve).max(120.0)).show(ui, |ui| {
+                    ui.horizontal_top(|ui| match self.ribbon_tab {
+                        Tab::Home => self.home_tab(ui, &mut action, blocked),
+                        Tab::Insert => self.insert_tab(ui, &mut action),
+                        Tab::Page => self.page_tab(ui),
+                        Tab::Design => self.design_tab(ui, &mut action),
+                        Tab::View => self.view_tab(ui, &mut action),
+                        Tab::Ai => self.ai_tab(ui, &mut action),
+                        Tab::Help => {
+                            group(ui, i18n::t("Hjelp"), |ui| {
+                                column(ui, |ui| {
+                                    if tool(ui, theme::ph::NOTEPAD, i18n::t("Brukerveiledning"), i18n::t("Slik bruker du CVBuilder, steg for steg (F1). Åpnes i nettleseren."), true) {
+                                        action = Some(Action::UserGuide);
+                                    }
+                                    if tool(ui, theme::ph::CHAT_DOTS, i18n::t("Meld fra om et problem"), i18n::t("Åpner GitHub i nettleseren med versjonen fylt inn. Ikke legg ved en ekte CV eller personopplysninger."), true) {
+                                        action = Some(Action::ReportProblem);
+                                    }
+                                });
+                                column(ui, |ui| {
+                                    if tool(ui, theme::ph::INFO, i18n::t("Om CVBuilder"), i18n::t("Versjon, bygg og lisenser"), true) {
+                                        action = Some(Action::About);
+                                    }
+                                    if tool(ui, theme::ph::ARROWS_CLOCKWISE, i18n::t("Se etter oppdateringer"), i18n::t("Spør GitHub om det finnes en nyere versjon. Ingenting lastes ned av seg selv."), true) {
+                                        action = Some(Action::CheckUpdates);
+                                    }
+                                });
+                                column(ui, |ui| {
+                                    if tool(ui, theme::ph::GEAR, i18n::t("Innstillinger"), i18n::t("Språk i menyene, tema og mer"), true) {
+                                        action = Some(Action::Settings);
+                                    }
+                                });
                             });
-                            column(ui, |ui| {
-                                if tool(ui, theme::ph::INFO, i18n::t("Om CVBuilder"), i18n::t("Versjon, bygg og lisenser"), true) {
-                                    action = Some(Action::About);
-                                }
-                                if tool(ui, theme::ph::ARROWS_CLOCKWISE, i18n::t("Se etter oppdateringer"), i18n::t("Spør GitHub om det finnes en nyere versjon. Ingenting lastes ned av seg selv."), true) {
-                                    action = Some(Action::CheckUpdates);
-                                }
-                            });
-                            column(ui, |ui| {
-                                if tool(ui, theme::ph::GEAR, i18n::t("Innstillinger"), i18n::t("Språk i menyene, tema og mer"), true) {
-                                    action = Some(Action::Settings);
-                                }
-                            });
-                        });
-                    }
+                        }
+                    });
                 });
+                if pinned {
+                    let r = ui.horizontal_top(|ui| download_group(ui, &mut action, blocked)).response;
+                    let w = r.rect.width() + ui.spacing().item_spacing.x;
+                    ui.ctx().data_mut(|d| d.insert_temp(width_id, w));
+                }
             });
         });
         if let Some(a) = action {
@@ -322,15 +365,6 @@ impl CvApp {
                     *action = Some(Action::Export(Export::Text));
                 }
             });
-            // Downloading sits with saving; while something is missing, a click shows what.
-            column(ui, |ui| {
-                if tool(ui, theme::ph::FILE_PDF, i18n::t("Last ned PDF"), &shortcuts::tip(ui.ctx(), &export_tip(Export::Pdf, blocked), &shortcuts::PDF), true) {
-                    *action = Some(Action::Export(Export::Pdf));
-                }
-                if tool(ui, theme::ph::FILE_DOC, i18n::t("Last ned Word"), &export_tip(Export::Word, blocked), true) {
-                    *action = Some(Action::Export(Export::Word));
-                }
-            });
             column(ui, |ui| {
                 if tool(ui, theme::ph::ROWS, i18n::t("Søknadsskjema"), i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene"), true) {
                     *action = Some(Action::FormHelper);
@@ -362,7 +396,7 @@ impl CvApp {
                 }
             });
         });
-        group(ui, i18n::t("Språk"), |ui| {
+        group_with(ui, i18n::t("Språk"), false, |ui| {
             column(ui, |ui| {
                 // The CV's language: its headings and dates. Every listed language works offline;
                 // «Annet språk» opens the translate window for any other.
@@ -618,11 +652,13 @@ impl CvApp {
             Action::PasteAd => {
                 self.views.form = true;
                 self.folded.remove("target");
+                self.ad_open = true;
                 self.import.focus_ad = true;
             }
             Action::AdLink => {
                 self.views.form = true;
                 self.folded.remove("target");
+                self.ad_open = true;
                 self.fetch_ad();
             }
             Action::AdFile => self.pick("ad_file", None),

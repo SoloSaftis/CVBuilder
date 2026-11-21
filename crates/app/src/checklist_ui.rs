@@ -150,7 +150,7 @@ impl ChecklistState {
     pub fn load() -> ChecklistState {
         match load_own() {
             Ok(own) => ChecklistState { own, ..Default::default() },
-            Err(e) => ChecklistState { message: i18n::tf("Sjekklisten din kunne ikke leses: {error}", &[("error", &translate(&e))]), ..Default::default() },
+            Err(e) => ChecklistState { message: format!("{}\n{}", i18n::t("Sjekklisten din kunne ikke brukes."), translate(&e)), ..Default::default() },
         }
     }
 }
@@ -164,7 +164,7 @@ pub fn load_own() -> Result<Option<Checklist>, String> {
     match std::fs::read(file()) {
         Ok(bytes) => checklist::parse_bytes(&bytes).map(Some),
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
-        Err(e) => Err(e.to_string()),
+        Err(e) => Err(cv_core::import::unreadable(&e)),
     }
 }
 
@@ -177,18 +177,18 @@ fn save_own(list: &Checklist) -> Result<(), String> {
     std::fs::rename(&tmp, &path).map_err(|e| e.to_string())
 }
 
-/// cv-core's messages, one per line, in the menu language.
+/// cv-core's messages, one per line, in the menu language; a «Detaljer» line stays last.
 fn translate(text: &str) -> String {
-    text.lines().map(i18n::tdyn).collect::<Vec<_>>().join("\n")
+    i18n::tdyn_lines(text)
 }
 
 /// Reads a checklist file the person picked. Too big a file is refused before it is read.
 fn read_file(path: &std::path::Path) -> Result<Checklist, String> {
-    let size = std::fs::metadata(path).map_err(|e| e.to_string())?.len();
+    let size = std::fs::metadata(path).map_err(|e| cv_core::import::unreadable(&e))?.len();
     if size > checklist::MAX_FILE_BYTES as u64 {
         return Err("Filen er for stor til å være en CVBuilder-sjekkliste.".into());
     }
-    checklist::parse_bytes(&std::fs::read(path).map_err(|e| e.to_string())?)
+    checklist::parse_bytes(&std::fs::read(path).map_err(|e| cv_core::import::unreadable(&e))?)
 }
 
 /// The kind of a point changed: the old value meant something else (a word is not a page
@@ -476,7 +476,7 @@ impl CvApp {
                     self.checklist.message = i18n::t("Sjekklisten er lagret.").into();
                 }
                 Err(e) => {
-                    self.checklist.message = i18n::tf("Kunne ikke lagre sjekklisten: {error}", &[("error", &e)]);
+                    self.checklist.message = i18n::failed(i18n::t("Sjekklisten ble ikke lagret."), &e, cv_core::plain::TRY_AGAIN);
                     self.checklist.editing = Some(list);
                 }
             },
@@ -495,7 +495,7 @@ impl CvApp {
                     self.settings.own_checklist = true;
                     storage::save_settings(&self.settings);
                 }
-                Err(e) => self.checklist.message = i18n::tf("Kunne ikke lagre sjekklisten: {error}", &[("error", &e)]),
+                Err(e) => self.checklist.message = i18n::failed(i18n::t("Sjekklisten ble ikke lagret."), &e, cv_core::plain::TRY_AGAIN),
             },
             // Several problems come one per line; each is translated on its own.
             Err(e) => self.checklist.message = translate(&e),
@@ -510,7 +510,7 @@ impl CvApp {
         let path = path.as_path();
         self.checklist.message = match std::fs::write(path, checklist::to_file(list)) {
             Ok(()) => i18n::tf("Sjekklisten er lagret: {path}", &[("path", &path.display().to_string())]),
-            Err(e) => i18n::tf("Kunne ikke lagre sjekklisten: {error}", &[("error", &e.to_string())]),
+            Err(e) => i18n::failed(i18n::t("Sjekklisten ble ikke lagret."), &e.to_string(), cv_core::plain::TRY_ANOTHER_PLACE),
         };
     }
 }

@@ -150,6 +150,8 @@ struct CvApp {
     side: Side,
     /// Form sections the person has folded away.
     folded: HashSet<String>,
+    /// The job-ad card shown in full although the CV has no ad yet (it is one line until then).
+    ad_open: bool,
     views: Views,
     /// The CV as it was before its language was switched, shown under the fields to translate from.
     reference: Option<Project>,
@@ -216,6 +218,7 @@ impl CvApp {
             egui_ctx: cc.egui_ctx.clone(),
             side: Side::Chat,
             folded: ["certifications", "languages", "interests"].into_iter().map(String::from).collect(),
+            ad_open: false,
             views: Views::default(),
             reference: None,
             translate: None,
@@ -294,6 +297,8 @@ impl CvApp {
     fn load(&mut self, project: Project, example: bool) {
         self.project = project;
         self.is_example = example;
+        // A CV without an ad starts with the job-ad card as one line, and the name first.
+        self.ad_open = false;
         self.buffers.clear();
         self.bad_dates.clear();
         self.preview.changed();
@@ -428,7 +433,7 @@ impl CvApp {
             }
             Err(e) => {
                 self.after_save = None;
-                self.status = i18n::tf("Kunne ikke lagre: {e}", &[("e", &e)]);
+                self.status = i18n::failed(i18n::t("Utkastet ble ikke lagret."), &e, cv_core::plain::TRY_ANOTHER_PLACE);
             }
         }
     }
@@ -630,19 +635,14 @@ impl CvApp {
     fn handle_picked(&mut self, ctx: &egui::Context) {
         while let Ok(picked) = self.picked_rx.try_recv() {
             match picked {
-                Picked::OpenProject(path) => match std::fs::read_to_string(&path).map_err(|e| e.to_string()).and_then(|t| Project::from_json(&t).map_err(|e| e.to_string())) {
+                Picked::OpenProject(path) => match open_project(&path) {
                     Ok(project) => {
                         self.replace(project, false, step::OPEN, i18n::t("Utkastet er åpnet. Bekreft opplysningene når du laster ned."));
                         self.saved = self.fingerprint();
                         self.last_autosave = Instant::now();
                         self.set_file(Some(path));
                     }
-                    Err(_) => {
-                        self.status = i18n::tf(
-                            "«{file}» kunne ikke åpnes. Her åpner du bare .json-utkast lagret med «Lagre som fil».",
-                            &[("file", &path.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default())],
-                        )
-                    }
+                    Err(e) => self.status = e,
                 },
                 Picked::SaveProject(path) => self.save_to(&path, false),
                 // No file chosen: the window stays open after all.
@@ -675,7 +675,7 @@ impl CvApp {
                 Export::Word => i18n::tf("Word-filen er lagret: {path}. Åpne den og se over sidebrytingen før du sender den.", &[("path", &path.display().to_string())]),
                 _ => i18n::tf("PDF-en er lagret med ekte, søkbar tekst: {path}", &[("path", &path.display().to_string())]),
             },
-            Err(e) => i18n::tf("Kunne ikke lagre filen: {e}", &[("e", &e)]),
+            Err(e) => i18n::failed(i18n::t("Filen ble ikke lagret."), &e, cv_core::plain::TRY_ANOTHER_PLACE),
         };
     }
 
@@ -748,7 +748,11 @@ impl CvApp {
                         self.undo();
                     }
                 }
-                ui.add(egui::Label::new(RichText::new(&self.status).size(12.5).color(t.dim)).truncate());
+                // One line here; a «Details» line under the message shows on hover.
+                let shown = ui.add(egui::Label::new(RichText::new(i18n::first_line(&self.status)).size(12.5).color(t.dim)).truncate());
+                if self.status.contains('\n') {
+                    shown.on_hover_text(&self.status);
+                }
             });
         });
     }
@@ -1109,7 +1113,7 @@ impl CvApp {
                         self.touched();
                         self.status = i18n::t("Portrettet er lagt inn.").into();
                     }
-                    Err(e) => self.status = i18n::tf("Bildet kunne ikke lagres: {e}", &[("e", &e)]),
+                    Err(e) => self.status = i18n::failed(i18n::t("Portrettet ble ikke lagt inn."), &e, cv_core::plain::TRY_AGAIN),
                 }
             } else {
                 self.photo = None;
@@ -1121,6 +1125,16 @@ impl CvApp {
 // ---------- small helpers ----------
 
 /// The app's mark: a rounded accent tile with a document line drawn in it.
+/// A CVBuilder draft (`.json`) from disk. The error is a message for the status bar: why the
+/// file could not be read, or that it is not a draft, with the technical text as «Details».
+fn open_project(path: &std::path::Path) -> Result<Project, String> {
+    let text = std::fs::read_to_string(path).map_err(|e| i18n::tdyn(&cv_core::import::unreadable(&e)))?;
+    Project::from_json(&text).map_err(|e| {
+        let file = path.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+        i18n::details(&i18n::tf("«{file}» er ikke et CVBuilder-utkast. Her åpner du utkast lagret med «Lagre som fil»; en CV i PDF eller Word henter du inn med «Importer CV».", &[("file", &file)]), &e.to_string())
+    })
+}
+
 fn logo(ui: &mut egui::Ui, t: &Tokens, size: f32) {
     let (rect, _) = ui.allocate_exact_size(egui::vec2(size, size), egui::Sense::hover());
     let p = ui.painter();

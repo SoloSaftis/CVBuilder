@@ -226,7 +226,7 @@ fn load() -> (ReadyAnswers, String) {
             Ok(answers) => (answers, String::new()),
             Err(e) => {
                 let _ = std::fs::rename(file(), file().with_extension("json.bad"));
-                (ReadyAnswers::default(), i18n::tf("De faste svarene kunne ikke leses: {error}", &[("error", &e.to_string())]))
+                (ReadyAnswers::default(), i18n::details(i18n::t("De faste svarene på denne maskinen kunne ikke leses og er lagt til side. Skriv dem inn på nytt."), &e.to_string()))
             }
         },
         Err(_) => (ReadyAnswers::default(), String::new()),
@@ -423,7 +423,7 @@ impl CvApp {
             self.form_helper.ready.answers.retain(|_, a| !a.is_empty());
             match save(&self.form_helper.ready) {
                 Ok(()) => self.form_helper.message.clear(),
-                Err(e) => self.form_helper.message = i18n::tf("De faste svarene kunne ikke lagres: {error}", &[("error", &e)]),
+                Err(e) => self.form_helper.message = i18n::failed(i18n::t("De faste svarene ble ikke lagret."), &e, cv_core::plain::TRY_AGAIN),
             }
         }
     }

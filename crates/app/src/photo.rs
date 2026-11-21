@@ -23,7 +23,7 @@ pub struct Edit {
 
 impl Edit {
     pub fn open(path: &std::path::Path) -> Result<Edit, String> {
-        let image = image::open(path).map_err(|e| crate::i18n::tf("Bildet kunne ikke åpnes: {e}", &[("e", &e.to_string())]))?;
+        let image = image::open(path).map_err(|e| crate::i18n::failed(crate::i18n::t("Bildet kunne ikke åpnes."), &e.to_string(), crate::i18n::t("Velg et bilde i JPG eller PNG.")))?;
         if u64::from(image.width()) * u64::from(image.height()) > 60_000_000 {
             return Err(crate::i18n::t("Bildet er for stort. Velg et mindre bilde.").into());
         }
