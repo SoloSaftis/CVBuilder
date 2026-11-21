@@ -6,6 +6,7 @@
 pub use eframe::Result;
 
 mod ai_ui;
+mod appimage;
 mod browser;
 mod chat_ui;
 mod checklist_ui;
@@ -1271,6 +1272,9 @@ pub fn run() -> eframe::Result {
         link::serve_stdio();
         return Ok(());
     }
+    // Started from the AppImage: give GNOME a desktop entry and icon for the dock.
+    #[cfg(target_os = "linux")]
+    appimage::integrate();
     let options = eframe::NativeOptions {
         // The app id is the desktop file's name (cvbuilder.desktop): on Wayland it is how GNOME
         // and KDE find the icon and name for the window. Decorations are on explicitly: GNOME
