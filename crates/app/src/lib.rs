@@ -27,6 +27,7 @@ mod photo;
 mod preview;
 mod readback_ui;
 mod requirements_ui;
+mod spelling_ui;
 mod settings_ui;
 mod shortcuts;
 mod storage;
@@ -73,6 +74,8 @@ enum Picked {
     ChecklistSave(PathBuf),
     DesignSave(PathBuf),
     InterviewPdf(PathBuf),
+    /// A Hunspell `.dic` file for the spell check.
+    Dictionary(PathBuf),
     JsonResume(PathBuf),
 }
 
@@ -182,6 +185,8 @@ struct CvApp {
     /// «Forbered intervjuet»: the window is open, and the notes.
     interview: interview_ui::InterviewState,
     readback: readback_ui::ReadBackState,
+    /// «Stavekontroll» in the checklist panel.
+    spelling: spelling_ui::SpellState,
     /// The name being typed for a new section, while that window is open.
     new_section: Option<String>,
     /// Where the new section goes in the CV: `None` at the bottom, `Some(i)` at position i.
@@ -249,6 +254,7 @@ impl CvApp {
             form_helper: form_helper_ui::FormHelperState::load(),
             interview: interview_ui::InterviewState::default(),
             readback: readback_ui::ReadBackState::default(),
+            spelling: spelling_ui::SpellState::load(),
             new_section: None,
             new_section_at: None,
             ribbon_tab: menu_ui::Tab::default(),
@@ -645,6 +651,7 @@ impl CvApp {
                 ("design_import", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).pick_file().map(Picked::DesignImport),
                 ("design_save", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).set_file_name("min-design.cvdesign.json").save_file().map(Picked::DesignSave),
                 ("interview_pdf", _) => rfd::FileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(format!("{stem}_intervju.pdf")).save_file().map(Picked::InterviewPdf),
+                ("dictionary", _) => rfd::FileDialog::new().add_filter(i18n::t("Hunspell-ordbok"), &["dic"]).pick_file().map(Picked::Dictionary),
                 ("json_resume", _) => rfd::FileDialog::new().add_filter("JSON Resume", &["json"]).set_file_name(format!("{stem}_resume.json")).save_file().map(Picked::JsonResume),
                 ("photo", _) => rfd::FileDialog::new().add_filter(i18n::t("Bilde"), &["jpg", "jpeg", "png", "webp", "bmp", "tif", "tiff"]).pick_file().map(Picked::Photo),
                 ("export", Some(Export::Word)) => rfd::FileDialog::new().add_filter("Word", &["docx"]).set_file_name(format!("{stem}.docx")).save_file().map(|p| Picked::Export(Export::Word, p)),
@@ -680,6 +687,7 @@ impl CvApp {
                 Picked::ChecklistSave(path) => self.save_checklist_file(&path),
                 Picked::DesignSave(path) => self.save_design_template(&path),
                 Picked::InterviewPdf(path) => self.write_interview_pdf(&path),
+                Picked::Dictionary(path) => self.import_dictionary(&path),
                 Picked::JsonResume(path) => self.write_json_resume(&path),
                 Picked::Photo(path) => match photo::Edit::open(&path) {
                     Ok(edit) => self.photo = Some(PhotoDialog { edit, texture: None, stale: true }),
@@ -873,6 +881,8 @@ impl CvApp {
         });
         ui.add_space(10.0);
         self.read_back_card(ui);
+        ui.add_space(10.0);
+        self.spelling_card(ui);
         ui.add_space(10.0);
         if self.settings.own_checklist {
             self.own_checklist(ui);

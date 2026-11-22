@@ -35,6 +35,32 @@ This card shows what should be fixed before you send the CV:
 
 When all is well, it says "Everything required is filled in."
 
+### Spell check
+
+The **Spell check** card lists words in your CV that the dictionary for the
+CV's language does not know. It works offline: nothing from the CV is sent
+anywhere. No dictionary knows every name, technical term or compound word, so
+treat the list as *possible* mistakes and check them yourself.
+
+- Under each word you see where it is (profile, a job, a section) and up to
+  four suggestions. Click a suggestion to put it in everywhere in the CV;
+  **Undo** takes it back.
+- **Ignore** hides the word until you close CVBuilder. **Add to my words**
+  keeps it as correct for all your CVs on this computer (in `my-words.txt` in
+  the data folder). **Forget my words** empties that list.
+- Your name, email and web addresses, numbers, acronyms (such as ATS), words
+  with a capital inside (such as JavaScript), employers, schools, skills and the
+  words in the job ad are never listed.
+
+English (US and UK), French and Spanish dictionaries come with CVBuilder. For
+most other European languages, and some others, the card offers **Download the
+dictionary**: it is fetched once from GitHub (1–20 MB, the size is shown) and
+kept in the `dictionaries` folder in the data folder. On a computer without
+internet, or for a language CVBuilder has no dictionary for, choose a Hunspell
+dictionary yourself with **Choose a dictionary file …** (the `.dic` file, with
+its `.aff` file next to it). Japanese, Chinese and Thai cannot be checked this
+way. The card names each dictionary in use and its licence.
+
 ### Recruiter check
 
 This part gives advice from recruiters and applicant tracking systems. It is

@@ -6,6 +6,7 @@ pub mod cost;
 pub mod providers;
 pub mod tasks;
 pub mod updates;
+pub mod dictionaries;
 
 use craft_ai_core::{SecretRef, SecretString};
 use craft_ai_native::secrets::{KeychainStore, SecretStore};
