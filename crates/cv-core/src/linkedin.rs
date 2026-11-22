@@ -287,7 +287,7 @@ pub fn read_export<R: Read + Seek>(reader: R) -> Result<CvRead, String> {
 }
 
 /// «jobber (6)»; nothing when there are none.
-fn count(found: &mut Vec<String>, word: &str, n: usize) {
+pub(crate) fn count(found: &mut Vec<String>, word: &str, n: usize) {
     match n {
         0 => {}
         1 if word == "andre seksjoner" => found.push(word.into()),
@@ -311,7 +311,7 @@ fn year(text: &str) -> String {
 
 /// A LinkedIn description as bullet lines: one per line, bullet marks taken off, the words kept
 /// exactly as written (long prose stays prose; the checklist gives advice on bullets).
-fn lines(text: &str) -> Vec<String> {
+pub(crate) fn lines(text: &str) -> Vec<String> {
     const MARKS: [char; 8] = ['•', '·', '▪', '◦', '‣', '–', '-', '*'];
     text.lines().map(|l| l.trim().trim_start_matches(MARKS).trim()).filter(|l| !l.is_empty()).map(str::to_string).collect()
 }

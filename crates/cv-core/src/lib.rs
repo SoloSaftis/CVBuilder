@@ -7,6 +7,8 @@ pub mod import;
 pub mod readback;
 pub mod requirements;
 pub mod linkedin;
+pub mod europass;
+pub mod jsonresume;
 mod wordlists;
 pub mod document;
 pub mod headings;

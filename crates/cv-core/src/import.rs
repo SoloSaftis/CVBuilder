@@ -11,7 +11,7 @@ use crate::checks;
 use crate::model::{Language, Project, Skill};
 
 /// The file types that can be read, for dialogs and messages.
-pub const FILE_TYPES: [&str; 17] = ["pdf", "docx", "doc", "odt", "rtf", "pages", "txt", "md", "html", "htm", "mht", "mhtml", "fodt", "dotx", "docm", "json", "zip"];
+pub const FILE_TYPES: [&str; 18] = ["pdf", "docx", "doc", "odt", "rtf", "pages", "txt", "md", "html", "htm", "mht", "mhtml", "fodt", "dotx", "docm", "json", "zip", "xml"];
 
 /// Files larger than this are not ads or CVs; reading them would only make the app wait.
 const MAX_FILE: u64 = 50_000_000;
@@ -101,15 +101,18 @@ fn isolated<T: Send + 'static>(job: impl FnOnce() -> T + Send + 'static) -> Opti
     rx.recv_timeout(READ_TIMEOUT).ok()
 }
 
-/// An existing CV picked by the person: the text of a CV file, or a LinkedIn data export
-/// already read into a CV.
+/// An existing CV picked by the person: the text of a CV file, or structured data (a LinkedIn
+/// data export, a Europass CV, a JSON Resume) already read into a CV.
 pub enum CvFile {
     Text(String),
     LinkedIn(CvRead),
+    Europass(CvRead),
+    JsonResume(CvRead),
 }
 
 /// An existing CV from a file. A LinkedIn data export (a .zip, of any size, since only its
-/// profile files are opened) is read straight into the model; other files are read as text.
+/// profile files are opened), a Europass CV (its .xml, or a PDF from the Europass editor with the
+/// XML attached) and a JSON Resume are read straight into the model; other files are read as text.
 pub fn cv_from_file(path: &std::path::Path) -> Result<CvFile, String> {
     let zip = std::fs::File::open(path).ok().filter(|f| {
         let mut head = [0u8; 4];
@@ -120,7 +123,36 @@ pub fn cv_from_file(path: &std::path::Path) -> Result<CvFile, String> {
             return crate::linkedin::read_export(std::io::BufReader::new(file)).map(CvFile::LinkedIn);
         }
     }
-    text_from_file(path).map(CvFile::Text)
+    let ext = path.extension().map(|e| e.to_string_lossy().to_lowercase()).unwrap_or_default();
+    let bytes = read_file(path)?;
+    cv_from_bytes(&bytes, &ext)
+}
+
+/// An existing CV from a file's bytes (not a LinkedIn export); see [`cv_from_file`].
+pub fn cv_from_bytes(bytes: &[u8], ext: &str) -> Result<CvFile, String> {
+    let kind = sniff(bytes);
+    if kind == Kind::Pdf {
+        // A Europass PDF carries the CV as XML: read that rather than guess from the page text.
+        let owned = bytes.to_vec();
+        if let Some(Some(xml)) = isolated(move || crate::europass::xml_in_pdf(&owned))
+            && let Ok(read) = crate::europass::read_xml(&xml)
+        {
+            return Ok(CvFile::Europass(read));
+        }
+    }
+    if matches!(kind, Kind::Text | Kind::Html) {
+        let text = decode_text(bytes);
+        if crate::europass::is_europass(&text) {
+            return crate::europass::read_xml(&text).map(CvFile::Europass);
+        }
+        if crate::jsonresume::is_json_resume(&text) {
+            return crate::jsonresume::read(&text).map(CvFile::JsonResume);
+        }
+        if ext == "xml" {
+            return Err("XML-filen er ikke en Europass-CV. Bare Europass-XML kan hentes inn.".into());
+        }
+    }
+    text_from_bytes(bytes, ext).map(CvFile::Text)
 }
 
 /// The text of a file. PDFs must contain real text (a scanned page is an image and gives none).

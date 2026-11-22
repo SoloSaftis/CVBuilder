@@ -218,3 +218,20 @@ fn fresh_ids_are_unique() {
     let all: std::collections::HashSet<String> = (0..2000).map(|_| ids::fresh(ids::BULLET)).collect();
     assert_eq!(all.len(), 2000);
 }
+
+#[test]
+fn json_resume_export_and_ad_requirements_see_only_this_copy() {
+    let mut p = Project::from_json(EXAMPLE).expect("example");
+    let job = p.experience[1].clone();
+    assert!(cv_core::jsonresume::write(&p).contains(&job.company));
+    p.set_hidden(&job.id, true);
+    assert!(!cv_core::jsonresume::write(&p).contains(&job.company), "a hidden job is not exported");
+    // A hidden skill does not back a requirement from the ad.
+    let skill = p.skills[0].name.clone();
+    let r = cv_core::requirements::Requirement { text: skill.clone(), need: cv_core::requirements::Need::Must, terms: vec![skill.clone()] };
+    assert!(cv_core::requirements::backing(&p, &r).missing.is_empty());
+    p.set_hidden(&p.skills[0].id.clone(), true);
+    if !checks::plain_text(&p).contains(&skill) {
+        assert!(!cv_core::requirements::backing(&p, &r).missing.is_empty(), "the hidden skill still backs «{skill}»");
+    }
+}
