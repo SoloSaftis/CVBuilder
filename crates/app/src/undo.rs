@@ -23,9 +23,11 @@ pub mod step {
     pub const AI_APP: &str = "endringer fra AI-appen";
     /// «Angre disse endringene» in the AI panel, which can itself be undone.
     pub const AI_UNDO: &str = "angre i AI-panelet";
+    /// A spelling suggestion put in everywhere (the spell check in the checklist).
+    pub const SPELLING: &str = "rett skrivefeil";
 
     #[cfg(test)]
-    pub const ALL: [&str; 11] = [NEW, EXAMPLE, OPEN, IMPORT, AD, LANGUAGE, DELETE_JOB, DELETE_SECTION, AI, AI_APP, AI_UNDO];
+    pub const ALL: [&str; 12] = [NEW, EXAMPLE, OPEN, IMPORT, AD, LANGUAGE, DELETE_JOB, DELETE_SECTION, AI, AI_APP, AI_UNDO, SPELLING];
 }
 
 /// One big change: the state on the other side of it, and what the change is called.

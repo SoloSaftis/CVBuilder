@@ -14,6 +14,8 @@ craft-ai-core = { git = "https://github.com/storytold/craft-ai-integrations", re
 craft-ai-openai = { git = "https://github.com/storytold/craft-ai-integrations", rev = "29297b2fbe11077201edc657bff3315e93841d22" }
 craft-ai-native = { git = "https://github.com/storytold/craft-ai-integrations", rev = "29297b2fbe11077201edc657bff3315e93841d22" }
 ureq = { version = "3", default-features = false, features = ["rustls", "platform-verifier", "json"] }
+# Checks a downloaded spelling dictionary against its pinned hash (dictionaries.rs).
+sha2 = "0.10"
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
