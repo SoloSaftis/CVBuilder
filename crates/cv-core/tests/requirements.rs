@@ -105,7 +105,7 @@ fn the_cv_shows_where_each_requirement_is_backed() {
 #[test]
 fn norwegian_language_requirements_find_the_languages_section() {
     let mut p = Project::example();
-    p.languages = vec![cv_core::model::SpokenLanguage { name: "Norsk".into(), level: "Morsmål".into() }];
+    p.languages = vec![cv_core::model::SpokenLanguage { id: String::new(), name: "Norsk".into(), level: "Morsmål".into() }];
     let list = ad_requirements(&ad("elektriker-no.txt"));
     let b = backing(&p, find(&list, "Gode norsk"));
     assert!(b.shown() && b.places.contains(&Place::Languages), "{b:?}");

@@ -65,6 +65,12 @@ fn a_cvbuilder_project_is_not_a_json_resume() {
 /// What survives the trip: everything except CVBuilder's own notes and ids.
 fn comparable(p: &Project) -> Project {
     let mut p = p.clone();
+    // JSON Resume has no item ids: CVBuilder gives new ones on import.
+    p.education.iter_mut().for_each(|x| x.id.clear());
+    p.skills.iter_mut().for_each(|x| x.id.clear());
+    p.languages.iter_mut().for_each(|x| x.id.clear());
+    p.certifications.iter_mut().for_each(|x| x.id.clear());
+    p.custom_sections.iter_mut().flat_map(|s| s.items.iter_mut()).for_each(|i| { i.id.clear(); i.bullet_ids.clear(); });
     p.target = Default::default();
     p.options = Default::default();
     p.public_context.clear();
@@ -76,6 +82,7 @@ fn comparable(p: &Project) -> Project {
     }
     for (i, j) in p.experience.iter_mut().enumerate() {
         j.id = format!("job_imported_{}", i + 1);
+        j.bullet_ids.clear();
         j.evidence.clear();
         j.confirmed = true;
         if j.end.as_deref() == Some("") {
@@ -99,7 +106,7 @@ fn with_extras(mut p: Project) -> Project {
         ContactField { id: "c2".into(), label: "GitHub".into(), value: "https://github.com/example".into() },
         ContactField { id: "c3".into(), label: if p.is_english() { "Driving licence" } else { "Førerkort" }.into(), value: "B".into() },
     ];
-    let item = |title: &str, sub: &str, date: &str| CustomItem { title: title.into(), subtitle: sub.into(), date: date.into(), bullets: vec![format!("{title} – one line")] };
+    let item = |title: &str, sub: &str, date: &str| CustomItem { id: String::new(), bullet_ids: Vec::new(), title: title.into(), subtitle: sub.into(), date: date.into(), bullets: vec![format!("{title} – one line")] };
     let en = p.is_english();
     p.custom_sections = vec![
         CustomSection { id: "s1".into(), title: if en { "Volunteering" } else { "Frivillig arbeid" }.into(), items: vec![item("Coach", "Example club", "2019 – nå"), item("Board", "Example union", "spring 2020")] },

@@ -451,6 +451,10 @@ pub enum Icon {
     Up,
     Down,
     Hide,
+    /// An open eye: the item is in this CV (click to leave it out).
+    Shown,
+    /// A struck-out eye: the item is left out of this CV (click to show it again).
+    Hidden,
 }
 
 /// A small icon button drawn with lines, so it looks the same in every font.
@@ -497,6 +501,24 @@ pub fn icon_button(ui: &mut egui::Ui, icon: Icon, tip: &str, enabled: bool) -> e
         }
         Icon::Hide => {
             p.line_segment([c + v(-5.0, 0.0), c + v(5.0, 0.0)], s);
+        }
+        Icon::Shown | Icon::Hidden => {
+            // The lids as two curves, and the pupil; struck through when hidden.
+            let lid = |up: f32| -> Vec<egui::Pos2> {
+                (0..=12)
+                    .map(|i| {
+                        let t = i as f32 / 12.0;
+                        let x = -7.0 + 14.0 * t;
+                        c + v(x, up * 4.6 * (1.0 - (x / 7.0) * (x / 7.0)))
+                    })
+                    .collect()
+            };
+            p.add(egui::Shape::line(lid(-1.0), s));
+            p.add(egui::Shape::line(lid(1.0), s));
+            p.circle_stroke(c, 2.0, s);
+            if icon == Icon::Hidden {
+                p.line_segment([c + v(-6.0, 6.0), c + v(6.0, -6.0)], s);
+            }
         }
     }
     let r = if enabled { r.on_hover_cursor(egui::CursorIcon::PointingHand) } else { r };

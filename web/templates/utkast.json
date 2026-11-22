@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "language": "no",
   "candidate": {
     "name": "",
@@ -30,7 +30,9 @@
     "photo": false,
     "include_interests": true,
     "interest_ids": [],
-    "page_limit": 2
+    "page_limit": 2,
+    "hidden": [],
+    "copy_of": ""
   },
   "approvals": {
     "facts_confirmed": false

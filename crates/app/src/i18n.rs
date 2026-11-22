@@ -716,6 +716,8 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         rule(r"La til jobben (.+)", |c| format!("Added the job {}", job_label(&c[1]))),
         rule(r"Fjernet jobben (.+)", |c| format!("Removed the job {}", job_label(&c[1]))),
         rule(r"Oppdaterte kjernekompetansen \((\d+) punkter\)", |c| format!("Updated the core skills ({} items)", &c[1])).t("Oppdaterte kjernekompetansen ({a} punkter)", "Updated the core skills ({a} items)"),
+        rule(r"Skjulte (\d+) deler i denne CV-en", |c| format!("Hid {} items in this CV", &c[1])).t("Skjulte {a} deler i denne CV-en", "Hid {a} items in this CV"),
+        rule(r"Viste (\d+) deler igjen", |c| format!("Showed {} items again", &c[1])).t("Viste {a} deler igjen", "Showed {a} items again"),
         rule(r"Oppdaterte utdanningen \((\d+)\)", |c| format!("Updated the education ({})", &c[1])).t("Oppdaterte utdanningen ({a})", "Updated the education ({a})"),
         rule(r"Oppdaterte kurs og sertifiseringer \((\d+)\)", |c| format!("Updated courses and certifications ({})", &c[1])).t("Oppdaterte kurs og sertifiseringer ({a})", "Updated courses and certifications ({a})"),
         rule(r"Byttet design til (.+)", |c| format!("Switched the design to {}", &c[1])).t("Byttet design til {a}", "Switched the design to {a}"),
@@ -1049,6 +1051,35 @@ static EN: &[(&str, &str)] = &[
     ("bytt CV-språk", "change CV language"),
     ("slett jobb", "delete job"),
     ("slett seksjon", "delete section"),
+    ("vis alt igjen", "show everything again"),
+    // ---- hiding items in a tailored copy (hide_ui.rs) ----
+    ("Vis i denne CV-en igjen", "Show in this CV again"),
+    ("Ta ut av denne CV-en. Det blir stående i skjemaet og i filen.", "Leave out of this CV. It stays in the form and in the file."),
+    ("Skjult i denne CV-en", "Hidden in this CV"),
+    ("Står i skjemaet og i filen, men ikke i CV-en, nedlastingene eller sjekkene", "In the form and the file, but not in the CV, the downloads or the checks"),
+    ("Tilpasset kopi av «{file}»", "Tailored copy of “{file}”"),
+    ("Endringer her gjelder bare denne kopien. Hele CV-en er uendret.", "Changes here apply only to this copy. The full CV is unchanged."),
+    ("1 del er skjult i denne CV-en. Den står i skjemaet og i filen, men ikke i CV-en, nedlastingene eller sjekkene.", "1 item is hidden in this CV. It is in the form and the file, but not in the CV, the downloads or the checks."),
+    ("{n} deler er skjult i denne CV-en. De står i skjemaet og i filen, men ikke i CV-en, nedlastingene eller sjekkene.", "{n} items are hidden in this CV. They are in the form and the file, but not in the CV, the downloads or the checks."),
+    ("Vis alt igjen", "Show everything again"),
+    ("Ta med alt i CV-en igjen", "Put everything back in the CV"),
+    ("Alt står i CV-en igjen. Angre hvis det var feil.", "Everything is in the CV again. Undo if that was a mistake."),
+    ("Vis skjulte deler i skjemaet", "Show hidden items in the form"),
+    ("Slå av for å se bare det som står i CV-en", "Turn off to see only what is in the CV"),
+    ("Åpne hele CV-en", "Open the full CV"),
+    ("Åpne CV-en denne kopien ble laget fra", "Open the CV this copy was made from"),
+    ("Punkter i denne CV-en: {shown} av {all}", "Bullets in this CV: {shown} of {all}"),
+    ("Velg hvilke punkter som står i denne CV-en. De andre blir stående her, men skjult.", "Choose which bullets are in this CV. The others stay here, but hidden."),
+    ("Med i denne CV-en", "In this CV"),
+    ("Velg et annet filnavn: kopien skal ikke erstatte hele CV-en.", "Choose another file name: the copy must not replace the full CV."),
+    ("Den tilpassede kopien er lagret i {path}. Hele CV-en i «{file}» er uendret.", "The tailored copy is saved in {path}. The full CV in “{file}” is unchanged."),
+    ("Fant ikke «{file}». Den kan være flyttet eller ha fått nytt navn.", "Could not find “{file}”. It may have been moved or renamed."),
+    ("{n} skjult", "{n} hidden"),
+    ("Deler av CV-en er skjult i denne kopien. De står i skjemaet og i filen, men ikke i CV-en.", "Parts of the CV are hidden in this copy. They are in the form and the file, but not in the CV."),
+    ("Lagre tilpasset kopi …", "Save tailored copy …"),
+    ("En kopi for denne jobben, med det du har skjult, annonsen og fagordene. Hele CV-en i filen sin blir som den er.", "A copy for this job, with what you have hidden, the ad and the keywords. The full CV stays as it is in its own file."),
+    ("Lagre hele CV-en i en fil først. Så kan du lage tilpassede kopier av den.", "Save the full CV in a file first. Then you can make tailored copies of it."),
+    ("«{file}» er lagret med en nyere CVBuilder. Oppdater CVBuilder for å åpne den.", "“{file}” was saved with a newer CVBuilder. Update CVBuilder to open it."),
     ("AI-endringer", "AI changes"),
     ("endringer fra AI-appen", "changes from the AI app"),
     ("angre i AI-panelet", "undo in the AI panel"),
@@ -2456,6 +2487,8 @@ static DYN: &[(&str, &str)] = &[
     ("Endret sideoppsettet", "Changed the layout"),
     ("Endret rekkefølgen på seksjonene", "Changed the order of the sections"),
     ("Oppdaterte språkene", "Updated the languages"),
+    ("Skjulte 1 del i denne CV-en", "Hid 1 item in this CV"),
+    ("Viste 1 del igjen", "Showed 1 item again"),
     ("Oppdaterte interessene", "Updated the interests"),
     ("Byttet CV-språket til engelsk", "Switched the CV language to English"),
     ("Byttet CV-språket til bokmål", "Switched the CV language to Norwegian (bokmål)"),
@@ -2656,8 +2689,8 @@ mod tests {
             ..Default::default()
         });
         broken.education.push(Education::default());
-        broken.skills.push(Skill { group: String::new(), name: String::new(), evidence: String::new(), confirmed: true });
-        broken.skills.push(Skill { group: String::new(), name: "Rust".into(), evidence: String::new(), confirmed: true });
+        broken.skills.push(Skill { id: String::new(), group: String::new(), name: String::new(), evidence: String::new(), confirmed: true });
+        broken.skills.push(Skill { id: String::new(), group: String::new(), name: "Rust".into(), evidence: String::new(), confirmed: true });
         broken.certifications.push(Certification::default());
         broken.languages.push(SpokenLanguage::default());
         broken.options.photo = true;

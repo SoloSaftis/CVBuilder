@@ -872,7 +872,7 @@ fn read_jobs(lines: &[&str], home: &str) -> (Vec<Job>, Vec<String>) {
             }
         }
         let body: Vec<&str> = e.body.iter().map(String::as_str).collect();
-        jobs.push(Job { id: format!("job_imported_{}", n + 1), company, title, location, start: e.start, end: e.end, bullets: bullets(&body), evidence: String::new(), confirmed: true });
+        jobs.push(Job { bullet_ids: Vec::new(), id: format!("job_imported_{}", n + 1), company, title, location, start: e.start, end: e.end, bullets: bullets(&body), evidence: String::new(), confirmed: true });
     }
     (jobs, loose)
 }
@@ -968,7 +968,7 @@ fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
                 }
             }
         }
-        out.push(Education { qualification: parts.join(", "), institution, start: String::new(), end: c[2].to_string() });
+        out.push(Education { id: String::new(), qualification: parts.join(", "), institution, start: String::new(), end: c[2].to_string() });
     }
     let loose = rest;
     for e in entries {
@@ -990,7 +990,7 @@ fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
         if let Some(d) = parts.iter().position(|p| is_degree(p)).filter(|&d| d > 0 && parts[..d].iter().any(|p| is_school(p))) {
             let start = checks::parse_year(&e.start).unwrap_or_default();
             let end = e.end.as_deref().and_then(|v| checks::parse_year(v)).unwrap_or_default();
-            out.push(Education { qualification: parts[d..].join(" "), institution: parts[..d].join(" "), start, end });
+            out.push(Education { id: String::new(), qualification: parts[d..].join(" "), institution: parts[..d].join(" "), start, end });
             continue;
         }
         for p in &parts {
@@ -1018,7 +1018,7 @@ fn read_education(lines: &[&str]) -> (Vec<Education>, Vec<String>) {
         }
         let start = checks::parse_year(&e.start).unwrap_or_default();
         let end = e.end.as_deref().and_then(|v| checks::parse_year(v)).unwrap_or_default();
-        out.push(Education { qualification: qualification.join(" "), institution, start, end });
+        out.push(Education { id: String::new(), qualification: qualification.join(" "), institution, start, end });
     }
     (out, loose)
 }
@@ -1061,7 +1061,7 @@ fn read_skills(lines: &[&str]) -> Vec<Skill> {
 fn push_skills(out: &mut Vec<Skill>, group: &str, text: &str) {
     for item in text.split([',', '•', '·', ';', '|']).map(|s| s.trim().trim_start_matches(['-', '*', '–']).trim()) {
         if (2..=60).contains(&item.chars().count()) && !out.iter().any(|s: &Skill| s.name.eq_ignore_ascii_case(item)) {
-            out.push(Skill { group: group.to_string(), name: item.to_string(), evidence: String::new(), confirmed: true });
+            out.push(Skill { id: String::new(), group: group.to_string(), name: item.to_string(), evidence: String::new(), confirmed: true });
         }
     }
 }
@@ -1296,7 +1296,7 @@ fn read_languages(lines: &[&str]) -> Vec<SpokenLanguage> {
             let short = |n: &str| !n.is_empty() && n.split_whitespace().count() <= 3 && n.chars().all(|c| is_letter(c) || " -'()".contains(c));
             if names.iter().all(|n| is_language_name(n)) || names.len() == 1 && short(names[0]) && !level.is_empty() {
                 for n in names {
-                    out.push(SpokenLanguage { name: capitalise(n), level: level.to_string() });
+                    out.push(SpokenLanguage { id: String::new(), name: capitalise(n), level: level.to_string() });
                 }
             }
             continue;
@@ -1314,7 +1314,7 @@ fn read_languages(lines: &[&str]) -> Vec<SpokenLanguage> {
             if is_and && next_is_language && out.last().is_some_and(|l| l.level.is_empty()) {
                 shared.push(out.len() - 1);
             } else if is_language_name(bare) {
-                out.push(SpokenLanguage { name: capitalise(bare), level: String::new() });
+                out.push(SpokenLanguage { id: String::new(), name: capitalise(bare), level: String::new() });
             } else if is_level(word) || !word.chars().any(char::is_uppercase) && out.last().is_some_and(|l| !l.level.is_empty() && l.level.split_whitespace().count() < 5) {
                 // A level, or the rest of one («written and spoken»).
                 if let Some(last) = out.last_mut() {
@@ -1388,7 +1388,7 @@ fn read_certifications(lines: &[&str]) -> Vec<Certification> {
             year = String::new();
         }
         if (2..=120).contains(&name.chars().count()) {
-            out.push(Certification { name, issuer, year });
+            out.push(Certification { id: String::new(), name, issuer, year });
         }
     }
     out
@@ -1416,7 +1416,7 @@ fn read_custom(lines: &[&str], id: &str, title: &str) -> Option<CustomSection> {
         };
         let end = e.end.as_deref().map(checks::show_month).unwrap_or_else(|| "nå".to_string());
         let body: Vec<&str> = e.body.iter().map(String::as_str).collect();
-        items.push(CustomItem { title, subtitle, date: format!("{} – {end}", checks::show_month(&e.start)), bullets: bullets(&body) });
+        items.push(CustomItem { id: String::new(), bullet_ids: Vec::new(), title, subtitle, date: format!("{} – {end}", checks::show_month(&e.start)), bullets: bullets(&body) });
     }
     let mut current: Option<CustomItem> = None;
     for line in &loose {
