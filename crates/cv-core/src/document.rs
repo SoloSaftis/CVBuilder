@@ -142,7 +142,9 @@ impl Builder<'_> {
         let mut p = self.para(&[(&l.heading(text), props)], self.space(6.0)).styled("Heading1");
         p.props.space_before = Some(self.space(11.0));
         p.props.keep_next = Some(true);
-        p.props.outline_level = Some(0);
+        // Under the name (level 0): screen readers and the PDF's bookmarks see the name first and
+        // the sections inside it.
+        p.props.outline_level = Some(1);
         // A section with its own colour gets its line in that colour too.
         let rule = if l.section_colors.contains_key(key) { self.current } else { rgb(&l.rule) };
         let line = |width: f32, space: f32| Some(Border { style: BorderStyle::Single, width, color: Some(rule), space });
@@ -182,16 +184,33 @@ pub fn photo_bytes(project: &Project) -> Option<Vec<u8>> {
     base64::engine::general_purpose::STANDARD.decode(encoded).ok()
 }
 
+/// The exported files' title, author, subject and keywords: «Name – CV», the name, and the
+/// target role and the ad's keywords only where the CV's own text has them.
+pub fn properties(project: &Project) -> (String, String, String, String) {
+    let name = project.candidate.name.trim();
+    let title = if name.is_empty() { "CV".to_string() } else { format!("{name} – CV") };
+    let shown = crate::checks::plain_text(project).to_lowercase();
+    let on_cv = |s: &&str| !s.trim().is_empty() && shown.contains(&s.trim().to_lowercase());
+    let role = project.target.role.as_str();
+    let subject = if on_cv(&role) { role.trim().to_string() } else { String::new() };
+    let keywords = project.target.keywords.iter().map(String::as_str).filter(on_cv).map(str::trim).collect::<Vec<_>>().join(", ");
+    (title, name.to_string(), subject, keywords)
+}
+
 /// The whole CV as a WordCraft document on A4: one column, or a sidebar when the design has one.
 pub fn build(project: &Project) -> Document {
     let l = effective(project);
     let labels = text::labels(project);
     let mut doc = Document::new();
     let c = &project.candidate;
-    doc.core.title = format!("{} – CV", c.name);
-    doc.core.creator = c.name.clone();
-    doc.core.subject = [project.target.role.as_str(), project.target.company.as_str()].iter().filter(|s| !s.is_empty()).copied().collect::<Vec<_>>().join(" – ");
-    doc.core.keywords = project.target.keywords.join(", ");
+    // File properties hold only what the CV itself shows: a CV sent on to another employer must
+    // not carry the company it was first written for, the ad's words it doesn't use, or anything
+    // about this computer (WordCraft writes no user name, path or edit time).
+    let (title, author, subject, keywords) = properties(project);
+    doc.core.title = title;
+    doc.core.creator = author;
+    doc.core.subject = subject;
+    doc.core.keywords = keywords;
     doc.core.description = c.headline.clone();
     let g = Geometry::of(project);
     let text_w = g.text_w();
@@ -437,6 +456,8 @@ fn write_header(b: &mut Builder<'_>, project: &Project, photo: Option<String>, c
     let name_text = if l.name_upper { c.name.to_uppercase() } else { c.name.clone() };
     let name_props = CharProps { spacing: (l.name_spacing > 0.0).then_some(l.name_spacing), ..b.chars(l.name_size, l.name_bold, on_band(b.ink()), &l.head_font) };
     let mut name = b.para(&[(&name_text, name_props)], 4.0).styled("Title");
+    // The CV's top heading (H1 in the tagged PDF); the sections are level 1 under it.
+    name.props.outline_level = Some(0);
     dress(&mut name);
     if band.is_some() {
         name.props.borders = Some(Borders { top: pad(2.0), left: pad(0.0), right: pad(0.0), ..Default::default() });
@@ -444,12 +465,12 @@ fn write_header(b: &mut Builder<'_>, project: &Project, photo: Option<String>, c
     if let Some(media) = photo.clone() {
         if float_photo {
             let float = Float { wrap: Wrap::InFrontOfText, h_rel: Anchor::Margin, v_rel: Anchor::Margin, h_align: Some(FloatAlign::End), v_align: Some(FloatAlign::Start), ..Default::default() };
-            let image = InlineObject::Image { media, w: PHOTO_W, h: PHOTO_H, alt: format!("Portrett av {}", c.name), float, crop: [0.0; 4], fx: Default::default(), ole: None };
+            let image = InlineObject::Image { media, w: PHOTO_W, h: PHOTO_H, alt: c.name.clone(), float, crop: [0.0; 4], fx: Default::default(), ole: None };
             let _ = name.insert_object(0, image, &CharProps::default());
         } else {
             // In a column the portrait stands on its own line above the name.
             let w = PHOTO_W.min(b.width);
-            let image = InlineObject::Image { media, w, h: w * PHOTO_H / PHOTO_W, alt: format!("Portrett av {}", c.name), float: Float::default(), crop: [0.0; 4], fx: Default::default(), ole: None };
+            let image = InlineObject::Image { media, w, h: w * PHOTO_H / PHOTO_W, alt: c.name.clone(), float: Float::default(), crop: [0.0; 4], fx: Default::default(), ole: None };
             let mut p = Paragraph::new();
             let _ = p.insert_object(0, image, &CharProps::default());
             p.props.space_after = Some(8.0);
@@ -605,8 +626,19 @@ pub fn to_docx(doc: &Document) -> Result<Vec<u8>, ExportError> {
     Ok(wordcraft_docx::write(doc)?)
 }
 
-/// Tagged PDF with embedded font subsets and selectable text.
+/// Tagged PDF with embedded font subsets and selectable text, in the CV's language. Written as
+/// PDF/UA-1 when it passes krilla's PDF/UA-1 checks (see [`pdf_ua_problems`]), else as a plain
+/// tagged PDF.
 pub fn to_pdf(doc: &Document) -> Result<Vec<u8>, ExportError> {
-    let options = wordcraft_pdf::PdfOptions { tagged: true, links: true, ..Default::default() };
-    Ok(wordcraft_pdf::export(doc, &options)?)
+    Ok(wordcraft_pdf::export(doc, &pdf_options())?)
+}
+
+fn pdf_options() -> wordcraft_pdf::PdfOptions {
+    wordcraft_pdf::PdfOptions { tagged: true, pdf_ua: true, links: true, ..Default::default() }
+}
+
+/// What keeps the CV's PDF from passing krilla's PDF/UA-1 checks, one line each (empty: it
+/// passes). For tests and diagnostics; not a full PDF/UA validator.
+pub fn pdf_ua_problems(doc: &Document) -> Result<Vec<String>, ExportError> {
+    Ok(wordcraft_pdf::pdf_ua_problems(doc, &pdf_options())?)
 }

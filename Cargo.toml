@@ -14,15 +14,15 @@ license = "MIT OR Apache-2.0"
 [workspace.dependencies]
 # wordcraft from the SoloSaftis fork: storytold/wordcraft at 661a790 plus the PDF text fix for
 # Devanagari and other left-to-right complex scripts, Arabic, and Latin letters drawn with marks
-# («å» in Cambria and Calibri) (branch cvbuilder-pdf-aring, from cvbuilder-pdf-text).
-wordcraft-doc = { git = "https://github.com/SoloSaftis/wordcraft", rev = "aeeb2b62438d806e01f6ec5d59db337c725cdae7" }
-wordcraft-docx = { git = "https://github.com/SoloSaftis/wordcraft", rev = "aeeb2b62438d806e01f6ec5d59db337c725cdae7" }
-wordcraft-docbin = { git = "https://github.com/SoloSaftis/wordcraft", rev = "aeeb2b62438d806e01f6ec5d59db337c725cdae7" }
-wordcraft-formats = { git = "https://github.com/SoloSaftis/wordcraft", rev = "aeeb2b62438d806e01f6ec5d59db337c725cdae7" }
-wordcraft-pdf = { git = "https://github.com/SoloSaftis/wordcraft", rev = "aeeb2b62438d806e01f6ec5d59db337c725cdae7" }
-wordcraft-layout = { git = "https://github.com/SoloSaftis/wordcraft", rev = "aeeb2b62438d806e01f6ec5d59db337c725cdae7" }
-wordcraft-render = { git = "https://github.com/SoloSaftis/wordcraft", rev = "aeeb2b62438d806e01f6ec5d59db337c725cdae7" }
-wordcraft-fonts = { git = "https://github.com/SoloSaftis/wordcraft", rev = "aeeb2b62438d806e01f6ec5d59db337c725cdae7" }
+# («å» in Cambria and Calibri), list tags and PDF/UA-1 (branch cvbuilder-pdf-text).
+wordcraft-doc = { git = "https://github.com/SoloSaftis/wordcraft", rev = "32f0f710425c59d2d65c1741cb68bc839aef0201" }
+wordcraft-docx = { git = "https://github.com/SoloSaftis/wordcraft", rev = "32f0f710425c59d2d65c1741cb68bc839aef0201" }
+wordcraft-docbin = { git = "https://github.com/SoloSaftis/wordcraft", rev = "32f0f710425c59d2d65c1741cb68bc839aef0201" }
+wordcraft-formats = { git = "https://github.com/SoloSaftis/wordcraft", rev = "32f0f710425c59d2d65c1741cb68bc839aef0201" }
+wordcraft-pdf = { git = "https://github.com/SoloSaftis/wordcraft", rev = "32f0f710425c59d2d65c1741cb68bc839aef0201" }
+wordcraft-layout = { git = "https://github.com/SoloSaftis/wordcraft", rev = "32f0f710425c59d2d65c1741cb68bc839aef0201" }
+wordcraft-render = { git = "https://github.com/SoloSaftis/wordcraft", rev = "32f0f710425c59d2d65c1741cb68bc839aef0201" }
+wordcraft-fonts = { git = "https://github.com/SoloSaftis/wordcraft", rev = "32f0f710425c59d2d65c1741cb68bc839aef0201" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 thiserror = "2"

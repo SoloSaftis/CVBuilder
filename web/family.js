@@ -210,10 +210,12 @@ async function exportWord(){
   else children.push(body(item.text));
  }
  const footer=new Footer({children:[new Paragraph({tabStops:[{type:TabStopType.RIGHT,position:RIGHT}],children:[run(data.candidate.name,{size:16,color:MUTED}),new TextRun({children:['\t',PageNumber.CURRENT,' / ',PageNumber.TOTAL_PAGES],font:Wd.body,size:16,color:MUTED})]})]});
+ // File properties hold only what the CV shows: not the company it was written for, nor ad words it does not use.
+ const shown=R.plainText(data).toLowerCase(),onCv=value=>!!(value&&value.trim())&&shown.includes(value.trim().toLowerCase());
  const document=new Document({
-  creator:data.candidate.name,title:data.candidate.name+' – CV',subject:[data.target.role,data.target.company].filter(Boolean).join(' – '),keywords:data.target.keywords.join(', '),description:data.candidate.headline,lastModifiedBy:data.candidate.name,
+  creator:data.candidate.name,title:data.candidate.name+' – CV',subject:onCv(data.target.role)?data.target.role.trim():'',keywords:data.target.keywords.filter(onCv).map(k=>k.trim()).join(', '),description:data.candidate.headline,lastModifiedBy:data.candidate.name,
   numbering:{config:[{reference:'cv-bullets',levels:[{level:0,format:LevelFormat.BULLET,text:'•',alignment:AlignmentType.LEFT,style:{paragraph:{indent:{left:340,hanging:220}}}}]}]},
-  styles:{default:{document:{run:{font:Wd.body,size:SIZE,color:INK},paragraph:{spacing:{line:Math.round(264*Math.min(1,Wd.gap+.1))}}}},paragraphStyles:[{id:'Title',name:'Title',basedOn:'Normal',next:'Normal',run:{font:Wd.head,size:Wd.name,bold:true,color:INK}},{id:'Heading1',name:'Heading 1',basedOn:'Normal',next:'Normal',quickFormat:true,run:{font:Wd.head,size:SIZE+1,bold:true,color:ACCENT}}]},
+  styles:{default:{document:{run:{font:Wd.body,size:SIZE,color:INK,language:{value:no?'nb-NO':'en-GB'}},paragraph:{spacing:{line:Math.round(264*Math.min(1,Wd.gap+.1))}}}},paragraphStyles:[{id:'Title',name:'Title',basedOn:'Normal',next:'Normal',run:{font:Wd.head,size:Wd.name,bold:true,color:INK}},{id:'Heading1',name:'Heading 1',basedOn:'Normal',next:'Normal',quickFormat:true,run:{font:Wd.head,size:SIZE+1,bold:true,color:ACCENT}}]},
   sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:964,bottom:850,left:964,right:964,footer:420}}},footers:{default:footer},children}]
  });
  return Packer.toBlob(document);
