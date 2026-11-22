@@ -6,6 +6,7 @@ pub mod cvread;
 pub mod import;
 pub mod interview;
 pub mod readback;
+pub mod requirements;
 pub mod linkedin;
 mod wordlists;
 pub mod document;

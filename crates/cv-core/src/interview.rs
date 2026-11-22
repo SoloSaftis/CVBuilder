@@ -2,7 +2,7 @@
 //! only from the CV and the job ad, with fixed rules and no AI:
 //!
 //! - the claims in the CV that carry a number or a result («cut waiting times by 20 %»);
-//! - what the ad asks for, and where in the CV it is shown (a job, an education …), only listed
+//! - what the ad asks for (its must-haves and nice-to-haves, read by `requirements`), and where in the CV it is shown (a job, an education …), only listed
 //!   (skills or profile, with no job behind it), or not shown at all;
 //! - gaps: what the ad asks for that the CV does not show, and more than six months without a job;
 //! - the questions almost every interview has (why this job, why leave the current one).
@@ -19,6 +19,7 @@ use wordcraft_doc::{Block, CharProps, Document, Paragraph, Rgb, TextColor};
 use crate::checks::{RESULT, contains, gaps, normal};
 use crate::layouts::{effective, rgb};
 use crate::model::Project;
+use crate::requirements::{self, Need};
 use crate::text;
 
 /// Translates a Norwegian key and fills in its `{name}` placeholders.
@@ -163,55 +164,32 @@ pub const KEYS: &[&str] = &[
     "Ingenting å vise ennå. Skriv jobbene dine og lim inn stillingsannonsen, så fylles arket.",
 ];
 
-/// Words that make a line of the ad a requirement, or only a wish (lower case; Norwegian,
-/// English, Swedish, Danish, German).
-const MUST: &[&str] = &[
-    "krav", "kreves", "påkrevd", "må ha", "må kunne", "må være", "nødvendig", "kvalifikasjoner", "required", "requirement", "must", "essential", "you have", "you will have",
-    "qualifications", "krav:", "ska ha", "måste", "skal have", "kræver", "voraussetzung", "erforderlich", "anforderungen", "sie haben", "du har", "du er", "vi ser etter",
-];
-const NICE: &[&str] = &[
-    "ønskelig", "en fordel", "fordelaktig", "et pluss", "positivt", "nice to have", "a plus", "an advantage", "bonus", "preferred", "desirable", "meriterande", "meriterende",
-    "önskvärt", "en fördel", "wünschenswert", "von vorteil", "gerne", "ideally", "ideelt",
-];
-
-/// The block of the ad a line belongs to, from the last heading above it.
-fn weights(ad: &str) -> Vec<(String, Weight)> {
-    let mut block = Weight::Unknown;
-    let mut out = Vec::new();
-    for raw in ad.lines() {
-        let line = raw.trim();
-        if line.is_empty() {
-            continue;
-        }
-        let lower = line.to_lowercase();
-        let has = |words: &[&str]| words.iter().any(|w| lower.contains(w));
-        let own = if has(NICE) {
-            Weight::Nice
-        } else if has(MUST) {
-            Weight::Must
-        } else {
-            Weight::Unknown
-        };
-        // A short line, or one ending in «:», is a heading for the lines under it.
-        let heading = line.ends_with(':') || (line.split_whitespace().count() <= 4 && !line.starts_with(['-', '•', '*', '–']));
-        if heading {
-            block = own;
-            out.push((normal(line), own));
-            continue;
-        }
-        out.push((normal(line), if own == Weight::Unknown { block } else { own }));
-    }
-    out
+/// One thing the ad asks for: a requirement line (with its key terms), or a single key word.
+struct Asked {
+    subject: String,
+    weight: Weight,
+    terms: Vec<String>,
 }
 
-/// What the ad asks for: the person's own keyword list, else the terms found in the ad.
-fn needs(p: &Project) -> (Vec<String>, bool) {
+/// What the ad asks for. The ad's own requirements when it has headings or phrases the reader
+/// knows (to-do 045: must-haves first, then nice-to-haves); otherwise the person's keyword list,
+/// else the key words found in the ad. The flag says the list came from the ad's text alone.
+fn asked(p: &Project) -> (Vec<Asked>, bool) {
+    let mut reqs = requirements::ad_requirements(&p.target.description);
+    if !reqs.is_empty() {
+        reqs.sort_by_key(|r| r.need != Need::Must);
+        let list = reqs
+            .into_iter()
+            .take(MAX_NEEDS)
+            .map(|r| Asked { subject: r.text, weight: if r.need == Need::Must { Weight::Must } else { Weight::Nice }, terms: r.terms })
+            .collect();
+        return (list, true);
+    }
     let mut seen = HashSet::new();
     let own: Vec<String> = p.target.keywords.iter().map(|k| k.trim().to_string()).filter(|k| !normal(k).is_empty() && seen.insert(normal(k))).collect();
-    if !own.is_empty() {
-        return (own, false);
-    }
-    (crate::import::ad_keywords(&p.target.description, &p.target.company, MAX_NEEDS), true)
+    let suggested = own.is_empty();
+    let terms = if suggested { crate::import::ad_keywords(&p.target.description, &p.target.company, MAX_NEEDS) } else { own };
+    (terms.into_iter().take(MAX_NEEDS).map(|t| Asked { subject: t.clone(), weight: Weight::Unknown, terms: vec![t] }).collect(), suggested)
 }
 
 fn joined(parts: &[&str]) -> String {
@@ -314,27 +292,25 @@ pub fn sheet(p: &Project, today_index: i32) -> Sheet {
             places: if place.is_empty() { Vec::new() } else { vec![Place::Cv(place)] },
         });
     }
-    // What the ad asks for: musts first, then the rest, wishes last.
-    let (terms, suggested) = needs(p);
-    let lines = weights(&p.target.description);
-    let mut asked: Vec<(String, Weight)> = terms
-        .into_iter()
-        .take(MAX_NEEDS)
-        .map(|term| {
-            let weight = lines.iter().find(|(line, _)| contains(line, &term)).map_or(Weight::Unknown, |(_, w)| *w);
-            (term, weight)
-        })
-        .collect();
-    let rank = |w: Weight| match w {
-        Weight::Must => 0,
-        Weight::Unknown => 1,
-        Weight::Nice => 2,
-    };
-    asked.sort_by_key(|(_, w)| rank(*w));
+    // What the ad asks for, and where the CV shows it.
+    let (list, suggested) = asked(p);
     let mut missing = Vec::new();
-    for (term, weight) in asked {
-        let (found, evidence) = places(p, &term);
-        let item = |part, question| Item { id: id("need", &term), part, subject: term.clone(), weight, question, places: found.clone() };
+    for need in list {
+        let mut found: Vec<Place> = Vec::new();
+        let mut evidence = false;
+        for term in &need.terms {
+            let (places, shown) = places(p, term);
+            evidence |= shown;
+            for place in places {
+                if !found.contains(&place) {
+                    found.push(place);
+                }
+            }
+        }
+        // Jobs and what was done first, the lists after.
+        found.sort_by_key(|pl| matches!(pl, Place::Section(_)));
+        let item = |part, question| Item { id: id("need", &need.subject), part, subject: need.subject.clone(), weight: need.weight, question, places: found.clone() };
+        // A requirement with no term a CV can show («gode samarbeidsevner») is still asked about.
         if found.is_empty() {
             missing.push(item(Part::Gaps, Line::new("Annonsen ber om dette, men CV-en viser det ikke. Hva svarer du hvis du får spørsmål om det?", &[])));
         } else if evidence {
@@ -537,7 +513,7 @@ mod tests {
         p.candidate.headline = "Prosjektkoordinator med blikk for drift".into();
         p.target.role = "Driftskoordinator".into();
         p.target.company = "Nordvik Energi".into();
-        p.target.description = "Om stillingen\nDu får ansvar for drift.\nKvalifikasjoner:\n- Erfaring med SAP\n- Fagbrev som elektriker\n- Gode kunnskaper i Excel\nDet er en fordel med Power BI.\nVi tilbyr gode betingelser.".into();
+        p.target.description = "Om stillingen\nDu får ansvar for drift.\nKvalifikasjoner:\n- Erfaring med SAP\n- Fagbrev som elektriker\n- Gode kunnskaper i Excel\nØnskelig:\n- Erfaring med Power BI\nVi tilbyr:\n- Gode betingelser".into();
         p.target.keywords = vec!["SAP".into(), "fagbrev".into(), "Excel".into(), "Power BI".into(), "sap ".into()];
         p.experience.push(Job {
             company: "Fjellvegg AS".into(),
@@ -582,30 +558,43 @@ mod tests {
     #[test]
     fn requirements_say_where_the_cv_shows_them() {
         let s = sheet(&project(), today());
-        assert!(!s.suggested);
+        assert!(s.suggested);
+        // The ad's own lines (045), must-haves first.
         let ad: Vec<(&str, Weight)> = s.part(Part::Ad).map(|i| (i.subject.as_str(), i.weight)).collect();
-        // Musts first; «sap » is the same keyword as «SAP».
-        assert_eq!(ad, [("SAP", Weight::Must), ("fagbrev", Weight::Must), ("Excel", Weight::Must)]);
-        let sap = s.part(Part::Ad).find(|i| i.subject == "SAP").unwrap();
+        assert_eq!(ad, [("Erfaring med SAP", Weight::Must), ("Fagbrev som elektriker", Weight::Must), ("Gode kunnskaper i Excel", Weight::Must)]);
+        let sap = s.part(Part::Ad).find(|i| i.subject == "Erfaring med SAP").unwrap();
         assert_eq!(sap.question.render(&no), "Gi et konkret eksempel fra Koordinator – Fjellvegg AS: hva du gjorde og hva det førte til.");
         // Shown by an education.
-        let fagbrev = s.part(Part::Ad).find(|i| i.subject == "fagbrev").unwrap();
+        let fagbrev = s.part(Part::Ad).find(|i| i.subject == "Fagbrev som elektriker").unwrap();
         assert_eq!(fagbrev.places, [Place::Cv("Fagbrev logistikk – Vg3".into())]);
         // Only in the skills list: have an example ready.
-        let excel = s.part(Part::Ad).find(|i| i.subject == "Excel").unwrap();
+        let excel = s.part(Part::Ad).find(|i| i.subject == "Gode kunnskaper i Excel").unwrap();
         assert_eq!(excel.places, [Place::Section("Kjernekompetanse")]);
         assert!(excel.question.key.starts_with("Det står i CV-en, men ingen jobb"));
         assert_eq!(where_line(excel, &no).as_deref(), Some("CV-en viser det: Kjernekompetanse"));
-        assert_eq!(headline(excel, &no), "Excel (Krav)");
+        assert_eq!(headline(excel, &no), "Gode kunnskaper i Excel (Krav)");
+    }
+
+    #[test]
+    fn an_ad_without_structure_falls_back_to_the_keyword_list() {
+        let mut p = project();
+        p.target.description = "Vi søker en blid medarbeider. Send søknad i dag!".into();
+        let s = sheet(&p, today());
+        assert!(!s.suggested);
+        // «sap » is the same keyword as «SAP»; nothing says must or nice.
+        let ad: Vec<(&str, Weight)> = s.part(Part::Ad).map(|i| (i.subject.as_str(), i.weight)).collect();
+        assert_eq!(ad, [("SAP", Weight::Unknown), ("fagbrev", Weight::Unknown), ("Excel", Weight::Unknown)]);
+        assert_eq!(headline(s.part(Part::Ad).last().unwrap(), &no), "Excel");
+        assert_eq!(s.part(Part::Gaps).next().map(|i| i.subject.as_str()), Some("Power BI"));
     }
 
     #[test]
     fn gaps_are_missing_requirements_and_time_without_a_job() {
         let s = sheet(&project(), today());
         let gaps: Vec<&Item> = s.part(Part::Gaps).collect();
-        assert_eq!(gaps[0].subject, "Power BI");
+        assert_eq!(gaps[0].subject, "Erfaring med Power BI");
         assert_eq!(gaps[0].weight, Weight::Nice);
-        assert_eq!(headline(gaps[0], &no), "Power BI (Ønskelig)");
+        assert!(headline(gaps[0], &no).ends_with(" (Ønskelig)"));
         assert_eq!(where_line(gaps[0], &no), None);
         // 06.2020 → 09.2021: fourteen months.
         assert_eq!(gaps[1].question.render(&no), "Mellom Bygg AS og Fjellvegg AS er det 14 måneder uten jobb i CV-en. Hva gjorde du da?");
@@ -640,12 +629,19 @@ mod tests {
     fn without_a_keyword_list_the_terms_come_from_the_ad() {
         let mut p = project();
         p.target.keywords.clear();
+        // A requirement the CV does not show is a gap, marked as the ad marks it.
         p.target.description = "Krav: erfaring med TwinCAT og CODESYS.".into();
         let s = sheet(&p, today());
         assert!(s.suggested);
         let missing: Vec<(&str, Weight)> = s.part(Part::Gaps).filter(|i| !i.subject.is_empty()).map(|i| (i.subject.as_str(), i.weight)).collect();
-        assert!(missing.contains(&("TwinCAT", Weight::Must)), "{missing:?}");
-        assert!(missing.contains(&("CODESYS", Weight::Must)), "{missing:?}");
+        assert!(missing.iter().any(|(t, w)| t.contains("TwinCAT") && t.contains("CODESYS") && *w == Weight::Must), "{missing:?}");
+        // No structure and no keyword list: the key words the ad uses.
+        p.target.description = "Vi søker en blid medarbeider som kan TwinCAT og CODESYS.".into();
+        let s = sheet(&p, today());
+        assert!(s.suggested);
+        let missing: Vec<(&str, Weight)> = s.part(Part::Gaps).filter(|i| !i.subject.is_empty()).map(|i| (i.subject.as_str(), i.weight)).collect();
+        assert!(missing.contains(&("TwinCAT", Weight::Unknown)), "{missing:?}");
+        assert!(missing.contains(&("CODESYS", Weight::Unknown)), "{missing:?}");
     }
 
     #[test]
@@ -681,14 +677,14 @@ mod tests {
     fn the_text_has_every_part_and_the_notes() {
         let p = project();
         let s = sheet(&p, today());
-        let notes = |id: &str| if id.starts_with("need:sap") { "Viste innkjøpsflyten\nfor ledelsen".to_string() } else { String::new() };
+        let notes = |id: &str| if id.starts_with("need:erfaring med sap") { "Viste innkjøpsflyten\nfor ledelsen".to_string() } else { String::new() };
         let text = to_text(&p, &s, &notes, &no);
         assert!(text.starts_with("Forbered intervjuet: Driftskoordinator – Nordvik Energi\n"));
         for part in Part::ALL {
             assert!(text.contains(&part.title().to_uppercase()), "{part:?} missing");
         }
         assert!(text.contains("- «Kortet ned ventetiden med 20 % ved å planlegge i SAP»\n  Hva gjorde du selv"));
-        assert!(text.contains("- SAP (Krav)\n"));
+        assert!(text.contains("- Erfaring med SAP (Krav)\n"));
         assert!(text.contains("  Notater: Viste innkjøpsflyten\n    for ledelsen\n"));
         // An empty CV has no empty parts.
         let empty = to_text(&Project::default(), &sheet(&Project::default(), today()), &|_| String::new(), &no);
@@ -704,7 +700,7 @@ mod tests {
         let bytes = crate::document::to_pdf(&doc).expect("pdf");
         assert!(bytes.starts_with(b"%PDF"));
         let text = crate::import::text_from_bytes(&bytes, "pdf").expect("read back");
-        for want in ["Forbered intervjuet", "SAP (Krav)", "Notater: Jeg vil bygge noe", "Fagbrev logistikk"] {
+        for want in ["Forbered intervjuet", "Erfaring med SAP (Krav)", "Notater: Jeg vil bygge noe", "Fagbrev logistikk"] {
             assert!(text.contains(want), "«{want}» not in the PDF text:\n{text}");
         }
         // Right to left when the words are.

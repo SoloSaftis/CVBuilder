@@ -255,6 +255,31 @@ const SCENES: &[Scene] = &[
             a.interview.open();
         },
     },
+    // Must-haves and nice-to-haves read from the ad, with where the CV shows them (045).
+    Scene {
+        name: "Krav i annonsen",
+        setup: |a| {
+            a.side = Side::Checks;
+            a.project.target.description = include_str!("../../cv-core/tests/ads/elektriker-no.txt").into();
+            a.project.target.keywords = vec!["fagbrev".into(), "KNX".into(), "NEK 400".into()];
+        },
+    },
+    Scene {
+        name: "Krav i engelsk annonse",
+        setup: |a| {
+            a.side = Side::Checks;
+            a.project.target.description = include_str!("../../cv-core/tests/ads/data-engineer-en.txt").into();
+        },
+    },
+    // An ad with no headings: the hint and the AI button.
+    Scene {
+        name: "Krav i annonse uten overskrifter",
+        setup: |a| {
+            with_provider(a);
+            a.side = Side::Checks;
+            a.project.target.description = "Vi søker en blid medarbeider til butikken vår. Send søknad i dag!".into();
+        },
+    },
     Scene {
         name: "Egen sjekkliste",
         setup: |a| {
@@ -1068,6 +1093,25 @@ fn ui_shots() {
         wait_for_preview(&mut h);
         let image = h.render().expect("render");
         image.save(dir.join(format!("{i:02}-{}.png", scene.name.replace(' ', "_")))).expect("save");
+    }
+}
+
+/// The requirement scenes in a tall window, so the whole side panel is in the picture:
+/// `CVBUILDER_SHOTS=<dir> cargo test --release -p cvbuilder-app requirement_shots -- --ignored`
+#[test]
+#[ignore = "writes pictures; run on purpose"]
+fn requirement_shots() {
+    let Ok(dir) = std::env::var("CVBUILDER_SHOTS").map(std::path::PathBuf::from) else {
+        return;
+    };
+    std::fs::create_dir_all(&dir).expect("shots folder");
+    let lang = std::env::var("CVBUILDER_QA_LANGS").unwrap_or_else(|_| "no".into());
+    private_data_folder(&lang);
+    for scene in SCENES.iter().filter(|s| s.name.starts_with("Krav i")) {
+        let mut h = harness(Vec2::new(1440.0, 2600.0), scene.setup);
+        wait_for_preview(&mut h);
+        let image = h.render().expect("render");
+        image.save(dir.join(format!("{lang}-{}.png", scene.name.replace(' ', "_")))).expect("save");
     }
 }
 

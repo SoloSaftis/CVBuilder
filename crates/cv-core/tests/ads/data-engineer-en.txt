@@ -1,0 +1,27 @@
+Senior Data Engineer
+Fjordline Analytics · Oslo (Hybrid)
+
+About the role
+You will design and run the data platform that powers our pricing and forecasting.
+
+What you'll do
+- Build batch and streaming pipelines in Python
+- Own our data models in dbt
+
+Requirements
+- 5+ years of experience as a data engineer
+- Strong Python and SQL
+- Experience with Apache Spark or Databricks
+- Hands-on experience with AWS or Azure
+- Fluent English, written and spoken
+
+Nice to have
+- Terraform and Kubernetes
+- Experience with Power BI
+- A degree in computer science or similar
+
+Experience with Kafka is a plus.
+
+What we offer
+- Pension and health insurance
+- Flexible hours and remote work

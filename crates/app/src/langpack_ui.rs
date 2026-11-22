@@ -285,7 +285,7 @@ pub(crate) fn translate_all(
 }
 
 /// One request to the chat's backend.
-fn ask(backend: &Backend, system: &str, user: &str) -> Result<String, String> {
+pub(crate) fn ask(backend: &Backend, system: &str, user: &str) -> Result<String, String> {
     match backend {
         Backend::Api { endpoint, model } => cv_ai::providers::complete(endpoint, model, system, user).map_err(|e| i18n::tdyn(&e.to_string())),
         Backend::ClaudeCode { program, .. } => cv_ai::chat::claude_code_once(program, system, user).map_err(|e| i18n::tdyn(&e)),
