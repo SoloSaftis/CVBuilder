@@ -339,7 +339,7 @@ static SENSITIVE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)\b(født|fødselsdato|fødselsnummer|personnummer|sivilstand|sivilstatus|ugift|samboer|religion|date of birth|born on|marital status|social security|nationality|nasjonalitet|(?:jeg er|er) gift|gift med|gift,? (?:og )?(?:har )?(?:\d+|ett|to|tre|fire|fem) barn)\b").expect("regex")
 });
 /// A number counts as a result only when it measures something, not a version or model number.
-static RESULT: LazyLock<Regex> = LazyLock::new(|| {
+pub(crate) static RESULT: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)(?:^|[^\p{L}\p{N}.\-])\d+(?:[.,]\d+)?\s?(?:%|prosent|percent|kr\b|nok\b|mnok|mill|million|timer|hours?|dager|days?|uker|weeks?|måneder|months?|år\b|years?|ganger|times|x\b|kunder|customers|anlegg|plants|systemer|systems|prosjekter|projects|personer|people|brukere|users|ansatte|employees|signaler|signals|tags|i/o|meter|km|tonn|tonnes|mw|kw)").expect("regex")
 });
 

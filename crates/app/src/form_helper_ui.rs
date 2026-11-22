@@ -329,6 +329,17 @@ impl CvApp {
         }
         ui.add_space(6.0);
         self.ready_answers(ui);
+        ui.add_space(6.0);
+        // After the form comes the interview: the prep sheet is one click away (to-do 051).
+        theme::card(ui).inner_margin(Margin::same(12)).show(ui, |ui| {
+            ui.set_width(ui.available_width());
+            theme::section_title(ui, i18n::t("Forbered intervjuet"));
+            theme::hint(ui, i18n::t("Et ark med det intervjueren trolig spør om: påstandene i CV-en, det annonsen ber om og hullene. Uten AI."));
+            ui.add_space(4.0);
+            if ui.button(i18n::t("Åpne intervjuarket")).on_hover_text(i18n::t("Se spørsmålene, skriv notater, og kopier eller lagre arket som PDF")).clicked() {
+                self.interview.open();
+            }
+        });
     }
 
     fn ready_answers(&mut self, ui: &mut egui::Ui) {

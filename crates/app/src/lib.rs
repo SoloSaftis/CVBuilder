@@ -17,6 +17,7 @@ mod form;
 mod form_helper_ui;
 mod i18n;
 mod import_ui;
+mod interview_ui;
 mod lang_search;
 mod langpack_ui;
 mod link;
@@ -70,6 +71,7 @@ enum Picked {
     ChecklistLoad(PathBuf),
     ChecklistSave(PathBuf),
     DesignSave(PathBuf),
+    InterviewPdf(PathBuf),
 }
 
 /// What «Vil du lagre endringene?» stands in front of: closing the window, or a step that puts
@@ -173,6 +175,8 @@ struct CvApp {
     langs: langpack_ui::LangState,
     checklist: checklist_ui::ChecklistState,
     form_helper: form_helper_ui::FormHelperState,
+    /// «Forbered intervjuet»: the window is open, and the notes.
+    interview: interview_ui::InterviewState,
     readback: readback_ui::ReadBackState,
     /// The name being typed for a new section, while that window is open.
     new_section: Option<String>,
@@ -238,6 +242,7 @@ impl CvApp {
             langs,
             checklist: checklist_ui::ChecklistState::load(),
             form_helper: form_helper_ui::FormHelperState::load(),
+            interview: interview_ui::InterviewState::default(),
             readback: readback_ui::ReadBackState::default(),
             new_section: None,
             new_section_at: None,
@@ -634,6 +639,7 @@ impl CvApp {
                 ("checklist_save", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).set_file_name("min-sjekkliste.cvchecklist.json").save_file().map(Picked::ChecklistSave),
                 ("design_import", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).pick_file().map(Picked::DesignImport),
                 ("design_save", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).set_file_name("min-design.cvdesign.json").save_file().map(Picked::DesignSave),
+                ("interview_pdf", _) => rfd::FileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(format!("{stem}_intervju.pdf")).save_file().map(Picked::InterviewPdf),
                 ("photo", _) => rfd::FileDialog::new().add_filter(i18n::t("Bilde"), &["jpg", "jpeg", "png", "webp", "bmp", "tif", "tiff"]).pick_file().map(Picked::Photo),
                 ("export", Some(Export::Word)) => rfd::FileDialog::new().add_filter("Word", &["docx"]).set_file_name(format!("{stem}.docx")).save_file().map(|p| Picked::Export(Export::Word, p)),
                 ("export", Some(Export::Pdf)) => rfd::FileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(format!("{stem}.pdf")).save_file().map(|p| Picked::Export(Export::Pdf, p)),
@@ -667,6 +673,7 @@ impl CvApp {
                 Picked::ChecklistLoad(path) => self.load_checklist(&path),
                 Picked::ChecklistSave(path) => self.save_checklist_file(&path),
                 Picked::DesignSave(path) => self.save_design_template(&path),
+                Picked::InterviewPdf(path) => self.write_interview_pdf(&path),
                 Picked::Photo(path) => match photo::Edit::open(&path) {
                     Ok(edit) => self.photo = Some(PhotoDialog { edit, texture: None, stale: true }),
                     Err(e) => self.status = e,
@@ -1263,6 +1270,7 @@ impl eframe::App for CvApp {
         self.checklist_editor(&ctx);
         self.import_cv_dialog(&ctx);
         self.import_rest_dialog(&ctx);
+        self.interview_dialog(&ctx);
         self.ai_confirm_dialog(&ctx);
         if let Some(busy) = self.import.busy.clone() {
             egui::Area::new(egui::Id::unique("cvbuilder.import-busy")).anchor(egui::Align2::CENTER_BOTTOM, [0.0, -48.0]).show(&ctx, |ui| {
