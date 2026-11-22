@@ -149,3 +149,18 @@ fn an_unreachable_local_server_says_what_to_check() {
     let error = test_connection(&endpoint).expect_err("nothing listens on port 1").to_string();
     assert!(error.contains("Ollama") && error.contains("127.0.0.1:1"), "{error}");
 }
+
+#[test]
+fn only_real_local_addresses_count_as_local() {
+    use cv_ai::{endpoint_origin, is_local_address as local, is_unencrypted};
+    for yes in ["http://localhost:11434/v1", "http://127.0.0.1:1234/v1", "http://127.5.6.7/v1", "http://[::1]:11434/v1", "http://LOCALHOST:8080/v1", "http://ollama.localhost/v1"] {
+        assert!(local(yes), "{yes} should be local");
+    }
+    for no in ["http://localhost:x@evil.example/v1", "http://localhost@evil.example", "http://127.0.0.1.evil.example/v1", "http://localhost./v1", "http://.localhost/v1", "", "not a url", "localhost:11434/v1", "ftp://localhost/", "http://192.168.1.20:11434/v1", "https://api.openai.com/v1", "http://[::2]/"] {
+        assert!(!local(no), "{no} should not be local");
+    }
+    assert_eq!(endpoint_origin("HTTP://LocalHost:80/v1"), endpoint_origin("http://localhost/"));
+    assert_ne!(endpoint_origin("http://192.168.1.20:11434/v1"), endpoint_origin("http://192.168.1.21:11434/v1"));
+    assert_eq!(endpoint_origin("http://user:pw@example.com/"), None);
+    assert!(is_unencrypted("http://192.168.1.20:11434/v1") && !is_unencrypted("https://example.com/v1") && !is_unencrypted("http://localhost:11434/v1"));
+}
