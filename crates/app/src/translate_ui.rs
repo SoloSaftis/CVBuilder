@@ -107,7 +107,7 @@ impl CvApp {
     /// Puts the headings in the chosen language; keeps the text as it was, as the original to
     /// translate from.
     fn apply_headings(&mut self, state: &TranslateState) {
-        let before = (self.project.clone(), self.is_example);
+        self.remember(crate::step::LANGUAGE);
         self.reference = Some(self.project.clone());
         if is_norwegian(&state.language) {
             self.project.options.headings = None;
@@ -120,8 +120,6 @@ impl CvApp {
             self.project.options.headings = Some(Headings { language: state.language.clone(), ..state.headings.clone() });
         }
         self.buffers.clear();
-        self.undo = Some(before);
-        self.redo = None;
         self.touched();
     }
 

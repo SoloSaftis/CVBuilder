@@ -32,6 +32,7 @@ mod theme;
 #[cfg(test)]
 mod tooltips;
 mod translate_ui;
+mod undo;
 mod updates_ui;
 mod welcome_ui;
 #[cfg(test)]
@@ -47,6 +48,7 @@ use cv_core::{Project, document};
 use egui::{CornerRadius, Margin, RichText, Stroke};
 use checklist_ui::{Status, status_line};
 use theme::Tokens;
+use undo::step;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 enum Export {
@@ -119,9 +121,8 @@ struct CvApp {
     bad_dates: HashSet<String>,
     preview: preview::Preview,
     status: String,
-    undo: Option<(Project, bool)>,
-    /// The CV as it was before the last undo, for «Gjør om» (Ctrl+Y). Gone at the next edit.
-    redo: Option<(Project, bool)>,
+    /// The big changes «Angre» (Ctrl+Z) goes back through and «Gjør om» (Ctrl+Y) forward again.
+    history: undo::History<(Project, bool)>,
     confirm: Option<Export>,
     picked_tx: Sender<Picked>,
     picked_rx: Receiver<Picked>,
@@ -202,8 +203,7 @@ impl CvApp {
             bad_dates: HashSet::new(),
             preview: preview::Preview::new(cc.egui_ctx.clone()),
             status: i18n::t("Dette er et eksempel. Velg «Ny CV» for å starte på din egen, eller skriv rett inn i eksemplet.").into(),
-            undo: None,
-            redo: None,
+            history: undo::History::default(),
             confirm: None,
             picked_tx,
             picked_rx,
@@ -322,7 +322,7 @@ impl CvApp {
             self.is_example = false;
             self.status = i18n::t("Nå er dette din CV. Den huskes på denne maskinen mens du skriver.").into();
         }
-        self.redo = None;
+        self.history.edited();
         self.save_at = Some(Instant::now());
     }
 
@@ -334,37 +334,64 @@ impl CvApp {
         }
     }
 
-    fn replace(&mut self, project: Project, example: bool, text: &str) {
-        let before = (self.project.clone(), self.is_example);
-        if !before.1 {
-            if let Ok(json) = before.0.to_json() {
+    /// Another CV takes this one's place (`name` says why, see [`step`]); the one before is kept
+    /// for «Angre», and as a backup on disk.
+    fn replace(&mut self, project: Project, example: bool, name: &'static str, text: &str) {
+        if !self.is_example {
+            if let Ok(json) = self.project.to_json() {
                 storage::save_backup(&json);
             }
         }
+        self.remember(name);
         self.load(project, example);
-        self.undo = Some(before);
-        self.redo = None;
         self.status = text.into();
         // Another CV: «Lagre» must not write it over the file of the one before.
         self.set_file(None);
     }
 
-    /// The big undo: back to the CV from before the last «Ny CV», example, import or translation.
-    /// The CV it leaves is kept for «Gjør om».
+    /// Call just before a big change called `name`: the CV as it is now can be brought back.
+    fn remember(&mut self, name: &'static str) {
+        let before = (self.project.clone(), self.is_example);
+        self.history.push(before, name);
+    }
+
+    /// The Undo button's tooltip: what it undoes, when there is something.
+    fn undo_tip(&self) -> String {
+        match self.history.undo_name() {
+            Some(name) => i18n::tf("Angre: {step}", &[("step", i18n::t(name))]),
+            None => i18n::t("Hent tilbake CV-en fra før siste store endring").into(),
+        }
+    }
+
+    /// The Redo button's tooltip: what it does again, when there is something.
+    fn redo_tip(&self) -> String {
+        match self.history.redo_name() {
+            Some(name) => i18n::tf("Gjør om: {step}", &[("step", i18n::t(name))]),
+            None => i18n::t("Gjør om det du angret").into(),
+        }
+    }
+
+    /// The big undo: back to the CV from before the last big change (see [`step`]). The CV it
+    /// leaves is kept for «Gjør om», under the same name.
     fn undo(&mut self) {
-        if let Some((project, example)) = self.undo.take() {
-            self.redo = Some((self.project.clone(), self.is_example));
+        if !self.history.can_undo() {
+            return;
+        }
+        if let Some(((project, example), name)) = self.history.undo((self.project.clone(), self.is_example)) {
             self.load(project, example);
-            self.status = if example { i18n::t("Eksemplet er tilbake.").into() } else { i18n::t("CV-en din er tilbake.").into() };
+            let back = if example { i18n::t("Eksemplet er tilbake.") } else { i18n::t("CV-en din er tilbake.") };
+            self.status = format!("{} {back}", i18n::tf("Angret: {step}.", &[("step", i18n::t(name))]));
         }
     }
 
     /// Undo the undo: the CV from before it comes back, and can be undone again.
     fn redo(&mut self) {
-        if let Some((project, example)) = self.redo.take() {
-            self.undo = Some((self.project.clone(), self.is_example));
+        if !self.history.can_redo() {
+            return;
+        }
+        if let Some(((project, example), name)) = self.history.redo((self.project.clone(), self.is_example)) {
             self.load(project, example);
-            self.status = i18n::t("Gjort om.").into();
+            self.status = i18n::tf("Gjort om: {step}.", &[("step", i18n::t(name))]);
         }
     }
 
@@ -623,7 +650,7 @@ impl CvApp {
             match picked {
                 Picked::OpenProject(path) => match open_project(&path) {
                     Ok(project) => {
-                        self.replace(project, false, i18n::t("Utkastet er åpnet. Bekreft opplysningene når du laster ned."));
+                        self.replace(project, false, step::OPEN, i18n::t("Utkastet er åpnet. Bekreft opplysningene når du laster ned."));
                         self.saved = self.fingerprint();
                         self.last_autosave = Instant::now();
                         self.set_file(Some(path));
@@ -728,8 +755,8 @@ impl CvApp {
             }
             ui.add_space(8.0);
             ui.with_layout(egui::Layout::left_to_right(egui::Align::Center), |ui| {
-                if self.undo.is_some() {
-                    let tip = shortcuts::tip(ui.ctx(), i18n::t("Hent tilbake CV-en fra før siste store endring"), &shortcuts::UNDO);
+                if self.history.can_undo() {
+                    let tip = shortcuts::tip(ui.ctx(), &self.undo_tip(), &shortcuts::UNDO);
                     if ui.small_button(i18n::t("Angre")).on_hover_text(tip).clicked() {
                         self.undo();
                     }

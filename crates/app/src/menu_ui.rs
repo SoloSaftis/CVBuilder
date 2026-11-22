@@ -388,10 +388,10 @@ impl CvApp {
         });
         group(ui, i18n::t("Angre"), |ui| {
             column(ui, |ui| {
-                if tool(ui, theme::ph::UNDO, i18n::t("Angre"), &shortcuts::tip(ui.ctx(), i18n::t("Hent tilbake CV-en fra før siste store endring"), &shortcuts::UNDO), self.undo.is_some()) {
+                if tool(ui, theme::ph::UNDO, i18n::t("Angre"), &shortcuts::tip(ui.ctx(), &self.undo_tip(), &shortcuts::UNDO), self.history.can_undo()) {
                     *action = Some(Action::Undo);
                 }
-                if tool(ui, theme::ph::REDO, i18n::t("Gjør om"), &shortcuts::tip(ui.ctx(), i18n::t("Gjør om det du angret"), shortcuts::redo(ui.ctx())), self.redo.is_some()) {
+                if tool(ui, theme::ph::REDO, i18n::t("Gjør om"), &shortcuts::tip(ui.ctx(), &self.redo_tip(), shortcuts::redo(ui.ctx())), self.history.can_redo()) {
                     *action = Some(Action::Redo);
                 }
             });
@@ -627,11 +627,11 @@ impl CvApp {
                 let text =
                     if self.is_example { i18n::t("Tom CV klar. Start med kontaktinformasjonen, eller be AI-en om hjelp.") } else { i18n::t("Tom CV klar. Den forrige kan hentes tilbake med Angre.") };
                 self.reference = None;
-                self.replace(blank, false, text);
+                self.replace(blank, false, crate::step::NEW, text);
             }
             Action::Example => {
                 self.reference = None;
-                self.replace(crate::translate_ui::example_in(&self.new_cv_language()), true, i18n::t("Du ser eksemplet. CV-en din kan hentes tilbake med Angre."));
+                self.replace(crate::translate_ui::example_in(&self.new_cv_language()), true, crate::step::EXAMPLE, i18n::t("Du ser eksemplet. CV-en din kan hentes tilbake med Angre."));
             }
             Action::Open => self.pick("open", None),
             Action::Save => self.save(),

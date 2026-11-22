@@ -49,7 +49,7 @@ impl CvApp {
     pub(crate) fn import_cv_file(&mut self, path: std::path::PathBuf) {
         if path.extension().is_some_and(|e| e.eq_ignore_ascii_case("json")) {
             match crate::open_project(&path) {
-                Ok(p) => self.replace(p, false, i18n::t("CV-en er hentet inn. Den forrige kan hentes tilbake med Angre.")),
+                Ok(p) => self.replace(p, false, crate::step::IMPORT, i18n::t("CV-en er hentet inn. Den forrige kan hentes tilbake med Angre.")),
                 Err(e) => self.status = e,
             }
             return;
@@ -87,13 +87,11 @@ impl CvApp {
 
     fn apply_ad(&mut self, ad: AdInfo, previous: Option<String>) {
         // Undo goes back to just before the filling in; a pasted text stays.
-        let before = (self.project.clone(), self.is_example);
+        self.remember(crate::step::AD);
         if let Some(previous) = previous {
             self.project.target.description = previous;
         }
         let note = i18n::tdyn(&import::apply_ad(&mut self.project, &ad));
-        self.undo = Some(before);
-        self.redo = None;
         self.buffers.remove("keywords");
         self.folded.remove("target");
         self.import.ad_note = note.clone();
@@ -140,7 +138,7 @@ impl CvApp {
                 blank.options.section_order.clear();
                 blank.options.section_colors.clear();
                 blank.target = self.project.target.clone();
-                self.replace(blank, false, i18n::t("Ny CV fra filen. AI-en fyller den ut nå; den forrige kan hentes tilbake med Angre."));
+                self.replace(blank, false, crate::step::IMPORT, i18n::t("Ny CV fra filen. AI-en fyller den ut nå; den forrige kan hentes tilbake med Angre."));
                 let cut: String = text.chars().take(AI_LIMIT).collect();
                 let ask = i18n::tf(
                     "Her er teksten fra en CV jeg har fra før. Fyll ut CV-en i CVBuilder med disse opplysningene: kontaktinfo, overskrift, profil, alle jobber med datoer og punkter, utdanning, kompetanse, kurs, språk og interesser. Bruk bare det som står i teksten, og skriv punktene kort med verb først. Behold alle tall. Si til slutt hva jeg bør sjekke.\n\n---\n{cut}",
@@ -161,7 +159,7 @@ impl CvApp {
         p.options.section_colors.clear();
         p.target = self.project.target.clone();
         let found = if read.found.is_empty() { i18n::t("lite").to_string() } else { read.found.iter().map(|f| found_word(f)).collect::<Vec<_>>().join(", ") };
-        self.replace(p, false, &i18n::tf(done, &[("found", &found)]));
+        self.replace(p, false, crate::step::IMPORT, &i18n::tf(done, &[("found", &found)]));
         if !read.rest.trim().is_empty() {
             self.import.rest = Some(read.rest);
         }

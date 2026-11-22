@@ -285,6 +285,16 @@ const SCENES: &[Scene] = &[
     },
     Scene { name: "Velkommen", setup: |a| a.welcome = Some(crate::welcome_ui::Welcome::for_this_computer(&a.langs.packs)) },
     Scene { name: "Importer CV", setup: |a| a.import.cv_open = true },
+    // 031: Undo and Redo both have a named step, and the status line names what was undone.
+    Scene {
+        name: "Angre-steg",
+        setup: |a| {
+            a.replace(cv_core::Project::default(), false, crate::step::NEW, "");
+            a.replace(cv_core::Project::example(), false, crate::step::IMPORT, "");
+            a.remember(crate::step::DELETE_JOB);
+            a.undo();
+        },
+    },
     Scene { name: "Importrest", setup: |a| a.import.rest = Some("ERFARING
 Som koordinator i Fjellvegg Bygg AS 2021 – nå".into()) },
     Scene {
@@ -405,9 +415,13 @@ fn ui_qa() {
                 let title = format!("{} · {lang} · {}×{}", scene.name, size.x, size.y);
                 let base = snapshot(&h);
                 // The first screen tests every control; the others what they add (a dialog's own
-                // controls, a tab's tools), since the rest is the same as on the first.
-                let first: BTreeSet<u64> =
-                    if scene.name == "Hjem" { BTreeSet::new() } else { baseline.entry((lang.clone(), size.x as u32)).or_insert_with(|| snapshot(&harness(size, |_| {})).into_iter().map(|c| c.id).collect()).clone() };
+                // controls, a tab's tools, a button greyed out there), since the rest is the same
+                // as on the first.
+                let first: BTreeSet<u64> = if scene.name == "Hjem" {
+                    BTreeSet::new()
+                } else {
+                    baseline.entry((lang.clone(), size.x as u32)).or_insert_with(|| snapshot(&harness(size, |_| {})).into_iter().filter(|c| c.control).map(|c| c.id).collect()).clone()
+                };
                 // Scroll bars are egui's own and float in only while a list scrolls, so whether one
                 // is there to click depends on timing; they are left out of the click test.
                 let ids: Vec<u64> = base.iter().filter(|c| c.control && c.role != Role::ScrollBar && !first.contains(&c.id)).map(|c| c.id).collect();
@@ -872,7 +886,7 @@ fn save_close_and_autosave() {
     assert_eq!(on_disk(&file).candidate.name, "Kari Auto", "autosaved while turned off");
 
     // A new CV forgets the file, so «Lagre» cannot write it over the old one.
-    h.state_mut().replace(cv_core::Project::example(), false, "");
+    h.state_mut().replace(cv_core::Project::example(), false, crate::step::EXAMPLE, "");
     assert!(h.state().file.is_none(), "a new CV kept the old CV's file");
 
     // After a restart the draft comes back with its file, and nothing is unsaved.
@@ -906,9 +920,13 @@ fn keyboard_shortcuts_and_safe_dialogs() {
     h.key_press_modifiers(cmd, egui::Key::N);
     step(&mut h, 3);
     assert!(!h.state().is_example && h.state().project.candidate.name.is_empty(), "Ctrl+N made no new CV");
+    // The Undo button says what it undoes, and so does the status line after (031).
+    assert_eq!(h.state().undo_tip(), "Angre: ny CV");
     h.key_press_modifiers(cmd, egui::Key::Z);
     step(&mut h, 3);
     assert!(h.state().is_example, "Ctrl+Z did not undo the new CV");
+    assert!(h.state().status.starts_with("Angret: ny CV."), "status: {}", h.state().status);
+    assert_eq!(h.state().redo_tip(), "Gjør om: ny CV");
     h.key_press_modifiers(cmd, egui::Key::Y);
     step(&mut h, 3);
     assert!(!h.state().is_example, "Ctrl+Y did not redo");
@@ -917,7 +935,7 @@ fn keyboard_shortcuts_and_safe_dialogs() {
     h.key_press_modifiers(cmd_shift, egui::Key::Z);
     step(&mut h, 3);
     assert!(!h.state().is_example, "Ctrl+Shift+Z did not redo");
-    assert!(h.state().redo.is_none() && h.state().undo.is_some());
+    assert!(!h.state().history.can_redo() && h.state().history.can_undo());
 
     // In a text field Ctrl+Z is the field's: the CV stays.
     let field = snapshot(&h).into_iter().find(|c| c.role == Role::TextInput).expect("a text field").rect;

@@ -56,6 +56,9 @@ pub struct ChatState {
     pub running: bool,
     turn_lines: Vec<String>,
     turn_before: Option<(Project, bool)>,
+    /// The CV's fingerprint just after the last change by another AI app: while the CV is still
+    /// that, the app's next change joins the same undo step instead of crowding out older ones.
+    app_after: Option<u64>,
     pub claude_code: Option<PathBuf>,
     /// The MCP config Claude Code is started with, written once at start.
     pub mcp_config: Option<PathBuf>,
@@ -211,7 +214,13 @@ impl CvApp {
                 self.chat.turn_before.get_or_insert(before);
                 self.chat.turn_lines.push(i18n::tdyn(&change));
             } else {
-                // Another AI app connected over MCP changed the CV.
+                // Another AI app connected over MCP changed the CV. A run of its changes, with
+                // nothing else in between, is one step for «Angre».
+                let same_run = self.chat.app_after == Some(crate::fingerprint(&before.0)) && self.history.undo_name() == Some(crate::step::AI_APP);
+                if !same_run {
+                    self.history.push(before.clone(), crate::step::AI_APP);
+                }
+                self.chat.app_after = Some(self.fingerprint());
                 self.chat.items.push(Item::Changes { lines: vec![i18n::tdyn(&change)], before: Some(Box::new(before)), external });
             }
         }
@@ -289,8 +298,11 @@ impl CvApp {
             }
             if !self.chat.turn_lines.is_empty() {
                 let lines = std::mem::take(&mut self.chat.turn_lines);
-                let before = self.chat.turn_before.take().map(Box::new);
-                self.chat.items.push(Item::Changes { lines, before, external: false });
+                let before = self.chat.turn_before.take();
+                if let Some(b) = &before {
+                    self.history.push(b.clone(), crate::step::AI);
+                }
+                self.chat.items.push(Item::Changes { lines, before: before.map(Box::new), external: false });
             }
         }
     }
@@ -364,6 +376,7 @@ impl CvApp {
             if let Some(Item::Changes { before, .. }) = self.chat.items.get_mut(i) {
                 if let Some(b) = before.take() {
                     let (project, example) = *b;
+                    self.remember(crate::step::AI_UNDO);
                     self.load(project, example);
                     self.status = i18n::t("AI-endringene er angret.").into();
                     self.chat.items.push(Item::Note { text: i18n::t("Endringene er angret.").into(), error: false });

@@ -65,10 +65,8 @@ impl CvApp {
                 SectionAction::Delete => {
                     let id = order.remove(i);
                     if let Some(at) = self.project.custom_sections.iter().position(|s| s.id == id) {
-                        let before = (self.project.clone(), self.is_example);
+                        self.remember(crate::step::DELETE_SECTION);
                         let gone = self.project.custom_sections.remove(at);
-                        self.undo = Some(before);
-                        self.redo = None;
                         self.status = i18n::tf("Seksjonen «{title}» er slettet. Angre hvis det var feil.", &[("title", &gone.title)]);
                     }
                 }
@@ -549,10 +547,8 @@ impl CvApp {
             });
         }
         if let Some(i) = remove {
-            let before = (self.project.clone(), self.is_example);
+            self.remember(crate::step::DELETE_JOB);
             let gone = self.project.experience.remove(i);
-            self.undo = Some(before);
-            self.redo = None;
             self.status = i18n::tf("Jobben «{title}» er slettet. Angre hvis det var feil.", &[("title", &gone.title)]);
             *changed = true;
         }
