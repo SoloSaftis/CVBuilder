@@ -47,7 +47,9 @@ impl CvApp {
 
     /// A picked existing CV. CVBuilder files open as they are; other files are read as text.
     pub(crate) fn import_cv_file(&mut self, path: std::path::PathBuf) {
-        if path.extension().is_some_and(|e| e.eq_ignore_ascii_case("json")) {
+        // A JSON Resume is read like any other CV; a CVBuilder draft opens as it is.
+        let resume = std::fs::read_to_string(&path).is_ok_and(|t| cv_core::jsonresume::is_json_resume(&t));
+        if path.extension().is_some_and(|e| e.eq_ignore_ascii_case("json")) && !resume {
             match crate::open_project(&path) {
                 Ok(p) => self.replace(p, false, crate::step::IMPORT, i18n::t("CV-en er hentet inn. Den forrige kan hentes tilbake med Angre.")),
                 Err(e) => self.status = e,
@@ -132,6 +134,8 @@ impl CvApp {
             Outcome::Cv(Err(e), _) => self.status = i18n::tdyn(&e),
             // A LinkedIn export is structured data: it fills the CV directly, with or without AI.
             Outcome::Cv(Ok(CvFile::LinkedIn(read)), _) => self.apply_read(read, "Hentet inn fra LinkedIn-eksporten: {found}. Den forrige CV-en kan hentes tilbake med Angre."),
+            Outcome::Cv(Ok(CvFile::Europass(read)), _) => self.apply_read(read, "Hentet inn fra Europass-CV-en: {found}. Den forrige CV-en kan hentes tilbake med Angre."),
+            Outcome::Cv(Ok(CvFile::JsonResume(read)), _) => self.apply_read(read, "Hentet inn fra JSON Resume-filen: {found}. Den forrige CV-en kan hentes tilbake med Angre."),
             Outcome::Cv(Ok(CvFile::Text(text)), true) => {
                 let mut blank = Project::default();
                 blank.options = self.project.options.clone();
@@ -152,7 +156,7 @@ impl CvApp {
 
     /// A CV read without AI becomes the new CV, keeping the chosen design and the job ad; `done`
     /// is the status message, with `{found}` for what was read.
-    fn apply_read(&mut self, read: CvRead, done: &'static str) {
+    pub(crate) fn apply_read(&mut self, read: CvRead, done: &'static str) {
         let mut p = read.project;
         p.options = self.project.options.clone();
         p.options.section_order.clear();
@@ -184,9 +188,18 @@ impl CvApp {
             egui::Frame::new().fill(t.accent_soft).corner_radius(CornerRadius::same(theme::R)).inner_margin(Margin::same(10)).show(ui, |ui| {
                 ui.set_width(ui.available_width());
                 ui.label(RichText::new(i18n::t("Filer som kan leses")).family(theme::medium()));
-                ui.add(egui::Label::new(format!("{} · {}", i18n::t("PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)"), i18n::t("LinkedIn-dataeksport (.zip)"))).wrap());
+                ui.add(
+                    egui::Label::new(format!(
+                        "{} · {} · {}",
+                        i18n::t("PDF med ekte tekst (ikke skannet) · Word (.docx, .doc) · OpenDocument (.odt) · RTF · Pages · tekst (.txt, .md) · nettside (.html, .mht) · CVBuilder-utkast (.json)"),
+                        i18n::t("LinkedIn-dataeksport (.zip)"),
+                        i18n::t("Europass (.xml eller PDF fra Europass) · JSON Resume (.json)")
+                    ))
+                    .wrap(),
+                );
                 ui.add_space(4.0);
                 ui.add(egui::Label::new(RichText::new(i18n::t("LinkedIn: velg .zip-filen fra «Få en kopi av dataene dine» – den trenger ikke pakkes ut. Bare profilen, jobbene, utdanningen, kompetansen, språkene, sertifiseringene, prosjektene, e-posten og telefonnummeret leses, aldri meldinger eller kontakter. Alt skjer på denne maskinen.")).size(12.0).color(t.dim)).wrap());
+                ui.add(egui::Label::new(RichText::new(i18n::t("Europass og JSON Resume leses felt for felt uten AI, også når du har valgt AI. Det som ikke har en plass i CV-en, vises til slutt.")).size(12.0).color(t.dim)).wrap());
             });
             ui.add_space(8.0);
             ui.add_enabled_ui(has_ai, |ui| {
