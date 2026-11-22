@@ -25,6 +25,7 @@ mod page_ui;
 mod photo;
 mod preview;
 mod readback_ui;
+mod requirements_ui;
 mod settings_ui;
 mod shortcuts;
 mod storage;
@@ -162,6 +163,8 @@ struct CvApp {
     ai_ok: std::collections::HashSet<(cv_ai::cost::Work, String)>,
     /// A one-click AI request waiting for «Send» in «Før AI-en starter».
     ai_pending: Option<ai_notice::Pending>,
+    /// «Krav i annonsen» in the recruiter check.
+    requirements: requirements_ui::RequirementsState,
     designs: designs_ui::DesignState,
     portrait: Option<(u64, egui::TextureHandle)>,
     about_open: bool,
@@ -229,6 +232,7 @@ impl CvApp {
             translate: None,
             ai_ok: Default::default(),
             ai_pending: None,
+            requirements: Default::default(),
             designs: designs_ui::DesignState::default(),
             portrait: None,
             about_open: false,
@@ -612,7 +616,7 @@ impl CvApp {
     /// waits for «Send» (dialogs that show the notice themselves mark it seen first).
     fn ask_ai(&mut self, work: cv_ai::cost::Work, text: &str) {
         if let Some(destination) = self.must_ask(work) {
-            self.ai_pending = Some(ai_notice::Pending { work, text: text.to_string(), destination });
+            self.ai_pending = Some(ai_notice::Pending { work, text: text.to_string(), destination, sort_requirements: false });
             return;
         }
         self.side = Side::Chat;
@@ -871,6 +875,7 @@ impl CvApp {
                     });
                 }
             }
+            self.ad_requirements(ui);
             if !matched.found.is_empty() || !matched.missing.is_empty() {
                 ui.add_space(6.0);
                 theme::label(ui, i18n::t("Fagord fra annonsen"));
@@ -1275,6 +1280,7 @@ impl eframe::App for CvApp {
             });
         }
         self.ai_poll(&ctx);
+        self.requirements_poll();
         self.connect_dialog(&ctx);
         self.mcp_help(&ctx);
         // Last, so it sees every link this frame asked to open (menus, F1, hyperlinks).
