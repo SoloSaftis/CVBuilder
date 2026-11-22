@@ -52,6 +52,8 @@ a{color:var(--accent)}
 .check input{margin-top:3px}
 .record{border:1px solid var(--line-soft);background:var(--card);border-radius:7px;padding:12px 13px;margin:12px 0}
 .record .remove{padding:4px 9px;font-size:11px;color:var(--bad)}
+.record.hidden-item{opacity:.62;border-style:dashed}
+.hidden-note{border:1px solid var(--line-soft);background:var(--card);border-radius:7px;padding:10px 13px;margin:0 0 12px}
 .add{font-size:12px;margin-top:4px}
 .layout-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .layout-choice{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:7px;padding:9px;background:var(--card);cursor:pointer}

@@ -103,6 +103,33 @@ a free **Time** text (for example "2021–2023"), and bullet points. Use
 **+ Add entry** for more entries. Delete the whole section with the bin on its
 header.
 
+## One full CV, tailored copies
+
+Keep everything you have done in one full CV, and leave out what a particular
+job does not need, without deleting it.
+
+- The **eye** button on a job, an education, a skill, a language, a course or
+  an entry of your own leaves it out of this CV. Click it again to show it.
+- Under a job's bullet points, **Bullets in this CV** lists them with a tick
+  each: untick the ones this CV should not have.
+- What is hidden stays in the form (greyed, folded to its title) and in the
+  file. It is left out of the preview, the PDF and Word file, the copied text,
+  the keyword match, the checks and the page count. A line at the top of the
+  form says how many items are hidden, with **Show everything again**, and the
+  status bar shows the count too. Untick **Show hidden items in the form** to
+  see only what is in the CV.
+- **File → Save tailored copy …** saves this CV, with what you have hidden, the
+  ad and the keywords, as a copy for the job (named after the employer). The
+  copy is the open CV from then on; the full CV stays as it is in its own file.
+  The line at the top of a copy says which CV it was made from, and
+  **Open the full CV** opens it.
+- The AI can do this too: ask it to bring the CV down to two pages for a job,
+  and it hides the least relevant points instead of deleting them.
+
+CV files are now saved in a newer format (version 3) that keeps track of each
+item. CVBuilder versions from before this feature cannot open them; they say
+the file was saved by a newer CVBuilder.
+
 ## The live preview
 
 The middle of the window shows the real pages, laid out exactly as the PDF and

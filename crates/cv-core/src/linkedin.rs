@@ -213,7 +213,7 @@ pub fn read_export<R: Read + Seek>(reader: R) -> Result<CvRead, String> {
             let finished = r.get(FINISHED);
             let end = if finished.is_empty() || checks::is_now(&finished) { None } else { Some(date(&finished)) };
             let n = p.experience.len() + 1;
-            p.experience.push(Job { id: format!("job_imported_{n}"), company, title, location: r.get(LOCATION), start: date(&r.get(STARTED)), end, bullets: lines(&description), evidence: String::new(), confirmed: true });
+            p.experience.push(Job { bullet_ids: Vec::new(), id: format!("job_imported_{n}"), company, title, location: r.get(LOCATION), start: date(&r.get(STARTED)), end, bullets: lines(&description), evidence: String::new(), confirmed: true });
         }
         count(&mut found, "jobber", p.experience.len());
     }
@@ -223,14 +223,14 @@ pub fn read_export<R: Read + Seek>(reader: R) -> Result<CvRead, String> {
             if institution.is_empty() && qualification.is_empty() {
                 continue;
             }
-            p.education.push(Education { qualification, institution, start: year(&r.get(STARTED)), end: year(&r.get(FINISHED)) });
+            p.education.push(Education { id: String::new(), qualification, institution, start: year(&r.get(STARTED)), end: year(&r.get(FINISHED)) });
         }
         count(&mut found, "utdanning", p.education.len());
     }
     if let Some(t) = export.table("Skills.csv", NAME) {
         for name in t.rows().map(|r| r.get(NAME)).filter(|n| !n.is_empty()) {
             if !p.skills.iter().any(|s| s.name.eq_ignore_ascii_case(&name)) {
-                p.skills.push(Skill { group: String::new(), name, evidence: String::new(), confirmed: true });
+                p.skills.push(Skill { id: String::new(), group: String::new(), name, evidence: String::new(), confirmed: true });
             }
         }
         count(&mut found, "kompetanse", p.skills.len());
@@ -239,7 +239,7 @@ pub fn read_export<R: Read + Seek>(reader: R) -> Result<CvRead, String> {
         for r in t.rows() {
             let name = r.get(NAME);
             if !name.is_empty() {
-                p.certifications.push(Certification { name, issuer: r.get(AUTHORITY), year: year(&r.get(STARTED)) });
+                p.certifications.push(Certification { id: String::new(), name, issuer: r.get(AUTHORITY), year: year(&r.get(STARTED)) });
             }
         }
         count(&mut found, "kurs", p.certifications.len());
@@ -254,7 +254,7 @@ pub fn read_export<R: Read + Seek>(reader: R) -> Result<CvRead, String> {
         for r in t.rows() {
             let name = r.get(NAME);
             if !name.is_empty() {
-                p.languages.push(SpokenLanguage { name, level: level(&r.get(PROFICIENCY), english) });
+                p.languages.push(SpokenLanguage { id: String::new(), name, level: level(&r.get(PROFICIENCY), english) });
             }
         }
         count(&mut found, "språk", p.languages.len());
@@ -271,7 +271,7 @@ pub fn read_export<R: Read + Seek>(reader: R) -> Result<CvRead, String> {
                     (false, true) => format!("{} – {present}", checks::show_month(&start)),
                     (false, false) => format!("{} – {}", checks::show_month(&start), checks::show_month(&self::date(&end))),
                 };
-                CustomItem { title: r.get(TITLE), subtitle: String::new(), date, bullets: lines(&r.get(DESCRIPTION)) }
+                CustomItem { id: String::new(), bullet_ids: Vec::new(), title: r.get(TITLE), subtitle: String::new(), date, bullets: lines(&r.get(DESCRIPTION)) }
             })
             .collect();
         if !items.is_empty() {

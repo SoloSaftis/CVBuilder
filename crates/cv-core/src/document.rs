@@ -199,6 +199,8 @@ pub fn properties(project: &Project) -> (String, String, String, String) {
 
 /// The whole CV as a WordCraft document on A4: one column, or a sidebar when the design has one.
 pub fn build(project: &Project) -> Document {
+    // Hidden items are left out of this CV (see `ids`).
+    let project = &*project.visible();
     let l = effective(project);
     let labels = text::labels(project);
     let mut doc = Document::new();

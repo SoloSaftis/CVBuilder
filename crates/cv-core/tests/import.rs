@@ -522,7 +522,7 @@ fn key_words_are_merged_without_case_duplicates() {
 fn skills_are_only_added_when_the_cv_really_shows_them() {
     let mut p = Project::default();
     p.experience.push(cv_core::model::Job { title: "Utvikler".into(), company: "Eksempel AS".into(), bullets: vec!["Laget nettsider i JavaScript og feilsøkingen av betalingsløsningen.".into()], ..Default::default() });
-    p.languages.push(cv_core::model::SpokenLanguage { name: "Engelsk".into(), level: "flytende".into() });
+    p.languages.push(cv_core::model::SpokenLanguage { id: String::new(), name: "Engelsk".into(), level: "flytende".into() });
     p.target.keywords = vec!["Java".into(), "JavaScript".into(), "javascript".into(), "feilsøking".into(), "engelsk".into(), "Utvikler".into()];
     p.target.role = "Utvikler".into();
     let have = import::skills_you_have(&p);

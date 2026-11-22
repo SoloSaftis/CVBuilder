@@ -9,6 +9,7 @@ use cv_core::text::{self as cvtext, CONTACT_KEYS};
 use egui::{CornerRadius, Margin, RichText, Stroke};
 
 use crate::CvApp;
+use crate::hide_ui;
 use crate::i18n;
 use crate::theme::{self, Icon, Tokens};
 
@@ -45,6 +46,7 @@ fn contact_label(key: &str) -> &'static str {
 impl CvApp {
     pub(crate) fn form(&mut self, ui: &mut egui::Ui) {
         let mut changed = false;
+        self.hidden_banner(ui, &mut changed);
         self.target_card(ui, &mut changed);
         self.contact_card(ui, &mut changed);
         let order = cvtext::section_order(&self.project);
@@ -436,15 +438,29 @@ impl CvApp {
     fn skills_body(&mut self, ui: &mut egui::Ui, changed: &mut bool) {
         theme::hint(ui, i18n::t("Bruk annonsens ordlyd der den stemmer. Bare det du kan stå for."));
         let mut remove = None;
+        let mut toggle = None;
+        let (hidden_ids, show_hidden) = (self.project.options.hidden.clone(), self.show_hidden);
         for (i, s) in self.project.skills.iter_mut().enumerate() {
+            let hidden = hidden_ids.contains(&s.id);
+            if hidden && !show_hidden {
+                continue;
+            }
             ui.horizontal(|ui| {
+                hide_ui::tint(ui, hidden);
                 *changed |= inline(ui, &mut s.group, i18n::t("Gruppe"), 110.0, i18n::t("Gruppen den står under i CV-en, f.eks. Verktøy. Samme gruppe samles."));
-                let w = ui.available_width() - 44.0;
+                let w = ui.available_width() - 44.0 - EYE_W;
                 *changed |= inline(ui, &mut s.name, i18n::t("Kompetanse eller verktøy"), w, i18n::t("Én kompetanse eller ett verktøy. Bruk annonsens ord – ATS ser etter dem."));
+                if hide_ui::eye(ui, hidden) {
+                    toggle = Some(s.id.clone());
+                }
                 if theme::remove_button(ui, i18n::t("Fjern kompetansen")).clicked() {
                     remove = Some(i);
                 }
             });
+        }
+        if let Some(id) = toggle {
+            self.toggle_hidden(&id);
+            *changed = true;
         }
         if let Some(i) = remove {
             self.project.skills.remove(i);
@@ -452,7 +468,7 @@ impl CvApp {
         }
         if ui.button(i18n::t("+ Legg til kompetanse")).on_hover_text(i18n::t("Ny kompetanse eller nytt verktøy. Bruk annonsens ord – ATS ser etter dem.")).clicked() {
             let group = self.project.skills.last().map(|s| s.group.clone()).unwrap_or_default();
-            self.project.skills.push(Skill { group, name: String::new(), evidence: String::new(), confirmed: true });
+            self.project.skills.push(Skill { id: String::new(), group, name: String::new(), evidence: String::new(), confirmed: true });
             *changed = true;
         }
     }
@@ -462,7 +478,12 @@ impl CvApp {
         let tk = Tokens::get(ui.ctx());
         let mut remove = None;
         let mut ai_job: Option<usize> = None;
+        let mut toggle = None;
         for i in 0..self.project.experience.len() {
+            let hidden = self.project.is_hidden(&self.project.experience[i].id);
+            if hidden && !self.show_hidden {
+                continue;
+            }
             let title = {
                 let j = &self.project.experience[i];
                 if j.company.is_empty() && j.title.is_empty() { i18n::tf("Jobb {n}", &[("n", &(i + 1).to_string())]) } else { format!("{} · {}", j.title, j.company) }
@@ -472,17 +493,27 @@ impl CvApp {
                 ui.horizontal(|ui| {
                     // A long title and employer are cut with «…» so the delete button keeps its
                     // place and the panel keeps its width; the full text is in the fields below.
-                    let room = (ui.available_width() - 30.0 - ui.spacing().item_spacing.x).max(40.0);
+                    let room = (ui.available_width() - 30.0 - EYE_W - 2.0 * ui.spacing().item_spacing.x - if hidden { hide_ui::pill_width(ui) } else { 0.0 }).max(40.0);
                     ui.scope(|ui| {
                         ui.set_max_width(room);
-                        ui.add(egui::Label::new(RichText::new(&title).family(theme::medium()).color(tk.text)).truncate());
+                        ui.add(egui::Label::new(RichText::new(&title).family(theme::medium()).color(if hidden { tk.faint } else { tk.text })).truncate());
                     });
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         if theme::icon_button(ui, Icon::Trash, i18n::t("Slett jobben"), true).clicked() {
                             remove = Some(i);
                         }
+                        if hide_ui::eye(ui, hidden) {
+                            toggle = Some(self.project.experience[i].id.clone());
+                        }
+                        if hidden {
+                            hide_ui::hidden_pill(ui);
+                        }
                     });
                 });
+                // A hidden job is folded to its title: it is not in this CV.
+                if hidden {
+                    return;
+                }
                 let key = self.project.experience[i].id.clone();
                 let j = &mut self.project.experience[i];
                 pair(ui, |ui, i| {
@@ -530,14 +561,17 @@ impl CvApp {
                     j.end = if current { None } else { Some(String::new()) };
                     *changed = true;
                 }
-                *changed |= lines(
+                *changed |= bullet_lines(
                     ui,
                     &mut self.buffers,
                     &format!("{key}.bullets"),
                     i18n::t("Hva du gjorde og oppnådde · ett punkt per linje"),
                     i18n::t("Ett resultat per linje. Start med et verb og ta med tall der du kan."),
                     &mut j.bullets,
+                    &mut j.bullet_ids,
                 );
+                let (bullets, ids) = (j.bullets.clone(), j.bullet_ids.clone());
+                self.bullet_picker(ui, &key, &bullets, &ids, changed);
                 if let Some(o) = &original {
                     reference_hint(ui, o);
                 }
@@ -545,6 +579,10 @@ impl CvApp {
                     ai_job = Some(i);
                 }
             });
+        }
+        if let Some(id) = toggle {
+            self.toggle_hidden(&id);
+            *changed = true;
         }
         if let Some(i) = remove {
             self.remember(crate::step::DELETE_JOB);
@@ -570,16 +608,40 @@ impl CvApp {
     fn education_body(&mut self, ui: &mut egui::Ui, changed: &mut bool) {
         let tk = Tokens::get(ui.ctx());
         let mut remove = None;
+        let mut toggle = None;
+        let (hidden_ids, show_hidden) = (self.project.options.hidden.clone(), self.show_hidden);
         for (i, e) in self.project.education.iter_mut().enumerate() {
+            let hidden = hidden_ids.contains(&e.id);
+            if hidden && !show_hidden {
+                continue;
+            }
             sub_card(ui, &tk, |ui| {
                 ui.horizontal(|ui| {
-                    theme::label(ui, i18n::t("Grad, fagbrev eller studium"));
+                    if hidden {
+                        let room = (ui.available_width() - 30.0 - EYE_W - hide_ui::pill_width(ui) - 3.0 * ui.spacing().item_spacing.x).max(40.0);
+                        let name = [e.qualification.trim(), e.institution.trim()].into_iter().filter(|s| !s.is_empty()).collect::<Vec<_>>().join(" · ");
+                        ui.scope(|ui| {
+                            ui.set_max_width(room);
+                            ui.add(egui::Label::new(RichText::new(name).family(theme::medium()).color(tk.faint)).truncate());
+                        });
+                    } else {
+                        theme::label(ui, i18n::t("Grad, fagbrev eller studium"));
+                    }
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         if theme::icon_button(ui, Icon::Trash, i18n::t("Slett utdanningen"), true).clicked() {
                             remove = Some(i);
                         }
+                        if hide_ui::eye(ui, hidden) {
+                            toggle = Some(e.id.clone());
+                        }
+                        if hidden {
+                            hide_ui::hidden_pill(ui);
+                        }
                     });
                 });
+                if hidden {
+                    return;
+                }
                 *changed |= inline(ui, &mut e.qualification, i18n::t("F.eks. Bachelor i informatikk"), f32::INFINITY, i18n::t("Det offisielle navnet på graden, fagbrevet eller studiet"));
                 *changed |= field(ui, i18n::t("Lærested"), i18n::t("Skolen, høyskolen eller universitetet"), &mut e.institution);
                 ui.horizontal_top(|ui| {
@@ -587,6 +649,10 @@ impl CvApp {
                     *changed |= date(ui, &mut self.buffers, &mut self.bad_dates, &format!("edu{i}.end"), i18n::t("Til · år"), i18n::t("Året du ble ferdig, eller ventes ferdig"), &mut e.end, true);
                 });
             });
+        }
+        if let Some(id) = toggle {
+            self.toggle_hidden(&id);
+            *changed = true;
         }
         if let Some(i) = remove {
             self.project.education.remove(i);
@@ -601,16 +667,30 @@ impl CvApp {
 
     fn certifications_body(&mut self, ui: &mut egui::Ui, changed: &mut bool) {
         let mut remove = None;
+        let mut toggle = None;
+        let (hidden_ids, show_hidden) = (self.project.options.hidden.clone(), self.show_hidden);
         for (i, c) in self.project.certifications.iter_mut().enumerate() {
+            let hidden = hidden_ids.contains(&c.id);
+            if hidden && !show_hidden {
+                continue;
+            }
             ui.horizontal(|ui| {
-                let w = ui.available_width() - 44.0 - 60.0 - 16.0;
+                hide_ui::tint(ui, hidden);
+                let w = ui.available_width() - 44.0 - 60.0 - 16.0 - EYE_W;
                 *changed |= inline(ui, &mut c.name, i18n::t("Kurs eller sertifisering"), w * 0.6, i18n::t("Navnet slik utstederen skriver det – ATS ser ofte etter nøyaktig det"));
                 *changed |= inline(ui, &mut c.issuer, i18n::t("Utsteder"), w * 0.4, i18n::t("Hvem som holdt kurset eller utstedte sertifiseringen"));
                 *changed |= year_inline(ui, &mut self.buffers, &mut self.bad_dates, &format!("cert{i}.year"), i18n::t("Året du fullførte. Valgfritt."), &mut c.year);
+                if hide_ui::eye(ui, hidden) {
+                    toggle = Some(c.id.clone());
+                }
                 if theme::remove_button(ui, i18n::t("Fjern kurset")).clicked() {
                     remove = Some(i);
                 }
             });
+        }
+        if let Some(id) = toggle {
+            self.toggle_hidden(&id);
+            *changed = true;
         }
         if let Some(i) = remove {
             self.project.certifications.remove(i);
@@ -625,15 +705,29 @@ impl CvApp {
 
     fn languages_body(&mut self, ui: &mut egui::Ui, changed: &mut bool) {
         let mut remove = None;
+        let mut toggle = None;
+        let (hidden_ids, show_hidden) = (self.project.options.hidden.clone(), self.show_hidden);
         for (i, l) in self.project.languages.iter_mut().enumerate() {
+            let hidden = hidden_ids.contains(&l.id);
+            if hidden && !show_hidden {
+                continue;
+            }
             ui.horizontal(|ui| {
+                hide_ui::tint(ui, hidden);
                 *changed |= inline(ui, &mut l.name, i18n::t("Språk"), 110.0, i18n::t("Språket, f.eks. Engelsk"));
-                let w = ui.available_width() - 44.0;
+                let w = ui.available_width() - 44.0 - EYE_W;
                 *changed |= inline(ui, &mut l.level, i18n::t("Nivå: morsmål, flytende, B2 …"), w, i18n::t("Hvor godt du kan det. Nivåer som B2 eller C1 er tydelige for rekrutterere."));
+                if hide_ui::eye(ui, hidden) {
+                    toggle = Some(l.id.clone());
+                }
                 if theme::remove_button(ui, i18n::t("Fjern språket")).clicked() {
                     remove = Some(i);
                 }
             });
+        }
+        if let Some(id) = toggle {
+            self.toggle_hidden(&id);
+            *changed = true;
         }
         if let Some(i) = remove {
             self.project.languages.remove(i);
@@ -711,19 +805,41 @@ impl CvApp {
         };
         *changed |= field(ui, i18n::t("Overskrift i CV-en"), i18n::t("Overskriften seksjonen får i CV-en, f.eks. Prosjekter eller Frivillig arbeid"), &mut self.project.custom_sections[si].title);
         let mut remove = None;
+        let mut toggle = None;
         let count = self.project.custom_sections[si].items.len();
         for i in 0..count {
             let key = format!("{id}.{i}.bullets");
+            let hidden = self.project.is_hidden(&self.project.custom_sections[si].items[i].id);
+            if hidden && !self.show_hidden {
+                continue;
+            }
             sub_card(ui, &tk, |ui| {
                 let item = &mut self.project.custom_sections[si].items[i];
                 ui.horizontal(|ui| {
-                    theme::label(ui, i18n::t("Tittel"));
+                    if hidden {
+                        let room = (ui.available_width() - 30.0 - EYE_W - hide_ui::pill_width(ui) - 3.0 * ui.spacing().item_spacing.x).max(40.0);
+                        ui.scope(|ui| {
+                            ui.set_max_width(room);
+                            ui.add(egui::Label::new(RichText::new(&item.title).family(theme::medium()).color(tk.faint)).truncate());
+                        });
+                    } else {
+                        theme::label(ui, i18n::t("Tittel"));
+                    }
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         if theme::icon_button(ui, Icon::Trash, i18n::t("Slett oppføringen"), true).clicked() {
                             remove = Some(i);
                         }
+                        if hide_ui::eye(ui, hidden) {
+                            toggle = Some(item.id.clone());
+                        }
+                        if hidden {
+                            hide_ui::hidden_pill(ui);
+                        }
                     });
                 });
+                if hidden {
+                    return;
+                }
                 *changed |= inline(ui, &mut item.title, i18n::t("F.eks. Ny barnehage, Trondheim"), f32::INFINITY, i18n::t("Navnet på prosjektet, vervet eller det du vil vise"));
                 pair(ui, |ui, i| {
                     if i == 0 {
@@ -732,8 +848,14 @@ impl CvApp {
                         *changed |= field(ui, i18n::t("Tid (fritt, f.eks. 2023)"), i18n::t("Når, skrevet som du vil, f.eks. 2023 eller 2021–2023"), &mut item.date);
                     }
                 });
-                *changed |= lines(ui, &mut self.buffers, &key, i18n::t("Punkter · ett per linje"), i18n::t("Hva du gjorde og hva det ga, ett punkt per linje"), &mut item.bullets);
+                *changed |= bullet_lines(ui, &mut self.buffers, &key, i18n::t("Punkter · ett per linje"), i18n::t("Hva du gjorde og hva det ga, ett punkt per linje"), &mut item.bullets, &mut item.bullet_ids);
+                let (owner, bullets, ids) = (item.id.clone(), item.bullets.clone(), item.bullet_ids.clone());
+                self.bullet_picker(ui, &owner, &bullets, &ids, changed);
             });
+        }
+        if let Some(id) = toggle {
+            self.toggle_hidden(&id);
+            *changed = true;
         }
         if let Some(i) = remove {
             self.project.custom_sections[si].items.remove(i);
@@ -823,6 +945,21 @@ fn lines(ui: &mut egui::Ui, buffers: &mut HashMap<String, String>, key: &str, la
     }
     false
 }
+
+/// Bullets typed one per line, like [`lines`], keeping each bullet's id: an unchanged line keeps
+/// its own, an edited one the id of the line it replaced, so what is hidden stays hidden.
+#[allow(clippy::too_many_arguments)]
+fn bullet_lines(ui: &mut egui::Ui, buffers: &mut HashMap<String, String>, key: &str, label: &str, tip: &str, list: &mut Vec<String>, ids: &mut Vec<String>) -> bool {
+    let before = list.clone();
+    if !lines(ui, buffers, key, label, tip, list) {
+        return false;
+    }
+    *ids = cv_core::ids::carry(&before, ids, list, cv_core::ids::Pairing::Greedy).into_iter().map(|id| id.unwrap_or_else(|| cv_core::ids::fresh(cv_core::ids::BULLET))).collect();
+    true
+}
+
+/// The room the eye button takes in a row (its width and the gap before it).
+const EYE_W: f32 = 36.0;
 
 /// Reads a typed date when the field is left. Only a readable date is ever stored.
 fn commit_date(response: &egui::Response, buffer: &mut String, bad: &mut HashSet<String>, key: &str, value: &mut String, year: bool) -> bool {

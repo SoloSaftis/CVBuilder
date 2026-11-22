@@ -485,6 +485,8 @@ impl Backing {
 
 /// Where the CV shows each of the requirement's terms.
 pub fn backing(p: &Project, r: &Requirement) -> Backing {
+    // Only what is in this copy of the CV backs a requirement (hidden items are left out).
+    let p = &*p.visible();
     let haystack = normal(&checks::cv_text(p));
     let mut found = Vec::new();
     let mut missing = Vec::new();

@@ -165,7 +165,7 @@ pub fn read(text: &str) -> Result<CvRead, String> {
             rest.push(format!("{company}: {}", s(w, "url")));
         }
         let n = p.experience.len() + 1;
-        p.experience.push(Job { id: format!("job_imported_{n}"), company, title, location: s(w, "location"), start: date(&s(w, "startDate")), end, bullets, evidence: String::new(), confirmed: true });
+        p.experience.push(Job { bullet_ids: Vec::new(), id: format!("job_imported_{n}"), company, title, location: s(w, "location"), start: date(&s(w, "startDate")), end, bullets, evidence: String::new(), confirmed: true });
     }
     count(&mut found, "jobber", p.experience.len());
 
@@ -193,7 +193,7 @@ pub fn read(text: &str) -> Result<CvRead, String> {
             }
             rest.push(line);
         }
-        p.education.push(Education { qualification, institution, start: date(&s(e, "startDate")), end: date(&s(e, "endDate")) });
+        p.education.push(Education { id: String::new(), qualification, institution, start: date(&s(e, "startDate")), end: date(&s(e, "endDate")) });
     }
     count(&mut found, "utdanning", p.education.len());
 
@@ -202,7 +202,7 @@ pub fn read(text: &str) -> Result<CvRead, String> {
         let (name, keywords) = (s(k, "name"), strings(k, "keywords"));
         let mut add = |group: &str, name: &str| {
             if !name.is_empty() && !p.skills.iter().any(|x| x.name.eq_ignore_ascii_case(name)) {
-                p.skills.push(Skill { group: group.to_string(), name: name.to_string(), evidence: String::new(), confirmed: true });
+                p.skills.push(Skill { id: String::new(), group: group.to_string(), name: name.to_string(), evidence: String::new(), confirmed: true });
             }
         };
         if keywords.is_empty() {
@@ -223,7 +223,7 @@ pub fn read(text: &str) -> Result<CvRead, String> {
     for k in arr(&v, "certificates") {
         let name = s(k, "name");
         if !name.is_empty() {
-            p.certifications.push(Certification { name, issuer: s(k, "issuer"), year: year(&s(k, "date")) });
+            p.certifications.push(Certification { id: String::new(), name, issuer: s(k, "issuer"), year: year(&s(k, "date")) });
         }
     }
     count(&mut found, "kurs", p.certifications.len());
@@ -232,7 +232,7 @@ pub fn read(text: &str) -> Result<CvRead, String> {
     for l in arr(&v, "languages") {
         let name = s(l, "language");
         if !name.is_empty() {
-            p.languages.push(SpokenLanguage { name, level: s(l, "fluency") });
+            p.languages.push(SpokenLanguage { id: String::new(), name, level: s(l, "fluency") });
         }
     }
     count(&mut found, "språk", p.languages.len());
@@ -266,17 +266,17 @@ pub fn read(text: &str) -> Result<CvRead, String> {
     for x in arr(&v, "volunteer").iter().filter(|x| !s(x, "position").is_empty() || !s(x, "organization").is_empty()) {
         let mut bullets = lines(&s(x, "summary"));
         bullets.extend(strings(x, "highlights"));
-        section(title_of(x, VOLUNTEER), vec![CustomItem { title: s(x, "position"), subtitle: s(x, "organization"), date: date_of(x, "startDate", "endDate"), bullets }], &mut p);
+        section(title_of(x, VOLUNTEER), vec![CustomItem { id: String::new(), bullet_ids: Vec::new(), title: s(x, "position"), subtitle: s(x, "organization"), date: date_of(x, "startDate", "endDate"), bullets }], &mut p);
     }
     for x in arr(&v, "awards").iter().filter(|x| !s(x, "title").is_empty()) {
-        section(title_of(x, AWARDS), vec![CustomItem { title: s(x, "title"), subtitle: s(x, "awarder"), date: date_of(x, "date", "date"), bullets: lines(&s(x, "summary")) }], &mut p);
+        section(title_of(x, AWARDS), vec![CustomItem { id: String::new(), bullet_ids: Vec::new(), title: s(x, "title"), subtitle: s(x, "awarder"), date: date_of(x, "date", "date"), bullets: lines(&s(x, "summary")) }], &mut p);
     }
     for x in arr(&v, "publications").iter().filter(|x| !s(x, "name").is_empty()) {
         let mut bullets = lines(&s(x, "summary"));
         if !s(x, "url").is_empty() {
             bullets.push(s(x, "url"));
         }
-        section(title_of(x, PUBLICATIONS), vec![CustomItem { title: s(x, "name"), subtitle: s(x, "publisher"), date: date_of(x, "releaseDate", "releaseDate"), bullets }], &mut p);
+        section(title_of(x, PUBLICATIONS), vec![CustomItem { id: String::new(), bullet_ids: Vec::new(), title: s(x, "name"), subtitle: s(x, "publisher"), date: date_of(x, "releaseDate", "releaseDate"), bullets }], &mut p);
     }
     for x in arr(&v, "projects").iter().filter(|x| !s(x, "name").is_empty()) {
         let mut bullets = lines(&s(x, "description"));
@@ -285,7 +285,7 @@ pub fn read(text: &str) -> Result<CvRead, String> {
             bullets.push(s(x, "url"));
         }
         let subtitle = if s(x, "entity").is_empty() { strings(x, "roles").join(", ") } else { s(x, "entity") };
-        section(title_of(x, PROJECTS), vec![CustomItem { title: s(x, "name"), subtitle, date: date_of(x, "startDate", "endDate"), bullets }], &mut p);
+        section(title_of(x, PROJECTS), vec![CustomItem { id: String::new(), bullet_ids: Vec::new(), title: s(x, "name"), subtitle, date: date_of(x, "startDate", "endDate"), bullets }], &mut p);
     }
     count(&mut found, "andre seksjoner", p.custom_sections.len().min(1));
 
@@ -362,6 +362,8 @@ fn kind_of(title: &str) -> &'static str {
 /// The CV as a JSON Resume (pretty, two-space indent). The job ad, the design and CVBuilder's own
 /// notes (evidence, approvals) are not part of it.
 pub fn write(p: &Project) -> String {
+    // An export of this copy of the CV: hidden items are left out, as in the PDF.
+    let p = &*p.visible();
     let c = &p.candidate;
     let mut basics = Map::new();
     put(&mut basics, "name", &c.name);

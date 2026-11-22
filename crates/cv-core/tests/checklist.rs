@@ -61,13 +61,13 @@ fn contains_reaches_every_part_of_the_cv() {
     p.candidate.linkedin = "https://www.linkedin.com/in/kari-fjordheim-eksempel".into();
     p.candidate.extra.push(ContactField { id: "web".into(), label: "Nettside".into(), value: "karisblogg.example".into() });
     p.candidate.summary = "Erfaren med varemottak.".into();
-    p.skills.push(Skill { group: "Verktøy".into(), name: "Truckførerbevis T4".into(), evidence: String::new(), confirmed: true });
+    p.skills.push(Skill { id: String::new(), group: "Verktøy".into(), name: "Truckførerbevis T4".into(), evidence: String::new(), confirmed: true });
     p.experience.push(Job { id: "j1".into(), company: "Havlager AS (fiktiv)".into(), title: "Lagermedarbeider".into(), location: "Molde".into(), start: "2020-01".into(), end: None, bullets: vec!["Plukket ordre med håndterminal.".into()], ..Default::default() });
-    p.languages.push(SpokenLanguage { name: "Tysk".into(), level: "grunnleggende".into() });
+    p.languages.push(SpokenLanguage { id: String::new(), name: "Tysk".into(), level: "grunnleggende".into() });
     p.interests.push(Interest { id: "i1".into(), label: "Seiling".into(), confirmed: true, ..Default::default() });
     p.options.include_interests = true;
     p.options.interest_ids = vec!["i1".into()];
-    p.custom_sections.push(CustomSection { id: "frivillig".into(), title: "Frivillig arbeid".into(), items: vec![CustomItem { title: "Kasserer".into(), subtitle: "Idrettslaget Eksempel".into(), date: "2019".into(), bullets: vec!["Førte regnskapet for dugnadskassen.".into()] }] });
+    p.custom_sections.push(CustomSection { id: "frivillig".into(), title: "Frivillig arbeid".into(), items: vec![CustomItem { id: String::new(), bullet_ids: Vec::new(), title: "Kasserer".into(), subtitle: "Idrettslaget Eksempel".into(), date: "2019".into(), bullets: vec!["Førte regnskapet for dugnadskassen.".into()] }] });
     for word in ["Fjordheim", "truckfører", "fjordpost", "ålesund", "linkedin", "karisblogg", "varemottak", "T4", "havlager", "lagermedarbeider", "Molde", "håndterminal", "tysk", "grunnleggende", "seiling", "frivillig arbeid", "kasserer", "idrettslaget", "dugnadskassen"] {
         assert_eq!(state(&p, 1, Kind::Contains, word), State::Done, "{word} is in the CV");
     }
