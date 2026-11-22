@@ -33,20 +33,27 @@ fn docx_part(bytes: &[u8], name: &str) -> String {
 }
 
 /// The PDF in Norwegian, English, Arabic and Hindi: its language, title and author, tags for the
-/// name, the section headings and the bullet lists, and krilla's PDF/UA-1 checks passed, so the
-/// file says PDF/UA-1 and shows its title in the viewer's title bar.
+/// name, the section headings and the bullet lists. Latin CVs pass krilla's PDF/UA-1 checks, so
+/// the file says PDF/UA-1 and shows its title in the viewer's title bar. Arabic and Hindi pass
+/// with the Windows fonts; with another system's fallback fonts some glyphs may map to no text
+/// (`NoCodepointMapping`), and then the file must make no PDF/UA claim.
 #[test]
 fn pdf_carries_language_title_author_and_tags() {
-    for (name, code) in [("Bokmål", "nb"), ("English", "en"), ("العربية", "ar"), ("हिन्दी", "hi")] {
+    for (name, code, latin) in [("Bokmål", "nb", true), ("English", "en", true), ("العربية", "ar", false), ("हिन्दी", "hi", false)] {
         let p = in_language(name);
         assert_eq!(p.language_code(), code);
         let doc = document::build(&p);
         let problems = document::pdf_ua_problems(&doc).expect("check");
-        assert!(problems.is_empty(), "{name}: {problems:?}");
         let raw = squashed(&document::to_pdf(&doc).expect("pdf"));
         assert!(raw.contains(&format!("/Lang({code}")), "{name}: document language");
-        assert!(raw.contains("pdfuaid:part"), "{name}: PDF/UA-1 identifier");
-        assert!(raw.contains("/DisplayDocTitletrue"), "{name}: title in the title bar");
+        if latin || cfg!(windows) || problems.is_empty() {
+            assert!(problems.is_empty(), "{name}: {problems:?}");
+            assert!(raw.contains("pdfuaid:part"), "{name}: PDF/UA-1 identifier");
+            assert!(raw.contains("/DisplayDocTitletrue"), "{name}: title in the title bar");
+        } else {
+            assert!(problems.iter().all(|p| p.starts_with("NoCodepointMapping")), "{name}: {problems:?}");
+            assert!(!raw.contains("pdfuaid"), "{name}: a file that fails the checks claims PDF/UA-1");
+        }
         assert!(raw.contains("/S/H1") && raw.contains("/S/H2"), "{name}: name and section headings");
         assert!(raw.contains("/S/L") && raw.contains("/S/LI") && raw.contains("/S/LBody"), "{name}: bullet lists");
     }
