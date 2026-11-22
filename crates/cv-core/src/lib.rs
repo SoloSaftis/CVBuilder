@@ -5,6 +5,7 @@ pub mod checks;
 pub mod cvread;
 pub mod import;
 pub mod readback;
+pub mod requirements;
 pub mod linkedin;
 pub mod europass;
 pub mod jsonresume;

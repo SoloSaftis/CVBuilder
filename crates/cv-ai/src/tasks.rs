@@ -162,11 +162,81 @@ Stillingstitler oversettes bare hvis det finnes en vanlig tilsvarende tittel. Be
     Ok(copy)
 }
 
+#[derive(Deserialize)]
+struct SortedRequirement {
+    text: String,
+    need: String,
+}
+
+#[derive(Deserialize)]
+struct SortedRequirements {
+    requirements: Vec<SortedRequirement>,
+}
+
+/// The system and user text that asks an AI to sort the ad's requirements into must-haves and
+/// nice-to-haves (to-do 045). `found` is what CVBuilder read offline, as a starting point. The
+/// CV is not sent: only the ad.
+pub fn requirements_request(project: &Project, found: &[(String, cv_core::requirements::Need)]) -> (String, String) {
+    use cv_core::requirements::Need;
+    let listed: Vec<String> = found.iter().map(|(t, n)| format!("- [{}] {t}", if *n == Need::Must { "must" } else { "nice" })).collect();
+    let user = format!(
+        "Annonse:
+{}
+
+CVBuilder fant disse kravene uten AI (kan ha feil):
+{}
+
+Les annonsen og lag listen over kravene til søkeren: hver kvalifikasjon, utdanning, erfaring, sertifikat, språk eller førerkort annonsen ber om. Merk hvert krav «must» hvis annonsen krever det, og «nice» hvis det er ønskelig, en fordel eller et pluss. Arbeidsoppgaver, hva arbeidsgiveren tilbyr og personlige egenskaper uten noe som kan vises i en CV er ikke krav. Bruk annonsens egne ord, på annonsens språk, ett krav per punkt, og finn aldri på krav som ikke står i annonsen. Svar som JSON: {{\"requirements\": [{{\"text\": \"…\", \"need\": \"must\"}}]}}",
+        project.target.description.chars().take(8000).collect::<String>(),
+        if listed.is_empty() { "(ingen)".to_string() } else { listed.join("
+") }
+    );
+    (rules(project).to_string(), user)
+}
+
+/// The AI's sorted requirements, or None when the reply is not the JSON asked for. Unknown
+/// kinds, empty and overlong lines are dropped; at most 40 are kept.
+pub fn parse_requirements(reply: &str) -> Option<Vec<(String, cv_core::requirements::Need)>> {
+    use cv_core::requirements::Need;
+    let sorted: SortedRequirements = serde_json::from_str(json_object(reply)?).ok()?;
+    let list: Vec<(String, Need)> = sorted
+        .requirements
+        .into_iter()
+        .filter_map(|r| {
+            let need = match r.need.trim().to_lowercase().as_str() {
+                "must" | "krav" | "required" => Need::Must,
+                "nice" | "fordel" | "ønskelig" | "preferred" => Need::Nice,
+                _ => return None,
+            };
+            let text = r.text.trim().trim_start_matches(['-', '•', '*']).trim().to_string();
+            (!text.is_empty() && text.chars().count() <= 300).then_some((text, need))
+        })
+        .take(40)
+        .collect();
+    Some(list)
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
     fn finds_json_inside_prose_and_fences() {
         assert_eq!(super::json_object("Here:\n```json\n{\"a\": 1}\n```"), Some("{\"a\": 1}"));
         assert_eq!(super::json_object("no json"), None);
+    }
+
+    #[test]
+    fn sorted_requirements_are_read_and_checked() {
+        use cv_core::requirements::Need;
+        let reply = "Sure:
+{\"requirements\": [{\"text\": \"- Fagbrev som elektriker\", \"need\": \"must\"}, {\"text\": \"KNX\", \"need\": \"Nice\"}, {\"text\": \"Firmabil\", \"need\": \"offer\"}, {\"text\": \" \", \"need\": \"must\"}]}";
+        assert_eq!(super::parse_requirements(reply), Some(vec![("Fagbrev som elektriker".to_string(), Need::Must), ("KNX".to_string(), Need::Nice)]));
+        assert_eq!(super::parse_requirements("no"), None);
+        let mut p = cv_core::Project::example();
+        p.target.description = "Krav
+- Fagbrev".into();
+        let (_, user) = super::requirements_request(&p, &[("Fagbrev".into(), Need::Must)]);
+        assert!(user.contains("- [must] Fagbrev") && user.contains("Krav
+- Fagbrev"));
+        assert!(!user.contains(&p.candidate.name), "the CV itself is not sent");
     }
 }
