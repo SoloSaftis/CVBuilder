@@ -262,7 +262,9 @@ fn id(kind: &str, text: &str) -> String {
 }
 
 /// The sheet for this CV and its job ad. `today_index` is `year * 12 + month - 1`.
-pub fn sheet(p: &Project, today_index: i32) -> Sheet {
+pub fn sheet(full: &Project, today_index: i32) -> Sheet {
+    // Only what this CV shows: items hidden in a tailored copy (041) are not asked about.
+    let p = &*full.visible();
     let mut items = Vec::new();
     // Claims: every line with a number or a result, newest job first.
     let mut seen = HashSet::new();
@@ -531,9 +533,9 @@ mod tests {
             bullets: vec!["Plukket ordrer til 40 kunder hver dag".into()],
             ..Default::default()
         });
-        p.education.push(Education { qualification: "Fagbrev logistikk".into(), institution: "Vg3".into(), start: "2014".into(), end: "2016".into() });
+        p.education.push(Education { qualification: "Fagbrev logistikk".into(), institution: "Vg3".into(), start: "2014".into(), end: "2016".into(), ..Default::default() });
         p.skills.push(Skill { name: "Excel".into(), ..Default::default() });
-        p.languages.push(SpokenLanguage { name: "Engelsk".into(), level: "flytende".into() });
+        p.languages.push(SpokenLanguage { name: "Engelsk".into(), level: "flytende".into(), ..Default::default() });
         p
     }
 
@@ -651,7 +653,7 @@ mod tests {
         p.custom_sections.push(CustomSection {
             id: "projects".into(),
             title: "Prosjekter".into(),
-            items: vec![CustomItem { title: "Værstasjon".into(), subtitle: "Hobby".into(), date: "2023".into(), bullets: vec!["Skrev den i Python for 40 brukere".into()] }],
+            items: vec![CustomItem { title: "Værstasjon".into(), subtitle: "Hobby".into(), date: "2023".into(), bullets: vec!["Skrev den i Python for 40 brukere".into()], ..Default::default() }],
         });
         let s = sheet(&p, today());
         let python = s.part(Part::Ad).next().expect("shown");
@@ -732,6 +734,20 @@ mod tests {
             std::fs::write(dir.join(format!("sheet-{code}.pdf")), crate::document::to_pdf(&doc).expect("pdf")).expect("write");
             std::fs::write(dir.join(format!("sheet-{code}.txt")), to_text(&p, &s, &|_| String::new(), &tr)).expect("write");
         }
+    }
+
+    #[test]
+    fn hidden_items_are_not_asked_about() {
+        // A tailored copy (041) that hides the first job's result line and the whole older job.
+        let mut p = project();
+        p.normalize_ids();
+        let bullet = p.experience[0].bullet_ids[0].clone();
+        let older = p.experience[1].id.clone();
+        assert!(p.set_hidden(&bullet, true) && p.set_hidden(&older, true));
+        let s = sheet(&p, today());
+        assert_eq!(s.part(Part::Claims).count(), 0);
+        // With the older job hidden there is no gap between the jobs either.
+        assert!(s.part(Part::Gaps).all(|i| !i.subject.is_empty()));
     }
 
     #[test]
