@@ -61,6 +61,8 @@ pub(crate) enum Action {
     AddSection(&'static str),
     Photo,
     ImportCv,
+    /// Save the CV as a JSON Resume (resume.json), the open format other CV tools read.
+    ExportJsonResume,
     PasteAd,
     AdLink,
     AdFile,
@@ -202,7 +204,7 @@ impl CvApp {
                 if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som")).shortcut_text(shortcuts::text(ui.ctx(), &shortcuts::SAVE_AS))).on_hover_text(i18n::t("Lagre utkastet som fil")).clicked() {
                     action = Some(Action::SaveAs);
                 }
-                if ui.add(menu_item(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV fra fil"))).on_hover_text(i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI")).clicked() {
+                if ui.add(menu_item(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV fra fil"))).on_hover_text(i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst, nettside, LinkedIn, Europass eller JSON Resume – med eller uten AI")).clicked() {
                     action = Some(Action::ImportCv);
                 }
                 ui.separator();
@@ -215,6 +217,9 @@ impl CvApp {
                     if ui.add(item).on_hover_text(&tip).clicked() {
                         action = Some(Action::Export(kind));
                     }
+                }
+                if ui.add(menu_item(ui, theme::ph::FILE_ARROW_UP, i18n::t("Eksporter som JSON Resume"))).on_hover_text(i18n::t("Lagre CV-en som resume.json – et åpent format som andre CV-verktøy kan lese (JSON Resume)")).clicked() {
+                    action = Some(Action::ExportJsonResume);
                 }
                 if ui.add(menu_item(ui, theme::ph::ROWS, i18n::t("Søknadsskjema"))).on_hover_text(i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene")).clicked() {
                     action = Some(Action::FormHelper);
@@ -358,7 +363,7 @@ impl CvApp {
                 }
             });
             column(ui, |ui| {
-                if tool(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV"), i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI"), true) {
+                if tool(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV"), i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst, nettside, LinkedIn, Europass eller JSON Resume – med eller uten AI"), true) {
                     *action = Some(Action::ImportCv);
                 }
                 if tool(ui, theme::ph::COPY, i18n::t("Kopier tekst"), &export_tip(Export::Text, blocked), true) {
@@ -645,6 +650,7 @@ impl CvApp {
             Action::Add(what) => self.insert(what),
             Action::AddSection(title) => self.ask_section_name(title),
             Action::Photo => self.pick("photo", None),
+            Action::ExportJsonResume => self.pick("json_resume", None),
             Action::ImportCv => {
                 self.import.cv_open = true;
                 self.import.use_ai = self.chat_backend().is_some();

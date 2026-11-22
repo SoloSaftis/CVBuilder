@@ -21,6 +21,9 @@ thiserror.workspace = true
 base64 = "0.22"
 regex = "1"
 pdf-extract = "0.12"
+# Europass: the XML the editor saves, and the copy it attaches to its PDFs (same versions pdf-extract and WordCraft already use).
+lopdf = { version = "0.42", default-features = false }
+quick-xml = "0.41"
 # Right-to-left and Indic PDFs: read with ActualText and in reading order (pdfread.rs).
 hayro-syntax = "0.7.2"
 hayro-interpret = { version = "0.7.0", default-features = false, features = ["embed-fonts"] }

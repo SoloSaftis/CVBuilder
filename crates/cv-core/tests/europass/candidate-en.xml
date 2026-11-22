@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- A made-up person in the Europass platform's format (2020+). No real personal data. -->
+<Candidate xmlns="http://www.europass.eu/1.0" xmlns:eures="http://www.europass_eures.eu/1.0" xmlns:hr="http://www.hr-xml.org/3" xmlns:oa="http://www.openapplications.org/oagis/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.europass.eu/1.0 Candidate.xsd">
+  <hr:DocumentID schemeID="Test-0001" schemeName="DocumentIdentifier" schemeAgencyName="EUROPASS" schemeVersionID="4.0"/>
+  <CandidateSupplier>
+    <hr:PartyID schemeID="Test-0001" schemeName="PartyID" schemeAgencyName="EUROPASS" schemeVersionID="1.0"/>
+    <hr:PartyName>Owner</hr:PartyName>
+    <PersonContact>
+      <PersonName>
+        <oa:GivenName>Maria</oa:GivenName>
+        <hr:FamilyName>Esempio</hr:FamilyName>
+      </PersonName>
+      <Communication>
+        <ChannelCode>Email</ChannelCode>
+        <oa:URI>maria.esempio@example.org</oa:URI>
+      </Communication>
+    </PersonContact>
+    <hr:PrecedenceCode>1</hr:PrecedenceCode>
+  </CandidateSupplier>
+  <CandidatePerson>
+    <PersonName>
+      <oa:GivenName>Maria</oa:GivenName>
+      <hr:FamilyName>Esempio</hr:FamilyName>
+    </PersonName>
+    <Communication>
+      <ChannelCode>Email</ChannelCode>
+      <oa:URI>maria.esempio@example.org</oa:URI>
+    </Communication>
+    <Communication>
+      <ChannelCode>Telephone</ChannelCode>
+      <UseCode>mobile</UseCode>
+      <CountryDialing>39</CountryDialing>
+      <oa:DialNumber>320 000 0000</oa:DialNumber>
+    </Communication>
+    <Communication>
+      <ChannelCode>Web</ChannelCode>
+      <oa:URI>https://www.linkedin.com/in/maria-esempio-example</oa:URI>
+    </Communication>
+    <Communication>
+      <ChannelCode>Web</ChannelCode>
+      <oa:URI>https://portfolio.example.org</oa:URI>
+    </Communication>
+    <Communication>
+      <UseCode>home</UseCode>
+      <Address type="home">
+        <oa:AddressLine>Via Esempio 1</oa:AddressLine>
+        <oa:CityName>Bologna</oa:CityName>
+        <CountryCode>it</CountryCode>
+        <oa:PostalCode>40100</oa:PostalCode>
+      </Address>
+    </Communication>
+    <NationalityCode>it</NationalityCode>
+    <hr:BirthDate>1992-04-17</hr:BirthDate>
+    <GenderCode>female</GenderCode>
+    <PrimaryLanguageCode name="NORMAL">ita</PrimaryLanguageCode>
+  </CandidatePerson>
+  <CandidateProfile languageCode="en">
+    <hr:ExecutiveSummary>&lt;p&gt;Logistics planner with eight years in warehousing and transport. Plans routes, follows up carriers and keeps the stock right for the customers.&lt;/p&gt;</hr:ExecutiveSummary>
+    <EmploymentHistory>
+      <EmployerHistory>
+        <hr:OrganizationName>Example Freight S.r.l.</hr:OrganizationName>
+        <OrganizationContact>
+          <Communication>
+            <Address>
+              <oa:CityName>Bologna</oa:CityName>
+              <CountryCode>it</CountryCode>
+            </Address>
+          </Communication>
+        </OrganizationContact>
+        <PositionHistory>
+          <PositionTitle typeCode="FREETEXT">Logistics Planner</PositionTitle>
+          <eures:EmploymentPeriod>
+            <eures:StartDate>
+              <hr:FormattedDateTime>2020-02-01</hr:FormattedDateTime>
+            </eures:StartDate>
+            <hr:CurrentIndicator>true</hr:CurrentIndicator>
+          </eures:EmploymentPeriod>
+          <oa:Description>&lt;ul&gt;&lt;li&gt;Plan daily routes for 40 trucks across northern Italy.&lt;/li&gt;&lt;li&gt;Cut empty kilometres by 12% with shared loads.&lt;/li&gt;&lt;/ul&gt;</oa:Description>
+        </PositionHistory>
+      </EmployerHistory>
+      <EmployerHistory>
+        <hr:OrganizationName>Example Warehouse S.p.A.</hr:OrganizationName>
+        <PositionHistory>
+          <PositionTitle typeCode="FREETEXT">Warehouse Coordinator</PositionTitle>
+          <eures:EmploymentPeriod>
+            <eures:StartDate>
+              <hr:FormattedDateTime>2016-09</hr:FormattedDateTime>
+            </eures:StartDate>
+            <eures:EndDate>
+              <hr:FormattedDateTime>2020-01-31</hr:FormattedDateTime>
+            </eures:EndDate>
+            <hr:CurrentIndicator>false</hr:CurrentIndicator>
+          </eures:EmploymentPeriod>
+          <oa:Description>&lt;p&gt;Led a team of 12 in goods in and dispatch.&lt;/p&gt;</oa:Description>
+          <City>Modena</City>
+          <Country>it</Country>
+        </PositionHistory>
+      </EmployerHistory>
+    </EmploymentHistory>
+    <EducationHistory>
+      <EducationOrganizationAttendance>
+        <hr:OrganizationName>Example University of Bologna</hr:OrganizationName>
+        <AttendancePeriod>
+          <StartDate>
+            <hr:FormattedDateTime>2011-09</hr:FormattedDateTime>
+          </StartDate>
+          <EndDate>
+            <hr:FormattedDateTime>2014-07</hr:FormattedDateTime>
+          </EndDate>
+          <Ongoing>false</Ongoing>
+        </AttendancePeriod>
+        <EducationLevelCode>6</EducationLevelCode>
+        <EducationDegree>
+          <hr:DegreeName>BSc Economics and Management</hr:DegreeName>
+          <FinalGrade>
+            <hr:ScoreText>108/110</hr:ScoreText>
+          </FinalGrade>
+        </EducationDegree>
+      </EducationOrganizationAttendance>
+    </EducationHistory>
+    <eures:Licenses>
+      <eures:License>
+        <hr:LicenseTypeCode>B</hr:LicenseTypeCode>
+      </eures:License>
+      <eures:License>
+        <hr:LicenseTypeCode>C1</hr:LicenseTypeCode>
+      </eures:License>
+    </eures:Licenses>
+    <PersonQualifications>
+      <PersonCompetency>
+        <CompetencyID schemeName="NORMAL">eng</CompetencyID>
+        <hr:TaxonomyID>language</hr:TaxonomyID>
+        <eures:CompetencyDimension>
+          <hr:CompetencyDimensionTypeCode>CEF-Understanding-Listening</hr:CompetencyDimensionTypeCode>
+          <eures:Score><hr:ScoreText>C1</hr:ScoreText></eures:Score>
+        </eures:CompetencyDimension>
+        <eures:CompetencyDimension>
+          <hr:CompetencyDimensionTypeCode>CEF-Understanding-Reading</hr:CompetencyDimensionTypeCode>
+          <eures:Score><hr:ScoreText>C1</hr:ScoreText></eures:Score>
+        </eures:CompetencyDimension>
+        <eures:CompetencyDimension>
+          <hr:CompetencyDimensionTypeCode>CEF-Speaking-Interaction</hr:CompetencyDimensionTypeCode>
+          <eures:Score><hr:ScoreText>B2</hr:ScoreText></eures:Score>
+        </eures:CompetencyDimension>
+        <eures:CompetencyDimension>
+          <hr:CompetencyDimensionTypeCode>CEF-Speaking-Production</hr:CompetencyDimensionTypeCode>
+          <eures:Score><hr:ScoreText>B2</hr:ScoreText></eures:Score>
+        </eures:CompetencyDimension>
+        <eures:CompetencyDimension>
+          <hr:CompetencyDimensionTypeCode>CEF-Writing-Production</hr:CompetencyDimensionTypeCode>
+          <eures:Score><hr:ScoreText>B2</hr:ScoreText></eures:Score>
+        </eures:CompetencyDimension>
+      </PersonCompetency>
+      <PersonCompetency>
+        <CompetencyID schemeName="NORMAL">deu</CompetencyID>
+        <hr:TaxonomyID>language</hr:TaxonomyID>
+        <eures:CompetencyDimension>
+          <hr:CompetencyDimensionTypeCode>CEF-Understanding-Listening</hr:CompetencyDimensionTypeCode>
+          <eures:Score><hr:ScoreText>B1</hr:ScoreText></eures:Score>
+        </eures:CompetencyDimension>
+        <eures:CompetencyDimension>
+          <hr:CompetencyDimensionTypeCode>CEF-Writing-Production</hr:CompetencyDimensionTypeCode>
+          <eures:Score><hr:ScoreText>B1</hr:ScoreText></eures:Score>
+        </eures:CompetencyDimension>
+      </PersonCompetency>
+    </PersonQualifications>
+    <Skills>
+      <PersonCompetency>
+        <hr:TaxonomyID>Digital_Skill</hr:TaxonomyID>
+        <hr:CompetencyName>SAP EWM</hr:CompetencyName>
+      </PersonCompetency>
+      <SkillsGroup>
+        <Title>Office tools</Title>
+        <PersonCompetency>
+          <hr:TaxonomyID>Digital_Skill</hr:TaxonomyID>
+          <hr:CompetencyName>Excel (pivot tables)</hr:CompetencyName>
+        </PersonCompetency>
+        <PersonCompetency>
+          <hr:TaxonomyID>Digital_Skill</hr:TaxonomyID>
+          <hr:CompetencyName>Power BI</hr:CompetencyName>
+        </PersonCompetency>
+      </SkillsGroup>
+    </Skills>
+    <Certifications/>
+    <Others>
+      <Title>Volunteering</Title>
+      <Other>
+        <Title>Food bank driver</Title>
+        <Date>2019 – Present</Date>
+        <Description>&lt;p&gt;Drive weekly collections for a local food bank.&lt;/p&gt;</Description>
+      </Other>
+    </Others>
+  </CandidateProfile>
+  <RenderingInformation>
+    <Design>
+      <Template>Template1</Template>
+      <Color>Default</Color>
+      <FontSize>Medium</FontSize>
+      <Logo>FirstPageHeader</Logo>
+      <PageNumbers>true</PageNumbers>
+      <SectionsOrder>
+        <Section><Title>work-experience</Title></Section>
+        <Section><Title>education-training</Title></Section>
+        <Section><Title>language</Title></Section>
+        <Section><Title>profile-skills</Title></Section>
+        <Section><Title>driving-licence</Title></Section>
+      </SectionsOrder>
+    </Design>
+  </RenderingInformation>
+</Candidate>
