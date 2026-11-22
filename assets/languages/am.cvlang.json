@@ -701,6 +701,7 @@
   "opptil {sum}": "እስከ {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "በዚህ ኮምፒውተር ላይ ይቆያል፦ የአካባቢው ሞዴል እዚህ ይሰራል፤ ምንም አያስከፍልም።",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "የሲቪ ጽሑፍዎ በ{url} ወዳለው የAI አገልጋይዎ ይላካል። CVBuilder ምንም አያስከፍልም።",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "ግንኙነቱ አልተመሰጠረም (http)፣ ስለዚህ በአውታረ መረቡ ላይ ያሉ ሌሎች ጽሑፉን በመንገድ ላይ ሊያነቡት ይችላሉ።",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "የሲቪ ጽሑፍዎ በAPI ቁልፍዎ ወደ {company} ({service}) ይላካል። {company} በሂሳብዎ ላይ ያስከፍላል፤ በሚጠቀሙት ሞዴል መሠረት በአንድ መልዕክት ወደ {cost} ገደማ።",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "የሲቪ ጽሑፍዎ በAPI ቁልፍዎ ወደ {company} ({service}) ይላካል። {company} በሂሳብዎ ላይ ያስከፍላል፤ በሚጠቀሙት ሞዴል መሠረት ለዚህ ወደ {cost} ገደማ።",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "የሲቪ ጽሑፍዎ በገቡበት መለያ በClaude Code በኩል ወደ Anthropic ይላካል። ከClaude እቅድዎ ድርሻ ይጠቀማል፤ መለያው በአጠቃቀም የሚከፍል ከሆነ ደግሞ ከክሬዲት።",

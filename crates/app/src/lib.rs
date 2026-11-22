@@ -174,8 +174,13 @@ struct CvApp {
     reference: Option<Project>,
     /// The «Oversett CV-en» window, while it is open.
     translate: Option<translate_ui::TranslateState>,
-    /// Kinds of AI work the person has said yes to sending, with which AI, this session.
+    /// Kinds of AI work whose text has gone to a destination after the person saw where it goes,
+    /// this session. The key is the service and the address's origin (ai_notice::consent_key),
+    /// so a new address asks again.
     ai_ok: std::collections::HashSet<(cv_ai::cost::Work, String)>,
+    /// The notice for this kind of work and destination was just shown with the button that
+    /// sends: the next request may go without asking (taken by must_ask).
+    ai_noticed: Option<(cv_ai::cost::Work, String)>,
     /// A one-click AI request waiting for «Send» in «Før AI-en starter».
     ai_pending: Option<ai_notice::Pending>,
     /// «Krav i annonsen» in the recruiter check.
@@ -251,6 +256,7 @@ impl CvApp {
             reference: None,
             translate: None,
             ai_ok: Default::default(),
+            ai_noticed: None,
             ai_pending: None,
             requirements: Default::default(),
             designs: designs_ui::DesignState::default(),
@@ -319,7 +325,9 @@ impl CvApp {
                 app.file = Some(path);
             }
         }
-        // Developer aid: CVBUILDER_ASK="…" sends one chat message at start (for testing the chat).
+        // Developer aid in debug builds only: CVBUILDER_ASK="…" sends one chat message at start
+        // (for testing the chat). A release build never sends text the person did not write.
+        #[cfg(debug_assertions)]
         if let Ok(ask) = std::env::var("CVBUILDER_ASK") {
             app.chat_send(&ask);
         }
@@ -646,7 +654,9 @@ impl CvApp {
             return;
         }
         self.side = Side::Chat;
-        self.chat_send(text);
+        if self.chat_send(text) {
+            self.ai_sent(work);
+        }
     }
 
     // ---------- file dialogs run on their own thread so the window stays responsive ----------

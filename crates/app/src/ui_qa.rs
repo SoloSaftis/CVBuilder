@@ -1196,13 +1196,30 @@ fn ai_asks_before_the_cv_leaves() {
     assert!(has_label(&h, "Send til OpenAI"), "no «Send til OpenAI»");
     click(&mut h, "Avbryt");
     assert!(h.state().ai_pending.is_none() && !h.state().chat.running && h.state().chat.items.is_empty(), "«Avbryt» did not stop the request");
-    // Once said yes to, the same kind of work goes straight on; another kind asks again.
+    // Seeing the notice alone remembers nothing past the next request.
     h.state_mut().ai_seen(Work::Tailor);
-    assert!(h.state().must_ask(Work::Tailor).is_none());
-    assert!(h.state().must_ask(Work::Translate).is_some());
+    assert!(h.state_mut().must_ask(Work::Tailor).is_none(), "the notice was just shown");
+    assert!(h.state_mut().must_ask(Work::Tailor).is_some(), "a yes was kept although nothing was sent");
+    // Once the text has gone, the same kind of work goes straight on; another kind asks again.
+    h.state_mut().ai_sent(Work::Tailor);
+    assert!(h.state_mut().must_ask(Work::Tailor).is_none());
+    assert!(h.state_mut().must_ask(Work::Translate).is_some());
     // A model on this computer: nothing leaves, nothing to ask.
-    let h = harness(Vec2::new(1440.0, 900.0), with_local);
-    assert!(h.state().must_ask(Work::Tailor).is_none());
+    let mut h = harness(Vec2::new(1440.0, 900.0), with_local);
+    assert!(h.state_mut().must_ask(Work::Tailor).is_none());
+    // A server elsewhere: a yes counts for that address only, and a yes kept under the bare
+    // service name (as before to-do 163) counts as not asked.
+    h.state_mut().settings.local_url = "http://192.168.1.20:11434/v1".into();
+    let name = h.state().chat_backend().expect("backend").name();
+    h.state_mut().ai_ok.insert((Work::Tailor, name));
+    assert!(h.state_mut().must_ask(Work::Tailor).is_some(), "an old yes by service name was taken as a yes");
+    h.state_mut().ai_sent(Work::Tailor);
+    assert!(h.state_mut().must_ask(Work::Tailor).is_none());
+    h.state_mut().settings.local_url = "http://192.168.1.99:11434/v1".into();
+    assert!(h.state_mut().must_ask(Work::Tailor).is_some(), "a new address did not ask again");
+    // A user name in the address does not make another host local.
+    h.state_mut().settings.local_url = "http://localhost:x@evil.example/v1".into();
+    assert!(h.state_mut().must_ask(Work::Tailor).is_some(), "userinfo hid the real host");
     // The translate window says where the CV goes before «Oversett med AI».
     let h = harness(Vec2::new(1440.0, 900.0), |a| {
         with_provider(a);

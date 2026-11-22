@@ -265,15 +265,15 @@ impl CvApp {
         ui.label(i18n::t("2. Nøkkel (bare hvis serveren din krever det):"));
         ui.add(egui::TextEdit::singleline(&mut self.ai.key_input).password(true).hint_text(i18n::t("Valgfri")).desired_width(f32::INFINITY))
             .on_hover_text(i18n::t("Bare hvis serveren krever nøkkel. Ollama og LM Studio gjør det ikke."));
-        let local = cv_ai::is_local_address(&self.ai.local_url);
-        ui.label(
-            RichText::new(if local {
-                i18n::t("Adressen er på denne maskinen: meldingene og CV-teksten blir her.")
-            } else {
-                i18n::t("Merk: adressen er ikke på denne maskinen. Meldingene og CV-teksten sendes dit.")
-            })
-            .small(),
-        );
+        let local = cv_ai::is_local_address(self.ai.local_url.trim());
+        let where_to = if local {
+            i18n::t("Adressen er på denne maskinen: meldingene og CV-teksten blir her.").to_string()
+        } else if cv_ai::is_unencrypted(self.ai.local_url.trim()) {
+            format!("{} {}", i18n::t("Merk: adressen er ikke på denne maskinen. Meldingene og CV-teksten sendes dit."), i18n::t(crate::ai_notice::UNENCRYPTED))
+        } else {
+            i18n::t("Merk: adressen er ikke på denne maskinen. Meldingene og CV-teksten sendes dit.").to_string()
+        };
+        ui.label(RichText::new(where_to).small());
         ui.horizontal(|ui| {
             let ready = self.ai.local_url.starts_with("http") && self.ai.busy.is_none();
             if ui

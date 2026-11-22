@@ -701,6 +701,7 @@
   "opptil {sum}": "حتى {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "يبقى على هذا الجهاز: النموذج المحلي يعمل هنا، ولا يكلّف شيئًا.",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "يُرسل نص سيرتك الذاتية إلى خادم الذكاء الاصطناعي الخاص بك على {url}. CVBuilder لا يتقاضى أي مبلغ.",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "الاتصال غير مشفّر (http)، لذا يمكن لآخرين على الشبكة قراءة النص أثناء إرساله.",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "يُرسل نص سيرتك الذاتية إلى {company} ({service}) باستخدام مفتاح API الخاص بك. تحاسبك {company} على حسابك، بحوالي {cost} لكل رسالة، بحسب النموذج الذي تستخدمه.",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "يُرسل نص سيرتك الذاتية إلى {company} ({service}) باستخدام مفتاح API الخاص بك. تحاسبك {company} على حسابك، بحوالي {cost} لهذا الإجراء، بحسب النموذج الذي تستخدمه.",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "يُرسل نص سيرتك الذاتية إلى Anthropic عبر Claude Code، بالحساب الذي سجّلت الدخول به. يستهلك من حصة اشتراكك في Claude، أو من الرصيد إذا كان الحساب يدفع حسب الاستخدام.",

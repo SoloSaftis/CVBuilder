@@ -701,6 +701,7 @@
   "opptil {sum}": "最大 {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "このパソコンの中にとどまります。ローカルモデルはここで動き、費用はかかりません。",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "CV のテキストは {url} のあなたの AI サーバーに送られます。CVBuilder は何も請求しません。",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "接続は暗号化されていません (http)。ネットワーク上の他の人が途中でテキストを読める可能性があります。",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "CV のテキストは、あなたの API キーで {company} ({service}) に送られます。{company} があなたのアカウントに課金します。使うモデルによりますが、1 メッセージあたり約 {cost} です。",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "CV のテキストは、あなたの API キーで {company} ({service}) に送られます。{company} があなたのアカウントに課金します。使うモデルによりますが、今回は約 {cost} です。",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "CV のテキストは Claude Code を通じて、サインインしているアカウントで Anthropic に送られます。Claude プランの利用枠を使います。従量課金のアカウントならクレジットを使います。",

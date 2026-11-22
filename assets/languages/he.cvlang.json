@@ -701,6 +701,7 @@
   "opptil {sum}": "עד {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "נשאר במחשב הזה: המודל המקומי רץ כאן, וזה לא עולה כלום.",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "טקסט קורות החיים נשלח לשרת ה-AI שלך בכתובת {url}. CVBuilder לא גובה שום תשלום.",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "החיבור אינו מוצפן (http), כך שאחרים ברשת יכולים לקרוא את הטקסט בדרך.",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "טקסט קורות החיים נשלח אל {company} ({service}) עם מפתח ה-API שלך. {company} מחייבת את החשבון שלך, בערך {cost} להודעה, בהתאם למודל שבו אתה משתמש.",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "טקסט קורות החיים נשלח אל {company} ({service}) עם מפתח ה-API שלך. {company} מחייבת את החשבון שלך, בערך {cost} על זה, בהתאם למודל שבו אתה משתמש.",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "טקסט קורות החיים נשלח ל-Anthropic דרך Claude Code, עם החשבון שאתה מחובר אליו. זה משתמש במכסה של מנוי Claude שלך, או באשראי אם החשבון משלם לפי שימוש.",

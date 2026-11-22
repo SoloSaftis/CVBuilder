@@ -701,6 +701,7 @@
   "opptil {sum}": "do {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "Ostaje na ovom računaru: lokalni model radi ovdje i ne košta ništa.",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "Tekst vašeg CV-a šalje se vašem AI serveru na {url}. CVBuilder ništa ne naplaćuje.",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "Veza nije šifrirana (http), pa drugi na mreži mogu pročitati tekst usput.",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "Tekst vašeg CV-a šalje se u {company} ({service}) s vašim API ključem. {company} naplaćuje vaš račun, otprilike {cost} po poruci, ovisno o modelu koji koristite.",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "Tekst vašeg CV-a šalje se u {company} ({service}) s vašim API ključem. {company} naplaćuje vaš račun, otprilike {cost} za ovo, ovisno o modelu koji koristite.",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "Tekst vašeg CV-a šalje se Anthropicu preko Claude Codea, s računom na koji ste prijavljeni. Troši kvotu vašeg Claude paketa, ili kredit ako račun plaća po upotrebi.",

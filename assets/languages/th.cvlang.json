@@ -701,6 +701,7 @@
   "opptil {sum}": "สูงสุด {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "อยู่ในคอมพิวเตอร์เครื่องนี้: โมเดลในเครื่องทำงานที่นี่ และไม่มีค่าใช้จ่าย",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "ข้อความ CV จะถูกส่งไปยังเซิร์ฟเวอร์ AI ของคุณที่ {url} CVBuilder ไม่คิดค่าใช้จ่ายใดๆ",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "การเชื่อมต่อไม่ได้เข้ารหัส (http) ผู้อื่นในเครือข่ายจึงอ่านข้อความระหว่างทางได้",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "ข้อความ CV จะถูกส่งไปยัง {company} ({service}) พร้อมคีย์ API ของคุณ {company} จะเรียกเก็บเงินจากบัญชีของคุณ ประมาณ {cost} ต่อข้อความ ขึ้นอยู่กับโมเดลที่คุณใช้",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "ข้อความ CV จะถูกส่งไปยัง {company} ({service}) พร้อมคีย์ API ของคุณ {company} จะเรียกเก็บเงินจากบัญชีของคุณ ประมาณ {cost} สำหรับครั้งนี้ ขึ้นอยู่กับโมเดลที่คุณใช้",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "ข้อความ CV จะถูกส่งไปยัง Anthropic ผ่าน Claude Code ด้วยบัญชีที่คุณลงชื่อเข้าใช้ โดยจะใช้โควตาของแพ็กเกจ Claude ของคุณ หรือเครดิตหากบัญชีจ่ายตามการใช้งาน",

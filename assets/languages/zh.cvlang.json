@@ -701,6 +701,7 @@
   "opptil {sum}": "最多 {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "留在这台电脑上：本地模型在此运行，不产生任何费用。",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "你的简历文本会发送到位于 {url} 的 AI 服务器。CVBuilder 不收取任何费用。",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "连接未加密（http），网络上的其他人可能在传输途中读到文本。",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "你的简历文本会用你的 API 密钥发送给 {company}（{service}）。{company} 会向你的账户收费，视你使用的模型而定，每条消息约 {cost}。",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "你的简历文本会用你的 API 密钥发送给 {company}（{service}）。{company} 会向你的账户收费，视你使用的模型而定，这次约 {cost}。",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "你的简历文本会通过 Claude Code，以你登录的账户发送给 Anthropic。这会使用你 Claude 套餐的额度；如果账户按用量付费，则使用余额。",

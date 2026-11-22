@@ -185,6 +185,8 @@ impl CvApp {
         let (system, user) = cv_ai::tasks::requirements_request(&self.project, &found);
         let (tx, rx) = channel();
         let ctx = self.egui_ctx.clone();
+        // The ad leaves now: remember the yes for this destination.
+        self.ai_sent(cv_ai::cost::Work::Chat);
         std::thread::spawn(move || {
             let reply = crate::langpack_ui::ask(&backend, &system, &user).and_then(|text| cv_ai::tasks::parse_requirements(&text).ok_or_else(|| i18n::t("Svaret fra AI-en kunne ikke leses. Prøv igjen.").to_string()));
             let _ = tx.send(reply);

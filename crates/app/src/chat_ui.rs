@@ -139,15 +139,16 @@ impl CvApp {
         if self.settings.chat_backend == "claude-code" { claude_code().or_else(api) } else { api().or_else(claude_code) }
     }
 
-    pub(crate) fn chat_send(&mut self, text: &str) {
+    /// Starts a chat turn with the text; false when nothing was sent (empty, busy or no AI).
+    pub(crate) fn chat_send(&mut self, text: &str) -> bool {
         let text = text.trim().to_string();
         if text.is_empty() || self.chat.running {
-            return;
+            return false;
         }
         let Some(backend) = self.chat_backend() else {
             self.ai.connect_open = true;
             self.ai.choice = Some(cv_ai::Service::Claude);
-            return;
+            return false;
         };
         let owner = backend.name();
         if owner != self.chat.history_owner {
@@ -199,6 +200,7 @@ impl CvApp {
             let _ = forward.join();
         });
         self.chat.focus_input = true;
+        true
     }
 
     /// Runs a tool on the open CV, as the AI asked. Edits count as a change by the person.
@@ -386,8 +388,9 @@ impl CvApp {
         if let Some(text) = send {
             self.chat.input.clear();
             // The line under the AI picker says where it goes and what it costs.
-            self.ai_seen(cv_ai::cost::Work::Chat);
-            self.chat_send(&text);
+            if self.chat_send(&text) {
+                self.ai_sent(cv_ai::cost::Work::Chat);
+            }
         }
     }
 
