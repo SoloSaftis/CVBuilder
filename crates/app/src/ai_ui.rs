@@ -39,7 +39,9 @@ impl CvApp {
         if service == Service::Local {
             // A local server: the saved address, and a key only if one was given.
             let key = self.ai.keys.get(service).unwrap_or_else(|| cv_ai::providers::Secret::new(""));
-            let base_url = if self.settings.local_url.is_empty() { service.base_url().to_string() } else { self.settings.local_url.clone() };
+            // Sent as the check read it, so the client cannot reach another host than the one named.
+            let saved = if self.settings.local_url.is_empty() { service.base_url().to_string() } else { self.settings.local_url.clone() };
+            let base_url = cv_ai::normalized_address(&saved).unwrap_or(saved);
             return Some((Endpoint { service, base_url, key }, self.settings.ai_model.clone()));
         }
         let key = self.ai.keys.get(service)?;
@@ -58,7 +60,7 @@ impl CvApp {
                         self.ai.note = i18n::tf("Tilkoblet. {service} fant {n} modeller; den anbefalte er valgt.", &[("service", &i18n::tdyn(service.name())), ("n", &self.ai.models.len().to_string())]);
                         self.settings.ai_model = self.ai.models.first().cloned().unwrap_or_default();
                         if service == Service::Local {
-                            self.settings.local_url = self.ai.local_url.trim().trim_end_matches('/').to_string();
+                            self.settings.local_url = cv_ai::normalized_address(&self.ai.local_url).unwrap_or_else(|| self.ai.local_url.trim().trim_end_matches('/').to_string());
                             self.settings.chat_backend = "api".into();
                             self.ai.note.push(' ');
                             self.ai.note.push_str(i18n::t("Små modeller kan streve med å bruke verktøy; modeller som qwen3 eller llama3.1 fungerer best."));
@@ -275,14 +277,14 @@ impl CvApp {
         };
         ui.label(RichText::new(where_to).small());
         ui.horizontal(|ui| {
-            let ready = self.ai.local_url.starts_with("http") && self.ai.busy.is_none();
+            let ready = self.ai.local_url.trim().starts_with("http") && self.ai.busy.is_none();
             if ui
                 .add_enabled(ready, egui::Button::new(RichText::new(i18n::t("3. Test og koble til")).strong()))
                 .on_hover_text(i18n::t("Kobler til serveren og henter modellene den har"))
                 .on_disabled_hover_text(i18n::t("Skriv en adresse som begynner med http"))
                 .clicked()
             {
-                let endpoint = Endpoint { service, base_url: self.ai.local_url.trim().trim_end_matches('/').to_string(), key: craft_ai_core_secret(&self.ai.key_input) };
+                let endpoint = Endpoint { service, base_url: cv_ai::normalized_address(&self.ai.local_url).unwrap_or_else(|| self.ai.local_url.trim().trim_end_matches('/').to_string()), key: craft_ai_core_secret(&self.ai.key_input) };
                 let (tx, rx) = channel();
                 self.ai.inbox = Some(rx);
                 self.ai.busy = Some(i18n::t("Kobler til den lokale serveren …").into());

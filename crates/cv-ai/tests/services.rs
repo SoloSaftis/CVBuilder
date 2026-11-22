@@ -162,5 +162,12 @@ fn only_real_local_addresses_count_as_local() {
     assert_eq!(endpoint_origin("HTTP://LocalHost:80/v1"), endpoint_origin("http://localhost/"));
     assert_ne!(endpoint_origin("http://192.168.1.20:11434/v1"), endpoint_origin("http://192.168.1.21:11434/v1"));
     assert_eq!(endpoint_origin("http://user:pw@example.com/"), None);
+    for odd in [r"http://localhost\@evil.example/v1","http://[::ffff:127.0.0.1]/v1", "http://%6Cocalhost@evil.example/"] {
+        assert!(!local(odd) || cv_ai::normalized_address(odd).is_some_and(|n| local(&n)), "{odd}");
+    }
+    assert!(local("http://127.1/v1") && !local("http://[::ffff:127.0.0.1]/v1"));
+    assert_eq!(cv_ai::normalized_address(" HTTP://LocalHost:11434/v1/ ").as_deref(), Some("http://localhost:11434/v1"));
+    assert_eq!(cv_ai::normalized_address("http://localhost:x@evil.example/v1"), None);
+    assert_eq!(cv_ai::shown_origin("http://localhost:x@evil.example/v1").as_deref(), Some("http://evil.example"));
     assert!(is_unencrypted("http://192.168.1.20:11434/v1") && !is_unencrypted("https://example.com/v1") && !is_unencrypted("http://localhost:11434/v1"));
 }

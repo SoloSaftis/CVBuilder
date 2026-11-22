@@ -133,6 +133,21 @@ pub fn endpoint_origin(url: &str) -> Option<String> {
     Some(parse_address(url)?.origin().ascii_serialization())
 }
 
+/// The address to send to, exactly as the check read it («http://localhost:11434/v1»), so the
+/// HTTP client cannot read a different host from the same text. None when it does not parse or
+/// names a user.
+pub fn normalized_address(url: &str) -> Option<String> {
+    Some(parse_address(url)?.as_str().trim_end_matches('/').to_string())
+}
+
+/// Where an address really points, to show the person: scheme, host and port, never a user name
+/// or password («http://evil.example» for «http://localhost:x@evil.example/v1»).
+pub fn shown_origin(url: &str) -> Option<String> {
+    let parsed = url::Url::parse(url.trim()).ok()?;
+    parsed.host()?;
+    Some(parsed.origin().ascii_serialization())
+}
+
 /// The host (and port, if not the default) to show for an address, without any user name or
 /// password: «192.168.1.20:11434».
 pub fn address_host(url: &str) -> Option<String> {

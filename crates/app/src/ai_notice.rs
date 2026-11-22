@@ -75,7 +75,7 @@ pub fn notice(destination: &Destination, work: Work, cv_chars: usize, extra_char
         Destination::Here => i18n::t("Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.").to_string(),
         Destination::Server(url) => {
             // The address as the parser reads it, so a user name cannot hide the real host.
-            let shown = cv_ai::endpoint_origin(url).or_else(|| cv_ai::address_host(url)).unwrap_or_else(|| url.clone());
+            let shown = cv_ai::shown_origin(url).unwrap_or_else(|| url.clone());
             let text = i18n::tf("CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.", &[("url", &shown)]);
             if cv_ai::is_unencrypted(url) { format!("{text} {}", i18n::t(UNENCRYPTED)) } else { text }
         }
