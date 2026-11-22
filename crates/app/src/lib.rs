@@ -26,6 +26,7 @@ mod photo;
 mod preview;
 mod readback_ui;
 mod requirements_ui;
+mod spelling_ui;
 mod settings_ui;
 mod shortcuts;
 mod storage;
@@ -71,6 +72,8 @@ enum Picked {
     ChecklistLoad(PathBuf),
     ChecklistSave(PathBuf),
     DesignSave(PathBuf),
+    /// A Hunspell `.dic` file for the spell check.
+    Dictionary(PathBuf),
 }
 
 /// What «Vil du lagre endringene?» stands in front of: closing the window, or a step that puts
@@ -177,6 +180,8 @@ struct CvApp {
     checklist: checklist_ui::ChecklistState,
     form_helper: form_helper_ui::FormHelperState,
     readback: readback_ui::ReadBackState,
+    /// «Stavekontroll» in the checklist panel.
+    spelling: spelling_ui::SpellState,
     /// The name being typed for a new section, while that window is open.
     new_section: Option<String>,
     /// Where the new section goes in the CV: `None` at the bottom, `Some(i)` at position i.
@@ -243,6 +248,7 @@ impl CvApp {
             checklist: checklist_ui::ChecklistState::load(),
             form_helper: form_helper_ui::FormHelperState::load(),
             readback: readback_ui::ReadBackState::default(),
+            spelling: spelling_ui::SpellState::load(),
             new_section: None,
             new_section_at: None,
             ribbon_tab: menu_ui::Tab::default(),
@@ -638,6 +644,7 @@ impl CvApp {
                 ("checklist_save", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).set_file_name("min-sjekkliste.cvchecklist.json").save_file().map(Picked::ChecklistSave),
                 ("design_import", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).pick_file().map(Picked::DesignImport),
                 ("design_save", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).set_file_name("min-design.cvdesign.json").save_file().map(Picked::DesignSave),
+                ("dictionary", _) => rfd::FileDialog::new().add_filter(i18n::t("Hunspell-ordbok"), &["dic"]).pick_file().map(Picked::Dictionary),
                 ("photo", _) => rfd::FileDialog::new().add_filter(i18n::t("Bilde"), &["jpg", "jpeg", "png", "webp", "bmp", "tif", "tiff"]).pick_file().map(Picked::Photo),
                 ("export", Some(Export::Word)) => rfd::FileDialog::new().add_filter("Word", &["docx"]).set_file_name(format!("{stem}.docx")).save_file().map(|p| Picked::Export(Export::Word, p)),
                 ("export", Some(Export::Pdf)) => rfd::FileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(format!("{stem}.pdf")).save_file().map(|p| Picked::Export(Export::Pdf, p)),
@@ -671,6 +678,7 @@ impl CvApp {
                 Picked::ChecklistLoad(path) => self.load_checklist(&path),
                 Picked::ChecklistSave(path) => self.save_checklist_file(&path),
                 Picked::DesignSave(path) => self.save_design_template(&path),
+                Picked::Dictionary(path) => self.import_dictionary(&path),
                 Picked::Photo(path) => match photo::Edit::open(&path) {
                     Ok(edit) => self.photo = Some(PhotoDialog { edit, texture: None, stale: true }),
                     Err(e) => self.status = e,
@@ -854,6 +862,8 @@ impl CvApp {
         });
         ui.add_space(10.0);
         self.read_back_card(ui);
+        ui.add_space(10.0);
+        self.spelling_card(ui);
         ui.add_space(10.0);
         if self.settings.own_checklist {
             self.own_checklist(ui);
