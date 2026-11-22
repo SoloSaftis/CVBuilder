@@ -231,6 +231,26 @@ const SCENES: &[Scene] = &[
         },
     },
     Scene { name: "Søknadsskjema", setup: |a| a.side = Side::Form },
+    // Possible spelling mistakes with suggestions, ignore and «my words» (046). The plain
+    // «Sjekkliste» scene shows the card for a Norwegian CV without a dictionary: the download button.
+    Scene {
+        name: "Stavekontroll",
+        setup: |a| {
+            use cv_core::spelling::{Finding, Place};
+            a.side = Side::Checks;
+            let job = Place::Job(a.project.experience.first().map(|j| j.title.clone()).unwrap_or_default());
+            let found = |word: &str, count: usize, places: Vec<Place>, s: &[&str]| (Finding { word: word.into(), count, places }, s.iter().map(|x| x.to_string()).collect());
+            a.spelling.own.insert("kundeløftet".into());
+            a.spelling.show(
+                a.project.language_code(),
+                vec![
+                    found("ansvarlihg", 2, vec![Place::Profile, job.clone()], &["ansvarlig", "ansvarlige"]),
+                    found("Kundeorientertt", 1, vec![job], &["Kundeorientert"]),
+                    found("leveranseprosjektledelsesansvar", 1, vec![Place::Section("Prosjekter".into())], &[]),
+                ],
+            );
+        },
+    },
     // Must-haves and nice-to-haves read from the ad, with where the CV shows them (045).
     Scene {
         name: "Krav i annonsen",
@@ -1095,7 +1115,7 @@ fn ui_shots() {
     }
 }
 
-/// The requirement scenes in a tall window, so the whole side panel is in the picture:
+/// The requirement and spell-check scenes in a tall window, so the whole side panel is in the picture:
 /// `CVBUILDER_SHOTS=<dir> cargo test --release -p cvbuilder-app requirement_shots -- --ignored`
 #[test]
 #[ignore = "writes pictures; run on purpose"]
@@ -1106,7 +1126,7 @@ fn requirement_shots() {
     std::fs::create_dir_all(&dir).expect("shots folder");
     let lang = std::env::var("CVBUILDER_QA_LANGS").unwrap_or_else(|_| "no".into());
     private_data_folder(&lang);
-    for scene in SCENES.iter().filter(|s| s.name.starts_with("Krav i")) {
+    for scene in SCENES.iter().filter(|s| s.name.starts_with("Krav i") || s.name == "Stavekontroll" || s.name == "Sjekkliste") {
         let mut h = harness(Vec2::new(1440.0, 2600.0), scene.setup);
         wait_for_preview(&mut h);
         let image = h.render().expect("render");
