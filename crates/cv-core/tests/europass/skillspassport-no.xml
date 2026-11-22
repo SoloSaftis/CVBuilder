@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A made-up person in the older Europass CV format (SkillsPassport, 2013–2020). No real personal data. -->
+<SkillsPassport xmlns="http://europass.cedefop.europa.eu/Europass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://europass.cedefop.europa.eu/Europass http://europass.cedefop.europa.eu/xml/v3.3.0/EuropassSchema.xsd" locale="no">
+  <DocumentInfo>
+    <DocumentType>ECV</DocumentType>
+    <CreationDate>2019-05-02T10:12:00.000Z</CreationDate>
+    <LastUpdateDate>2019-05-02T10:40:00.000Z</LastUpdateDate>
+    <XSDVersion>V3.3</XSDVersion>
+    <Generator>EWA</Generator>
+    <Comment>Europass CV</Comment>
+  </DocumentInfo>
+  <LearnerInfo>
+    <Identification>
+      <PersonName>
+        <FirstName>Kari</FirstName>
+        <Surname>Eksempel</Surname>
+      </PersonName>
+      <ContactInfo>
+        <Address>
+          <Contact>
+            <AddressLine>Eksempelveien 1</AddressLine>
+            <PostalCode>7030</PostalCode>
+            <Municipality>Trondheim</Municipality>
+            <Country><Code>NO</Code><Label>Norge</Label></Country>
+          </Contact>
+        </Address>
+        <Email><Contact>kari.eksempel@example.no</Contact></Email>
+        <TelephoneList>
+          <Telephone>
+            <Contact>+47 400 00 000</Contact>
+            <Use><Code>mobile</Code></Use>
+          </Telephone>
+        </TelephoneList>
+        <WebsiteList>
+          <Website><Contact>https://www.linkedin.com/in/kari-eksempel-example</Contact><Use><Code>personal</Code></Use></Website>
+        </WebsiteList>
+        <InstantMessagingList>
+          <InstantMessaging><Contact>kari.eksempel</Contact><Use><Code>skype</Code><Label>Skype</Label></Use></InstantMessaging>
+        </InstantMessagingList>
+      </ContactInfo>
+      <Demographics>
+        <Birthdate year="1990" month="--06" day="---12"/>
+        <Gender><Code>F</Code><Label>Kvinne</Label></Gender>
+        <NationalityList>
+          <Nationality><Code>NO</Code><Label>Norsk</Label></Nationality>
+        </NationalityList>
+      </Demographics>
+    </Identification>
+    <Headline>
+      <Type><Code>position</Code><Label>Stilling</Label></Type>
+      <Description><Label>Sykepleier</Label></Description>
+    </Headline>
+    <WorkExperienceList>
+      <WorkExperience>
+        <Period>
+          <From year="2016" month="--08"/>
+          <Current>true</Current>
+        </Period>
+        <Position><Label>Sykepleier</Label></Position>
+        <Activities>&lt;ul&gt;&lt;li&gt;Har ansvar for 8 pasienter på dagskift og veileder nye kolleger.&lt;/li&gt;&lt;li&gt;Innførte en ny sjekkliste for utskriving som er tatt i bruk på hele avdelingen.&lt;/li&gt;&lt;/ul&gt;</Activities>
+        <Employer>
+          <Name>Eksempel sykehus (fiktivt)</Name>
+          <ContactInfo>
+            <Address><Contact><Municipality>Trondheim</Municipality><Country><Code>NO</Code><Label>Norge</Label></Country></Contact></Address>
+          </ContactInfo>
+          <Sector><Code>Q</Code><Label>Helse- og sosialtjenester</Label></Sector>
+        </Employer>
+      </WorkExperience>
+      <WorkExperience>
+        <Period>
+          <From year="2013" month="--06"/>
+          <To year="2016" month="--07"/>
+        </Period>
+        <Position><Label>Helsefagarbeider</Label></Position>
+        <Activities>&lt;p&gt;Pleie og omsorg på sykehjem, med og uten nattevakter.&lt;/p&gt;</Activities>
+        <Employer>
+          <Name>Eksempel sykehjem</Name>
+        </Employer>
+      </WorkExperience>
+    </WorkExperienceList>
+    <EducationList>
+      <Education>
+        <Period>
+          <From year="2013"/>
+          <To year="2016"/>
+        </Period>
+        <Title>Bachelor i sykepleie</Title>
+        <Activities>&lt;p&gt;Praksis i hjemmesykepleien og på medisinsk avdeling.&lt;/p&gt;</Activities>
+        <Organisation>
+          <Name>Eksempel høgskole</Name>
+        </Organisation>
+        <Level><Code>6</Code><Label>EQF-nivå 6</Label></Level>
+      </Education>
+    </EducationList>
+    <Skills>
+      <Linguistic>
+        <MotherTongueList>
+          <MotherTongue><Description><Code>no</Code><Label>norsk</Label></Description></MotherTongue>
+        </MotherTongueList>
+        <ForeignLanguageList>
+          <ForeignLanguage>
+            <Description><Code>en</Code><Label>engelsk</Label></Description>
+            <ProficiencyLevel>
+              <Listening>C1</Listening>
+              <Reading>C1</Reading>
+              <SpokenInteraction>C1</SpokenInteraction>
+              <SpokenProduction>C1</SpokenProduction>
+              <Writing>C1</Writing>
+            </ProficiencyLevel>
+          </ForeignLanguage>
+          <ForeignLanguage>
+            <Description><Code>es</Code></Description>
+            <ProficiencyLevel>
+              <Listening>B1</Listening>
+              <Reading>B1</Reading>
+              <SpokenInteraction>A2</SpokenInteraction>
+              <SpokenProduction>A2</SpokenProduction>
+              <Writing>A2</Writing>
+            </ProficiencyLevel>
+            <Certificate>
+              <Title>DELE A2</Title>
+              <AwardingBody>Instituto Cervantes</AwardingBody>
+              <Date year="2018"/>
+              <Level>A2</Level>
+            </Certificate>
+          </ForeignLanguage>
+        </ForeignLanguageList>
+      </Linguistic>
+      <Communication>
+        <Description>&lt;p&gt;God til å forklare behandling for pasienter og pårørende.&lt;/p&gt;</Description>
+      </Communication>
+      <Computer>
+        <Description>&lt;ul&gt;&lt;li&gt;DIPS Arena&lt;/li&gt;&lt;li&gt;Microsoft Office&lt;/li&gt;&lt;/ul&gt;</Description>
+        <ProficiencyLevel>
+          <Information>B</Information>
+          <Communication>B</Communication>
+          <ContentCreation>A</ContentCreation>
+          <Safety>B</Safety>
+          <ProblemSolving>A</ProblemSolving>
+        </ProficiencyLevel>
+      </Computer>
+      <Driving>
+        <Description>
+          <Licence>B</Licence>
+        </Description>
+      </Driving>
+    </Skills>
+    <AchievementList>
+      <Achievement>
+        <Title><Code>memberships</Code><Label>Medlemskap</Label></Title>
+        <Description>&lt;p&gt;Norsk Sykepleierforbund&lt;/p&gt;</Description>
+      </Achievement>
+    </AchievementList>
+  </LearnerInfo>
+</SkillsPassport>

@@ -73,6 +73,7 @@ enum Picked {
     ChecklistSave(PathBuf),
     DesignSave(PathBuf),
     InterviewPdf(PathBuf),
+    JsonResume(PathBuf),
 }
 
 /// What «Vil du lagre endringene?» stands in front of: closing the window, or a step that puts
@@ -637,13 +638,14 @@ impl CvApp {
             let picked = match (kind, export) {
                 ("open", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).pick_file().map(Picked::OpenProject),
                 ("save", _) => Some(rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).set_file_name(format!("{stem}_utkast.json")).save_file().map_or(Picked::SaveCancelled, Picked::SaveProject)),
-                ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, LinkedIn, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
+                ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, LinkedIn, Europass, JSON Resume, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
                 ("ad_file", _) => rfd::FileDialog::new().add_filter(i18n::t("Annonse (PDF, Word, tekst, nettside)"), &["pdf", "docx", "txt", "md", "html", "htm"]).pick_file().map(Picked::AdFile),
                 ("checklist_load", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).pick_file().map(Picked::ChecklistLoad),
                 ("checklist_save", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).set_file_name("min-sjekkliste.cvchecklist.json").save_file().map(Picked::ChecklistSave),
                 ("design_import", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).pick_file().map(Picked::DesignImport),
                 ("design_save", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).set_file_name("min-design.cvdesign.json").save_file().map(Picked::DesignSave),
                 ("interview_pdf", _) => rfd::FileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(format!("{stem}_intervju.pdf")).save_file().map(Picked::InterviewPdf),
+                ("json_resume", _) => rfd::FileDialog::new().add_filter("JSON Resume", &["json"]).set_file_name(format!("{stem}_resume.json")).save_file().map(Picked::JsonResume),
                 ("photo", _) => rfd::FileDialog::new().add_filter(i18n::t("Bilde"), &["jpg", "jpeg", "png", "webp", "bmp", "tif", "tiff"]).pick_file().map(Picked::Photo),
                 ("export", Some(Export::Word)) => rfd::FileDialog::new().add_filter("Word", &["docx"]).set_file_name(format!("{stem}.docx")).save_file().map(|p| Picked::Export(Export::Word, p)),
                 ("export", Some(Export::Pdf)) => rfd::FileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(format!("{stem}.pdf")).save_file().map(|p| Picked::Export(Export::Pdf, p)),
@@ -678,6 +680,7 @@ impl CvApp {
                 Picked::ChecklistSave(path) => self.save_checklist_file(&path),
                 Picked::DesignSave(path) => self.save_design_template(&path),
                 Picked::InterviewPdf(path) => self.write_interview_pdf(&path),
+                Picked::JsonResume(path) => self.write_json_resume(&path),
                 Picked::Photo(path) => match photo::Edit::open(&path) {
                     Ok(edit) => self.photo = Some(PhotoDialog { edit, texture: None, stale: true }),
                     Err(e) => self.status = e,
@@ -700,6 +703,15 @@ impl CvApp {
                 _ => i18n::tf("PDF-en er lagret med ekte, søkbar tekst: {path}", &[("path", &path.display().to_string())]),
             },
             Err(e) => i18n::failed(i18n::t("Filen ble ikke lagret."), &e, cv_core::plain::TRY_ANOTHER_PLACE),
+        };
+    }
+
+    /// The CV as a JSON Resume. It is the person's own data going out in an open format, not a CV
+    /// to send, so it is written without the questions before a download.
+    fn write_json_resume(&mut self, path: &std::path::Path) {
+        self.status = match std::fs::write(path, cv_core::jsonresume::write(&self.project)) {
+            Ok(()) => i18n::tf("JSON Resume-filen er lagret: {path}. Stillingsannonsen, designet og notatene dine er ikke med.", &[("path", &path.display().to_string())]),
+            Err(e) => i18n::failed(i18n::t("Filen ble ikke lagret."), &e.to_string(), cv_core::plain::TRY_ANOTHER_PLACE),
         };
     }
 

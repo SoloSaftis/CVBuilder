@@ -28,6 +28,7 @@ fn read(path: &Path) -> cv_core::import::CvRead {
     match import::cv_from_file(path).expect("import") {
         CvFile::LinkedIn(read) => read,
         CvFile::Text(t) => panic!("read as text, not as a LinkedIn export: {t:.200}"),
+        _ => panic!("read as another format, not as a LinkedIn export"),
     }
 }
 
