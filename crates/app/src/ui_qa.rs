@@ -310,6 +310,16 @@ const SCENES: &[Scene] = &[
     },
     Scene { name: "Velkommen", setup: |a| a.welcome = Some(crate::welcome_ui::Welcome::for_this_computer(&a.langs.packs)) },
     Scene { name: "Importer CV", setup: |a| a.import.cv_open = true },
+    // 048: a Europass CV read field by field fills the form (contact lines, driving licence,
+    // CEFR levels). The window with what has no place is the «Importrest» scene.
+    Scene {
+        name: "Europass hentet inn",
+        setup: |a| {
+            let read = cv_core::europass::read_xml(include_str!("../../cv-core/tests/europass/skillspassport-no.xml")).expect("fixture");
+            a.apply_read(read, "Hentet inn fra Europass-CV-en: {found}. Den forrige CV-en kan hentes tilbake med Angre.");
+            a.import.rest = None;
+        },
+    },
     // 031: Undo and Redo both have a named step, and the status line names what was undone.
     Scene {
         name: "Angre-steg",
@@ -613,6 +623,19 @@ fn checklist_points_say_their_status() {
     // The dropdown is named for what it does (029); with one's own list chosen, that list shows.
     assert!(labels.iter().any(|l| l.starts_with("Which checklist you see")), "the checklist dropdown has no name:\n{}", labels.join("\n"));
     assert!(labels.iter().any(|l| l.ends_with("points are met.")), "one's own list is not shown:\n{}", labels.join("\n"));
+}
+
+/// 048: the File menu offers the JSON Resume export.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn file_menu_exports_json_resume() {
+    private_data_folder("no");
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.settings.ui_language = "no".into());
+    click(&mut h, "Fil");
+    let labels: Vec<String> = snapshot(&h).into_iter().map(|c| c.label).collect();
+    assert!(labels.iter().any(|l| l.contains("Eksporter som JSON Resume")), "no JSON Resume export in the File menu:
+{}", labels.join("
+"));
 }
 
 /// The welcome window's three ways to start each do what they say, and the answer is kept.

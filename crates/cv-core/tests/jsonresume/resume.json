@@ -1,0 +1,99 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Sam Example",
+    "label": "Frontend Developer",
+    "image": "https://example.com/photo.jpg",
+    "email": "sam.example@example.com",
+    "phone": "+44 7700 900123",
+    "url": "https://sam.example.com",
+    "summary": "Frontend developer with five years of experience building accessible web apps for public services and the retail sector.",
+    "location": {
+      "address": "1 Example Street",
+      "postalCode": "M1 1AA",
+      "city": "Manchester",
+      "countryCode": "GB",
+      "region": "Greater Manchester"
+    },
+    "profiles": [
+      { "network": "LinkedIn", "username": "sam-example", "url": "https://www.linkedin.com/in/sam-example" },
+      { "network": "GitHub", "username": "sam-example", "url": "https://github.com/sam-example" }
+    ]
+  },
+  "work": [
+    {
+      "name": "Example Digital Ltd",
+      "position": "Frontend Developer",
+      "url": "https://example-digital.example",
+      "location": "Manchester",
+      "startDate": "2021-03-01",
+      "summary": "Build the customer portal for a housing association.",
+      "highlights": [
+        "Cut page load time by 40% by splitting the bundle and caching images.",
+        "Led the move to WCAG 2.2 AA for 30 forms."
+      ]
+    },
+    {
+      "name": "Shopfront Example plc",
+      "position": "Junior Developer",
+      "startDate": "2019-06",
+      "endDate": "2021-02-28",
+      "highlights": ["Maintained the checkout and wrote its end-to-end tests."]
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Code Club Example",
+      "position": "Volunteer mentor",
+      "startDate": "2020-01",
+      "summary": "Teach children aged 9 to 13 to code, one evening a week."
+    }
+  ],
+  "education": [
+    {
+      "institution": "Example University",
+      "url": "https://example.ac.uk",
+      "area": "Computer Science",
+      "studyType": "BSc",
+      "startDate": "2016-09",
+      "endDate": "2019-06",
+      "score": "First",
+      "courses": ["Human-computer interaction", "Databases"]
+    }
+  ],
+  "awards": [
+    { "title": "Team award for accessibility", "date": "2023-11-01", "awarder": "Example Digital Ltd", "summary": "For the forms project." }
+  ],
+  "certificates": [
+    { "name": "Certified Professional in Accessibility Core Competencies", "date": "2022-05-10", "issuer": "Example Association", "url": "https://example.org/cert" }
+  ],
+  "publications": [
+    { "name": "Accessible forms in practice", "publisher": "Example Blog", "releaseDate": "2022-08-15", "url": "https://example.org/forms", "summary": "A guide to labels and errors." }
+  ],
+  "skills": [
+    { "name": "Frontend", "level": "Advanced", "keywords": ["TypeScript", "React", "CSS"] },
+    { "name": "Accessibility testing" }
+  ],
+  "languages": [
+    { "language": "English", "fluency": "Native speaker" },
+    { "language": "French", "fluency": "Intermediate" }
+  ],
+  "interests": [
+    { "name": "Climbing", "keywords": ["bouldering", "outdoor"] }
+  ],
+  "references": [
+    { "name": "Jane Referee", "reference": "Sam is a careful developer who explains things well." }
+  ],
+  "projects": [
+    {
+      "name": "Bus times app",
+      "description": "A small open-source app that shows live bus times.",
+      "highlights": ["Used by 2,000 people a month"],
+      "startDate": "2022-01",
+      "endDate": "2022-06",
+      "url": "https://github.com/sam-example/bus-times",
+      "roles": ["Author"]
+    }
+  ],
+  "meta": { "version": "v1.0.0" }
+}
