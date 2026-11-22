@@ -9,7 +9,9 @@ long.experience.push(
  {id:'ex_4',company:'Fjordkyst Elektro AS (fiktiv)',title:'Lærling',location:'Ålesund',start:'2009-08',end:'2011-06',bullets:['Født 1990. Lærte faget hos dyktige og motiverte kolleger, og var løsningsorientert.'],evidence:'',confirmed:true});
 long.target.keywords.push('TwinCAT','C/C++','maskinsikkerhet');
 long.target.description+=' TwinCAT 3 og CODESYS er en fordel. Legemiddelhåndtering. Legemiddelhåndtering.';
-const projects={long,example:example.example(contract),blank:contract.blank()};
+// A tailored copy: a job, a bullet and a skill hidden (schema version 3).
+const tailored=contract.upgrade(structuredClone(long));tailored.options.hidden=['ex_3',tailored.experience[0].bullet_ids[1],tailored.skills[2].id];
+const projects={long,example:example.example(contract),blank:contract.blank(),tailored};
 const out={};
-for(const [name,value]of Object.entries(projects)){const v=contract.upgrade(value);v.approvals.facts_confirmed=false;const audit=recruiter.audit(v,{pages:2});out[name]={project:v,ready:contract.ready(v),checks:audit.checks.map(item=>({level:item.level,text:item.text})),match:audit.match,plain:recruiter.plainText(v)};}
+for(const [name,value]of Object.entries(projects)){const v=contract.upgrade(value);v.approvals.facts_confirmed=false;const audit=recruiter.audit(v,{pages:2});out[name]={raw:value,project:v,ready:contract.ready(v),checks:audit.checks.map(item=>({level:item.level,text:item.text})),match:audit.match,plain:recruiter.plainText(v)};}
 const target=path.resolve(__dirname,'../../crates/cv-core/tests/parity.json');fs.writeFileSync(target,JSON.stringify(out,null,1));console.log('wrote',target);

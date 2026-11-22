@@ -14,7 +14,7 @@ const LABELS={
 };
 const label=key=>LABELS[data.language==='en'?'en':'no'][key];
 function message(value,action){const node=$('status');node.replaceChildren(document.createTextNode(value));if(action){const button=el('button','status-action',action.label);button.type='button';button.onclick=action.run;node.append(button);}}
-function changed(){data.approvals.facts_confirmed=false;$('approval').checked=false;if(isExample){isExample=false;banner();message('Nå er dette din CV. Den huskes i denne nettleseren mens du skriver.');}persist();render();}
+function changed(){CVContract.assignIds(data);data.approvals.facts_confirmed=false;$('approval').checked=false;if(isExample){isExample=false;banner();message('Nå er dette din CV. Den huskes i denne nettleseren mens du skriver.');}persist();render();}
 function banner(){const node=$('example-banner');if(node)node.hidden=!isExample;}
 function field(parent,text,value,set,{type='text',multi=false,choices=null,max=200,placeholder=''}={}){
  const wrapper=el('label','field',text),input=el(choices?'select':multi?'textarea':'input');
@@ -34,11 +34,15 @@ function button(parent,text,action,cls=''){const item=el('button',cls,text);item
 function section(title,hint=''){const node=el('section');node.append(el('h2','',title));if(hint)node.append(el('p','hint',hint));$('form').append(node);return node;}
 function records(parent,key,title,create,fill){
  const holder=el('div');parent.append(holder);
- data[key].forEach((item,index)=>{const card=el('div','record');card.append(el('h3','',`${title} ${index+1}`));fill(card,item,index);button(card,'Fjern',()=>{const before=structuredClone(data);data[key].splice(index,1);if(key==='interests')data.options.interest_ids=data.options.interest_ids.filter(value=>value!==item.id);changed();form();message(`${title} ${index+1} er fjernet.`,{label:'Angre',run:()=>{load(before);message('Det er tilbake.');}});},'remove');holder.append(card);});
+ data[key].forEach((item,index)=>{const hideable=HIDEABLE.includes(key),hidden=hideable&&CVContract.isHidden(data,item.id),card=el('div','record'+(hidden?' hidden-item':''));card.append(el('h3','',`${title} ${index+1}`+(hidden?' · skjult i denne CV-en':'')));if(hideable)check(card,'Vis i denne CV-en',!hidden,value=>{setHidden(item.id,!value);form();});fill(card,item,index);button(card,'Fjern',()=>{const before=structuredClone(data);data[key].splice(index,1);if(key==='interests')data.options.interest_ids=data.options.interest_ids.filter(value=>value!==item.id);changed();form();message(`${title} ${index+1} er fjernet.`,{label:'Angre',run:()=>{load(before);message('Det er tilbake.');}});},'remove');holder.append(card);});
  button(parent,'+ Legg til '+title.toLowerCase(),()=>{data[key].push(create());changed();form();},'add');
 }
+// Hiding (schema version 3): an item left out of this copy of the CV stays in the form and the file.
+const HIDEABLE=['experience','skills','education','certifications','languages'];
+function setHidden(itemId,hidden){const list=data.options.hidden;if(hidden&&!list.includes(itemId))list.push(itemId);if(!hidden)data.options.hidden=list.filter(value=>value!==itemId);}
 function form(){
  $('form').replaceChildren();
+ if(data.options.hidden.length){const note=el('div','hidden-note');note.append(el('p','',data.options.hidden.length===1?'1 del er skjult i denne CV-en. Den står i skjemaet og i filen, men ikke i CV-en.':`${data.options.hidden.length} deler er skjult i denne CV-en. De står i skjemaet og i filen, men ikke i CV-en.`));button(note,'Vis alt igjen',()=>{data.options.hidden=[];changed();form();message('Alt vises i CV-en igjen.');});$('form').append(note);}
  const design=section('Utforming','Alle malene følger de samme strenge reglene: én tekstspalte, vanlige overskrifter, ekte tekst og maks to sider. Teksten som ATS-systemer leser, er lik i alle maler; bare typografi, farge og luft endres.');
  const choices=el('div','layout-choices');choices.setAttribute('role','radiogroup');choices.setAttribute('aria-label','Velg utforming');
  for(const key of LAY.ids){const info=LAY.get(key),option=el('label','layout-choice'+(data.options.layout===key?' selected':'')),input=el('input');input.type='radio';input.name='layout';input.value=key;input.id='layout-'+key;input.checked=data.options.layout===key;input.onchange=()=>{data.options.layout=key;persist();form();message('Utforming: '+info.name+'. Innholdet er uendret.');document.getElementById('layout-'+key)?.focus();};const swatch=el('span','layout-swatch');swatch.style.setProperty('--swatch',info.web.accent);swatch.style.fontFamily=info.web.head;swatch.textContent='Aa';const text=el('span','layout-text');text.append(el('strong','',info.name),el('small','',info.description));option.append(input,swatch,text);choices.append(option);}
@@ -57,22 +61,24 @@ function form(){
  const keywords=field(target,'Viktige fagord fra annonsen · ett per linje',data.target.keywords.join('\n'),value=>data.target.keywords=lines(value),{multi:true,max:2500});
  button(target,'Foreslå fagord fra annonsen',()=>{const merged=[...new Set([...data.target.keywords,...R.suggestKeywords(data.target.description)])].slice(0,30);data.target.keywords=merged;keywords.value=merged.join('\n');changed();message('Fagord foreslått. Fjern ord som ikke er relevante før du bruker listen.');},'add');
  const skills=section('03  Kjernekompetanse','Står rett etter profilen, gruppert. Bruk annonsens ordlyd der den stemmer. Hver kompetanse må ha konkret faktagrunnlag; studiekunnskap og interesse skal ikke presenteres som yrkeserfaring.');
- records(skills,'skills','Kompetanse',()=>({group:'',name:'',evidence:'',confirmed:true}),(card,item)=>{field(card,'Gruppe · for eksempel Fag, Verktøy eller Sertifikater',item.group,value=>item.group=value,{max:60});field(card,'Kompetanse eller verktøy',item.name,value=>item.name=value);});
+ records(skills,'skills','Kompetanse',()=>({id:id('skill'),group:'',name:'',evidence:'',confirmed:true}),(card,item)=>{field(card,'Gruppe · for eksempel Fag, Verktøy eller Sertifikater',item.group,value=>item.group=value,{max:60});field(card,'Kompetanse eller verktøy',item.name,value=>item.name=value);});
  const experience=section('04  Arbeidserfaring','Nyeste først. Datoer: 09.2021, eller bare 2010 hvis du ikke husker måneden. 2–5 korte punkter per jobb som starter med et verb og viser resultat: «Oppnådde X, målt ved Y, ved å gjøre Z». Ikke skriv «Jeg» eller «Ansvarlig for».');
- records(experience,'experience','Jobb',()=>({id:id('job'),company:'',title:'',location:'',start:'',end:'',bullets:[],evidence:'',confirmed:true}),(card,item)=>{
+ records(experience,'experience','Jobb',()=>({id:id('job'),company:'',title:'',location:'',start:'',end:'',bullets:[],bullet_ids:[],evidence:'',confirmed:true}),(card,item)=>{
   for(const [key,text]of [['company','Arbeidsgiver'],['title','Faktisk stillingstittel'],['location','Sted · by']])field(card,text,item[key],value=>item[key]=value);
   dateField(card,'Fra · måned og år',item.start,value=>item.start=value,'month');
   check(card,'Nåværende jobb',item.end===null,value=>{item.end=value?null:'';form();});
   if(item.end!==null)dateField(card,'Til · måned og år',item.end,value=>item.end=value,'month',()=>{item.end=null;changed();form();message('Merket som nåværende jobb.');});
-  field(card,'Ditt arbeid og resultat · ett punkt per linje',item.bullets.join('\n'),value=>item.bullets=lines(value),{multi:true,max:2500});
+  field(card,'Ditt arbeid og resultat · ett punkt per linje',item.bullets.join('\n'),value=>{const next=lines(value);item.bullet_ids=CVContract.carryIds(item.bullets,item.bullet_ids||[],next);item.bullets=next;},{multi:true,max:2500});
+  const hiddenBullets=(item.bullet_ids||[]).filter(value=>CVContract.isHidden(data,value)).length;
+  if(hiddenBullets)card.append(el('p','hint',hiddenBullets===1?'1 punkt er skjult i denne CV-en (valgt i CVBuilder for Windows, macOS og Linux).':`${hiddenBullets} punkter er skjult i denne CV-en (valgt i CVBuilder for Windows, macOS og Linux).`));
   field(card,'Notat til deg selv · vises ikke i CV-en (valgfritt)',item.evidence,value=>item.evidence=value,{multi:true,max:1000,placeholder:'For eksempel hvor tallene kommer fra, eller hva du vil si i intervjuet.'});
  });
  const education=section('05  Utdanning','År har fire siffer. Bruk forventet sluttår for pågående utdanning og skriv dette i utdanningstittelen.');
- records(education,'education','Utdanning',()=>({qualification:'',institution:'',start:'',end:''}),(card,item)=>{field(card,'Grad, fagbrev eller studium',item.qualification,value=>item.qualification=value);field(card,'Lærested',item.institution,value=>item.institution=value);dateField(card,'Fra · år',item.start,value=>item.start=value,'year');dateField(card,'Til · år (forventet år hvis du studerer nå)',item.end,value=>item.end=value,'year');});
+ records(education,'education','Utdanning',()=>({id:id('edu'),qualification:'',institution:'',start:'',end:''}),(card,item)=>{field(card,'Grad, fagbrev eller studium',item.qualification,value=>item.qualification=value);field(card,'Lærested',item.institution,value=>item.institution=value);dateField(card,'Fra · år',item.start,value=>item.start=value,'year');dateField(card,'Til · år (forventet år hvis du studerer nå)',item.end,value=>item.end=value,'year');});
  const certifications=section('06  Kurs og sertifiseringer','Ta med det som er relevant for stillingen: sertifikater, fagbrev, sikkerhetskurs, leverandørkurs. Navn og utsteder slik de står på beviset.');
- records(certifications,'certifications','Kurs',()=>({name:'',issuer:'',year:''}),(card,item)=>{field(card,'Kurs eller sertifisering',item.name,value=>item.name=value);field(card,'Utsteder',item.issuer,value=>item.issuer=value);dateField(card,'År',item.year,value=>item.year=value,'year');});
+ records(certifications,'certifications','Kurs',()=>({id:id('cert'),name:'',issuer:'',year:''}),(card,item)=>{field(card,'Kurs eller sertifisering',item.name,value=>item.name=value);field(card,'Utsteder',item.issuer,value=>item.issuer=value);dateField(card,'År',item.year,value=>item.year=value,'year');});
  const languages=section('07  Språk');
- records(languages,'languages','Språk',()=>({name:'',level:''}),(card,item)=>{field(card,'Språk',item.name,value=>item.name=value,{max:80});field(card,'Nivå · for eksempel morsmål, flytende eller B2',item.level,value=>item.level=value,{max:100});});
+ records(languages,'languages','Språk',()=>({id:id('lang'),name:'',level:''}),(card,item)=>{field(card,'Språk',item.name,value=>item.name=value,{max:80});field(card,'Nivå · for eksempel morsmål, flytende eller B2',item.level,value=>item.level=value,{max:100});});
  const interests=section('08  Interesser','Bevar hele listen her. CV-en skal bare ha et kort utvalg. Vurderingen er regelbasert og viser begrunnelsen; den er ingen ATS-score.');
  records(interests,'interests','Interesse',()=>({id:id('interest'),label:'',status:'current',description:'',category:'other',tags:[],confirmed:true,specificity:1}),(card,item)=>{
   field(card,'Interesse · slik den kan stå på CV-en',item.label,value=>item.label=value,{max:120});
@@ -106,13 +112,13 @@ function linkedinText(url){return url.replace(/^https:\/\/(www\.)?/,'').replace(
 function contactLine(){return [data.candidate.email,data.candidate.phone,data.candidate.city,data.candidate.linkedin&&linkedinText(data.candidate.linkedin)].filter(Boolean).join(' · ');}
 function period(item){return R.period(item.start,item.end,data.language!=='en');}
 function descriptors(){
- const items=[{kind:'header'}],add=(heading,records)=>{if(records.length)items.push({kind:'heading',text:heading},...records);};
+ const view=CVContract.visible(data),items=[{kind:'header'}],add=(heading,records)=>{if(records.length)items.push({kind:'heading',text:heading},...records);};
  if(data.candidate.summary)add(label('profile'),[{kind:'paragraph',text:data.candidate.summary}]);
- add(label('skills'),R.groupSkills(data.skills).map(([group,names])=>({kind:'skills',group,names})));
- add(label('experience'),R.sortJobs(data.experience).map(item=>({kind:'job',...item})));
- add(label('education'),R.sortEducation(data.education).map(item=>({kind:'education',...item})));
- add(label('certifications'),R.sortCertifications(data.certifications).map(item=>({kind:'cert',...item})));
- add(label('languages'),data.languages.length?[{kind:'paragraph',text:data.languages.map(item=>item.name+': '+item.level).join(' · ')}]:[]);
+ add(label('skills'),R.groupSkills(view.skills).map(([group,names])=>({kind:'skills',group,names})));
+ add(label('experience'),R.sortJobs(view.experience).map(item=>({kind:'job',...item})));
+ add(label('education'),R.sortEducation(view.education).map(item=>({kind:'education',...item})));
+ add(label('certifications'),R.sortCertifications(view.certifications).map(item=>({kind:'cert',...item})));
+ add(label('languages'),view.languages.length?[{kind:'paragraph',text:view.languages.map(item=>item.name+': '+item.level).join(' · ')}]:[]);
  const chosen=selection();if(data.options.include_interests&&chosen.length)add(label('interests'),[{kind:'paragraph',text:chosen.map(interestText).join(' · ')}]);
  return items;
 }

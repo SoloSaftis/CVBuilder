@@ -51,6 +51,8 @@ pub(crate) enum Action {
     Open,
     Save,
     SaveAs,
+    /// «Lagre tilpasset kopi …»: this CV, with what is hidden in it, as a copy of the full CV.
+    SaveCopy,
     Export(Export),
     Undo,
     Redo,
@@ -201,6 +203,14 @@ impl CvApp {
                 }
                 if ui.add(menu_item(ui, theme::ph::FLOPPY_DISK, i18n::t("Lagre som")).shortcut_text(shortcuts::text(ui.ctx(), &shortcuts::SAVE_AS))).on_hover_text(i18n::t("Lagre utkastet som fil")).clicked() {
                     action = Some(Action::SaveAs);
+                }
+                if ui
+                    .add_enabled(self.file.is_some(), menu_item(ui, theme::ph::COPY, i18n::t("Lagre tilpasset kopi …")))
+                    .on_hover_text(i18n::t("En kopi for denne jobben, med det du har skjult, annonsen og fagordene. Hele CV-en i filen sin blir som den er."))
+                    .on_disabled_hover_text(i18n::t("Lagre hele CV-en i en fil først. Så kan du lage tilpassede kopier av den."))
+                    .clicked()
+                {
+                    action = Some(Action::SaveCopy);
                 }
                 if ui.add(menu_item(ui, theme::ph::ARROW_SQUARE_IN, i18n::t("Importer CV fra fil"))).on_hover_text(i18n::t("Hent inn en CV du har fra før: PDF, Word, tekst eller nettside – med eller uten AI")).clicked() {
                     action = Some(Action::ImportCv);
@@ -636,6 +646,7 @@ impl CvApp {
             Action::Open => self.pick("open", None),
             Action::Save => self.save(),
             Action::SaveAs => self.pick("save", None),
+            Action::SaveCopy => self.pick("save_copy", None),
             Action::Export(kind) => self.start_export(ctx, kind),
             Action::Undo => self.undo(),
             Action::Redo => self.redo(),
@@ -712,7 +723,7 @@ impl CvApp {
             }
             "skill" => {
                 let group = self.project.skills.last().map(|s| s.group.clone()).unwrap_or_default();
-                self.project.skills.push(Skill { group, name: String::new(), evidence: String::new(), confirmed: true });
+                self.project.skills.push(Skill { id: String::new(), group, name: String::new(), evidence: String::new(), confirmed: true });
                 "skills".into()
             }
             "language" => {

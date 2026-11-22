@@ -240,6 +240,21 @@ const SCENES: &[Scene] = &[
         },
     },
     Scene { name: "Alle seksjoner åpne", setup: |a| a.folded.clear() },
+    // A tailored copy (041): a job, a bullet, an education, a skill and a language hidden, the
+    // bullet list open, the banner at the top and the count in the status bar.
+    Scene {
+        name: "Skjulte deler",
+        setup: |a| {
+            a.folded.clear();
+            let p = &mut a.project;
+            p.options.copy_of = "Ingrid_Haugland_CV_utkast.json".into();
+            let ids = [p.experience[1].id.clone(), p.experience[0].bullet_ids[1].clone(), p.education[0].id.clone(), p.skills[0].id.clone(), p.languages[0].id.clone()];
+            for id in ids {
+                p.set_hidden(&id, true);
+            }
+            a.preview.changed();
+        },
+    },
     // A CV without a job ad: the ad card is one line and the contact details come first (028).
     Scene { name: "Tom CV", setup: |a| a.load(cv_core::Project::default(), false) },
     Scene {
@@ -1113,4 +1128,56 @@ fn ai_asks_before_the_cv_leaves() {
         a.import.rest = Some("ERFARING".into());
     });
     assert!(has_label(&h, "La AI-en legge det inn (sendes til OpenAI)"));
+}
+
+/// Hiding (041): the eye takes an item out of this CV and «Vis alt igjen» brings it back; a
+/// tailored copy is saved next to the full CV, which stays as it was, and knows where it is.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn hiding_items_and_saving_a_tailored_copy() {
+    private_data_folder("no");
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.folded.clear());
+    let eye = "Ta ut av denne CV-en. Det blir stående i skjemaet og i filen.";
+    let first = h.query_all(by().include_labels().predicate(move |n| n.label().as_deref() == Some(eye))).next().expect("an eye button");
+    first.scroll_to_me();
+    step(&mut h, 10);
+    let at = h.query_all(by().include_labels().predicate(move |n| n.label().as_deref() == Some(eye))).next().map(|n| n.rect().center()).expect("eye");
+    h.hover_at(at);
+    step(&mut h, 2);
+    h.event(egui::Event::PointerButton { pos: at, button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 1);
+    h.event(egui::Event::PointerButton { pos: at, button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+    step(&mut h, 4);
+    assert_eq!(h.state().project.hidden_count(), 1, "the eye hid one item");
+    assert!(has_label(&h, "Vis alt igjen"), "the form says something is hidden");
+    assert!(has_label(&h, "1 skjult"), "the status bar counts it");
+    // The line is at the top of the form, scrolled away while the eye was clicked.
+    h.query_all(by().include_labels().predicate(|n| n.label().as_deref() == Some("Vis alt igjen"))).next().expect("Vis alt igjen").scroll_to_me();
+    step(&mut h, 10);
+    click(&mut h, "Vis alt igjen");
+    assert_eq!(h.state().project.hidden_count(), 0, "«Vis alt igjen» showed it again");
+    assert!(h.state().history.can_undo(), "and can be undone");
+
+    // A tailored copy: the full CV's file is left as it is.
+    let dir = std::env::temp_dir().join(format!("cvbuilder-copy-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).expect("folder");
+    let (full, copy) = (dir.join("Ingrid_CV_utkast.json"), dir.join("Ingrid_CV_Acme_utkast.json"));
+    let app = h.state_mut();
+    app.is_example = false;
+    app.save_to(&full, false);
+    let job = app.project.experience[1].id.clone();
+    app.project.set_hidden(&job, true);
+    app.save_copy_to(&copy);
+    assert_eq!(app.file.as_deref(), Some(copy.as_path()), "the copy is the open CV now");
+    let saved = cv_core::Project::from_json(&std::fs::read_to_string(&copy).expect("copy")).expect("reads");
+    assert_eq!(saved.options.copy_of, "Ingrid_CV_utkast.json");
+    assert!(saved.is_hidden(&job));
+    let untouched = cv_core::Project::from_json(&std::fs::read_to_string(&full).expect("full")).expect("reads");
+    assert!(untouched.options.hidden.is_empty() && untouched.options.copy_of.is_empty(), "the full CV keeps everything");
+    // Saving the copy over the full CV is refused.
+    let before = std::fs::read_to_string(&full).expect("full");
+    app.file = Some(full.clone());
+    app.save_copy_to(&full);
+    assert_eq!(std::fs::read_to_string(&full).expect("full"), before);
+    let _ = std::fs::remove_dir_all(&dir);
 }

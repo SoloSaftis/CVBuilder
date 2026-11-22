@@ -1116,7 +1116,7 @@ pub fn apply_ad(project: &mut Project, ad: &AdInfo) -> String {
         (Some(_), _) => "",
     };
     for k in &have {
-        project.skills.push(Skill { group: group.into(), name: k.clone(), evidence: "Står allerede i CV-en".into(), confirmed: true });
+        project.skills.push(Skill { id: String::new(), group: group.into(), name: k.clone(), evidence: "Står allerede i CV-en".into(), confirmed: true });
     }
     let mut out = if found.is_empty() { "Annonsen er lagt inn.".to_string() } else { format!("Fra annonsen: {}.", found.join(", ")) };
     if !have.is_empty() {

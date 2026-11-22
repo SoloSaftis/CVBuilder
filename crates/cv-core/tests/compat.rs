@@ -22,7 +22,7 @@ fn version_1_files_get_new_fields_and_lose_approval() {
     value.as_object_mut().expect("object").remove("certifications");
     value["options"].as_object_mut().expect("object").remove("layout");
     let project = Project::from_json(&value.to_string()).expect("HTML builder file parses");
-    assert_eq!(project.version, 2);
+    assert_eq!(project.version, 3);
     assert!(project.certifications.is_empty());
     assert!(!project.approvals.facts_confirmed);
 }

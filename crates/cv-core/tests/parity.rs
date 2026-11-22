@@ -34,3 +34,19 @@ fn now_means_current_job() {
     }
     assert!(!checks::is_now("2010"));
 }
+
+#[test]
+fn both_apps_give_an_older_file_the_same_ids() {
+    // `raw` is the file before the HTML builder upgraded it; `project` is what it made of it.
+    let fixture: serde_json::Value = serde_json::from_str(include_str!("parity.json")).expect("fixture");
+    for (name, case) in fixture.as_object().expect("object") {
+        let ours = Project::from_json(&case["raw"].to_string()).expect("raw");
+        let theirs = Project::from_json(&case["project"].to_string()).expect("project");
+        assert_eq!(ours.all_ids(), theirs.all_ids(), "{name}: ids");
+        assert_eq!(ours.options.hidden, theirs.options.hidden, "{name}: hidden");
+        // And the HTML builder's version 3 file reads here without a change.
+        assert_eq!(serde_json::to_value(&theirs).expect("json")["experience"], case["project"]["experience"], "{name}: jobs");
+    }
+    let tailored = &fixture["tailored"];
+    assert_eq!(tailored["project"]["options"]["hidden"].as_array().map(Vec::len), Some(3), "the fixture hides three items");
+}

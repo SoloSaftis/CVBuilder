@@ -87,7 +87,7 @@ fn sections_follow_the_chosen_order_and_custom_sections_show() {
     p.custom_sections = vec![CustomSection {
         id: "s1".into(),
         title: "Prosjekter".into(),
-        items: vec![CustomItem { title: "Ny barnehage".into(), subtitle: "Trondheim kommune".into(), date: "2023".into(), bullets: vec!["Koordinerte 12 underleverandører.".into()] }],
+        items: vec![CustomItem { id: String::new(), bullet_ids: Vec::new(), title: "Ny barnehage".into(), subtitle: "Trondheim kommune".into(), date: "2023".into(), bullets: vec!["Koordinerte 12 underleverandører.".into()] }],
     }];
     let order = text::section_order(&p);
     let at = |k: &str| order.iter().position(|x| x == k).expect(k);

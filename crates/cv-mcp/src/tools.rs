@@ -295,6 +295,18 @@ pub fn tools() -> Vec<Tool> {
             schema: schema(json!({"language": {"type": "string", "description": "A code such as no, en, de or pt-BR, or the language's own name"}}), &["language"]),
             edits: true,
         },
+        Tool {
+            name: "cv_set_visible",
+            description: "Hide items from this CV without deleting them, or show them again: to tailor the CV to one job or bring it down to the page limit. Works on jobs, single bullets, education, skills, languages, courses and the person's own sections and entries, by id from cv_read (a bullet's id is in bullet_ids, at the same position as in bullets; options.hidden lists what is hidden now). Hidden items stay in the form and the file and are left out of the preview, downloads, checks and page count. Prefer hiding the least relevant items over deleting or rewriting them, and say what you hid.",
+            schema: schema(
+                json!({
+                    "ids": strings("Ids of the items to hide or show"),
+                    "visible": {"type": "boolean", "description": "false hides the items, true shows them again"}
+                }),
+                &["ids", "visible"],
+            ),
+            edits: true,
+        },
     ]
 }
 
@@ -302,8 +314,19 @@ pub fn is_editing(name: &str) -> bool {
     tools().iter().any(|t| t.name == name && t.edits)
 }
 
-/// Runs one tool on the project.
+/// Runs one tool on the project. Items an editing tool rewrote keep their ids (so what is
+/// hidden stays hidden), and new ones get ids.
 pub fn call(project: &mut Project, name: &str, args: &Value) -> Outcome {
+    let before = is_editing(name).then(|| project.clone());
+    let outcome = run(project, name, args);
+    if let Some(before) = before {
+        project.keep_ids_from(&before);
+        project.normalize_ids();
+    }
+    outcome
+}
+
+fn run(project: &mut Project, name: &str, args: &Value) -> Outcome {
     let empty = Map::new();
     let a = args.as_object().unwrap_or(&empty);
     match name {
@@ -329,6 +352,7 @@ pub fn call(project: &mut Project, name: &str, args: &Value) -> Outcome {
         "cv_custom_section_remove" => custom_section_remove(project, a),
         "cv_list_languages" => Outcome::ok(list_languages()),
         "cv_set_language" => set_language(project, a),
+        "cv_set_visible" => set_visible(project, a),
         _ => Outcome::error(format!("Unknown tool {name}. Use one of: {}.", tools().iter().map(|t| t.name).collect::<Vec<_>>().join(", "))),
     }
 }
@@ -386,6 +410,7 @@ fn check(p: &Project) -> String {
         "keywords_found": keywords.found,
         "keywords_missing": keywords.missing,
         "keyword_coverage_percent": keywords.coverage,
+        "hidden_items": p.hidden_count(),
     }))
     .unwrap_or_default()
 }
@@ -531,7 +556,7 @@ fn skills_set(p: &mut Project, a: &Map<String, Value>) -> Outcome {
             let name = text(o, "name").filter(|n| !n.is_empty())?;
             // Keep what the person wrote as evidence for a skill that stays.
             let evidence = p.skills.iter().find(|s| s.name.eq_ignore_ascii_case(&name)).map(|s| s.evidence.clone()).unwrap_or_default();
-            Some(Skill { group: text(o, "group").unwrap_or_default(), name, evidence, confirmed: true })
+            Some(Skill { id: String::new(), group: text(o, "group").unwrap_or_default(), name, evidence, confirmed: true })
         })
         .collect();
     let n = skills.len();
@@ -554,7 +579,7 @@ fn education_set(p: &mut Project, a: &Map<String, Value>) -> Outcome {
             (Ok(s), Ok(e)) => (s, e),
             (Err(e), _) | (_, Err(e)) => return e,
         };
-        out.push(Education { qualification: text(o, "qualification").unwrap_or_default(), institution: text(o, "institution").unwrap_or_default(), start, end });
+        out.push(Education { id: String::new(), qualification: text(o, "qualification").unwrap_or_default(), institution: text(o, "institution").unwrap_or_default(), start, end });
     }
     let n = out.len();
     p.education = out;
@@ -570,7 +595,7 @@ fn certifications_set(p: &mut Project, a: &Map<String, Value>) -> Outcome {
     for o in items {
         let v = text(o, "year").unwrap_or_default();
         let Some(year) = checks::parse_year(&v) else { return Outcome::error(format!("Certification year \"{v}\" is not a year. Use YYYY.")) };
-        out.push(Certification { name: text(o, "name").unwrap_or_default(), issuer: text(o, "issuer").unwrap_or_default(), year });
+        out.push(Certification { id: String::new(), name: text(o, "name").unwrap_or_default(), issuer: text(o, "issuer").unwrap_or_default(), year });
     }
     let n = out.len();
     p.certifications = out;
@@ -582,7 +607,7 @@ fn languages_set(p: &mut Project, a: &Map<String, Value>) -> Outcome {
         Ok(i) => i,
         Err(e) => return e,
     };
-    p.languages = items.iter().map(|o| SpokenLanguage { name: text(o, "name").unwrap_or_default(), level: text(o, "level").unwrap_or_default() }).collect();
+    p.languages = items.iter().map(|o| SpokenLanguage { id: String::new(), name: text(o, "name").unwrap_or_default(), level: text(o, "level").unwrap_or_default() }).collect();
     Outcome::changed("Oppdaterte språkene")
 }
 
@@ -871,7 +896,7 @@ fn custom_section_save(p: &mut Project, a: &Map<String, Value>) -> Outcome {
     };
     let items: Vec<CustomItem> = items
         .iter()
-        .map(|o| CustomItem { title: text(o, "title").unwrap_or_default(), subtitle: text(o, "subtitle").unwrap_or_default(), date: text(o, "date").unwrap_or_default(), bullets: list(o, "bullets").unwrap_or_default() })
+        .map(|o| CustomItem { id: String::new(), bullet_ids: Vec::new(), title: text(o, "title").unwrap_or_default(), subtitle: text(o, "subtitle").unwrap_or_default(), date: text(o, "date").unwrap_or_default(), bullets: list(o, "bullets").unwrap_or_default() })
         .collect();
     match text(a, "id").filter(|i| !i.is_empty()) {
         Some(id) => match p.custom_sections.iter_mut().find(|s| s.id == id) {
@@ -917,4 +942,25 @@ fn set_language(p: &mut Project, a: &Map<String, Value>) -> Outcome {
         Some(name) => set_headings(p, &only(name)),
         None => Outcome::error(format!("CVBuilder has no built-in headings for {wanted:?}. Call cv_list_languages for the codes, or use cv_set_headings and pass every heading yourself.")),
     }
+}
+
+fn set_visible(p: &mut Project, a: &Map<String, Value>) -> Outcome {
+    let Some(ids) = list(a, "ids") else { return Outcome::error("\"ids\" must be a list of ids from cv_read.") };
+    let Some(visible) = a.get("visible").and_then(Value::as_bool) else { return Outcome::error("\"visible\" must be true or false.") };
+    let items = p.items();
+    let unknown: Vec<&String> = ids.iter().filter(|id| !items.iter().any(|i| &i.id == *id)).collect();
+    if !unknown.is_empty() {
+        return Outcome::error(format!("No item has the id {}. Call cv_read for the ids.", unknown.iter().map(|id| format!("\"{id}\"")).collect::<Vec<_>>().join(", ")));
+    }
+    if let Some(i) = items.iter().find(|i| ids.contains(&i.id) && matches!(i.kind, cv_core::ids::Kind::Interest | cv_core::ids::Kind::Contact)) {
+        return Outcome::error(format!("\"{}\" cannot be hidden: choose interests with cv_interests_set, and remove contact lines with cv_contact_set.", i.id));
+    }
+    let changed = ids.iter().filter(|id| p.set_hidden(id, !visible)).count();
+    if changed == 0 {
+        return Outcome::ok("Nothing changed: the items were already so.");
+    }
+    let what = if changed == 1 { "1 del".to_string() } else { format!("{changed} deler") };
+    let mut o = Outcome::changed(if visible { format!("Viste {what} igjen") } else { format!("Skjulte {what} i denne CV-en") });
+    o.text.push_str(&format!(" {} items are hidden in this CV now.", p.hidden_count()));
+    o
 }

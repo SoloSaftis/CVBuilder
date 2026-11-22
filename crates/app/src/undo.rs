@@ -17,6 +17,8 @@ pub mod step {
     pub const LANGUAGE: &str = "bytt CV-språk";
     pub const DELETE_JOB: &str = "slett jobb";
     pub const DELETE_SECTION: &str = "slett seksjon";
+    /// «Vis alt igjen»: everything hidden in this CV shown again.
+    pub const SHOW_ALL: &str = "vis alt igjen";
     /// What the AI in the chat changed in one answer.
     pub const AI: &str = "AI-endringer";
     /// What another AI app connected over MCP changed (one step for a run of changes).
@@ -25,7 +27,7 @@ pub mod step {
     pub const AI_UNDO: &str = "angre i AI-panelet";
 
     #[cfg(test)]
-    pub const ALL: [&str; 11] = [NEW, EXAMPLE, OPEN, IMPORT, AD, LANGUAGE, DELETE_JOB, DELETE_SECTION, AI, AI_APP, AI_UNDO];
+    pub const ALL: [&str; 12] = [NEW, EXAMPLE, OPEN, IMPORT, AD, LANGUAGE, DELETE_JOB, DELETE_SECTION, SHOW_ALL, AI, AI_APP, AI_UNDO];
 }
 
 /// One big change: the state on the other side of it, and what the change is called.
