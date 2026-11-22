@@ -90,6 +90,8 @@ pub struct Pending {
     pub work: Work,
     pub text: String,
     pub destination: Destination,
+    /// «La AI-en sortere kravene» instead of a chat message; `text` is then the ad.
+    pub sort_requirements: bool,
 }
 
 impl CvApp {
@@ -163,7 +165,11 @@ impl CvApp {
             None => self.ai_pending = Some(pending),
             Some(true) => {
                 self.ai_seen(pending.work);
-                self.ask_ai(pending.work, &pending.text);
+                if pending.sort_requirements {
+                    self.sort_requirements_ai();
+                } else {
+                    self.ask_ai(pending.work, &pending.text);
+                }
             }
             Some(false) => self.status = i18n::t("Ingenting ble sendt til AI-en.").into(),
         }
