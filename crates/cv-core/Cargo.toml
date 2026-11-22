@@ -29,3 +29,6 @@ hayro-syntax = "0.7.2"
 hayro-interpret = { version = "0.7.0", default-features = false, features = ["embed-fonts"] }
 hayro-cmap = "0.1"
 kurbo = "0.13"
+# Offline spell check (spelling.rs): Hunspell dictionaries in pure Rust, and the bundled ones gzipped.
+spellbook = "0.4.2"
+flate2 = "1"

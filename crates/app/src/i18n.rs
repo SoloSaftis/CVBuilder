@@ -2049,6 +2049,40 @@ static EN: &[(&str, &str)] = &[
     ("Behold svarene", "Keep the answers"),
     ("Annonsen nevner «{what}». Svaret ditt: {answer}", "The ad mentions “{what}”. Your answer: {answer}"),
     ("Annonsen nevner «{what}», men du har ikke skrevet et svar ennå.", "The ad mentions “{what}”, but you have not written an answer yet."),
+    // ---- spell check (spelling_ui.rs, to-do 046) ----
+    ("Stavekontroll", "Spell check"),
+    ("Fant ikke .aff-filen som hører til. Den må ligge ved siden av .dic-filen med samme navn.", "Could not find the .aff file that belongs to it. It must be next to the .dic file, with the same name."),
+    ("Filen er ikke en ordbok CVBuilder kan lese. Velg en Hunspell-ordbok (.dic med .aff ved siden av) i UTF-8 eller ISO 8859-1.", "The file is not a dictionary CVBuilder can read. Choose a Hunspell dictionary (.dic with its .aff next to it) in UTF-8 or ISO 8859-1."),
+    ("Ordboken kunne ikke leses. Last den ned på nytt, eller velg en annen fil.", "The dictionary could not be read. Download it again, or choose another file."),
+    ("Ordboken er lagt til. Stavekontrollen bruker den nå.", "The dictionary has been added. The spell check uses it now."),
+    ("«{from}» er byttet med «{to}» ({n} steder). Angre tar det tilbake.", "“{from}” has been replaced with “{to}” ({n} places). Undo takes it back."),
+    ("Ordet ble ikke lagret.", "The word was not saved."),
+    ("CVBuilder har ingen ordbok for {language} ennå. Har du en Hunspell-ordbok (.dic og .aff), kan du velge den.", "CVBuilder has no dictionary for {language} yet. If you have a Hunspell dictionary (.dic and .aff), you can choose it."),
+    ("Ordboken for {language} er ikke på maskinen. Den lastes ned fra GitHub én gang ({size}), og etter det sjekkes CV-en uten nett. Ingenting fra CV-en sendes.", "The dictionary for {language} is not on this computer. It is downloaded from GitHub once ({size}); after that the CV is checked offline. Nothing from the CV is sent."),
+    ("Laster ned ordboken …", "Downloading the dictionary …"),
+    ("Last ned ordboken", "Download the dictionary"),
+    ("Henter ordboken fra GitHub. Bare ordboken lastes ned; CV-en blir på maskinen.", "Fetches the dictionary from GitHub. Only the dictionary is downloaded; the CV stays on this computer."),
+    ("Velg ordbokfil …", "Choose a dictionary file …"),
+    ("En Hunspell-ordbok (.dic med .aff ved siden av), for maskiner uten nett eller et språk CVBuilder ikke har", "A Hunspell dictionary (.dic with its .aff next to it), for computers without internet or a language CVBuilder does not have"),
+    ("Sjekker stavingen …", "Checking the spelling …"),
+    ("Fant ingen mulige skrivefeil ({language}).", "No possible spelling mistakes found ({language})."),
+    ("{n} ord som ordboken for {language} ikke kjenner. Ordboken kjenner ikke alle navn, fagord og sammensatte ord, så se selv om de er feil.", "{n} words the {language} dictionary does not know. The dictionary does not know every name, technical term and compound word, so check for yourself whether they are wrong."),
+    ("«{word}» ({n} ganger) i {places}", "“{word}” ({n} times) in {places}"),
+    ("«{word}» i {places}", "“{word}” in {places}"),
+    ("Ingen forslag", "No suggestions"),
+    ("Bytt til:", "Replace with:"),
+    ("Bytter «{from}» med «{to}» overalt i CV-en", "Replaces “{from}” with “{to}” everywhere in the CV"),
+    ("Ignorer", "Ignore"),
+    ("Skjuler ordet til du lukker CVBuilder", "Hides the word until you close CVBuilder"),
+    ("Legg til i mine ord", "Add to my words"),
+    ("Ordet regnes som riktig i alle CV-ene dine på denne maskinen", "The word counts as correct in all your CVs on this computer"),
+    ("din egen ordbokfil", "your own dictionary file"),
+    ("Ordbok: {list}. Navn, e-post, firmaer, ferdigheter og ordene i annonsen hoppes over.", "Dictionary: {list}. Names, e-mail addresses, companies, skills and the words in the ad are skipped."),
+    ("Mine ord: {n}", "My words: {n}"),
+    ("Glem mine ord", "Forget my words"),
+    ("Tømmer listen over ord du har lagt til", "Empties the list of words you have added"),
+    ("Hunspell-ordbok", "Hunspell dictionary"),
+    ("rett skrivefeil", "fix spelling"),
 ];
 
 /// Fixed text that cv-core, cv-ai and cv-mcp produce, with its English.
@@ -2477,6 +2511,10 @@ static DYN: &[(&str, &str)] = &[
     ("punktene", "the bullet points"),
     ("ekstra kontaktlinjer", "extra contact lines"),
     ("rekkefølgen i kontaktlinjen", "the order of the contact line"),
+    // ---- cv-ai: downloading a spelling dictionary (dictionaries.rs) ----
+    ("Ordboken som kom, var ikke den CVBuilder venter, og blir ikke brukt. Prøv igjen senere.", "The dictionary that arrived is not the one CVBuilder expects, and is not used. Try again later."),
+    ("GitHub ga ikke ut ordboken akkurat nå. Prøv igjen om noen minutter.", "GitHub did not hand out the dictionary just now. Try again in a few minutes."),
+    ("Ordboken kunne ikke lagres på maskinen.", "The dictionary could not be saved on this computer."),
 ];
 
 #[cfg(test)]
@@ -2513,7 +2551,7 @@ mod tests {
         let unknown = failed(t("Filen ble ikke lagret."), "something odd", cv_core::plain::TRY_ANOTHER_PLACE);
         assert_eq!(unknown, "The file was not saved. Try again, or save somewhere else.\nDetails: something odd");
         // Every cause and every update-check message has English.
-        for text in cv_core::plain::CAUSES.iter().chain(&[cv_ai::updates::OFFLINE, cv_ai::updates::DOWN, cv_ai::updates::LIMITED, cv_ai::updates::UNCLEAR]) {
+        for text in cv_core::plain::CAUSES.iter().chain(&[cv_ai::updates::OFFLINE, cv_ai::updates::DOWN, cv_ai::updates::LIMITED, cv_ai::updates::UNCLEAR, cv_ai::dictionaries::CHANGED, cv_ai::dictionaries::REFUSED, cv_ai::dictionaries::NOT_SAVED]) {
             assert!(english(text).is_some(), "{text}");
         }
         // A language pack translates the parts it knows.
