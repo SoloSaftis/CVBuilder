@@ -78,6 +78,7 @@ pub fn read_back(project: &Project, bytes: &[u8], ext: &str) -> Result<ReadBack,
 
 /// Compares the CV with what the importer reads from `text`.
 pub fn compare(project: &Project, text: &str) -> ReadBack {
+    let project = &*project.visible();
     let read = import::read_cv(text).project;
     let mut fields = Vec::new();
     let (c, r) = (&project.candidate, &read.candidate);

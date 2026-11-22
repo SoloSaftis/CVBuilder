@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "CVBuilder candidate intake version 2",
+  "title": "CVBuilder candidate intake version 3",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -20,7 +20,10 @@
   ],
   "properties": {
     "version": {
-      "const": 2
+      "enum": [
+        2,
+        3
+      ]
     },
     "language": {
       "enum": [
@@ -173,6 +176,16 @@
             },
             "maxItems": 5
           },
+          "bullet_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 60,
+              "pattern": "^[a-zA-Z0-9_-]+$"
+            },
+            "maxItems": 5,
+            "uniqueItems": true
+          },
           "evidence": {
             "type": "string",
             "maxLength": 1000
@@ -196,6 +209,11 @@
           "end"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
           "qualification": {
             "type": "string",
             "maxLength": 200
@@ -230,6 +248,11 @@
           "confirmed"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
           "group": {
             "type": "string",
             "maxLength": 60
@@ -259,6 +282,11 @@
           "level"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
           "name": {
             "type": "string",
             "maxLength": 80
@@ -282,6 +310,11 @@
           "year"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
           "name": {
             "type": "string",
             "maxLength": 200
@@ -450,6 +483,20 @@
         },
         "page_limit": {
           "const": 2
+        },
+        "hidden": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "maxItems": 400,
+          "uniqueItems": true
+        },
+        "copy_of": {
+          "type": "string",
+          "maxLength": 260
         }
       }
     },

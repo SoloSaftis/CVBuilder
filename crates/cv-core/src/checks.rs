@@ -78,7 +78,10 @@ fn placeholder(value: &str) -> bool {
 
 /// What must be fixed before export, in plain Norwegian. Approval is reported last as
 /// `approvals: …` so callers can ask for it at download time instead.
-pub fn ready(p: &Project) -> Vec<String> {
+pub fn ready(full: &Project) -> Vec<String> {
+    // Hidden items are not in the CV, so they cannot hold up its download. Items keep the numbers
+    // they have in the form, and a job whose bullets are all hidden still has bullets.
+    let p = &*full.visible();
     let mut errors: Vec<String> = Vec::new();
     let c = &p.candidate;
     for (value, name) in [(&c.name, "Fullt navn"), (&c.email, "E-post"), (&c.phone, "Telefon"), (&c.city, "By og land"), (&c.headline, "Faglig overskrift")] {
@@ -113,7 +116,7 @@ pub fn ready(p: &Project) -> Vec<String> {
     if p.experience.is_empty() && p.education.is_empty() {
         errors.push("Legg til minst én jobb eller utdanning.".into());
     }
-    for (i, job) in p.experience.iter().enumerate() {
+    for (i, job) in full.experience.iter().enumerate().filter(|(_, j)| !full.is_hidden(&j.id)) {
         let name = if job.company.trim().is_empty() { format!("Jobb {}", i + 1) } else { format!("Jobb {} ({})", i + 1, job.company.trim()) };
         if job.company.trim().is_empty() || job.title.trim().is_empty() {
             errors.push(format!("{name}: fyll inn arbeidsgiver og stillingstittel."));
@@ -130,7 +133,7 @@ pub fn ready(p: &Project) -> Vec<String> {
             errors.push(format!("{name}: skriv minst ett punkt om hva du gjorde."));
         }
     }
-    for (i, item) in p.education.iter().enumerate() {
+    for (i, item) in full.education.iter().enumerate().filter(|(_, x)| !full.is_hidden(&x.id)) {
         let name = format!("Utdanning {}", i + 1);
         if item.qualification.trim().is_empty() || item.institution.trim().is_empty() {
             errors.push(format!("{name}: fyll inn utdanning og lærested."));
@@ -142,7 +145,7 @@ pub fn ready(p: &Project) -> Vec<String> {
             errors.push(format!("{name}: sluttåret er før startåret."));
         }
     }
-    for (i, item) in p.skills.iter().enumerate() {
+    for (i, item) in full.skills.iter().enumerate().filter(|(_, x)| !full.is_hidden(&x.id)) {
         if item.name.trim().is_empty() {
             errors.push(format!("Kompetanse {} mangler navn.", i + 1));
         }
@@ -314,6 +317,7 @@ pub fn contains(haystack: &str, keyword: &str) -> bool {
 }
 
 pub fn keyword_match(p: &Project) -> KeywordMatch {
+    let p = &*p.visible();
     let haystack = normal(&cv_text(p));
     // «Excel» and «excel » are one keyword, not two.
     let mut seen = HashSet::new();
@@ -395,6 +399,7 @@ pub fn gaps(p: &Project, today_index: i32) -> Vec<(String, String, i32)> {
 }
 
 pub fn audit(p: &Project, pages: usize, today_index: i32) -> (Vec<Check>, KeywordMatch) {
+    let p = &*p.visible();
     let mut checks = Vec::new();
     let mut check = |ok: bool, pass: String, fail: String, tip: String, level: Level| {
         checks.push(if ok { Check { level: Level::Pass, text: pass, tip: String::new() } } else { Check { level, text: fail, tip } });
@@ -510,6 +515,7 @@ pub fn audit(p: &Project, pages: usize, today_index: i32) -> (Vec<Check>, Keywor
 // ---------- plain text for portals ----------
 
 pub fn plain_text(p: &Project) -> String {
+    let p = &*p.visible();
     let labels = text::labels(p);
     let c = &p.candidate;
     let contact = text::contact_order(p).iter().map(|k| text::contact_value(p, k, true)).filter(|v| !v.is_empty()).collect::<Vec<_>>().join(" | ");

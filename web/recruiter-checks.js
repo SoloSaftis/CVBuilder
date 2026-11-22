@@ -2,6 +2,9 @@
  'use strict';
  // Open, explainable recruiter and ATS heuristics. No score here predicts a hiring outcome;
  // each check mirrors common advice from recruiters and applicant-tracking-system vendors.
+ // Items hidden in this copy of the CV are not in it, so they are not checked or counted.
+ const contract=root.CVContract||(typeof require==='function'?require('./contract.js'):null);
+ const shown=data=>contract&&typeof contract.visible==='function'?contract.visible(data):data;
  const normal=value=>String(value||'').normalize('NFKC').toLocaleLowerCase().replace(/[^\p{L}\p{N}+#]+/gu,' ').replace(/\s+/g,' ').trim();
  const escape=value=>value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
  const words=value=>String(value||'').trim().split(/\s+/).filter(Boolean);
@@ -37,6 +40,7 @@
   return options.some(option=>option.length<=3?new RegExp('(^| )'+escape(option)+'( |$)').test(haystack):new RegExp('(^| )'+escape(option)).test(haystack));
  }
  function keywordMatch(data){
+  data=shown(data);
   const haystack=normal(cvText(data)),keywords=[...new Set(data.target.keywords.map(item=>item.trim()).filter(Boolean))];
   const found=keywords.filter(item=>contains(haystack,item)),missing=keywords.filter(item=>!contains(haystack,item));
   return {found,missing,coverage:keywords.length?Math.round(100*found.length/keywords.length):null};
@@ -50,6 +54,7 @@
   return result;
  }
  function audit(data,{pages=1}={}){
+  data=shown(data);
   const checks=[];
   // check(ok, when it passes, when it does not, how to fix it, level when it does not pass)
   const check=(ok,pass,fail,tip='',level='warn')=>checks.push(ok?{level:'pass',text:pass,tip:''}:{level,text:fail,tip});
@@ -90,6 +95,7 @@
  }
  function period(start,end,no){const format=value=>{const [year,month]=value.split('-');return month?month+'.'+year:year;};return start?format(start)+' – '+(end===null?(no?'nå':'Present'):end?format(end):''):'';}
  function plainText(data){
+  data=shown(data);
   const no=data.language!=='en',lines=[],section=title=>{lines.push('',title.toUpperCase());};
   lines.push(data.candidate.name,data.candidate.headline,[data.candidate.email,data.candidate.phone,data.candidate.city,data.candidate.linkedin].filter(Boolean).join(' | '));
   if(data.candidate.summary){section(no?'Profil':'Profile');lines.push(data.candidate.summary);}

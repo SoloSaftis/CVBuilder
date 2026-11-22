@@ -15,6 +15,7 @@ mod colors_ui;
 mod designs_ui;
 mod form;
 mod form_helper_ui;
+mod hide_ui;
 mod i18n;
 mod import_ui;
 mod interview_ui;
@@ -63,6 +64,8 @@ enum Export {
 enum Picked {
     OpenProject(PathBuf),
     SaveProject(PathBuf),
+    /// «Lagre tilpasset kopi …»: where the copy goes.
+    SaveCopy(PathBuf),
     Export(Export, PathBuf),
     Photo(PathBuf),
     /// The save dialog was closed without choosing a file.
@@ -88,6 +91,8 @@ pub(crate) enum Leave {
     Example,
     Open,
     Import,
+    /// The banner's «Åpne hele CV-en» on a tailored copy (the file is in `open_after`).
+    OpenFull,
 }
 
 struct PhotoDialog {
@@ -158,6 +163,12 @@ struct CvApp {
     side: Side,
     /// Form sections the person has folded away.
     folded: HashSet<String>,
+    /// Items hidden in this CV are still drawn in the form (greyed); off: only what is in the CV.
+    show_hidden: bool,
+    /// Jobs and entries whose «Punkter i denne CV-en» list is open (by id).
+    bullet_pick: HashSet<String>,
+    /// The file to open once «Vil du lagre endringene?» is answered (the full CV of a copy).
+    open_after: Option<PathBuf>,
     /// The job-ad card shown in full although the CV has no ad yet (it is one line until then).
     ad_open: bool,
     views: Views,
@@ -236,6 +247,9 @@ impl CvApp {
             egui_ctx: cc.egui_ctx.clone(),
             side: Side::Chat,
             folded: ["certifications", "languages", "interests"].into_iter().map(String::from).collect(),
+            show_hidden: true,
+            bullet_pick: HashSet::new(),
+            open_after: None,
             ad_open: false,
             views: Views::default(),
             reference: None,
@@ -319,6 +333,8 @@ impl CvApp {
 
     fn load(&mut self, project: Project, example: bool) {
         self.project = project;
+        // An imported CV has no ids yet; one read from a file already has them (and keeps them).
+        self.project.normalize_ids();
         self.is_example = example;
         // A CV without an ad starts with the job-ad card as one line, and the name first.
         self.ad_open = false;
@@ -332,6 +348,8 @@ impl CvApp {
 
     /// Any edit: approval must be given again, the preview refreshes and the draft is saved soon.
     fn touched(&mut self) {
+        // New items get their ids, and what was deleted is no longer listed as hidden.
+        self.project.normalize_ids();
         self.project.approvals.facts_confirmed = false;
         self.preview.changed();
         if self.is_example {
@@ -510,6 +528,7 @@ impl CvApp {
             Leave::Example => self.perform(ctx, menu_ui::Action::Example),
             Leave::Open => self.perform(ctx, menu_ui::Action::Open),
             Leave::Import => self.perform(ctx, menu_ui::Action::ImportCv),
+            Leave::OpenFull => self.open_full_now(),
         }
     }
 
@@ -640,10 +659,12 @@ impl CvApp {
     fn pick(&self, kind: &'static str, export: Option<Export>) {
         let tx = self.picked_tx.clone();
         let stem = self.file_stem();
+        let copy_name = self.copy_file_name();
         std::thread::spawn(move || {
             let picked = match (kind, export) {
                 ("open", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).pick_file().map(Picked::OpenProject),
                 ("save", _) => Some(rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).set_file_name(format!("{stem}_utkast.json")).save_file().map_or(Picked::SaveCancelled, Picked::SaveProject)),
+                ("save_copy", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-utkast"), &["json"]).set_file_name(&copy_name).save_file().map(Picked::SaveCopy),
                 ("import_cv", _) => rfd::FileDialog::new().add_filter(i18n::t("CV (PDF, Word, tekst, nettside, LinkedIn, Europass, JSON Resume, CVBuilder)"), &cv_core::import::FILE_TYPES).pick_file().map(Picked::ImportCv),
                 ("ad_file", _) => rfd::FileDialog::new().add_filter(i18n::t("Annonse (PDF, Word, tekst, nettside)"), &["pdf", "docx", "txt", "md", "html", "htm"]).pick_file().map(Picked::AdFile),
                 ("checklist_load", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).pick_file().map(Picked::ChecklistLoad),
@@ -667,16 +688,9 @@ impl CvApp {
     fn handle_picked(&mut self, ctx: &egui::Context) {
         while let Ok(picked) = self.picked_rx.try_recv() {
             match picked {
-                Picked::OpenProject(path) => match open_project(&path) {
-                    Ok(project) => {
-                        self.replace(project, false, step::OPEN, i18n::t("Utkastet er åpnet. Bekreft opplysningene når du laster ned."));
-                        self.saved = self.fingerprint();
-                        self.last_autosave = Instant::now();
-                        self.set_file(Some(path));
-                    }
-                    Err(e) => self.status = e,
-                },
+                Picked::OpenProject(path) => self.open_path(path),
                 Picked::SaveProject(path) => self.save_to(&path, false),
+                Picked::SaveCopy(path) => self.save_copy_to(&path),
                 // No file chosen: the window stays open after all.
                 Picked::SaveCancelled => self.after_save = None,
                 Picked::Export(kind, path) => self.write_export(kind, &path),
@@ -695,6 +709,19 @@ impl CvApp {
                 },
             }
             ctx.request_repaint();
+        }
+    }
+
+    /// Opens a saved draft in this CV's place (undo brings this one back).
+    fn open_path(&mut self, path: PathBuf) {
+        match open_project(&path) {
+            Ok(project) => {
+                self.replace(project, false, step::OPEN, i18n::t("Utkastet er åpnet. Bekreft opplysningene når du laster ned."));
+                self.saved = self.fingerprint();
+                self.last_autosave = Instant::now();
+                self.set_file(Some(path));
+            }
+            Err(e) => self.status = e,
         }
     }
 
@@ -773,6 +800,11 @@ impl CvApp {
                 .changed()
             {
                 self.set_remember(remember);
+            }
+            let hidden = self.project.hidden_count();
+            if hidden > 0 {
+                theme::pill(ui, &i18n::tf("{n} skjult", &[("n", &hidden.to_string())]), t.hover, t.dim)
+                    .on_hover_text(i18n::t("Deler av CV-en er skjult i denne kopien. De står i skjemaet og i filen, men ikke i CV-en."));
             }
             if storage::portable() {
                 theme::pill(ui, i18n::t("Bærbar modus"), t.hover, t.dim).on_hover_text(i18n::t("Bærbar modus: alt lagres i mappen ved siden av programmet."));
@@ -1178,6 +1210,9 @@ fn open_project(path: &std::path::Path) -> Result<Project, String> {
     let text = std::fs::read_to_string(path).map_err(|e| i18n::tdyn(&cv_core::import::unreadable(&e)))?;
     Project::from_json(&text).map_err(|e| {
         let file = path.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+        if let cv_core::ProjectError::Version(_) = e {
+            return i18n::details(&i18n::tf("«{file}» er lagret med en nyere CVBuilder. Oppdater CVBuilder for å åpne den.", &[("file", &file)]), &e.to_string());
+        }
         i18n::details(&i18n::tf("«{file}» er ikke et CVBuilder-utkast. Her åpner du utkast lagret med «Lagre som fil»; en CV i PDF eller Word henter du inn med «Importer CV».", &[("file", &file)]), &e.to_string())
     })
 }

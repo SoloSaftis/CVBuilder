@@ -1,5 +1,6 @@
-//! The CV project file. Field for field the same JSON as the HTML builder (schema version 2),
-//! so a project can move between the two apps in either direction.
+//! The CV project file. Field for field the same JSON as the HTML builder (schema version 3),
+//! so a project can move between the two apps in either direction. Version 3 gave every item a
+//! stable id and added `options.hidden` (see `ids`); versions 1 and 2 are read and upgraded.
 use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
@@ -76,12 +77,17 @@ pub struct CustomSection {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 #[serde(deny_unknown_fields)]
 pub struct CustomItem {
+    #[serde(default)]
+    pub id: String,
     pub title: String,
     /// Organisation, client or place.
     pub subtitle: String,
     /// Free text such as «2023» or «03.2022 – 06.2022».
     pub date: String,
     pub bullets: Vec<String>,
+    /// The id of each bullet, at the same position (see `ids`).
+    #[serde(default)]
+    pub bullet_ids: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
@@ -107,6 +113,9 @@ pub struct Job {
     /// `YYYY-MM`, `""` while unfinished, or `None` (JSON `null`) for a current job.
     pub end: Option<String>,
     pub bullets: Vec<String>,
+    /// The id of each bullet, at the same position (see `ids`).
+    #[serde(default)]
+    pub bullet_ids: Vec<String>,
     pub evidence: String,
     pub confirmed: bool,
 }
@@ -114,6 +123,8 @@ pub struct Job {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 #[serde(deny_unknown_fields)]
 pub struct Education {
+    #[serde(default)]
+    pub id: String,
     pub qualification: String,
     pub institution: String,
     pub start: String,
@@ -124,6 +135,8 @@ pub struct Education {
 #[serde(deny_unknown_fields)]
 pub struct Skill {
     #[serde(default)]
+    pub id: String,
+    #[serde(default)]
     pub group: String,
     pub name: String,
     pub evidence: String,
@@ -133,6 +146,8 @@ pub struct Skill {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 #[serde(deny_unknown_fields)]
 pub struct SpokenLanguage {
+    #[serde(default)]
+    pub id: String,
     pub name: String,
     pub level: String,
 }
@@ -140,6 +155,8 @@ pub struct SpokenLanguage {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 #[serde(deny_unknown_fields)]
 pub struct Certification {
+    #[serde(default)]
+    pub id: String,
     pub name: String,
     pub issuer: String,
     pub year: String,
@@ -207,6 +224,13 @@ pub struct Options {
     /// Headings for a CV in a language other than Norwegian and English.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub headings: Option<crate::headings::Headings>,
+    /// Ids of the items left out of this CV (a tailored copy): they stay in the form and the
+    /// file, but not in the preview, the downloads or the checks. See `ids`.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub hidden: Vec<String>,
+    /// On a tailored copy: the file name of the full CV it was made from (in the same folder).
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub copy_of: String,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
@@ -307,7 +331,7 @@ fn default_layout() -> String {
 
 impl Default for Options {
     fn default() -> Self {
-        Options { layout: default_layout(), photo: false, include_interests: true, interest_ids: Vec::new(), page_limit: 2, section_order: Vec::new(), palette: Palette::default(), section_colors: BTreeMap::new(), page: PageSetup::default(), checklist_ticks: Vec::new(), headings: None }
+        Options { layout: default_layout(), photo: false, include_interests: true, interest_ids: Vec::new(), page_limit: 2, section_order: Vec::new(), palette: Palette::default(), section_colors: BTreeMap::new(), page: PageSetup::default(), checklist_ticks: Vec::new(), headings: None, hidden: Vec::new(), copy_of: String::new() }
     }
 }
 
@@ -320,7 +344,7 @@ pub struct Approvals {
 impl Default for Project {
     fn default() -> Self {
         Project {
-            version: 2,
+            version: VERSION,
             language: Language::No,
             candidate: Candidate::default(),
             target: Target::default(),
@@ -342,19 +366,31 @@ impl Default for Project {
 pub enum ProjectError {
     #[error("the project file could not be read: {0}")]
     Json(#[from] serde_json::Error),
-    #[error("unsupported project version {0}")]
+    #[error("unsupported project version {0}: the file was saved by a newer CVBuilder")]
     Version(u8),
 }
 
+/// The project schema this version writes.
+pub const VERSION: u8 = 3;
+
 impl Project {
-    /// Reads a version 1 or 2 project file. Fields added in version 2 get their defaults,
-    /// exactly like the HTML builder's `upgrade`. Approval is never carried over from a file.
+    /// Reads a version 1, 2 or 3 project file. Fields added later get their defaults, and items
+    /// without an id get one (the same ids every time the file is read), exactly like the HTML
+    /// builder's `upgrade`. Approval is never carried over from a file.
     pub fn from_json(text: &str) -> Result<Project, ProjectError> {
+        // The version first, so a file from a newer CVBuilder says so instead of naming a field.
+        if let Ok(serde_json::Value::Object(o)) = serde_json::from_str::<serde_json::Value>(text)
+            && let Some(v) = o.get("version").and_then(serde_json::Value::as_u64)
+            && !(1..=u64::from(VERSION)).contains(&v)
+        {
+            return Err(ProjectError::Version(u8::try_from(v).unwrap_or(u8::MAX)));
+        }
         let mut project: Project = serde_json::from_str(text)?;
-        if !matches!(project.version, 1 | 2) {
+        if !(1..=VERSION).contains(&project.version) {
             return Err(ProjectError::Version(project.version));
         }
-        project.version = 2;
+        project.version = VERSION;
+        project.assign_ids(true);
         project.approvals.facts_confirmed = false;
         Ok(project)
     }
@@ -362,8 +398,40 @@ impl Project {
     /// The project as pretty JSON, with approval cleared so a shared file is always re-checked.
     pub fn to_json(&self) -> Result<String, ProjectError> {
         let mut copy = self.clone();
+        copy.version = VERSION;
+        copy.normalize_ids();
         copy.approvals.facts_confirmed = false;
         Ok(serde_json::to_string_pretty(&copy)?)
+    }
+
+    /// The project as a version 2 file, for a CVBuilder or HTML builder from before schema
+    /// version 3: the same CV without the ids, and in full (they cannot hide items).
+    pub fn to_v2_json(&self) -> Result<String, ProjectError> {
+        let mut copy = self.clone();
+        copy.version = 2;
+        copy.approvals.facts_confirmed = false;
+        copy.options.hidden.clear();
+        copy.options.copy_of.clear();
+        let mut v = serde_json::to_value(&copy)?;
+        fn strip(v: &mut serde_json::Value, list: &str, keys: &[&str]) {
+            if let Some(items) = v.get_mut(list).and_then(serde_json::Value::as_array_mut) {
+                for o in items.iter_mut().filter_map(serde_json::Value::as_object_mut) {
+                    for k in keys {
+                        o.remove(*k);
+                    }
+                }
+            }
+        }
+        strip(&mut v, "experience", &["bullet_ids"]);
+        for list in ["education", "skills", "languages", "certifications"] {
+            strip(&mut v, list, &["id"]);
+        }
+        if let Some(sections) = v.get_mut("custom_sections").and_then(serde_json::Value::as_array_mut) {
+            for s in sections {
+                strip(s, "items", &["id", "bullet_ids"]);
+            }
+        }
+        Ok(serde_json::to_string_pretty(&v)?)
     }
 
     pub fn is_english(&self) -> bool {

@@ -473,11 +473,11 @@ mod tests {
         p.candidate.extra.push(ContactField { id: "c1".into(), label: "GitHub".into(), value: "github.com/kari".into() });
         p.experience.push(Job { company: "Fjellvegg AS".into(), title: "Koordinator".into(), start: "2021-09".into(), end: None, bullets: vec!["Planla drift".into()], ..Default::default() });
         p.experience.push(Job { company: "Bygg AS".into(), title: "".into(), start: "2018-01".into(), end: Some("2021-08".into()), ..Default::default() });
-        p.education.push(Education { qualification: "Bachelor".into(), institution: "NTNU".into(), start: "2015".into(), end: "2018".into() });
-        p.certifications.push(Certification { name: "Truckførerbevis".into(), issuer: "".into(), year: "2019".into() });
+        p.education.push(Education { id: String::new(), qualification: "Bachelor".into(), institution: "NTNU".into(), start: "2015".into(), end: "2018".into() });
+        p.certifications.push(Certification { id: String::new(), name: "Truckførerbevis".into(), issuer: "".into(), year: "2019".into() });
         p.skills.push(Skill { name: "Excel".into(), ..Default::default() });
         p.skills.push(Skill { name: "SAP".into(), ..Default::default() });
-        p.languages.push(SpokenLanguage { name: "Engelsk".into(), level: "flytende".into() });
+        p.languages.push(SpokenLanguage { id: String::new(), name: "Engelsk".into(), level: "flytende".into() });
         p
     }
 

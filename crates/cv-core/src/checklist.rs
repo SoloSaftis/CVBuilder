@@ -255,6 +255,7 @@ fn filled(p: &Project, field: &str) -> bool {
 /// line and the interests shown. Section headings and dates are left out, so «erfaring» or
 /// «nå» are not found just because every CV has them.
 pub fn cv_words(p: &Project) -> String {
+    let p = &*p.visible();
     let mut parts: Vec<String> = vec![p.candidate.name.clone(), checks::cv_text(p)];
     parts.extend(text::contact_order(p).iter().map(|k| text::contact_value(p, k, true)));
     parts.extend(p.experience.iter().map(|j| j.location.clone()));

@@ -14,6 +14,7 @@ pub mod jsonresume;
 mod wordlists;
 pub mod document;
 pub mod headings;
+pub mod ids;
 pub mod layouts;
 pub mod model;
 pub mod plain;

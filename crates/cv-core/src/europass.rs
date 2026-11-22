@@ -369,7 +369,7 @@ fn read_v3(root: &Node, english: bool, r: &mut Read) {
         let end = if current || end.is_empty() { None } else { Some(end) };
         let location = w.get(&["Employer", "ContactInfo", "Address", "Contact", "Municipality"]);
         let n = p.experience.len() + 1;
-        p.experience.push(Job { id: format!("job_imported_{n}"), company, title, location, start: v3_date(period.and_then(|p| p.child("From"))), end, bullets: html_lines(&w.get(&["Activities"])), evidence: String::new(), confirmed: true });
+        p.experience.push(Job { bullet_ids: Vec::new(), id: format!("job_imported_{n}"), company, title, location, start: v3_date(period.and_then(|p| p.child("From"))), end, bullets: html_lines(&w.get(&["Activities"])), evidence: String::new(), confirmed: true });
     }
 
     for e in info.at(&["EducationList"]).map(|l| l.all("Education").collect::<Vec<_>>()).unwrap_or_default() {
@@ -383,7 +383,7 @@ fn read_v3(root: &Node, english: bool, r: &mut Read) {
         if !more.is_empty() {
             r.rest.push(format!("{qualification} ({institution}):\n{}", more.join("\n")));
         }
-        p.education.push(Education { qualification, institution, start, end });
+        p.education.push(Education { id: String::new(), qualification, institution, start, end });
     }
 
     if let Some(skills) = info.child("Skills") {
@@ -393,7 +393,7 @@ fn read_v3(root: &Node, english: bool, r: &mut Read) {
                 let name = m.get(&["Description", "Label"]);
                 let name = if name.is_empty() { language_name(&code, english) } else { name };
                 if !name.is_empty() {
-                    p.languages.push(SpokenLanguage { name, level: pick(english, "morsmål", "native") });
+                    p.languages.push(SpokenLanguage { id: String::new(), name, level: pick(english, "morsmål", "native") });
                 }
             }
             for f in lang.descendants("ForeignLanguage") {
@@ -404,11 +404,11 @@ fn read_v3(root: &Node, english: bool, r: &mut Read) {
                     continue;
                 }
                 let levels: Vec<String> = f.child("ProficiencyLevel").map(|l| l.children.iter().map(|c| c.text.clone()).collect()).unwrap_or_default();
-                p.languages.push(SpokenLanguage { name: name.clone(), level: cefr(&levels) });
+                p.languages.push(SpokenLanguage { id: String::new(), name: name.clone(), level: cefr(&levels) });
                 for cert in f.descendants("Certificate") {
                     let title = cert.get(&["Title"]);
                     if !title.is_empty() {
-                        p.certifications.push(Certification { name: title, issuer: cert.get(&["AwardingBody"]), year: cert.child("Date").map(|d| d.attr("year").to_string()).unwrap_or_default() });
+                        p.certifications.push(Certification { id: String::new(), name: title, issuer: cert.get(&["AwardingBody"]), year: cert.child("Date").map(|d| d.attr("year").to_string()).unwrap_or_default() });
                     }
                 }
             }
@@ -420,7 +420,7 @@ fn read_v3(root: &Node, english: bool, r: &mut Read) {
             if html.to_lowercase().contains("<li") && html_lines(&html).iter().all(|l| l.chars().count() <= 60) {
                 for name in html_lines(&html) {
                     if !p.skills.iter().any(|s| s.name.eq_ignore_ascii_case(&name)) {
-                        p.skills.push(Skill { group: digital.clone(), name, evidence: String::new(), confirmed: true });
+                        p.skills.push(Skill { id: String::new(), group: digital.clone(), name, evidence: String::new(), confirmed: true });
                     }
                 }
             } else if !html.is_empty() {
@@ -508,7 +508,7 @@ fn read_candidate(root: &Node, english: bool, r: &mut Read) {
         for m in person.all("PrimaryLanguageCode") {
             let name = language_name(&m.text, english);
             if !name.is_empty() {
-                p.languages.push(SpokenLanguage { name, level: pick(english, "morsmål", "native") });
+                p.languages.push(SpokenLanguage { id: String::new(), name, level: pick(english, "morsmål", "native") });
             }
         }
     }
@@ -526,7 +526,7 @@ fn read_candidate(root: &Node, english: bool, r: &mut Read) {
             let end = if current || end.is_empty() { None } else { Some(end) };
             let location = if position.get(&["City"]).is_empty() { employer_city.clone() } else { position.get(&["City"]) };
             let n = p.experience.len() + 1;
-            p.experience.push(Job { id: format!("job_imported_{n}"), company: company.clone(), title, location, start: period_date(period.and_then(|p| p.child("StartDate"))), end, bullets: html_lines(&position.get(&["Description"])), evidence: String::new(), confirmed: true });
+            p.experience.push(Job { bullet_ids: Vec::new(), id: format!("job_imported_{n}"), company: company.clone(), title, location, start: period_date(period.and_then(|p| p.child("StartDate"))), end, bullets: html_lines(&position.get(&["Description"])), evidence: String::new(), confirmed: true });
         }
     }
 
@@ -541,7 +541,7 @@ fn read_candidate(root: &Node, english: bool, r: &mut Read) {
         if !more.is_empty() {
             r.rest.push(format!("{qualification} ({institution}):\n{}", more.join("\n")));
         }
-        p.education.push(Education { qualification, institution, start: period_date(period.and_then(|p| p.child("StartDate"))), end: period_date(period.and_then(|p| p.child("EndDate"))) });
+        p.education.push(Education { id: String::new(), qualification, institution, start: period_date(period.and_then(|p| p.child("StartDate"))), end: period_date(period.and_then(|p| p.child("EndDate"))) });
     }
 
     // Languages: a competency in the «language» taxonomy, with CEFR scores per skill.
@@ -553,7 +553,7 @@ fn read_candidate(root: &Node, english: bool, r: &mut Read) {
                 continue;
             }
             let levels: Vec<String> = c.descendants("ScoreText").iter().map(|s| s.text.clone()).collect();
-            p.languages.push(SpokenLanguage { name, level: cefr(&levels) });
+            p.languages.push(SpokenLanguage { id: String::new(), name, level: cefr(&levels) });
         }
     }
     // Digital skills, alone or in the person's own groups.
@@ -562,7 +562,7 @@ fn read_candidate(root: &Node, english: bool, r: &mut Read) {
         let mut add = |group: &str, c: &Node| {
             let name = c.get(&["CompetencyName"]);
             if !name.is_empty() && !p.skills.iter().any(|s| s.name.eq_ignore_ascii_case(&name)) {
-                p.skills.push(Skill { group: group.to_string(), name, evidence: String::new(), confirmed: true });
+                p.skills.push(Skill { id: String::new(), group: group.to_string(), name, evidence: String::new(), confirmed: true });
             }
         };
         for c in skills.all("PersonCompetency") {
@@ -584,14 +584,14 @@ fn read_candidate(root: &Node, english: bool, r: &mut Read) {
         if !name.is_empty() {
             let issuer = [c.get(&["IssuingAuthority", "Name"]), c.get(&["IssuingAuthority"]), c.get(&["OrganizationName"])].into_iter().find(|s| !s.is_empty()).unwrap_or_default();
             let year = crate::checks::parse_year(&[c.get(&["FirstIssuedDate", "FormattedDateTime"]), c.get(&["FirstIssuedDate"]), c.get(&["IssueDate"]), c.get(&["Date"])].join(" ")).unwrap_or_default();
-            p.certifications.push(Certification { name, issuer, year });
+            p.certifications.push(Certification { id: String::new(), name, issuer, year });
         }
     }
 
     // The person's own sections: a title with items.
     for others in profile.all("Others") {
         let title = others.get(&["Title"]);
-        let items: Vec<CustomItem> = others.all("Other").filter(|o| !o.get(&["Title"]).is_empty() || !o.get(&["Description"]).is_empty()).map(|o| CustomItem { title: o.get(&["Title"]), subtitle: String::new(), date: o.get(&["Date"]), bullets: html_lines(&o.get(&["Description"])) }).collect();
+        let items: Vec<CustomItem> = others.all("Other").filter(|o| !o.get(&["Title"]).is_empty() || !o.get(&["Description"]).is_empty()).map(|o| CustomItem { id: String::new(), bullet_ids: Vec::new(), title: o.get(&["Title"]), subtitle: String::new(), date: o.get(&["Date"]), bullets: html_lines(&o.get(&["Description"])) }).collect();
         if title.is_empty() || items.is_empty() {
             continue;
         }
