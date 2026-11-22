@@ -2,6 +2,7 @@
 //! Grok. Keys are kept in the operating system's keychain (Windows Credential Manager, macOS
 //! Keychain, Secret Service on Linux) through `craft-ai-native`, never in the project file.
 pub mod chat;
+pub mod cost;
 pub mod providers;
 pub mod tasks;
 pub mod updates;
@@ -51,6 +52,11 @@ impl Keys {
             self.session.insert(service, secret);
         }
         saved
+    }
+
+    /// Keeps a key only while the app is open, never in the keychain (the screen checks use it).
+    pub fn keep_for_session(&mut self, service: Service, key: &str) {
+        self.session.insert(service, SecretString::new(key.trim()));
     }
 
     pub fn forget(&mut self, service: Service) {

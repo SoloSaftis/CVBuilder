@@ -5,6 +5,7 @@
 
 pub use eframe::Result;
 
+mod ai_notice;
 mod ai_ui;
 mod appimage;
 mod browser;
@@ -157,6 +158,10 @@ struct CvApp {
     reference: Option<Project>,
     /// The «Oversett CV-en» window, while it is open.
     translate: Option<translate_ui::TranslateState>,
+    /// Kinds of AI work the person has said yes to sending, with which AI, this session.
+    ai_ok: std::collections::HashSet<(cv_ai::cost::Work, String)>,
+    /// A one-click AI request waiting for «Send» in «Før AI-en starter».
+    ai_pending: Option<ai_notice::Pending>,
     designs: designs_ui::DesignState,
     portrait: Option<(u64, egui::TextureHandle)>,
     about_open: bool,
@@ -222,6 +227,8 @@ impl CvApp {
             views: Views::default(),
             reference: None,
             translate: None,
+            ai_ok: Default::default(),
+            ai_pending: None,
             designs: designs_ui::DesignState::default(),
             portrait: None,
             about_open: false,
@@ -600,8 +607,14 @@ impl CvApp {
         checks::recommended_pages(&self.project, today)
     }
 
-    /// Sends a request to the chat and shows it.
-    fn ask_ai(&mut self, text: &str) {
+    /// Sends a request to the chat and shows it. The first time a kind of work would leave this
+    /// computer with the AI in use, «Før AI-en starter» says where it goes and what it costs, and
+    /// waits for «Send» (dialogs that show the notice themselves mark it seen first).
+    fn ask_ai(&mut self, work: cv_ai::cost::Work, text: &str) {
+        if let Some(destination) = self.must_ask(work) {
+            self.ai_pending = Some(ai_notice::Pending { work, text: text.to_string(), destination });
+            return;
+        }
         self.side = Side::Chat;
         self.chat_send(text);
     }
@@ -873,7 +886,7 @@ impl CvApp {
                 if !matched.missing.is_empty()
                     && ui.button(i18n::t("Spør AI-en om de manglende fagordene")).on_hover_text(i18n::t("AI-en spør hvilke av fagordene du faktisk kan stå for, før noe legges inn")).clicked()
                 {
-                    self.ask_ai(i18n::t("Hvilke av fagordene fra annonsen som mangler i CV-en kan jeg ta med på en ærlig måte? Spør meg om det du trenger å vite."));
+                    self.ask_ai(cv_ai::cost::Work::Chat, i18n::t("Hvilke av fagordene fra annonsen som mangler i CV-en kan jeg ta med på en ærlig måte? Spør meg om det du trenger å vite."));
                 }
             }
         });
@@ -1250,6 +1263,7 @@ impl eframe::App for CvApp {
         self.checklist_editor(&ctx);
         self.import_cv_dialog(&ctx);
         self.import_rest_dialog(&ctx);
+        self.ai_confirm_dialog(&ctx);
         if let Some(busy) = self.import.busy.clone() {
             egui::Area::new(egui::Id::unique("cvbuilder.import-busy")).anchor(egui::Align2::CENTER_BOTTOM, [0.0, -48.0]).show(&ctx, |ui| {
                 egui::Frame::popup(ui.style()).show(ui, |ui| {
