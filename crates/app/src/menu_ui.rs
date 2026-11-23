@@ -77,6 +77,8 @@ pub(crate) enum Action {
     Checks,
     /// The «Søknadsskjema» tab in the side panel.
     FormHelper,
+    /// «Forbered intervjuet»: the interview prep sheet.
+    Interview,
     About,
     CheckUpdates,
     UserGuide,
@@ -234,6 +236,9 @@ impl CvApp {
                 if ui.add(menu_item(ui, theme::ph::ROWS, i18n::t("Søknadsskjema"))).on_hover_text(i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene")).clicked() {
                     action = Some(Action::FormHelper);
                 }
+                if ui.add(menu_item(ui, theme::ph::CHAT_TEXT, i18n::t("Forbered intervjuet"))).on_hover_text(i18n::t("Et ark med det intervjueren trolig spør om: påstandene i CV-en, det annonsen ber om og hullene. Uten AI.")).clicked() {
+                    action = Some(Action::Interview);
+                }
                 ui.separator();
                 if ui.add(menu_item(ui, theme::ph::GEAR, i18n::t("Innstillinger"))).on_hover_text(i18n::t("Språk i menyene, tema og mer")).clicked() {
                     action = Some(Action::Settings);
@@ -383,6 +388,9 @@ impl CvApp {
             column(ui, |ui| {
                 if tool(ui, theme::ph::ROWS, i18n::t("Søknadsskjema"), i18n::t("Kopier CV-en felt for felt inn i søknadsportaler, og ha svarene klare på de vanlige spørsmålene"), true) {
                     *action = Some(Action::FormHelper);
+                }
+                if tool(ui, theme::ph::CHAT_TEXT, i18n::t("Intervju"), i18n::t("Et ark med det intervjueren trolig spør om: påstandene i CV-en, det annonsen ber om og hullene. Uten AI."), true) {
+                    *action = Some(Action::Interview);
                 }
             });
         });
@@ -702,6 +710,7 @@ impl CvApp {
                 self.views.side = true;
                 self.side = Side::Form;
             }
+            Action::Interview => self.interview.open(),
             Action::About => self.about_open = true,
             Action::CheckUpdates => self.update_check = Some(crate::updates_ui::UpdateCheck::start(ctx)),
             Action::UserGuide => ctx.open_url(egui::OpenUrl::new_tab(USER_GUIDE)),

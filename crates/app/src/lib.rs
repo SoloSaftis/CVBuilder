@@ -18,6 +18,7 @@ mod form_helper_ui;
 mod hide_ui;
 mod i18n;
 mod import_ui;
+mod interview_ui;
 mod lang_search;
 mod langpack_ui;
 mod link;
@@ -75,6 +76,7 @@ enum Picked {
     ChecklistLoad(PathBuf),
     ChecklistSave(PathBuf),
     DesignSave(PathBuf),
+    InterviewPdf(PathBuf),
     /// A Hunspell `.dic` file for the spell check.
     Dictionary(PathBuf),
     JsonResume(PathBuf),
@@ -191,6 +193,8 @@ struct CvApp {
     langs: langpack_ui::LangState,
     checklist: checklist_ui::ChecklistState,
     form_helper: form_helper_ui::FormHelperState,
+    /// «Forbered intervjuet»: the window is open, and the notes.
+    interview: interview_ui::InterviewState,
     readback: readback_ui::ReadBackState,
     /// «Stavekontroll» in the checklist panel.
     spelling: spelling_ui::SpellState,
@@ -262,6 +266,7 @@ impl CvApp {
             langs,
             checklist: checklist_ui::ChecklistState::load(),
             form_helper: form_helper_ui::FormHelperState::load(),
+            interview: interview_ui::InterviewState::default(),
             readback: readback_ui::ReadBackState::default(),
             spelling: spelling_ui::SpellState::load(),
             new_section: None,
@@ -666,6 +671,7 @@ impl CvApp {
                 ("checklist_save", _) => rfd::FileDialog::new().add_filter("CVBuilder-sjekkliste", &["json"]).set_file_name("min-sjekkliste.cvchecklist.json").save_file().map(Picked::ChecklistSave),
                 ("design_import", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).pick_file().map(Picked::DesignImport),
                 ("design_save", _) => rfd::FileDialog::new().add_filter(i18n::t("CVBuilder-design"), &["json"]).set_file_name("min-design.cvdesign.json").save_file().map(Picked::DesignSave),
+                ("interview_pdf", _) => rfd::FileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(format!("{stem}_intervju.pdf")).save_file().map(Picked::InterviewPdf),
                 ("dictionary", _) => rfd::FileDialog::new().add_filter(i18n::t("Hunspell-ordbok"), &["dic"]).pick_file().map(Picked::Dictionary),
                 ("json_resume", _) => rfd::FileDialog::new().add_filter("JSON Resume", &["json"]).set_file_name(format!("{stem}_resume.json")).save_file().map(Picked::JsonResume),
                 ("photo", _) => rfd::FileDialog::new().add_filter(i18n::t("Bilde"), &["jpg", "jpeg", "png", "webp", "bmp", "tif", "tiff"]).pick_file().map(Picked::Photo),
@@ -694,6 +700,7 @@ impl CvApp {
                 Picked::ChecklistLoad(path) => self.load_checklist(&path),
                 Picked::ChecklistSave(path) => self.save_checklist_file(&path),
                 Picked::DesignSave(path) => self.save_design_template(&path),
+                Picked::InterviewPdf(path) => self.write_interview_pdf(&path),
                 Picked::Dictionary(path) => self.import_dictionary(&path),
                 Picked::JsonResume(path) => self.write_json_resume(&path),
                 Picked::Photo(path) => match photo::Edit::open(&path) {
@@ -1325,6 +1332,7 @@ impl eframe::App for CvApp {
         self.checklist_editor(&ctx);
         self.import_cv_dialog(&ctx);
         self.import_rest_dialog(&ctx);
+        self.interview_dialog(&ctx);
         self.ai_confirm_dialog(&ctx);
         if let Some(busy) = self.import.busy.clone() {
             egui::Area::new(egui::Id::unique("cvbuilder.import-busy")).anchor(egui::Align2::CENTER_BOTTOM, [0.0, -48.0]).show(&ctx, |ui| {

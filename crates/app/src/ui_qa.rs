@@ -231,6 +231,30 @@ const SCENES: &[Scene] = &[
         },
     },
     Scene { name: "Søknadsskjema", setup: |a| a.side = Side::Form },
+    // 051: the interview prep sheet over the example CV and its ad, with AI (the practise button)
+    // and without, and for an empty CV (only the usual questions).
+    Scene { name: "Intervjuark", setup: |a| a.interview.open() },
+    Scene {
+        name: "Intervjuark med AI",
+        setup: |a| {
+            with_provider(a);
+            a.interview.open();
+        },
+    },
+    Scene {
+        // Nothing to ask about yet but the usual questions. The example CV with no bullets, no ad
+        // and no keywords, so the form behind the window has no controls the baseline lacks.
+        name: "Intervjuark uten innhold",
+        setup: |a| {
+            for job in &mut a.project.experience {
+                job.bullets.clear();
+            }
+            a.project.custom_sections.clear();
+            a.project.target.keywords.clear();
+            a.project.target.description.clear();
+            a.interview.open();
+        },
+    },
     // Possible spelling mistakes with suggestions, ignore and «my words» (046). The plain
     // «Sjekkliste» scene shows the card for a Norwegian CV without a dictionary: the download button.
     Scene {

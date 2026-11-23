@@ -4,6 +4,7 @@ pub mod checklist;
 pub mod checks;
 pub mod cvread;
 pub mod import;
+pub mod interview;
 pub mod readback;
 pub mod requirements;
 pub mod spelling;
