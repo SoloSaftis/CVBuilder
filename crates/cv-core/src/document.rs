@@ -184,6 +184,56 @@ pub fn photo_bytes(project: &Project) -> Option<Vec<u8>> {
     base64::engine::general_purpose::STANDARD.decode(encoded).ok()
 }
 
+/// Pixel size (width, height) of a JPEG, read from its start-of-frame marker.
+pub fn jpeg_size(b: &[u8]) -> Option<(u32, u32)> {
+    if b.get(..2)? != [0xFF, 0xD8] {
+        return None;
+    }
+    let mut i = 2;
+    while i + 4 <= b.len() {
+        if b[i] != 0xFF {
+            i += 1;
+            continue;
+        }
+        let m = b[i + 1];
+        if m == 0xFF {
+            i += 1;
+            continue;
+        }
+        if m == 0x01 || (0xD0..=0xD8).contains(&m) {
+            i += 2;
+            continue;
+        }
+        let len = u16::from_be_bytes([b[i + 2], b[i + 3]]) as usize;
+        if (0xC0..=0xCF).contains(&m) && !matches!(m, 0xC4 | 0xC8 | 0xCC) {
+            let f = b.get(i + 5..i + 9)?;
+            let (h, w) = (u32::from(u16::from_be_bytes([f[0], f[1]])), u32::from(u16::from_be_bytes([f[2], f[3]])));
+            return (w > 0 && h > 0).then_some((w, h));
+        }
+        i += 2 + len;
+    }
+    None
+}
+
+/// Centred "cover" crop (left, top, right, bottom fractions) that fits a `w` x `h` picture to the
+/// 25:32 portrait box without stretching; all zero when it already has that shape.
+pub fn cover_crop(w: u32, h: u32) -> [f32; 4] {
+    if w == 0 || h == 0 {
+        return [0.0; 4];
+    }
+    let box_ratio = PHOTO_W / PHOTO_H;
+    let ratio = w as f32 / h as f32;
+    if (ratio / box_ratio - 1.0).abs() < 0.01 {
+        [0.0; 4]
+    } else if ratio > box_ratio {
+        let side = (1.0 - box_ratio / ratio) / 2.0;
+        [side, 0.0, side, 0.0]
+    } else {
+        let edge = (1.0 - ratio / box_ratio) / 2.0;
+        [0.0, edge, 0.0, edge]
+    }
+}
+
 /// The exported files' title, author, subject and keywords: «Name – CV», the name, and the
 /// target role and the ad's keywords only where the CV's own text has them.
 pub fn properties(project: &Project) -> (String, String, String, String) {
@@ -227,14 +277,16 @@ pub fn build(project: &Project) -> Document {
     let mut numbering = (*doc.numbering).clone();
     let bullets = numbering.add_list(ListKind::Bullet);
     doc.numbering = Arc::new(numbering);
-    let photo = photo_bytes(project).map(|bytes| doc.add_media(bytes, "jpeg"));
+    let bytes = photo_bytes(project);
+    let photo_crop = bytes.as_deref().and_then(jpeg_size).map_or([0.0; 4], |(w, h)| cover_crop(w, h));
+    let photo = bytes.map(|bytes| doc.add_media(bytes, "jpeg"));
     let order = text::section_order(project);
     let rtl = project.is_right_to_left();
 
     let body: Vec<Block> = match l.columns.clone() {
         None => {
             let mut b = Builder { l: &l, bullets, body: Vec::new(), current: rgb(&l.accent), width: text_w, rtl };
-            write_header(&mut b, project, photo, true, true);
+            write_header(&mut b, project, photo, photo_crop, true, true);
             // A break "before" a section, or "after" one (the next section that has content).
             let mut pending = false;
             for key in &order {
@@ -295,9 +347,9 @@ pub fn build(project: &Project) -> Document {
             let contact_in_side = cols.sections.iter().any(|k| k == "contact");
             let mut top = Builder { l: &l, bullets, body: Vec::new(), current: rgb(&l.accent), width: text_w, rtl };
             match cols.header {
-                HeaderPlace::Top => write_header(&mut top, project, photo, !contact_in_side, true),
-                HeaderPlace::Main => write_header(&mut main, project, photo, !contact_in_side, false),
-                HeaderPlace::Side => write_header(&mut side, project, photo, !contact_in_side, false),
+                HeaderPlace::Top => write_header(&mut top, project, photo, photo_crop, !contact_in_side, true),
+                HeaderPlace::Main => write_header(&mut main, project, photo, photo_crop, !contact_in_side, false),
+                HeaderPlace::Side => write_header(&mut side, project, photo, photo_crop, !contact_in_side, false),
             }
             if contact_in_side {
                 let parts = text::contact_parts(project);
@@ -429,7 +481,7 @@ pub fn build(project: &Project) -> Document {
 
 /// Name, headline and contact line (or no contact line when the sidebar lists it). A floating
 /// portrait goes in the top-right corner; in a column it stands above the name.
-fn write_header(b: &mut Builder<'_>, project: &Project, photo: Option<String>, contact_line: bool, float_photo: bool) {
+fn write_header(b: &mut Builder<'_>, project: &Project, photo: Option<String>, photo_crop: [f32; 4], contact_line: bool, float_photo: bool) {
     let l = b.l;
     let c = &project.candidate;
     let band = l.header_fill.as_deref().map(rgb);
@@ -467,12 +519,12 @@ fn write_header(b: &mut Builder<'_>, project: &Project, photo: Option<String>, c
     if let Some(media) = photo.clone() {
         if float_photo {
             let float = Float { wrap: Wrap::InFrontOfText, h_rel: Anchor::Margin, v_rel: Anchor::Margin, h_align: Some(FloatAlign::End), v_align: Some(FloatAlign::Start), ..Default::default() };
-            let image = InlineObject::Image { media, w: PHOTO_W, h: PHOTO_H, alt: c.name.clone(), float, crop: [0.0; 4], fx: Default::default(), ole: None };
+            let image = InlineObject::Image { media, w: PHOTO_W, h: PHOTO_H, alt: c.name.clone(), float, crop: photo_crop, fx: Default::default(), ole: None };
             let _ = name.insert_object(0, image, &CharProps::default());
         } else {
             // In a column the portrait stands on its own line above the name.
             let w = PHOTO_W.min(b.width);
-            let image = InlineObject::Image { media, w, h: w * PHOTO_H / PHOTO_W, alt: c.name.clone(), float: Float::default(), crop: [0.0; 4], fx: Default::default(), ole: None };
+            let image = InlineObject::Image { media, w, h: w * PHOTO_H / PHOTO_W, alt: c.name.clone(), float: Float::default(), crop: photo_crop, fx: Default::default(), ole: None };
             let mut p = Paragraph::new();
             let _ = p.insert_object(0, image, &CharProps::default());
             p.props.space_after = Some(8.0);
