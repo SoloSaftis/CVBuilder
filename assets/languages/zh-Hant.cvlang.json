@@ -701,6 +701,7 @@
   "opptil {sum}": "最多 {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "留在這台電腦上：本機模型在此執行，不需要任何費用。",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "你的履歷文字會傳送到位於 {url} 的 AI 伺服器。CVBuilder 不收取任何費用。",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "連線未加密（http），網路上的其他人可能在傳送途中讀到文字。",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "你的履歷文字會用你的 API 金鑰傳送給 {company}（{service}）。{company} 會向你的帳戶收費，依你使用的模型而定，每則訊息約 {cost}。",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "你的履歷文字會用你的 API 金鑰傳送給 {company}（{service}）。{company} 會向你的帳戶收費，依你使用的模型而定，這次約 {cost}。",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "你的履歷文字會透過 Claude Code，以你登入的帳戶傳送給 Anthropic。這會使用你 Claude 方案的額度；若帳戶按用量付費，則使用額度點數。",

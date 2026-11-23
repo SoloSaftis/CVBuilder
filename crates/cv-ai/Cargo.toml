@@ -16,6 +16,8 @@ craft-ai-native = { git = "https://github.com/storytold/craft-ai-integrations", 
 ureq = { version = "3", default-features = false, features = ["rustls", "platform-verifier", "json"] }
 # Checks a downloaded spelling dictionary against its pinned hash (dictionaries.rs).
 sha2 = "0.10"
+# Reads AI addresses strictly (is_local_address); already in the tree through ureq.
+url = "2.5"
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true

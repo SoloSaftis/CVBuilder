@@ -1,7 +1,9 @@
 //! Where the CV goes and what it costs, said before the AI gets it. The chat shows it under the
 //! AI picker; Translate, Import and «Dette må plasseres» show it next to their AI button; the
-//! one-click AI buttons in the form ask once per kind of work and AI in a session (to-do 030).
-//! A model on this computer sends nothing and costs nothing, so it never asks.
+//! one-click AI buttons in the form ask once per kind of work and destination in a session
+//! (to-do 030). A destination is the service and the origin of its address, so a new server
+//! address asks again (to-do 163). A model on this computer sends nothing and costs nothing, so
+//! it never asks.
 use cv_ai::Service;
 use cv_ai::chat::Backend;
 use cv_ai::cost::{self, Work};
@@ -43,7 +45,7 @@ impl Destination {
     pub fn name(&self) -> String {
         match self {
             Destination::Here => i18n::tdyn(Service::Local.name()),
-            Destination::Server(url) => url.trim_start_matches("https://").trim_start_matches("http://").split('/').next().unwrap_or(url).to_string(),
+            Destination::Server(url) => cv_ai::address_host(url).unwrap_or_else(|| url.clone()),
             Destination::Provider(s) => s.company().to_string(),
             Destination::ClaudeCode => "Claude Code".to_string(),
         }
@@ -71,7 +73,12 @@ pub fn cost_words(low: f64, high: f64) -> String {
 pub fn notice(destination: &Destination, work: Work, cv_chars: usize, extra_chars: usize) -> String {
     match destination {
         Destination::Here => i18n::t("Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.").to_string(),
-        Destination::Server(url) => i18n::tf("CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.", &[("url", url)]),
+        Destination::Server(url) => {
+            // The address as the parser reads it, so a user name cannot hide the real host.
+            let shown = cv_ai::shown_origin(url).unwrap_or_else(|| url.clone());
+            let text = i18n::tf("CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.", &[("url", &shown)]);
+            if cv_ai::is_unencrypted(url) { format!("{text} {}", i18n::t(UNENCRYPTED)) } else { text }
+        }
         Destination::Provider(service) => {
             let (low, high) = cost::dollars(work, cv_chars, extra_chars);
             let args = [("company", service.company()), ("service", &i18n::tdyn(service.name())), ("cost", &cost_words(low, high))];
@@ -82,6 +89,21 @@ pub fn notice(destination: &Destination, work: Work, cv_chars: usize, extra_char
             }
         }
         Destination::ClaudeCode => i18n::t("CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.").to_string(),
+    }
+}
+
+/// Said when the address is plain `http://` to another computer.
+pub const UNENCRYPTED: &str = "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.";
+
+/// What a yes is remembered under: the service and the normalised origin of its address. It
+/// always holds «@», so a yes remembered under a bare service name never matches.
+pub fn consent_key(backend: &Backend) -> String {
+    match backend {
+        Backend::Api { endpoint, .. } => {
+            let origin = cv_ai::endpoint_origin(&endpoint.base_url).unwrap_or_else(|| format!("unparsed:{}", endpoint.base_url.trim()));
+            format!("{}@{origin}", endpoint.service.name())
+        }
+        Backend::ClaudeCode { .. } => "Claude Code@claude-code".to_string(),
     }
 }
 
@@ -119,19 +141,31 @@ impl CvApp {
         }
     }
 
-    /// The person has seen where this kind of work goes, with the AI in use now: no need to ask.
+    /// The person has just seen where this kind of work goes, next to the button that sends it:
+    /// the request that follows need not ask. Nothing is remembered until the text has left
+    /// (ai_sent).
     pub(crate) fn ai_seen(&mut self, work: Work) {
-        if let Some(backend) = self.chat_backend() {
-            self.ai_ok.insert((work, backend.name()));
-        }
+        self.ai_noticed = self.chat_backend().map(|backend| (work, consent_key(&backend)));
     }
 
-    /// Whether a one-click request must ask first: the text leaves this computer and the person
-    /// has not said yes to this kind of work with this AI in this session.
-    pub(crate) fn must_ask(&self, work: Work) -> Option<Destination> {
+    /// The text for this kind of work has gone to the AI in use now: later requests of the same
+    /// kind to the same destination go straight on this session.
+    pub(crate) fn ai_sent(&mut self, work: Work) {
+        if let Some(backend) = self.chat_backend() {
+            self.ai_ok.insert((work, consent_key(&backend)));
+        }
+        self.ai_noticed = None;
+    }
+
+    /// Whether a one-click request must ask first: the text leaves this computer, and the person
+    /// has neither just seen the notice for it nor sent this kind of work to this destination in
+    /// this session. Takes the «just seen» mark.
+    pub(crate) fn must_ask(&mut self, work: Work) -> Option<Destination> {
+        let noticed = self.ai_noticed.take();
         let backend = self.chat_backend()?;
         let destination = Destination::of(&backend);
-        (destination.leaves() && !self.ai_ok.contains(&(work, backend.name()))).then_some(destination)
+        let key = (work, consent_key(&backend));
+        (destination.leaves() && noticed.as_ref() != Some(&key) && !self.ai_ok.contains(&key)).then_some(destination)
     }
 
     /// «Før AI-en starter»: where the CV goes and what it costs, with Send and Cancel.
@@ -204,6 +238,28 @@ mod tests {
         let server = Destination::Server("http://192.168.1.20:11434/v1".into());
         assert!(notice(&server, Work::Chat, 1, 0).contains("192.168.1.20"));
         assert_eq!(server.name(), "192.168.1.20:11434");
+    }
+
+    #[test]
+    fn a_server_is_named_by_its_real_host_and_plain_http_is_called_unencrypted() {
+        let hidden = Destination::Server("http://localhost:x@evil.example/v1".into());
+        assert_eq!(hidden.name(), "evil.example");
+        let text = notice(&hidden, Work::Chat, 1, 0);
+        assert!(text.contains("http://evil.example") && !text.contains("localhost"), "{text}");
+        // (The sentence itself depends on the language other tests switch to.)
+        assert!(cv_ai::is_unencrypted("http://localhost:x@evil.example/v1") && !cv_ai::is_unencrypted("https://ai.example.org/v1"));
+    }
+
+    #[test]
+    fn a_yes_is_kept_per_service_and_address() {
+        use cv_ai::{Endpoint, providers::Secret};
+        let api = |service, url: &str| Backend::Api { endpoint: Endpoint { service, base_url: url.into(), key: Secret::new("") }, model: String::new() };
+        let a = consent_key(&api(Service::Local, "http://192.168.1.20:11434/v1"));
+        assert_eq!(a, consent_key(&api(Service::Local, "HTTP://192.168.1.20:11434/other")));
+        assert_ne!(a, consent_key(&api(Service::Local, "http://192.168.1.20:11435/v1")));
+        assert_ne!(a, consent_key(&api(Service::ChatGpt, "http://192.168.1.20:11434/v1")));
+        assert_ne!(consent_key(&api(Service::ChatGpt, "https://api.openai.com/v1")), "ChatGPT");
+        assert!(a.contains('@'));
     }
 
     #[test]

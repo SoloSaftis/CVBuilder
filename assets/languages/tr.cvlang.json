@@ -701,6 +701,7 @@
   "opptil {sum}": "en fazla {sum}",
   "Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.": "Bu bilgisayarda kalır: yerel model burada çalışır ve hiçbir şeye mal olmaz.",
   "CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.": "CV metnin {url} adresindeki AI sunucuna gönderilir. CVBuilder hiçbir ücret almaz.",
+  "Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.": "Bağlantı şifreli değil (http), bu yüzden ağdaki başkaları metni yolda okuyabilir.",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.": "CV metnin API anahtarınla {company} ({service}) hizmetine gönderilir. {company}, kullandığın modele göre mesaj başına yaklaşık {cost} olarak hesabından ücret alır.",
   "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} for dette, etter hvilken modell du bruker.": "CV metnin API anahtarınla {company} ({service}) hizmetine gönderilir. {company}, kullandığın modele göre bunun için yaklaşık {cost} olarak hesabından ücret alır.",
   "CV-teksten sendes til Anthropic gjennom Claude Code, med kontoen du er logget inn med. Det bruker av kvoten i Claude-abonnementet ditt, eller kreditt hvis kontoen betaler per bruk.": "CV metnin, giriş yaptığın hesapla Claude Code üzerinden Anthropic'e gönderilir. Claude planının kotasını, hesap kullandıkça ödeme yapıyorsa krediyi kullanır.",

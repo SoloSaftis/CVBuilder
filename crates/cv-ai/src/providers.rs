@@ -101,10 +101,67 @@ pub const LOCAL_SERVERS: [(&str, &str); 6] = [
     ("LocalAI", "http://localhost:8081/v1"),
 ];
 
-/// Whether an address stays on this computer.
+/// An AI address read by a real URL parser: only `http` and `https`, with a host and without a
+/// user name or password (`http://localhost:x@evil.example` is a way to hide the real host).
+fn parse_address(url: &str) -> Option<url::Url> {
+    let parsed = url::Url::parse(url.trim()).ok()?;
+    let plain = matches!(parsed.scheme(), "http" | "https") && parsed.username().is_empty() && parsed.password().is_none() && parsed.host().is_some();
+    plain.then_some(parsed)
+}
+
+/// Whether an address stays on this computer: `localhost`, a name under `.localhost`,
+/// `127.0.0.0/8` or `[::1]`. Anything else, a user name in the address, or an address that does
+/// not parse, is not local, so the person is told where the text goes.
 pub fn is_local_address(url: &str) -> bool {
-    let host = url.split("://").nth(1).unwrap_or(url).split(['/', ':']).next().unwrap_or("");
-    matches!(host, "localhost" | "127.0.0.1" | "[::1]" | "::1") || host.ends_with(".localhost")
+    let Some(parsed) = parse_address(url) else {
+        return false;
+    };
+    match parsed.host() {
+        Some(url::Host::Ipv4(ip)) => ip.is_loopback(),
+        Some(url::Host::Ipv6(ip)) => ip == std::net::Ipv6Addr::LOCALHOST,
+        // The parser has already lowered the case. A trailing dot or an empty label is not
+        // taken as local.
+        Some(url::Host::Domain(name)) => name == "localhost" || name.strip_suffix(".localhost").is_some_and(|rest| !rest.is_empty() && rest.split('.').all(|label| !label.is_empty())),
+        None => false,
+    }
+}
+
+/// Where requests to an address go, for remembering a yes: scheme, host and port, normalised
+/// («HTTP://LocalHost:80/v1» and «http://localhost/» are the same place). None when the address
+/// does not parse or names a user.
+pub fn endpoint_origin(url: &str) -> Option<String> {
+    Some(parse_address(url)?.origin().ascii_serialization())
+}
+
+/// The address to send to, exactly as the check read it («http://localhost:11434/v1»), so the
+/// HTTP client cannot read a different host from the same text. None when it does not parse or
+/// names a user.
+pub fn normalized_address(url: &str) -> Option<String> {
+    Some(parse_address(url)?.as_str().trim_end_matches('/').to_string())
+}
+
+/// Where an address really points, to show the person: scheme, host and port, never a user name
+/// or password («http://evil.example» for «http://localhost:x@evil.example/v1»).
+pub fn shown_origin(url: &str) -> Option<String> {
+    let parsed = url::Url::parse(url.trim()).ok()?;
+    parsed.host()?;
+    Some(parsed.origin().ascii_serialization())
+}
+
+/// The host (and port, if not the default) to show for an address, without any user name or
+/// password: «192.168.1.20:11434».
+pub fn address_host(url: &str) -> Option<String> {
+    let parsed = url::Url::parse(url.trim()).ok()?;
+    let host = parsed.host_str()?.to_string();
+    Some(match parsed.port() {
+        Some(port) => format!("{host}:{port}"),
+        None => host,
+    })
+}
+
+/// Plain `http://` to a computer other than this one: anyone on the way can read the text.
+pub fn is_unencrypted(url: &str) -> bool {
+    !is_local_address(url) && url::Url::parse(url.trim()).is_ok_and(|u| u.scheme() == "http")
 }
 
 /// The well-known local servers that answer right now, with their model counts.

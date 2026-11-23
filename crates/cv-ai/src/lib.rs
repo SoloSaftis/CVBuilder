@@ -11,7 +11,7 @@ pub mod dictionaries;
 use craft_ai_core::{SecretRef, SecretString};
 use craft_ai_native::secrets::{KeychainStore, SecretStore};
 
-pub use providers::{AiFailure, Endpoint, LOCAL_SERVERS, SERVICES, Service, detect_local, fetch_page, is_local_address, test_connection};
+pub use providers::{AiFailure, Endpoint, LOCAL_SERVERS, SERVICES, Service, address_host, detect_local, endpoint_origin, fetch_page, is_local_address, is_unencrypted, normalized_address, shown_origin, test_connection};
 
 /// Saved API keys. Falls back to keeping the key only while the app is open when the computer
 /// has no keychain (some Linux setups); the app says so.

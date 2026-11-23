@@ -1528,6 +1528,7 @@ static EN: &[(&str, &str)] = &[
     ("opptil {sum}", "up to {sum}"),
     ("Blir på denne maskinen: den lokale modellen kjører her, og det koster ingenting.", "Stays on this computer: the local model runs here, and it costs nothing."),
     ("CV-teksten sendes til AI-serveren din på {url}. CVBuilder tar ikke betalt for noe.", "Your CV text is sent to your AI server at {url}. CVBuilder charges nothing."),
+    ("Forbindelsen er ikke kryptert (http), så andre på nettverket kan lese teksten underveis.", "The connection is not encrypted (http), so others on the network can read the text on the way."),
     (
         "CV-teksten sendes til {company} ({service}) med din API-nøkkel. {company} tar betalt på kontoen din, anslagsvis {cost} per melding, etter hvilken modell du bruker.",
         "Your CV text is sent to {company} ({service}) with your API key. {company} charges your account, roughly {cost} per message, depending on the model you use.",
