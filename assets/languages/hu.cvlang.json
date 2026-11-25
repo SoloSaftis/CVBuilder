@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "A fájl üres; nincs beolvasható szöveg.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "A Word-fájl jelszóval védett. Nyissa meg a Wordben, távolítsa el a jelszót, és mentse újra.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "A régebbi Word-fájlt (.doc) nem sikerült beolvasni. Nyissa meg a Wordben, és mentse .docx formátumban.",
-  "Pages-filen kunne ikke åpnes.": "A Pages-fájlt nem sikerült megnyitni.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "A ZIP fájlt nem sikerült megnyitni. Lehet, hogy sérült, vagy csak részben töltődött le.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "A LinkedIn-exportban nincs importálható profil, állás vagy tanulmány.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "A JSON Resume-fájlt nem sikerült beolvasni. Lehet, hogy sérült.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "A kulcsot nem fogadták el. Ellenőrizze, hogy a teljes API-kulcsot illesztette-e be.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "Az AI túl sok lépést használt egy üzenethez. Bontsa fel a feladatot, és próbálja újra.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "A Claude Code nincs bejelentkezve. Nyisson meg egy terminált, futtassa a „claude” parancsot, jelentkezzen be, és próbálja újra.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "A Claude Code tíz percen belül nem válaszolt, ezért leállítottuk.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "A Claude Code öt percen belül nem válaszolt, ezért leállítottuk.",
   "Endret sideoppsettet": "Elrendezés módosítva",
   "Endret rekkefølgen på seksjonene": "Szakaszok sorrendje módosítva",
   "Oppdaterte språkene": "Nyelvek frissítve",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "A(z) {a} hibával válaszolt. Próbálja újra egy kicsit később, vagy válasszon másik modellt.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} válaszolt, de nem abban a formátumban, amelyre a CVBuilder-nek szüksége van. Próbálja újra.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: nem sikerült elérni ezt: {b}. Fut az Ollama, az LM Studio vagy a saját szervere?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: ehhez a kulcshoz nem található modell",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: a fordításból kimaradtak az önéletrajz egyes részei; próbálja újra",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Fő kompetenciák frissítve ({a} tétel)",
   "Skjulte {a} deler i denne CV-en": "{a} elem elrejtve ebben az önéletrajzban",
   "Viste {a} deler igjen": "{a} elem újra megjelenítve",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Dizájn átváltva erre: {a}",
   "Endret seksjonen «{a}»": "„{a}” szakasz módosítva",
   "La til seksjonen «{a}»": "„{a}” szakasz hozzáadva",
-  "Fjernet seksjonen «{a}»": "„{a}” szakasz eltávolítva"
+  "Fjernet seksjonen «{a}»": "„{a}” szakasz eltávolítva",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "A Pages-fájlt nem sikerült megnyitni. Lehet, hogy sérült. A Pagesben: Fájl → Exportálás → Word vagy PDF, majd importálja azt a fájlt.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "A Claude Code tíz percen belül nem válaszolt, ezért leállítottuk. Próbálja újra, lehetőleg rövidebb üzenettel. Ha ez nem segít, nyisson meg egy terminált, és futtassa a „claude” parancsot, hogy lássa, működik-e.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "A Claude Code öt percen belül nem válaszolt, ezért leállítottuk. Próbálja újra, lehetőleg rövidebb szöveggel. Ha ez nem segít, nyisson meg egy terminált, és futtassa a „claude” parancsot, hogy lássa, működik-e.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "A Claude Code nem indítható el. Ellenőrizze, hogy a Claude Code telepítve van-e és működik-e terminálban, vagy válasszon másik MI-szolgáltatást.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "A CVBuilder nem találja az állást. Válassza ki újra az állást a listában, és próbálja újra.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "A(z) {a} nem talált modellt ehhez a kulcshoz. Ellenőrizze, hogy a kulcs ehhez a szolgáltatáshoz tartozik-e, vagy válasszon másik szolgáltatást.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "A(z) {a} megszakította a választ, mielőtt elkészült volna. Próbálja újra.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "A(z) {a} válasza túl hosszú lett, ezért levágtuk. Próbálja újra rövidebb szöveggel, vagy válasszon másik modellt.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "A(z) {a} fordításából kimaradtak az önéletrajz egyes részei. Próbálja újra, vagy válasszon másik modellt."
  }
 }

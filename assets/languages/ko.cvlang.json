@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "파일이 비어 있어 가져올 텍스트가 없습니다.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word 파일이 암호로 보호되어 있습니다. Word에서 열어 암호를 제거한 뒤 다시 저장하세요.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "이전 Word 파일(.doc)을 읽을 수 없습니다. Word에서 열어 .docx로 저장하세요.",
-  "Pages-filen kunne ikke åpnes.": "Pages 파일을 열 수 없습니다.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP 파일을 열 수 없습니다. 파일이 손상되었거나 일부만 다운로드되었을 수 있습니다.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn 내보내기에 가져올 프로필, 경력 또는 학력이 없습니다.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume 파일을 읽을 수 없습니다. 파일이 손상되었을 수 있습니다.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "키가 허용되지 않았습니다. API 키 전체를 붙여넣었는지 확인하세요.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI가 메시지 하나에 너무 많은 단계를 사용했습니다. 작업을 나누어 다시 시도하세요.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code에 로그인되어 있지 않습니다. 터미널을 열고 “claude”를 실행해 로그인한 뒤 다시 시도하세요.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code가 10분 안에 응답하지 않아 중지되었습니다.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code가 5분 안에 응답하지 않아 중지되었습니다.",
   "Endret sideoppsettet": "레이아웃을 변경했습니다",
   "Endret rekkefølgen på seksjonene": "섹션 순서를 변경했습니다",
   "Oppdaterte språkene": "언어를 업데이트했습니다",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a}에서 오류가 발생했습니다. 잠시 후 다시 시도하거나 다른 모델을 선택하세요.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a}이(가) 응답했지만 CVBuilder에 필요한 형식이 아닙니다. 다시 시도하세요.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b}에 연결할 수 없습니다. Ollama, LM Studio 또는 서버가 실행 중인가요?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: 이 키로 사용할 수 있는 모델이 없습니다",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: 번역에서 이력서 일부가 빠졌습니다. 다시 시도하세요",
   "Oppdaterte kjernekompetansen ({a} punkter)": "핵심 기술을 업데이트했습니다({a}개 항목)",
   "Skjulte {a} deler i denne CV-en": "이 이력서에서 항목 {a}개 숨김",
   "Viste {a} deler igjen": "항목 {a}개 다시 표시",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "디자인을 {a}(으)로 바꿨습니다",
   "Endret seksjonen «{a}»": "“{a}” 섹션을 변경했습니다",
   "La til seksjonen «{a}»": "“{a}” 섹션을 추가했습니다",
-  "Fjernet seksjonen «{a}»": "“{a}” 섹션을 삭제했습니다"
+  "Fjernet seksjonen «{a}»": "“{a}” 섹션을 삭제했습니다",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages 파일을 열 수 없습니다. 파일이 손상되었을 수 있습니다. Pages에서 파일 → 다음으로 내보내기 → Word 또는 PDF를 선택한 다음, 그 파일을 가져오세요.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code가 10분 안에 응답하지 않아 중지되었습니다. 메시지를 더 짧게 해서 다시 시도해 보세요. 그래도 안 되면 터미널을 열고 “claude”를 실행해 작동하는지 확인하세요.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code가 5분 안에 응답하지 않아 중지되었습니다. 텍스트를 더 짧게 해서 다시 시도해 보세요. 그래도 안 되면 터미널을 열고 “claude”를 실행해 작동하는지 확인하세요.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code를 시작할 수 없습니다. Claude Code가 설치되어 있고 터미널에서 작동하는지 확인하거나, 다른 AI 서비스를 선택하세요.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder가 해당 경력을 찾지 못했습니다. 목록에서 경력을 다시 선택한 후 다시 시도하세요.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a}에서 이 키로 사용할 수 있는 모델을 찾지 못했습니다. 키가 이 서비스용인지 확인하거나 다른 서비스를 선택하세요.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a}의 답변이 끝나기 전에 중단되었습니다. 다시 시도하세요.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a}의 답변이 너무 길어져 잘렸습니다. 더 짧은 텍스트로 다시 시도하거나 다른 모델을 선택하세요.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a}의 번역에서 이력서 일부가 빠졌습니다. 다시 시도하거나 다른 모델을 선택하세요."
  }
 }

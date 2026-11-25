@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Fails ir tukšs; nav teksta, ko nolasīt.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word fails ir aizsargāts ar paroli. Atveriet to programmā Word, noņemiet paroli un saglabājiet vēlreiz.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Vecāko Word failu (.doc) nevarēja nolasīt. Atveriet to programmā Word un saglabājiet kā .docx.",
-  "Pages-filen kunne ikke åpnes.": "Pages failu nevarēja atvērt.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP failu neizdevās atvērt. Tas var būt bojāts vai lejupielādēts tikai daļēji.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn eksportā nav profila, darbu vai izglītības, ko importēt.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume failu neizdevās nolasīt. Tas var būt bojāts.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Atslēga netika pieņemta. Pārbaudiet, vai ielīmējāt visu API atslēgu.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI izmantoja pārāk daudz soļu vienam ziņojumam. Sadaliet uzdevumu un mēģiniet vēlreiz.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code nav pieteicies. Atveriet termināli, palaidiet «claude», piesakieties un mēģiniet vēlreiz.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code neatbildēja desmit minūšu laikā un tika apturēts.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code neatbildēja piecu minūšu laikā un tika apturēts.",
   "Endret sideoppsettet": "Mainīja izkārtojumu",
   "Endret rekkefølgen på seksjonene": "Mainīja sadaļu secību",
   "Oppdaterte språkene": "Atjaunināja valodas",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} atbildēja ar kļūdu. Mēģiniet vēlreiz pēc brīža vai izvēlieties citu modeli.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} atbildēja, bet ne tādā formātā, kāds vajadzīgs CVBuilder. Mēģiniet vēlreiz.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: neizdevās sazināties ar {b}. Vai Ollama, LM Studio vai jūsu serveris darbojas?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: šai atslēgai netika atrasts neviens modelis",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: tulkojumā trūka CV daļu; mēģiniet vēlreiz",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Atjauninātas pamatprasmes ({a} punkti)",
   "Skjulte {a} deler i denne CV-en": "Paslēptas {a} daļas šajā CV",
   "Viste {a} deler igjen": "Atkal parādītas {a} daļas",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Dizains nomainīts uz {a}",
   "Endret seksjonen «{a}»": "Mainīta sadaļa «{a}»",
   "La til seksjonen «{a}»": "Pievienota sadaļa «{a}»",
-  "Fjernet seksjonen «{a}»": "Noņemta sadaļa «{a}»"
+  "Fjernet seksjonen «{a}»": "Noņemta sadaļa «{a}»",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages failu nevarēja atvērt. Tas var būt bojāts. Lietotnē Pages: Fails → Eksportēt uz → Word vai PDF, un importējiet šo failu.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code neatbildēja desmit minūšu laikā un tika apturēts. Mēģiniet vēlreiz, vēlams ar īsāku ziņojumu. Ja tas nepalīdz, atveriet termināli un palaidiet «claude», lai pārbaudītu, vai tas darbojas.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code neatbildēja piecu minūšu laikā un tika apturēts. Mēģiniet vēlreiz, vēlams ar īsāku tekstu. Ja tas nepalīdz, atveriet termināli un palaidiet «claude», lai pārbaudītu, vai tas darbojas.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code nevarēja palaist. Pārbaudiet, vai Claude Code ir instalēts un darbojas terminālī, vai izvēlieties citu MI pakalpojumu.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder neatrada šo darba vietu. Sarakstā vēlreiz izvēlieties darba vietu un mēģiniet vēlreiz.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} neatrada nevienu modeli šai atslēgai. Pārbaudiet, vai atslēga pieder šim pakalpojumam, vai izvēlieties citu pakalpojumu.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} pārtrauca atbildi, pirms tā bija pabeigta. Mēģiniet vēlreiz.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} atbilde kļuva pārāk gara un tika nogriezta. Mēģiniet vēlreiz ar īsāku tekstu vai izvēlieties citu modeli.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} tulkojumā trūka CV daļu. Mēģiniet vēlreiz vai izvēlieties citu modeli."
  }
 }

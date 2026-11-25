@@ -265,15 +265,19 @@ fn formats_text(ext: &'static str, bytes: &[u8]) -> Result<String, String> {
     }
 }
 
+/// A Pages file that could not be opened or read: what to do instead.
+pub const PAGES_BROKEN: &str = "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.";
+
 /// An Apple Pages file: a package with a PDF preview of the document inside.
 fn pages_text(bytes: &[u8]) -> Result<String, String> {
-    let mut zip = zip::ZipArchive::new(std::io::Cursor::new(bytes)).map_err(|_| "Pages-filen kunne ikke åpnes.".to_string())?;
+    let broken = |e: &dyn std::fmt::Display| crate::plain::with_details(PAGES_BROKEN, &e.to_string());
+    let mut zip = zip::ZipArchive::new(std::io::Cursor::new(bytes)).map_err(|e| broken(&e))?;
     let name = zip.file_names().find(|n| n.to_lowercase().ends_with("preview.pdf")).map(str::to_string);
     let Some(name) = name else {
         return Err("Pages-filen har ingen forhåndsvisning å lese. I Pages: Fil → Eksporter til → Word eller PDF.".into());
     };
     let mut pdf = Vec::new();
-    std::io::Read::read_to_end(&mut zip.by_name(&name).map_err(|e| e.to_string())?, &mut pdf).map_err(|e| e.to_string())?;
+    std::io::Read::read_to_end(&mut zip.by_name(&name).map_err(|e| broken(&e))?, &mut pdf).map_err(|e| broken(&e))?;
     pdf_text(&pdf)
 }
 

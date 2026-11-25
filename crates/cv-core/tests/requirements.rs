@@ -111,3 +111,113 @@ fn norwegian_language_requirements_find_the_languages_section() {
     assert!(b.shown() && b.places.contains(&Place::Languages), "{b:?}");
 }
 
+
+/// A one-term requirement, for asking what backs it.
+fn req(term: &str) -> cv_core::requirements::Requirement {
+    cv_core::requirements::Requirement { text: term.into(), need: Need::Must, terms: vec![term.into()] }
+}
+
+fn needs(ad: &str) -> Vec<(String, Need)> {
+    ad_requirements(ad).into_iter().map(|r| (r.text, r.need)).collect()
+}
+
+#[test]
+fn backing_matches_whole_words_only() {
+    let mut p = Project::example_en();
+    p.experience.truncate(1);
+    p.education.clear();
+    p.certifications.clear();
+    p.custom_sections.clear();
+    p.skills.clear();
+    p.languages.clear();
+    p.candidate.summary = "Polished, excellent communicator.".into();
+    p.candidate.headline = "Frontend developer".into();
+    p.experience[0].title = "Developer".into();
+    p.experience[0].company = "Norsk Hydro".into();
+    p.experience[0].bullets = vec!["Built apps in JavaScript and C++ on ASP.NET with Node.js".into(), "Ran data pipelines on Apache Spark".into()];
+    for term in ["Java", "Excel", "Polish", "norsk/norwegian/norska/norsch", "C", "Spark SQL", "Go", "Apps Script"] {
+        assert!(!backing(&p, &req(term)).shown(), "«{term}» must not be found inside another word or name");
+    }
+    for term in ["JavaScript", "C++", ".NET", "Node.js", "Apache Spark", "pipeline", "Spark"] {
+        assert!(backing(&p, &req(term)).shown(), "«{term}» is in the CV as a whole word");
+    }
+    // A language is shown by the languages section, not by an employer's name.
+    p.languages = vec![cv_core::model::SpokenLanguage { id: String::new(), name: "Norwegian".into(), level: "Native".into() }];
+    let b = backing(&p, &req("norsk/norwegian/norska/norsch"));
+    assert!(b.shown() && b.places == [Place::Languages], "{b:?}");
+}
+
+#[test]
+fn hedges_are_nice_to_haves() {
+    let no = "Kvalifikasjoner\n• Fagbrev som tømrer\n• Du bør ha erfaring med prosjektledelse\n• Gjerne erfaring fra rehabilitering\n• Du kan gjerne ha kjennskap til BIM\n• Førerkort klasse BE (fordel)\n• Erfaring med Revit er kjekt";
+    assert_eq!(
+        needs(no),
+        [
+            ("Fagbrev som tømrer".to_string(), Need::Must),
+            ("Du bør ha erfaring med prosjektledelse".into(), Need::Nice),
+            ("Gjerne erfaring fra rehabilitering".into(), Need::Nice),
+            ("Du kan gjerne ha kjennskap til BIM".into(), Need::Nice),
+            ("Førerkort klasse BE (fordel)".into(), Need::Nice),
+            ("Erfaring med Revit er kjekt".into(), Need::Nice),
+        ]
+    );
+    let en = "Requirements\n- 3+ years with Go\n- Docker (nice to have)\n- Rust is a plus\n- GraphQL would be a bonus\n- AWS certification is an asset";
+    let got = needs(en);
+    assert_eq!(got.iter().map(|(_, n)| *n).collect::<Vec<_>>(), [Need::Must, Need::Nice, Need::Nice, Need::Nice, Need::Nice], "{got:#?}");
+}
+
+#[test]
+fn a_must_word_never_lifts_a_nice_block() {
+    let ad = "Nice to have\n- Minimum 2 years with Kotlin\n- At least basic Spanish\n- Must be comfortable with on-call\n\nØnskelig\n• Minst 2 års erfaring med SAP er nødvendig";
+    assert!(needs(ad).iter().all(|(_, n)| *n == Need::Nice), "{:#?}", needs(ad));
+    assert_eq!(needs(ad).len(), 4);
+}
+
+#[test]
+fn a_block_ends_at_prose_and_key_value_lines() {
+    let ad = "Kvalifikasjoner\n• Fagbrev som elektriker\n• Førerkort klasse B\nVi holder til i nye lokaler sentralt i byen med kort vei til kollektivtransport.\nKonkurransedyktige betingelser\n\nRequirements\nPython\nStart date: ASAP\nFlexible hours\n\nKrav\nVi er et selskap i sterk vekst med over to hundre ansatte i fem land, og vi har store ambisjoner for de neste årene i Norden.\nGod lønn\nErfaring med SAP er et krav.";
+    assert_eq!(
+        needs(ad),
+        [
+            ("Fagbrev som elektriker".to_string(), Need::Must),
+            ("Førerkort klasse B".into(), Need::Must),
+            ("Python".into(), Need::Must),
+            ("Erfaring med SAP er et krav".into(), Need::Must),
+        ],
+        "prose, «Key: value» lines and what follows them are no requirements; a cue still counts"
+    );
+}
+
+#[test]
+fn perks_and_benefits_are_no_requirements() {
+    let no = "Krav\n• Bachelorgrad i økonomi\n\nFordeler:\n• Gode pensjonsordninger\n• Fleksibel arbeidstid\n• Treningstilskudd\n\nFordeler hos oss\n• Hytte på fjellet";
+    assert_eq!(needs(no), [("Bachelorgrad i økonomi".to_string(), Need::Must)]);
+    let en = "Requirements\n- Strong SQL\n\nBenefits:\n- Health insurance\n- Stock options are a plus for many\n\nPerks and benefits\n- Free lunch\n\nWhat you'll get\n- A MacBook";
+    assert_eq!(needs(en), [("Strong SQL".to_string(), Need::Must)]);
+    // «Fordel:» alone still means an advantage.
+    assert_eq!(needs("Fordel:\n• Erfaring med Azure"), [("Erfaring med Azure".to_string(), Need::Nice)]);
+}
+
+#[test]
+fn a_long_ad_is_read_quickly() {
+    let mut text = String::new();
+    // The same points again and again (each is listed once), so the whole ad is read, not just
+    // up to the 40th requirement.
+    for i in 0..500 {
+        text.push_str(&format!("Om oss\nVi er et selskap nummer {i} med lange avsnitt om kultur, kunder, verdier og alt det andre som gjør oss til en god arbeidsplass for deg og familien din.\n\n"));
+        text.push_str("Kvalifikasjoner\n• Erfaring med Python og SQL\n• Gode norskkunnskaper\n• Du bør ha førerkort\nVi gleder oss til å høre fra deg, og vi lover å svare alle som søker innen fristen.\n\nNice to have\n- Kubernetes\n- Minimum 2 years with Go\n\nBenefits\n- Pension\nSøknadsfrist: 01.01.2027\n\n");
+    }
+    text.push_str("Krav\n• Fagbrev som elektriker\n");
+    assert!(text.lines().count() > 8000);
+    let p = Project::example_en();
+    let start = std::time::Instant::now();
+    let list = ad_requirements(&text);
+    for r in &list {
+        let _ = backing(&p, r);
+    }
+    let _ = summary(&p, &list);
+    let took = start.elapsed();
+    assert_eq!(list.len(), 6, "{list:#?}");
+    assert_eq!(list.last().map(|r| r.text.as_str()), Some("Fagbrev som elektriker"), "the last line of the ad was read");
+    assert!(took < std::time::Duration::from_secs(2), "a {}-line ad took {took:?}", text.lines().count());
+}

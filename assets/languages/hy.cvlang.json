@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Ֆայլը դատարկ է. կարդալու տեքստ չկա։",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word ֆայլը պաշտպանված է գաղտնաբառով։ Բացեք այն Word-ում, հեռացրեք գաղտնաբառը և նորից պահեք։",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Հին Word ֆայլը (.doc) չհաջողվեց կարդալ։ Բացեք այն Word-ում և պահեք որպես .docx։",
-  "Pages-filen kunne ikke åpnes.": "Pages ֆայլը չհաջողվեց բացել։",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP ֆայլը հնարավոր չէր բացել։ Այն կարող է վնասված լինել կամ ներբեռնված լինել միայն մասամբ։",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn-ի արտահանման մեջ ներմուծելու պրոֆիլ, աշխատանք կամ կրթություն չկա։",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume ֆայլը հնարավոր չեղավ կարդալ։ Այն կարող է վնասված լինել։",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Բանալին չընդունվեց։ Ստուգեք, որ տեղադրել եք ամբողջ API բանալին։",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI-ն մեկ հաղորդագրության վրա չափազանց շատ քայլ կատարեց։ Բաժանեք առաջադրանքը և կրկին փորձեք։",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code-ում մուտք գործված չէ։ Բացեք տերմինալ, գործարկեք «claude», մուտք գործեք և կրկին փորձեք։",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code-ը տասը րոպեում չպատասխանեց և կանգնեցվեց։",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code-ը հինգ րոպեում չպատասխանեց և կանգնեցվեց։",
   "Endret sideoppsettet": "Փոխեց էջի դասավորությունը",
   "Endret rekkefølgen på seksjonene": "Փոխեց բաժինների հերթականությունը",
   "Oppdaterte språkene": "Թարմացրեց լեզուները",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a}-ն պատասխանեց սխալով։ Փորձեք նորից մի փոքր ուշ կամ ընտրեք այլ մոդել։",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a}-ը պատասխանեց, բայց ոչ այն ձևաչափով, որն անհրաժեշտ է CVBuilder-ին։ Փորձեք կրկին։",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}՝ չհաջողվեց կապ հաստատել {b}-ի հետ։ Աշխատո՞ւմ են Ollama-ն, LM Studio-ն կամ ձեր սերվերը։",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}՝ այս բանալու համար մոդելներ չգտնվեցին",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}՝ թարգմանության մեջ CV-ի որոշ մասեր բացակայում էին. փորձեք կրկին",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Թարմացվեցին հիմնական հմտությունները ({a} կետ)",
   "Skjulte {a} deler i denne CV-en": "Թաքցվեց {a} մաս այս CV-ում",
   "Viste {a} deler igjen": "{a} մաս կրկին ցուցադրվեց",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Ձևավորումը փոխվեց՝ {a}",
   "Endret seksjonen «{a}»": "Փոխվեց «{a}» բաժինը",
   "La til seksjonen «{a}»": "Ավելացվեց «{a}» բաժինը",
-  "Fjernet seksjonen «{a}»": "Հեռացվեց «{a}» բաժինը"
+  "Fjernet seksjonen «{a}»": "Հեռացվեց «{a}» բաժինը",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages ֆայլը չհաջողվեց բացել։ Հնարավոր է՝ այն վնասված է։ Pages-ում՝ Ֆայլ → Արտահանել → Word կամ PDF, և ներմուծեք այդ ֆայլը։",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-ը տասը րոպեում չպատասխանեց և կանգնեցվեց։ Փորձեք նորից, ցանկալի է՝ ավելի կարճ հաղորդագրությամբ։ Եթե չօգնի, բացեք տերմինալը և գործարկեք «claude»՝ տեսնելու, թե արդյոք այն աշխատում է։",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-ը հինգ րոպեում չպատասխանեց և կանգնեցվեց։ Փորձեք նորից, ցանկալի է՝ ավելի կարճ տեքստով։ Եթե չօգնի, բացեք տերմինալը և գործարկեք «claude»՝ տեսնելու, թե արդյոք այն աշխատում է։",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code-ը չհաջողվեց գործարկել։ Ստուգեք, որ Claude Code-ը տեղադրված է և աշխատում է տերմինալում, կամ ընտրեք ԱԲ այլ ծառայություն։",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder-ը չգտավ աշխատանքը։ Կրկին ընտրեք աշխատանքը ցանկից և փորձեք նորից։",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a}-ն այս բանալու համար մոդելներ չգտավ։ Ստուգեք, որ բանալին պատկանում է այս ծառայությանը, կամ ընտրեք այլ ծառայություն։",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a}-ն ընդհատեց պատասխանը՝ նախքան այն կավարտվեր։ Փորձեք նորից։",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a}-ի պատասխանը չափազանց երկար ստացվեց և կտրվեց։ Փորձեք նորից ավելի կարճ տեքստով կամ ընտրեք այլ մոդել։",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a}-ի թարգմանության մեջ CV-ի որոշ մասեր բաց են թողնվել։ Փորձեք նորից կամ ընտրեք այլ մոդել։"
  }
 }

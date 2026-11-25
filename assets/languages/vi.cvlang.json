@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Tệp trống; không có văn bản để đọc.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Tệp Word được bảo vệ bằng mật khẩu. Hãy mở trong Word, gỡ mật khẩu và lưu lại.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Không thể đọc tệp Word cũ (.doc). Hãy mở trong Word và lưu thành .docx.",
-  "Pages-filen kunne ikke åpnes.": "Không thể mở tệp Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Không mở được tệp ZIP. Tệp có thể bị hỏng hoặc mới tải xuống một phần.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Bản xuất LinkedIn không có hồ sơ, công việc hay học vấn để nhập.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Không thể đọc tệp JSON Resume. Tệp có thể bị hỏng.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Khóa không được chấp nhận. Hãy kiểm tra xem bạn đã dán toàn bộ khóa API chưa.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI đã dùng quá nhiều bước cho một tin nhắn. Hãy chia nhỏ nhiệm vụ và thử lại.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code chưa đăng nhập. Hãy mở terminal, chạy “claude”, đăng nhập rồi thử lại.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code không phản hồi trong mười phút và đã bị dừng.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code không phản hồi trong năm phút và đã bị dừng.",
   "Endret sideoppsettet": "Đã đổi bố cục",
   "Endret rekkefølgen på seksjonene": "Đã đổi thứ tự các mục",
   "Oppdaterte språkene": "Đã cập nhật ngôn ngữ",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} đã trả lời bằng một lỗi. Hãy thử lại sau ít phút, hoặc chọn mô hình khác.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} đã trả lời, nhưng không đúng định dạng CVBuilder cần. Hãy thử lại.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: không kết nối được với {b}. Ollama, LM Studio hoặc máy chủ của bạn có đang chạy không?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: không tìm thấy mô hình nào cho khóa này",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: bản dịch thiếu một số phần của CV; hãy thử lại",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Đã cập nhật kỹ năng chính ({a} mục)",
   "Skjulte {a} deler i denne CV-en": "Đã ẩn {a} mục trong CV này",
   "Viste {a} deler igjen": "Đã hiện lại {a} mục",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Đã đổi thiết kế sang {a}",
   "Endret seksjonen «{a}»": "Đã sửa mục “{a}”",
   "La til seksjonen «{a}»": "Đã thêm mục “{a}”",
-  "Fjernet seksjonen «{a}»": "Đã xóa mục “{a}”"
+  "Fjernet seksjonen «{a}»": "Đã xóa mục “{a}”",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Không thể mở tệp Pages. Tệp có thể bị hỏng. Trong Pages: Tệp → Xuất ra → Word hoặc PDF, rồi nhập tệp đó vào.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code không phản hồi trong mười phút và đã bị dừng. Hãy thử lại, tốt nhất với một tin nhắn ngắn hơn. Nếu vẫn không được, hãy mở terminal và chạy “claude” để xem nó có hoạt động không.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code không phản hồi trong năm phút và đã bị dừng. Hãy thử lại, tốt nhất với một đoạn văn bản ngắn hơn. Nếu vẫn không được, hãy mở terminal và chạy “claude” để xem nó có hoạt động không.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Không thể khởi động Claude Code. Hãy kiểm tra xem Claude Code đã được cài đặt và hoạt động trong terminal chưa, hoặc chọn một dịch vụ AI khác.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder không tìm thấy công việc. Hãy chọn lại công việc trong danh sách và thử lại.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} không tìm thấy mô hình nào cho khóa này. Hãy kiểm tra xem khóa có thuộc dịch vụ này không, hoặc chọn dịch vụ khác.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} đã ngắt câu trả lời trước khi hoàn tất. Hãy thử lại.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Câu trả lời từ {a} quá dài và đã bị cắt. Hãy thử lại với văn bản ngắn hơn, hoặc chọn mô hình khác.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Bản dịch từ {a} thiếu một số phần của CV. Hãy thử lại, hoặc chọn mô hình khác."
  }
 }

@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Datoteka je prazna; besedila ni mogoče pridobiti.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Datoteka Word je zaščitena z geslom. Odprite jo v programu Word, odstranite geslo in jo znova shranite.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Starejše datoteke Word (.doc) ni bilo mogoče prebrati. Odprite jo v programu Word in jo shranite kot .docx.",
-  "Pages-filen kunne ikke åpnes.": "Datoteke Pages ni bilo mogoče odpreti.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Datoteke ZIP ni bilo mogoče odpreti. Morda je poškodovana ali pa je bila prenesena le delno.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Izvoz iz LinkedIna ne vsebuje profila, zaposlitev ali izobrazbe za uvoz.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Datoteke JSON Resume ni bilo mogoče prebrati. Morda je poškodovana.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Ključ ni bil sprejet. Preverite, ali ste prilepili celoten ključ API.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "UI je za eno sporočilo porabila preveč korakov. Razdelite nalogo in poskusite znova.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code ni prijavljen. Odprite terminal, zaženite „claude“, se prijavite in poskusite znova.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code ni odgovoril v desetih minutah, zato je bil ustavljen.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code ni odgovoril v petih minutah, zato je bil ustavljen.",
   "Endret sideoppsettet": "Spremenila postavitev",
   "Endret rekkefølgen på seksjonene": "Spremenila vrstni red razdelkov",
   "Oppdaterte språkene": "Posodobila jezike",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "Storitev {a} je odgovorila z napako. Poskusite znova čez trenutek ali izberite drug model.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} je odgovoril, vendar ne v obliki, ki jo potrebuje CVBuilder. Poskusite znova.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: ni se bilo mogoče povezati z {b}. Ali Ollama, LM Studio ali vaš strežnik deluje?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: za ta ključ ni bilo najdenih modelov",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: v prevodu so manjkali deli življenjepisa; poskusite znova",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Posodobljena ključna znanja (alinej: {a})",
   "Skjulte {a} deler i denne CV-en": "Skritih elementov v tem življenjepisu: {a}",
   "Viste {a} deler igjen": "Znova prikazanih elementov: {a}",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Oblikovanje zamenjano z {a}",
   "Endret seksjonen «{a}»": "Spremenjen razdelek „{a}“",
   "La til seksjonen «{a}»": "Dodan razdelek „{a}“",
-  "Fjernet seksjonen «{a}»": "Odstranjen razdelek „{a}“"
+  "Fjernet seksjonen «{a}»": "Odstranjen razdelek „{a}“",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Datoteke Pages ni bilo mogoče odpreti. Morda je poškodovana. V Pages: Datoteka → Izvozi v → Word ali PDF, nato uvozite to datoteko.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ni odgovoril v desetih minutah, zato je bil ustavljen. Poskusite znova, po možnosti s krajšim sporočilom. Če ne pomaga, odprite terminal in zaženite „claude“, da preverite, ali deluje.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ni odgovoril v petih minutah, zato je bil ustavljen. Poskusite znova, po možnosti s krajšim besedilom. Če ne pomaga, odprite terminal in zaženite „claude“, da preverite, ali deluje.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code ni bilo mogoče zagnati. Preverite, ali je Claude Code nameščen in deluje v terminalu, ali pa izberite drugo storitev UI.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder ni našel zaposlitve. Znova izberite zaposlitev na seznamu in poskusite še enkrat.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "Storitev {a} za ta ključ ni našla nobenega modela. Preverite, ali ključ pripada tej storitvi, ali pa izberite drugo storitev.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "Storitev {a} je prekinila odgovor, preden je bil končan. Poskusite znova.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Odgovor storitve {a} je bil predolg in je bil odrezan. Poskusite znova s krajšim besedilom ali izberite drug model.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "V prevodu storitve {a} so manjkali deli življenjepisa. Poskusite znova ali izberite drug model."
  }
 }

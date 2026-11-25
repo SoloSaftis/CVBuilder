@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "O ficheiro está baleiro; non hai texto que ler.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "O ficheiro Word está protexido con contrasinal. Ábreo en Word, quita o contrasinal e gárdao de novo.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Non se puido ler o ficheiro Word antigo (.doc). Ábreo en Word e gárdao como .docx.",
-  "Pages-filen kunne ikke åpnes.": "Non se puido abrir o ficheiro Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Non se puido abrir o ficheiro ZIP. Pode estar danado ou descargado só en parte.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "A exportación de LinkedIn non ten perfil, empregos nin formación que importar.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Non se puido ler o ficheiro JSON Resume. Pode estar danado.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Non se aceptou a chave. Comproba que pegaches a chave de API completa.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "A IA usou demasiados pasos nunha mensaxe. Divide a tarefa e téntao de novo.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code non iniciou sesión. Abre un terminal, executa «claude», inicia sesión e téntao de novo.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code non respondeu en dez minutos e detívose.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code non respondeu en cinco minutos e detívose.",
   "Endret sideoppsettet": "Cambiou o deseño de páxina",
   "Endret rekkefølgen på seksjonene": "Cambiou a orde das seccións",
   "Oppdaterte språkene": "Actualizou os idiomas",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} respondeu cun erro. Téntao de novo nun intre ou escolle outro modelo.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} respondeu, pero non no formato que necesita CVBuilder. Téntao de novo.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: non se puido conectar con {b}. Están en funcionamento Ollama, LM Studio ou o teu servidor?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: non se atoparon modelos para esta clave",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: á tradución faltáronlle partes do CV; téntao de novo",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Actualizáronse as competencias clave ({a} puntos)",
   "Skjulte {a} deler i denne CV-en": "Ocultáronse {a} elementos neste CV",
   "Viste {a} deler igjen": "Mostráronse {a} elementos de novo",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Cambiouse o deseño a {a}",
   "Endret seksjonen «{a}»": "Modificouse a sección «{a}»",
   "La til seksjonen «{a}»": "Engadiuse a sección «{a}»",
-  "Fjernet seksjonen «{a}»": "Eliminouse a sección «{a}»"
+  "Fjernet seksjonen «{a}»": "Eliminouse a sección «{a}»",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Non se puido abrir o ficheiro Pages. Pode estar danado. En Pages: Ficheiro → Exportar a → Word ou PDF, e importa ese ficheiro.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code non respondeu en dez minutos e detívose. Téntao de novo, mellor cunha mensaxe máis curta. Se non axuda, abre un terminal e executa «claude» para ver se funciona.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code non respondeu en cinco minutos e detívose. Téntao de novo, mellor cun texto máis curto. Se non axuda, abre un terminal e executa «claude» para ver se funciona.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Non se puido iniciar Claude Code. Comproba que Claude Code está instalado e funciona nun terminal, ou escolle outro servizo de IA.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder non atopou o emprego. Escolle de novo o emprego na lista e téntao outra vez.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} non atopou ningún modelo para esta clave. Comproba que a clave pertence a este servizo, ou escolle outro servizo.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} interrompeu a resposta antes de que estivese rematada. Téntao de novo.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "A resposta de {a} foi demasiado longa e cortouse. Téntao de novo cun texto máis curto ou escolle outro modelo.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Á tradución de {a} faltáronlle partes do CV. Téntao de novo ou escolle outro modelo."
  }
 }

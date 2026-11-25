@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ফাইলটো খালী; পঢ়িবলৈ কোনো লিখনি নাই।",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word ফাইলটো পাছৱৰ্ডেৰে সুৰক্ষিত। ইয়াক Word-ত খোলক, পাছৱৰ্ড আঁতৰাওক আৰু পুনৰ সংৰক্ষণ কৰক।",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "পুৰণি Word ফাইলটো (.doc) পঢ়িব পৰা নগ'ল। ইয়াক Word-ত খুলি .docx হিচাপে সংৰক্ষণ কৰক।",
-  "Pages-filen kunne ikke åpnes.": "Pages ফাইলটো খুলিব পৰা নগ'ল।",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP ফাইলটো খুলিব নোৱাৰিলে। ই ক্ষতিগ্ৰস্ত হ'ব পাৰে বা আংশিকভাৱে মাত্ৰ ডাউনলোড হ'ব পাৰে।",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn ৰপ্তানিত আমদানি কৰিবলৈ কোনো প্ৰ'ফাইল, চাকৰি বা শিক্ষা নাই।",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume ফাইলটো পঢ়িব পৰা নগ'ল। ই নষ্ট হৈ থাকিব পাৰে।",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "কীটো গ্ৰহণ কৰা নহ'ল। আপুনি সম্পূৰ্ণ API কীটো পেষ্ট কৰিছে নেকি পৰীক্ষা কৰক।",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI-য়ে এটা বাৰ্তাত অত্যধিক পদক্ষেপ ল'লে। কামটো ভাগ কৰি পুনৰ চেষ্টা কৰক।",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code ছাইন-ইন কৰা নাই। টাৰ্মিনেল খোলক, “claude” চলাওক, ছাইন-ইন কৰক, আৰু পুনৰ চেষ্টা কৰক।",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code-এ দহ মিনিটৰ ভিতৰত উত্তৰ নিদিলে আৰু বন্ধ কৰা হ'ল।",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code-এ পাঁচ মিনিটৰ ভিতৰত উত্তৰ নিদিলে আৰু বন্ধ কৰা হ'ল।",
   "Endret sideoppsettet": "পৃষ্ঠা বিন্যাস সলনি কৰিলে",
   "Endret rekkefølgen på seksjonene": "শাখাবোৰৰ ক্ৰম সলনি কৰিলে",
   "Oppdaterte språkene": "ভাষাবোৰ আপডেট কৰিলে",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a}-এ এটা ভুলৰে উত্তৰ দিলে। অলপ পিছত পুনৰ চেষ্টা কৰক, বা আন এটা মডেল বাছক।",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a}-এ উত্তৰ দিলে, কিন্তু CVBuilder-ক লগা ফৰ্মেটত নহয়। পুনৰ চেষ্টা কৰক।",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b}-ৰ সৈতে সংযোগ কৰিব পৰা নগ'ল। Ollama, LM Studio বা আপোনাৰ ছাৰ্ভাৰ চলি আছে নেকি?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: এই কীৰ বাবে কোনো মডেল পোৱা নগ'ল",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: অনুবাদত চিভিৰ কিছু অংশ বাদ পৰিল; পুনৰ চেষ্টা কৰক",
   "Oppdaterte kjernekompetansen ({a} punkter)": "মূল দক্ষতা আপডেট কৰিলে ({a}টা বিন্দু)",
   "Skjulte {a} deler i denne CV-en": "এই চিভিত {a}টা অংশ লুকুৱালে",
   "Viste {a} deler igjen": "{a}টা অংশ পুনৰ দেখুৱালে",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "ডিজাইন {a}-লৈ সলনি কৰিলে",
   "Endret seksjonen «{a}»": "“{a}” শাখাটো সলনি কৰিলে",
   "La til seksjonen «{a}»": "“{a}” শাখাটো যোগ কৰিলে",
-  "Fjernet seksjonen «{a}»": "“{a}” শাখাটো আঁতৰালে"
+  "Fjernet seksjonen «{a}»": "“{a}” শাখাটো আঁতৰালে",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages ফাইলটো খুলিব পৰা নগ'ল। ই ক্ষতিগ্ৰস্ত হ'ব পাৰে। Pages-ত: ফাইল → ৰপ্তানি কৰক → Word বা PDF, তাৰ পিছত সেই ফাইলটো আমদানি কৰক।",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-এ দহ মিনিটৰ ভিতৰত উত্তৰ নিদিলে আৰু বন্ধ কৰা হ'ল। পুনৰ চেষ্টা কৰক, সম্ভৱ হ'লে চুটি বাৰ্তাৰে। তাতো নহ'লে এটা টাৰ্মিনেল খুলি “claude” চলাওক আৰু ই কাম কৰে নে নাই চাওক।",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-এ পাঁচ মিনিটৰ ভিতৰত উত্তৰ নিদিলে আৰু বন্ধ কৰা হ'ল। পুনৰ চেষ্টা কৰক, সম্ভৱ হ'লে চুটি পাঠেৰে। তাতো নহ'লে এটা টাৰ্মিনেল খুলি “claude” চলাওক আৰু ই কাম কৰে নে নাই চাওক।",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code আৰম্ভ কৰিব পৰা নগ'ল। Claude Code ইনষ্টল কৰা আছে আৰু টাৰ্মিনেলত কাম কৰে নে নাই পৰীক্ষা কৰক, বা আন এটা AI সেৱা বাছক।",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder-এ চাকৰিটো বিচাৰি নাপালে। তালিকাত চাকৰিটো পুনৰ বাছক আৰু পুনৰ চেষ্টা কৰক।",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a}-এ এই কীৰ বাবে কোনো মডেল বিচাৰি নাপালে। কীটো এই সেৱাৰ নে নহয় পৰীক্ষা কৰক, বা আন এটা সেৱা বাছক।",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a}-এ উত্তৰটো সম্পূৰ্ণ হোৱাৰ আগতেই বন্ধ কৰি দিলে। পুনৰ চেষ্টা কৰক।",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a}ৰ পৰা অহা উত্তৰটো অতি দীঘল হোৱাত কাটি দিয়া হ'ল। চুটি পাঠেৰে পুনৰ চেষ্টা কৰক, বা আন এটা মডেল বাছক।",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a}ৰ পৰা অহা অনুবাদত চিভিৰ কিছু অংশ বাদ পৰিল। পুনৰ চেষ্টা কৰক, বা আন এটা মডেল বাছক।"
  }
 }

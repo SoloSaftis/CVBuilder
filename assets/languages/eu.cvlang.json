@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Fitxategia hutsik dago; ez dago irakurtzeko testurik.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word fitxategia pasahitzez babestuta dago. Ireki Word-en, kendu pasahitza eta gorde berriro.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Ezin izan da Word fitxategi zaharra (.doc) irakurri. Ireki Word-en eta gorde .docx gisa.",
-  "Pages-filen kunne ikke åpnes.": "Ezin izan da Pages fitxategia ireki.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Ezin izan da ZIP fitxategia ireki. Hondatuta egon daiteke edo zati bat bakarrik deskargatuta.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedInen esportazioak ez du inportatzeko profilik, lanpostuik edo prestakuntzarik.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Ezin izan da JSON Resume fitxategia irakurri. Hondatuta egon daiteke.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Gakoa ez da onartu. Egiaztatu API gako osoa itsatsi duzula.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AAk urrats gehiegi erabili ditu mezu bakar batean. Zatitu zeregina eta saiatu berriro.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code-k ez du saiorik hasita. Ireki terminal bat, exekutatu “claude”, hasi saioa eta saiatu berriro.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code-k ez du hamar minututan erantzun eta gelditu egin da.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code-k ez du bost minututan erantzun eta gelditu egin da.",
   "Endret sideoppsettet": "Orri-diseinua aldatu du",
   "Endret rekkefølgen på seksjonene": "Atalen ordena aldatu du",
   "Oppdaterte språkene": "Hizkuntzak eguneratu ditu",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} zerbitzuak errore batekin erantzun du. Saiatu berriro pixka bat barru, edo aukeratu beste eredu bat.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} zerbitzuak erantzun du, baina ez CVBuilder-ek behar duen formatuan. Saiatu berriro.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: ezin izan da {b} helbidearekin konektatu. Martxan al dago Ollama, LM Studio edo zure zerbitzaria?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: ez da eredurik aurkitu gako honetarako",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: itzulpenean CVaren zatiak falta ziren; saiatu berriro",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Gaitasun nagusiak eguneratu dira ({a} puntu)",
   "Skjulte {a} deler i denne CV-en": "{a} atal ezkutatu dira CV honetan",
   "Viste {a} deler igjen": "{a} atal berriro erakutsi dira",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Diseinua aldatu da: {a}",
   "Endret seksjonen «{a}»": "“{a}” atala aldatu da",
   "La til seksjonen «{a}»": "“{a}” atala gehitu da",
-  "Fjernet seksjonen «{a}»": "“{a}” atala kendu da"
+  "Fjernet seksjonen «{a}»": "“{a}” atala kendu da",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Ezin izan da Pages fitxategia ireki. Baliteke hondatuta egotea. Pages-en: Fitxategia → Esportatu → Word edo PDF, eta inportatu fitxategi hori.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-k ez du hamar minututan erantzun eta gelditu egin da. Saiatu berriro, ahal bada mezu laburrago batekin. Horrek ez badu laguntzen, ireki terminal bat eta exekutatu “claude” funtzionatzen duen ikusteko.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-k ez du bost minututan erantzun eta gelditu egin da. Saiatu berriro, ahal bada testu laburrago batekin. Horrek ez badu laguntzen, ireki terminal bat eta exekutatu “claude” funtzionatzen duen ikusteko.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Ezin izan da Claude Code abiarazi. Egiaztatu Claude Code instalatuta dagoela eta terminal batean funtzionatzen duela, edo aukeratu beste AA zerbitzu bat.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilderrek ez du lana aurkitu. Aukeratu lana berriro zerrendan eta saiatu berriz.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} zerbitzuak ez du eredurik aurkitu gako honetarako. Egiaztatu gakoa zerbitzu honetakoa dela, edo aukeratu beste zerbitzu bat.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} zerbitzuak erantzuna eten du amaitu aurretik. Saiatu berriro.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} zerbitzuaren erantzuna luzeegia izan da eta moztu egin da. Saiatu berriro testu laburragoarekin, edo aukeratu beste eredu bat.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} zerbitzuaren itzulpenean CVaren zatiak falta ziren. Saiatu berriro, edo aukeratu beste eredu bat."
  }
 }

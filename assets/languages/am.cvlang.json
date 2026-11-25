@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ፋይሉ ባዶ ነው፤ የሚነበብ ጽሑፍ የለም።",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "የWord ፋይሉ በይለፍ ቃል የተጠበቀ ነው። በWord ይክፈቱት፣ የይለፍ ቃሉን ያስወግዱና እንደገና ያስቀምጡት።",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "የቆየው የWord ፋይል (.doc) ሊነበብ አልቻለም። በWord ከፍተው እንደ .docx ያስቀምጡት።",
-  "Pages-filen kunne ikke åpnes.": "የPages ፋይሉ ሊከፈት አልቻለም።",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "የZIP ፋይሉ ሊከፈት አልቻለም። ተበላሽቶ ወይም በከፊል ብቻ ወርዶ ሊሆን ይችላል።",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "የLinkedIn ኤክስፖርቱ ለማስገባት የሚሆን መገለጫ፣ ሥራ ወይም ትምህርት የለውም።",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "የJSON Resume ፋይሉን ማንበብ አልተቻለም። ተበላሽቶ ሊሆን ይችላል።",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "ቁልፉ ተቀባይነት አላገኘም። ሙሉውን የAPI ቁልፍ መለጠፍዎን ያረጋግጡ።",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI በአንድ መልዕክት ላይ በጣም ብዙ እርምጃዎችን ተጠቅሟል። ሥራውን ከፋፍለው እንደገና ይሞክሩ።",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code አልገባም። ተርሚናል ይክፈቱ፣ «claude»ን ያሂዱ፣ ይግቡና እንደገና ይሞክሩ።",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code በአሥር ደቂቃ ውስጥ ስላልመለሰ ቆሟል።",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code በአምስት ደቂቃ ውስጥ ስላልመለሰ ቆሟል።",
   "Endret sideoppsettet": "የገጽ አቀማመጡን ቀየረ",
   "Endret rekkefølgen på seksjonene": "የክፍሎቹን ቅደም ተከተል ቀየረ",
   "Oppdaterte språkene": "ቋንቋዎቹን አዘመነ",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} በስህተት መለሰ። ትንሽ ቆይተው እንደገና ይሞክሩ፣ ወይም ሌላ ሞዴል ይምረጡ።",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} መለሰ፣ ግን CVBuilder በሚፈልገው ቅርጸት አይደለም። እንደገና ይሞክሩ።",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}፦ {b}ን ማግኘት አልተቻለም። Ollama፣ LM Studio ወይም አገልጋይዎ እየሠራ ነው?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}፦ ለዚህ ቁልፍ ምንም ሞዴሎች አልተገኙም",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}፦ ትርጉሙ የሲቪውን ክፍሎች ዘሏል፤ እንደገና ይሞክሩ",
   "Oppdaterte kjernekompetansen ({a} punkter)": "ዋና ክህሎቶችን አዘመነ ({a} ንጥሎች)",
   "Skjulte {a} deler i denne CV-en": "{a} ክፍሎችን በዚህ ሲቪ ውስጥ ደበቀ",
   "Viste {a} deler igjen": "{a} ክፍሎችን እንደገና አሳየ",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "ዲዛይኑን ወደ {a} ቀየረ",
   "Endret seksjonen «{a}»": "«{a}» የተባለውን ክፍል ቀየረ",
   "La til seksjonen «{a}»": "«{a}» የተባለውን ክፍል አከለ",
-  "Fjernet seksjonen «{a}»": "«{a}» የተባለውን ክፍል አስወገደ"
+  "Fjernet seksjonen «{a}»": "«{a}» የተባለውን ክፍል አስወገደ",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "የPages ፋይሉ ሊከፈት አልቻለም። ተበላሽቶ ሊሆን ይችላል። በPages ውስጥ፦ ፋይል → ወደ ላክ → Word ወይም PDF ይምረጡ፣ ከዚያ ያንን ፋይል ያስገቡ።",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code በአሥር ደቂቃ ውስጥ ስላልመለሰ ቆሟል። እንደገና ይሞክሩ፣ ቢቻል በአጭር መልእክት። ካልረዳ ተርሚናል ከፍተው የሚሠራ መሆኑን ለማየት «claude»ን ያሂዱ።",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code በአምስት ደቂቃ ውስጥ ስላልመለሰ ቆሟል። እንደገና ይሞክሩ፣ ቢቻል በአጭር ጽሑፍ። ካልረዳ ተርሚናል ከፍተው የሚሠራ መሆኑን ለማየት «claude»ን ያሂዱ።",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code ሊጀመር አልቻለም። Claude Code መጫኑን እና በተርሚናል ውስጥ እንደሚሠራ ያረጋግጡ፣ ወይም ሌላ የAI አገልግሎት ይምረጡ።",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder ሥራውን አላገኘም። ሥራውን ከዝርዝሩ እንደገና መርጠው እንደገና ይሞክሩ።",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} ለዚህ ቁልፍ ምንም ሞዴሎች አላገኘም። ቁልፉ የዚህ አገልግሎት መሆኑን ያረጋግጡ፣ ወይም ሌላ አገልግሎት ይምረጡ።",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} መልሱን ሳይጨርስ አቋርጧል። እንደገና ይሞክሩ።",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "ከ{a} የመጣው መልስ በጣም ረዝሞ ተቆርጧል። በአጭር ጽሑፍ እንደገና ይሞክሩ፣ ወይም ሌላ ሞዴል ይምረጡ።",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "ከ{a} የመጣው ትርጉም የሲቪውን ክፍሎች ዘሏል። እንደገና ይሞክሩ፣ ወይም ሌላ ሞዴል ይምረጡ።"
  }
 }

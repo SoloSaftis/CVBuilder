@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ಫೈಲ್ ಖಾಲಿಯಾಗಿದೆ; ಓದಲು ಯಾವುದೇ ಪಠ್ಯವಿಲ್ಲ.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word ಫೈಲ್ ಪಾಸ್‌ವರ್ಡ್-ರಕ್ಷಿತವಾಗಿದೆ. ಅದನ್ನು Word ನಲ್ಲಿ ತೆರೆದು, ಪಾಸ್‌ವರ್ಡ್ ತೆಗೆದು ಮತ್ತೆ ಉಳಿಸಿ.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "ಹಳೆಯ Word ಫೈಲ್ (.doc) ಓದಲು ಆಗಲಿಲ್ಲ. ಅದನ್ನು Word ನಲ್ಲಿ ತೆರೆದು .docx ಆಗಿ ಉಳಿಸಿ.",
-  "Pages-filen kunne ikke åpnes.": "Pages ಫೈಲ್ ತೆರೆಯಲು ಆಗಲಿಲ್ಲ.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP ಫೈಲ್ ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಅದು ಹಾನಿಗೊಂಡಿರಬಹುದು ಅಥವಾ ಭಾಗಶಃ ಮಾತ್ರ ಡೌನ್‌ಲೋಡ್ ಆಗಿರಬಹುದು.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn ರಫ್ತಿನಲ್ಲಿ ಆಮದು ಮಾಡಲು ಪ್ರೊಫೈಲ್, ಉದ್ಯೋಗಗಳು ಅಥವಾ ಶಿಕ್ಷಣ ಇಲ್ಲ.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume ಫೈಲ್ ಅನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಅದು ಹಾನಿಗೊಂಡಿರಬಹುದು.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "ಕೀ ಸ್ವೀಕರಿಸಲಾಗಲಿಲ್ಲ. ನೀವು ಸಂಪೂರ್ಣ API ಕೀ ಅಂಟಿಸಿದ್ದೀರಾ ಎಂದು ಪರಿಶೀಲಿಸಿ.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI ಒಂದು ಸಂದೇಶಕ್ಕೆ ತುಂಬಾ ಹಂತಗಳನ್ನು ಬಳಸಿತು. ಕೆಲಸವನ್ನು ವಿಭಜಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code ಸೈನ್ ಇನ್ ಆಗಿಲ್ಲ. ಟರ್ಮಿನಲ್ ತೆರೆದು, “claude” ಚಲಾಯಿಸಿ, ಸೈನ್ ಇನ್ ಮಾಡಿ, ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code ಹತ್ತು ನಿಮಿಷಗಳಲ್ಲಿ ಉತ್ತರಿಸಲಿಲ್ಲ ಮತ್ತು ನಿಲ್ಲಿಸಲಾಯಿತು.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code ಐದು ನಿಮಿಷಗಳಲ್ಲಿ ಉತ್ತರಿಸಲಿಲ್ಲ ಮತ್ತು ನಿಲ್ಲಿಸಲಾಯಿತು.",
   "Endret sideoppsettet": "ವಿನ್ಯಾಸ ರಚನೆ ಬದಲಿಸಲಾಯಿತು",
   "Endret rekkefølgen på seksjonene": "ವಿಭಾಗಗಳ ಕ್ರಮ ಬದಲಿಸಲಾಯಿತು",
   "Oppdaterte språkene": "ಭಾಷೆಗಳನ್ನು ನವೀಕರಿಸಲಾಯಿತು",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} ದೋಷದೊಂದಿಗೆ ಉತ್ತರಿಸಿತು. ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ, ಅಥವಾ ಬೇರೆ ಮಾದರಿ ಆಯ್ಕೆಮಾಡಿ.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} ಉತ್ತರಿಸಿತು, ಆದರೆ CVBuilder ಗೆ ಬೇಕಾದ ಸ್ವರೂಪದಲ್ಲಿ ಅಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b} ಅನ್ನು ಸಂಪರ್ಕಿಸಲು ಆಗಲಿಲ್ಲ. Ollama, LM Studio ಅಥವಾ ನಿಮ್ಮ ಸರ್ವರ್ ಚಾಲನೆಯಲ್ಲಿದೆಯೇ?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: ಈ ಕೀಗೆ ಯಾವುದೇ ಮಾದರಿಗಳು ಸಿಗಲಿಲ್ಲ",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: ಅನುವಾದದಲ್ಲಿ ಸಿವಿಯ ಕೆಲವು ಭಾಗಗಳು ಬಿಟ್ಟುಹೋಗಿವೆ; ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
   "Oppdaterte kjernekompetansen ({a} punkter)": "ಪ್ರಮುಖ ಕೌಶಲ್ಯಗಳನ್ನು ನವೀಕರಿಸಲಾಗಿದೆ ({a} ಅಂಶಗಳು)",
   "Skjulte {a} deler i denne CV-en": "ಈ ಸಿವಿಯಲ್ಲಿ {a} ಭಾಗಗಳು ಅಡಗಿಸಲಾಯಿತು",
   "Viste {a} deler igjen": "{a} ಭಾಗಗಳು ಮತ್ತೆ ತೋರಿಸಲಾಯಿತು",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "ವಿನ್ಯಾಸವನ್ನು {a} ಗೆ ಬದಲಾಯಿಸಲಾಗಿದೆ",
   "Endret seksjonen «{a}»": "“{a}” ವಿಭಾಗವನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ",
   "La til seksjonen «{a}»": "“{a}” ವಿಭಾಗವನ್ನು ಸೇರಿಸಲಾಗಿದೆ",
-  "Fjernet seksjonen «{a}»": "“{a}” ವಿಭಾಗವನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
+  "Fjernet seksjonen «{a}»": "“{a}” ವಿಭಾಗವನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages ಫೈಲ್ ತೆರೆಯಲು ಆಗಲಿಲ್ಲ. ಅದು ಹಾಳಾಗಿರಬಹುದು. Pages ನಲ್ಲಿ: ಫೈಲ್ → ಇದಕ್ಕೆ ರಫ್ತು ಮಾಡಿ → Word ಅಥವಾ PDF, ನಂತರ ಆ ಫೈಲ್ ಅನ್ನು ಆಮದು ಮಾಡಿ.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ಹತ್ತು ನಿಮಿಷಗಳಲ್ಲಿ ಉತ್ತರಿಸಲಿಲ್ಲ ಮತ್ತು ನಿಲ್ಲಿಸಲಾಯಿತು. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ, ಸಾಧ್ಯವಾದರೆ ಚಿಕ್ಕ ಸಂದೇಶದೊಂದಿಗೆ. ಅದರಿಂದ ಆಗದಿದ್ದರೆ, ಟರ್ಮಿನಲ್ ತೆರೆದು “claude” ಚಲಾಯಿಸಿ, ಅದು ಕೆಲಸ ಮಾಡುತ್ತದೆಯೇ ಎಂದು ನೋಡಿ.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ಐದು ನಿಮಿಷಗಳಲ್ಲಿ ಉತ್ತರಿಸಲಿಲ್ಲ ಮತ್ತು ನಿಲ್ಲಿಸಲಾಯಿತು. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ, ಸಾಧ್ಯವಾದರೆ ಚಿಕ್ಕ ಪಠ್ಯದೊಂದಿಗೆ. ಅದರಿಂದ ಆಗದಿದ್ದರೆ, ಟರ್ಮಿನಲ್ ತೆರೆದು “claude” ಚಲಾಯಿಸಿ, ಅದು ಕೆಲಸ ಮಾಡುತ್ತದೆಯೇ ಎಂದು ನೋಡಿ.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code ಅನ್ನು ಪ್ರಾರಂಭಿಸಲು ಆಗಲಿಲ್ಲ. Claude Code ಸ್ಥಾಪಿತವಾಗಿದೆಯೇ ಮತ್ತು ಟರ್ಮಿನಲ್‌ನಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ, ಅಥವಾ ಬೇರೆ AI ಸೇವೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder ಗೆ ಉದ್ಯೋಗ ಸಿಗಲಿಲ್ಲ. ಪಟ್ಟಿಯಲ್ಲಿ ಉದ್ಯೋಗವನ್ನು ಮತ್ತೆ ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} ಗೆ ಈ ಕೀಗೆ ಯಾವುದೇ ಮಾದರಿಗಳು ಸಿಗಲಿಲ್ಲ. ಕೀ ಈ ಸೇವೆಗೆ ಸೇರಿದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ, ಅಥವಾ ಬೇರೆ ಸೇವೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} ಉತ್ತರವನ್ನು ಪೂರ್ಣಗೊಳ್ಳುವ ಮೊದಲೇ ನಿಲ್ಲಿಸಿತು. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} ನಿಂದ ಬಂದ ಉತ್ತರ ತುಂಬಾ ಉದ್ದವಾದ ಕಾರಣ ಮೊಟಕುಗೊಳಿಸಲಾಗಿದೆ. ಚಿಕ್ಕ ಪಠ್ಯದೊಂದಿಗೆ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ, ಅಥವಾ ಬೇರೆ ಮಾದರಿ ಆಯ್ಕೆಮಾಡಿ.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} ನ ಅನುವಾದದಲ್ಲಿ ಸಿವಿಯ ಕೆಲವು ಭಾಗಗಳು ಬಿಟ್ಟುಹೋಗಿವೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ, ಅಥವಾ ಬೇರೆ ಮಾದರಿ ಆಯ್ಕೆಮಾಡಿ."
  }
 }

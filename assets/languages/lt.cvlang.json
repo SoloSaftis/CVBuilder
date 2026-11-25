@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Failas tuščias; nėra ko gauti.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word failas apsaugotas slaptažodžiu. Atidarykite jį Word programoje, pašalinkite slaptažodį ir išsaugokite iš naujo.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Senesnio Word failo (.doc) nepavyko perskaityti. Atidarykite jį Word programoje ir išsaugokite kaip .docx.",
-  "Pages-filen kunne ikke åpnes.": "Nepavyko atidaryti Pages failo.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Nepavyko atidaryti ZIP failo. Jis gali būti pažeistas arba tik iš dalies atsisiųstas.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn eksporte nėra profilio, darbų ar išsilavinimo, kuriuos būtų galima įkelti.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Nepavyko perskaityti JSON Resume failo. Jis gali būti pažeistas.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Raktas nepriimtas. Patikrinkite, ar įklijavote visą API raktą.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "DI vienai žinutei panaudojo per daug žingsnių. Padalykite užduotį ir bandykite dar kartą.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code neprisijungęs. Atidarykite terminalą, paleiskite „claude“, prisijunkite ir bandykite dar kartą.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code neatsakė per dešimt minučių ir buvo sustabdytas.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code neatsakė per penkias minutes ir buvo sustabdytas.",
   "Endret sideoppsettet": "Puslapio maketas pakeistas",
   "Endret rekkefølgen på seksjonene": "Skyrių eilės tvarka pakeista",
   "Oppdaterte språkene": "Kalbos atnaujintos",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} atsakė su klaida. Bandykite dar kartą po truputėlio arba pasirinkite kitą modelį.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} atsakė, bet ne tokiu formatu, kokio reikia CVBuilder. Bandykite dar kartą.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: nepavyko prisijungti prie {b}. Ar veikia Ollama, LM Studio ar jūsų serveris?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: šiam raktui nerasta modelių",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: vertime trūko CV dalių; bandykite dar kartą",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Atnaujintos pagrindinės kompetencijos (punktų: {a})",
   "Skjulte {a} deler i denne CV-en": "Paslėptų dalių šiame CV: {a}",
   "Viste {a} deler igjen": "Vėl parodytų dalių: {a}",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Dizainas pakeistas į {a}",
   "Endret seksjonen «{a}»": "Pakeistas skyrius „{a}“",
   "La til seksjonen «{a}»": "Pridėtas skyrius „{a}“",
-  "Fjernet seksjonen «{a}»": "Pašalintas skyrius „{a}“"
+  "Fjernet seksjonen «{a}»": "Pašalintas skyrius „{a}“",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Nepavyko atidaryti Pages failo. Jis gali būti sugadintas. Programoje Pages: Failas → Eksportuoti į → Word arba PDF, tada importuokite tą failą.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code neatsakė per dešimt minučių ir buvo sustabdytas. Bandykite dar kartą, geriausia su trumpesne žinute. Jei nepadeda, atidarykite terminalą ir paleiskite „claude“, kad pamatytumėte, ar jis veikia.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code neatsakė per penkias minutes ir buvo sustabdytas. Bandykite dar kartą, geriausia su trumpesniu tekstu. Jei nepadeda, atidarykite terminalą ir paleiskite „claude“, kad pamatytumėte, ar jis veikia.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Nepavyko paleisti Claude Code. Patikrinkite, ar Claude Code įdiegtas ir veikia terminale, arba pasirinkite kitą DI paslaugą.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder nerado šios darbovietės. Sąraše dar kartą pasirinkite darbovietę ir bandykite vėl.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} nerado modelių šiam raktui. Patikrinkite, ar raktas priklauso šiai paslaugai, arba pasirinkite kitą paslaugą.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} nutraukė atsakymą, kol jis dar nebuvo baigtas. Bandykite dar kartą.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} atsakymas tapo per ilgas ir buvo nukirptas. Bandykite dar kartą su trumpesniu tekstu arba pasirinkite kitą modelį.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} vertime trūko CV dalių. Bandykite dar kartą arba pasirinkite kitą modelį."
  }
 }

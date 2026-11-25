@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "O ficheiro está vazio; não há texto para obter.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "O ficheiro Word está protegido por palavra-passe. Abra-o no Word, remova a palavra-passe e guarde-o novamente.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Não foi possível ler o ficheiro Word antigo (.doc). Abra-o no Word e guarde-o como .docx.",
-  "Pages-filen kunne ikke åpnes.": "Não foi possível abrir o ficheiro Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Não foi possível abrir o ficheiro ZIP. Pode estar danificado ou ter sido transferido só em parte.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "A exportação do LinkedIn não tem perfil, empregos nem formação para importar.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Não foi possível ler o ficheiro JSON Resume. Pode estar danificado.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "A chave não foi aceite. Verifique se colou a chave de API completa.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "A IA usou demasiados passos numa só mensagem. Divida a tarefa e tente de novo.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "O Claude Code não tem sessão iniciada. Abra um terminal, execute “claude”, inicie sessão e tente de novo.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "O Claude Code não respondeu em dez minutos e foi parado.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "O Claude Code não respondeu em cinco minutos e foi parado.",
   "Endret sideoppsettet": "Esquema alterado",
   "Endret rekkefølgen på seksjonene": "Ordem das secções alterada",
   "Oppdaterte språkene": "Idiomas atualizados",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} respondeu com um erro. Tente novamente daqui a pouco ou escolha outro modelo.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} respondeu, mas não no formato de que o CVBuilder precisa. Tente novamente.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: não foi possível ligar a {b}. O Ollama, o LM Studio ou o seu servidor está a funcionar?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: não foram encontrados modelos para esta chave",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: a tradução deixou de fora partes do CV; tente novamente",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Competências principais atualizadas ({a} itens)",
   "Skjulte {a} deler i denne CV-en": "{a} itens ocultos neste CV",
   "Viste {a} deler igjen": "{a} itens mostrados novamente",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Design mudado para {a}",
   "Endret seksjonen «{a}»": "Secção “{a}” alterada",
   "La til seksjonen «{a}»": "Secção “{a}” adicionada",
-  "Fjernet seksjonen «{a}»": "Secção “{a}” removida"
+  "Fjernet seksjonen «{a}»": "Secção “{a}” removida",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Não foi possível abrir o ficheiro Pages. Pode estar danificado. No Pages: Ficheiro → Exportar para → Word ou PDF, e importe esse ficheiro.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "O Claude Code não respondeu em dez minutos e foi parado. Tente novamente, de preferência com uma mensagem mais curta. Se não resultar, abra um terminal e execute “claude” para ver se funciona.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "O Claude Code não respondeu em cinco minutos e foi parado. Tente novamente, de preferência com um texto mais curto. Se não resultar, abra um terminal e execute “claude” para ver se funciona.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Não foi possível iniciar o Claude Code. Verifique se o Claude Code está instalado e funciona num terminal, ou escolha outro serviço de IA.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "O CVBuilder não encontrou o emprego. Escolha novamente o emprego na lista e tente outra vez.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} não encontrou modelos para esta chave. Verifique se a chave pertence a este serviço ou escolha outro serviço.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} interrompeu a resposta antes de terminar. Tente novamente.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "A resposta de {a} ficou demasiado longa e foi cortada. Tente novamente com um texto mais curto ou escolha outro modelo.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "A tradução de {a} deixou de fora partes do CV. Tente novamente ou escolha outro modelo."
  }
 }

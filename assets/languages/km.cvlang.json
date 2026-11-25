@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ឯកសារទទេ គ្មានអត្ថបទដើម្បីអានទេ។",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "ឯកសារ Word ត្រូវបានការពារដោយពាក្យសម្ងាត់។ បើកវាក្នុង Word ដកពាក្យសម្ងាត់ចេញ ហើយរក្សាទុកម្ដងទៀត។",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "មិនអាចអានឯកសារ Word ចាស់ (.doc) បានទេ។ បើកវាក្នុង Word ហើយរក្សាទុកជា .docx។",
-  "Pages-filen kunne ikke åpnes.": "មិនអាចបើកឯកសារ Pages បានទេ។",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "មិនអាចបើកឯកសារ ZIP បានទេ។ វាអាចខូច ឬបានទាញយកតែផ្នែកខ្លះប៉ុណ្ណោះ។",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "ការនាំចេញ LinkedIn គ្មានប្រវត្តិរូប ការងារ ឬការអប់រំដែលអាចនាំចូលបានទេ។",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "មិនអាចអានឯកសារ JSON Resume បានទេ។ វាអាចខូច។",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "កូនសោមិនត្រូវបានទទួលយកទេ។ ពិនិត្យថាអ្នកបានបិទភ្ជាប់កូនសោ API ទាំងមូល។",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI បានប្រើជំហានច្រើនពេកលើសារតែមួយ។ បំបែកកិច្ចការ ហើយព្យាយាមម្ដងទៀត។",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code មិនទាន់បានចូលគណនីទេ។ បើកស្ថានីយ ដំណើរការ “claude” ចូលគណនី ហើយព្យាយាមម្ដងទៀត។",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code មិនបានឆ្លើយតបក្នុងរយៈពេលដប់នាទីទេ ហើយត្រូវបានបញ្ឈប់។",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code មិនបានឆ្លើយតបក្នុងរយៈពេលប្រាំនាទីទេ ហើយត្រូវបានបញ្ឈប់។",
   "Endret sideoppsettet": "បានប្ដូរប្លង់ទំព័រ",
   "Endret rekkefølgen på seksjonene": "បានប្ដូរលំដាប់ផ្នែក",
   "Oppdaterte språkene": "បានធ្វើបច្ចុប្បន្នភាពភាសា",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} បានឆ្លើយដោយមានកំហុស។ សូមព្យាយាមម្ដងទៀតបន្តិចទៀត ឬជ្រើសម៉ូដែលផ្សេង។",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} បានឆ្លើយតប ប៉ុន្តែមិនមែនក្នុងទម្រង់ដែល CVBuilder ត្រូវការទេ។ សូមព្យាយាមម្ដងទៀត។",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}៖ មិនអាចភ្ជាប់ទៅ {b} បានទេ។ តើ Ollama, LM Studio ឬម៉ាស៊ីនមេរបស់អ្នកកំពុងដំណើរការទេ?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}៖ រកមិនឃើញម៉ូដែលសម្រាប់កូនសោនេះទេ",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}៖ ការបកប្រែបានខ្វះផ្នែកខ្លះនៃប្រវត្តិរូប; សូមព្យាយាមម្ដងទៀត",
   "Oppdaterte kjernekompetansen ({a} punkter)": "បានធ្វើបច្ចុប្បន្នភាពជំនាញស្នូល ({a} ចំណុច)",
   "Skjulte {a} deler i denne CV-en": "បានលាក់ {a} ផ្នែកក្នុង CV នេះ",
   "Viste {a} deler igjen": "បានបង្ហាញ {a} ផ្នែកម្ដងទៀត",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "បានប្ដូររចនាទៅជា {a}",
   "Endret seksjonen «{a}»": "បានកែប្រែផ្នែក “{a}”",
   "La til seksjonen «{a}»": "បានបន្ថែមផ្នែក “{a}”",
-  "Fjernet seksjonen «{a}»": "បានលុបផ្នែក “{a}”"
+  "Fjernet seksjonen «{a}»": "បានលុបផ្នែក “{a}”",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "មិនអាចបើកឯកសារ Pages បានទេ។ វាប្រហែលជាខូច។ នៅក្នុង Pages៖ ឯកសារ → នាំចេញទៅ → Word ឬ PDF រួចនាំចូលឯកសារនោះ។",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code មិនបានឆ្លើយតបក្នុងរយៈពេលដប់នាទីទេ ហើយត្រូវបានបញ្ឈប់។ សូមព្យាយាមម្ដងទៀត ល្អបំផុតជាមួយសារខ្លីជាងនេះ។ បើនៅតែមិនបាន សូមបើកទែមីណាល់ ហើយដំណើរការ “claude” ដើម្បីមើលថាវាដំណើរការឬទេ។",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code មិនបានឆ្លើយតបក្នុងរយៈពេលប្រាំនាទីទេ ហើយត្រូវបានបញ្ឈប់។ សូមព្យាយាមម្ដងទៀត ល្អបំផុតជាមួយអត្ថបទខ្លីជាងនេះ។ បើនៅតែមិនបាន សូមបើកទែមីណាល់ ហើយដំណើរការ “claude” ដើម្បីមើលថាវាដំណើរការឬទេ។",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "មិនអាចចាប់ផ្ដើម Claude Code បានទេ។ សូមពិនិត្យថា Claude Code ត្រូវបានដំឡើង ហើយដំណើរការនៅក្នុងទែមីណាល់ ឬជ្រើសសេវា AI ផ្សេង។",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder រកមិនឃើញការងារនោះទេ។ សូមជ្រើសការងារក្នុងបញ្ជីម្ដងទៀត ហើយព្យាយាមម្ដងទៀត។",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} រកមិនឃើញម៉ូដែលសម្រាប់កូនសោនេះទេ។ សូមពិនិត្យថាកូនសោនេះជារបស់សេវានេះ ឬជ្រើសសេវាផ្សេង។",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} បានបញ្ឈប់ចម្លើយមុនពេលវាចប់។ សូមព្យាយាមម្ដងទៀត។",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "ចម្លើយពី {a} វែងពេក ហើយត្រូវបានកាត់។ សូមព្យាយាមម្ដងទៀតជាមួយអត្ថបទខ្លីជាងនេះ ឬជ្រើសម៉ូដែលផ្សេង។",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "ការបកប្រែពី {a} បានខ្វះផ្នែកខ្លះនៃប្រវត្តិរូប។ សូមព្យាយាមម្ដងទៀត ឬជ្រើសម៉ូដែលផ្សេង។"
  }
 }

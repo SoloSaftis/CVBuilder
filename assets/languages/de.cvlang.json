@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Die Datei ist leer; es gibt keinen Text zum Abrufen.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Die Word-Datei ist kennwortgeschützt. Öffnen Sie sie in Word, entfernen Sie das Kennwort und speichern Sie sie erneut.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Die ältere Word-Datei (.doc) konnte nicht gelesen werden. Öffnen Sie sie in Word und speichern Sie sie als .docx.",
-  "Pages-filen kunne ikke åpnes.": "Die Pages-Datei konnte nicht geöffnet werden.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Die ZIP-Datei konnte nicht geöffnet werden. Sie ist möglicherweise beschädigt oder nur teilweise heruntergeladen.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Der LinkedIn-Export enthält kein Profil, keine Stationen und keine Ausbildung zum Übernehmen.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Die JSON-Resume-Datei konnte nicht gelesen werden. Sie ist möglicherweise beschädigt.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Der Schlüssel wurde nicht akzeptiert. Prüfen Sie, ob Sie den gesamten API-Schlüssel eingefügt haben.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "Die KI hat für eine Nachricht zu viele Schritte benötigt. Teilen Sie die Aufgabe auf und versuchen Sie es erneut.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code ist nicht angemeldet. Öffnen Sie ein Terminal, führen Sie „claude“ aus, melden Sie sich an und versuchen Sie es erneut.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code hat zehn Minuten lang nicht geantwortet und wurde angehalten.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code hat fünf Minuten lang nicht geantwortet und wurde angehalten.",
   "Endret sideoppsettet": "Layout geändert",
   "Endret rekkefølgen på seksjonene": "Reihenfolge der Abschnitte geändert",
   "Oppdaterte språkene": "Sprachen aktualisiert",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} hat mit einem Fehler geantwortet. Versuchen Sie es gleich noch einmal oder wählen Sie ein anderes Modell.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} hat geantwortet, aber nicht im Format, das CVBuilder benötigt. Versuchen Sie es erneut.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: Keine Verbindung zu {b}. Läuft Ollama, LM Studio oder Ihr Server?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: Für diesen Schlüssel wurden keine Modelle gefunden",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: In der Übersetzung fehlten Teile des Lebenslaufs; versuchen Sie es erneut",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Kernkompetenzen aktualisiert ({a} Punkte)",
   "Skjulte {a} deler i denne CV-en": "{a} Teile in diesem Lebenslauf ausgeblendet",
   "Viste {a} deler igjen": "{a} Teile wieder angezeigt",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Design zu {a} gewechselt",
   "Endret seksjonen «{a}»": "Abschnitt „{a}“ geändert",
   "La til seksjonen «{a}»": "Abschnitt „{a}“ hinzugefügt",
-  "Fjernet seksjonen «{a}»": "Abschnitt „{a}“ entfernt"
+  "Fjernet seksjonen «{a}»": "Abschnitt „{a}“ entfernt",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Die Pages-Datei konnte nicht geöffnet werden. Sie ist möglicherweise beschädigt. In Pages: Ablage → Exportieren → Word oder PDF, und importieren Sie dann diese Datei.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code hat zehn Minuten lang nicht geantwortet und wurde angehalten. Versuchen Sie es erneut, am besten mit einer kürzeren Nachricht. Hilft das nicht, öffnen Sie ein Terminal und führen Sie „claude“ aus, um zu sehen, ob es funktioniert.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code hat fünf Minuten lang nicht geantwortet und wurde angehalten. Versuchen Sie es erneut, am besten mit einem kürzeren Text. Hilft das nicht, öffnen Sie ein Terminal und führen Sie „claude“ aus, um zu sehen, ob es funktioniert.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code konnte nicht gestartet werden. Prüfen Sie, ob Claude Code installiert ist und in einem Terminal funktioniert, oder wählen Sie einen anderen KI-Dienst.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder hat die Tätigkeit nicht gefunden. Wählen Sie die Tätigkeit erneut in der Liste aus und versuchen Sie es noch einmal.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} hat für diesen Schlüssel keine Modelle gefunden. Prüfen Sie, ob der Schlüssel zu diesem Dienst gehört, oder wählen Sie einen anderen Dienst.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} hat die Antwort abgebrochen, bevor sie fertig war. Versuchen Sie es erneut.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Die Antwort von {a} wurde zu lang und wurde abgeschnitten. Versuchen Sie es mit kürzerem Text erneut oder wählen Sie ein anderes Modell.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "In der Übersetzung von {a} fehlten Teile des Lebenslaufs. Versuchen Sie es erneut oder wählen Sie ein anderes Modell."
  }
 }
