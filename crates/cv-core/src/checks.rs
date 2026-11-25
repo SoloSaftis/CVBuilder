@@ -277,7 +277,7 @@ pub(crate) fn cv_text(p: &Project) -> String {
 
 /// Whether `needle` starts a word in the normalised `haystack` (and, with `whole`, ends one).
 /// Runs every frame on the whole CV, so it searches in place instead of copying the text.
-fn starts_word(haystack: &str, needle: &str, whole: bool) -> bool {
+pub(crate) fn starts_word(haystack: &str, needle: &str, whole: bool) -> bool {
     if needle.is_empty() {
         return false;
     }
@@ -290,11 +290,11 @@ fn starts_word(haystack: &str, needle: &str, whole: bool) -> bool {
 
 /// Norwegian and English plural and definite endings: «fremdriftsplaner» in an ad should find
 /// «fremdriftsplan» in the CV. Longest first; the stem must keep at least five letters.
-const ENDINGS: [&str; 13] = ["erne", "ene", "ne", "ere", "ers", "er", "en", "et", "es", "a", "e", "r", "s"];
+pub(crate) const ENDINGS: [&str; 13] = ["erne", "ene", "ne", "ere", "ers", "er", "en", "et", "es", "a", "e", "r", "s"];
 
 /// `option` without each plural or definite ending its last word may have: «kundene» may be
 /// «kunde» + «ne» or «kunden» + «e», so both are tried.
-fn stems(option: &str) -> impl Iterator<Item = &str> {
+pub(crate) fn stems(option: &str) -> impl Iterator<Item = &str> {
     let last = option.rsplit(' ').next().unwrap_or(option);
     ENDINGS.iter().filter_map(move |end| {
         let base = last.strip_suffix(end)?;
