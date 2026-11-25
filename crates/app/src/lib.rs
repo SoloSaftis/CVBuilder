@@ -1213,7 +1213,6 @@ impl CvApp {
 
 // ---------- small helpers ----------
 
-/// The app's mark: a rounded accent tile with a document line drawn in it.
 /// A CVBuilder draft (`.json`) from disk. The error is a message for the status bar: why the
 /// file could not be read, or that it is not a draft, with the technical text as «Details».
 fn open_project(path: &std::path::Path) -> Result<Project, String> {
@@ -1227,6 +1226,7 @@ fn open_project(path: &std::path::Path) -> Result<Project, String> {
     })
 }
 
+/// The app's mark: a rounded accent tile with a document line drawn in it.
 fn logo(ui: &mut egui::Ui, t: &Tokens, size: f32) {
     let (rect, _) = ui.allocate_exact_size(egui::vec2(size, size), egui::Sense::hover());
     let p = ui.painter();
@@ -1427,4 +1427,31 @@ pub fn run() -> eframe::Result {
         ..Default::default()
     };
     eframe::run_native("CVBuilder", options, Box::new(|cc| Ok(Box::new(CvApp::new(cc)))))
+}
+
+#[cfg(test)]
+mod open_project_tests {
+    use super::open_project;
+
+    #[test]
+    fn open_project_explains_what_is_wrong() {
+        let dir = std::env::temp_dir().join(format!("cvbuilder-open-test-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).expect("dir");
+        // A file that is gone: why in plain words, the system's text only on the details line.
+        let gone = open_project(&dir.join("finnes-ikke.json")).expect_err("gone");
+        let (main, details) = gone.split_once('\n').expect("a details line");
+        assert!(!main.contains("os error") && !main.contains("(os"), "{gone}");
+        assert!(!details.trim().is_empty(), "{gone}");
+        // A file that is not a draft names the file and says where a CV is imported instead.
+        let other = dir.join("ikke-utkast.json");
+        std::fs::write(&other, "{\"hello\": 1, \"name\": [").expect("write");
+        let not_draft = open_project(&other).expect_err("not a draft");
+        let (main, details) = not_draft.split_once('\n').expect("a details line");
+        assert!(main.contains("ikke-utkast.json"), "{not_draft}");
+        assert!(!details.trim().is_empty(), "{not_draft}");
+        // A real draft opens.
+        let draft = dir.join("utkast.json");
+        std::fs::write(&draft, cv_core::Project::example().to_json().expect("json")).expect("write");
+        assert!(open_project(&draft).is_ok());
+    }
 }

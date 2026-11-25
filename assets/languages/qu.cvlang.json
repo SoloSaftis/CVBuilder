@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Archivoqa ch'usaqmi; manam ima qillqapas apamunapaq kanchu.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word archivoqa contraseñawan amachasqam. Word-pi kichay, contraseñata qichuy, musuqmantataq waqaychay.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Mawk'a Word archivoqa (.doc) manam ñawinchakuyta atirqanchu. Word-pi kichay, .docx hinataq waqaychay.",
-  "Pages-filen kunne ikke åpnes.": "Pages archivoqa manam kichakuyta atirqanchu.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP archivoqa manam kichayta atikurqanchu. Waqtasqa utaq pisillata uraykachasqa kanman.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn quqawipiqa manam apamunapaq profil, llamkay nitaq yachakuy kanchu.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume archivoqa manam ñawinchayta atikurqanchu. Waqtasqa kanman.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Llaveqa manam chaskisqachu karqan. Lliw API llaveta k'askachisqaykita qhaway.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI-qa huk willakuypi ancha achkha pasokunatam llamk'achirqan. Llamk'ayta rakiy, yapamantataq ruway.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code-qa manam yaykusqachu. Huk terminalta kichay, “claude” nisqata purichiy, yaykuy, yapamantataq ruway.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code-qa chunka minutopi manam kutichirqanchu, sayachisqataq karqan.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code-qa pichqa minutopi manam kutichirqanchu, sayachisqataq karqan.",
   "Endret sideoppsettet": "Rapi churayta t'ikran",
   "Endret rekkefølgen på seksjonene": "Seccionkunap ñiqinta t'ikran",
   "Oppdaterte språkene": "Simikunata musuqyachin",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a}-qa huk pantaywan kutichirqan. Huk ratomanta yapamanta ruray, utaq huk modelota akllay.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} kutichirqan, ichaqa mana CVBuilder munasqan formatopichu. Wakmanta ruray.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b}-wan mana tinkikuyta atikurqanchu. Ollama, LM Studio utaq servidorniyki llamk'achkanchu?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: kay llavepaq mana modelokuna tarikurqanchu",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: t'ikrayqa CV-pa wakin partinkunata saqirqan; wakmanta ruray",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Hatun atiykuna musuqyachisqa ({a} puntokuna)",
   "Skjulte {a} deler i denne CV-en": "{a} ruwanakunata kay CV-pi pakarqa",
   "Viste {a} deler igjen": "{a} ruwanakunata watiqmanta rikuchirqa",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Diseño {a}-man t'ikrasqa",
   "Endret seksjonen «{a}»": "“{a}” sección t'ikrasqa",
   "La til seksjonen «{a}»": "“{a}” sección yapasqa",
-  "Fjernet seksjonen «{a}»": "“{a}” sección qichusqa"
+  "Fjernet seksjonen «{a}»": "“{a}” sección qichusqa",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages archivoqa manam kichakuyta atirqanchu. Waqllisqa kanman. Pages-pi: Archivo → Kayman exportay → Word utaq PDF, chaymanta chay archivota apamuy.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-qa chunka minutopi manam kutichirqanchu, sayachisqataq karqan. Yapamanta ruray, aswan pisi willakuywan. Mana yanapaptinqa, huk terminalta kichay hinaspa “claude” nisqata purichiy llamk'asqanta rikunaykipaq.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-qa pichqa minutopi manam kutichirqanchu, sayachisqataq karqan. Yapamanta ruray, aswan pisi qillqawan. Mana yanapaptinqa, huk terminalta kichay hinaspa “claude” nisqata purichiy llamk'asqanta rikunaykipaq.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code-qa manam qallariyta atirqanchu. Qhaway Claude Code churasqa kasqanta, huk terminalpi llamk'asqantapas, utaq huk AI yanapayta akllay.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder-qa manam llamk'ayta tarirqanchu. Llamk'ayta listapi wakmanta akllay hinaspa yapamanta ruray.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a}-qa manam kay llavepaq modelokunata tarirqanchu. Qhaway llave kay yanapaypa kasqanta, utaq huk yanapayta akllay.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a}-qa kutichiyta manaraq tukukuchkaptin sayachirqan. Yapamanta ruray.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a}-pa kutichiynin ancha hatunmi karqan, kuchusqataq karqan. Aswan pisi qillqawan yapamanta ruray, utaq huk modelota akllay.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a}-pa t'ikrayninqa CV-pa wakin partinkunata saqirqan. Yapamanta ruray, utaq huk modelota akllay."
  }
 }

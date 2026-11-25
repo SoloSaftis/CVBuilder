@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ไฟล์ว่างเปล่า ไม่มีข้อความให้อ่าน",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "ไฟล์ Word มีรหัสผ่าน เปิดใน Word เอารหัสผ่านออก แล้วบันทึกใหม่",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "อ่านไฟล์ Word แบบเก่า (.doc) ไม่ได้ เปิดใน Word แล้วบันทึกเป็น .docx",
-  "Pages-filen kunne ikke åpnes.": "เปิดไฟล์ Pages ไม่ได้",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "เปิดไฟล์ ZIP ไม่ได้ ไฟล์อาจเสียหายหรือดาวน์โหลดมาไม่ครบ",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "ข้อมูลที่ส่งออกจาก LinkedIn ไม่มีโปรไฟล์ งาน หรือการศึกษาให้นำเข้า",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "อ่านไฟล์ JSON Resume ไม่ได้ ไฟล์อาจเสียหาย",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "คีย์ไม่ผ่าน ตรวจว่าวางคีย์ API ครบทั้งหมด",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI ใช้ขั้นตอนมากเกินไปกับข้อความเดียว แบ่งงานให้เล็กลงแล้วลองอีกครั้ง",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code ยังไม่ได้ลงชื่อเข้าใช้ เปิดเทอร์มินัล รัน “claude” ลงชื่อเข้าใช้ แล้วลองอีกครั้ง",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code ไม่ตอบภายในสิบนาทีจึงถูกหยุด",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code ไม่ตอบภายในห้านาทีจึงถูกหยุด",
   "Endret sideoppsettet": "เปลี่ยนเค้าโครงแล้ว",
   "Endret rekkefølgen på seksjonene": "เปลี่ยนลำดับของส่วนต่าง ๆ แล้ว",
   "Oppdaterte språkene": "อัปเดตภาษาแล้ว",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} ตอบกลับมาพร้อมข้อผิดพลาด รอสักครู่แล้วลองอีกครั้ง หรือเลือกโมเดลอื่น",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} ตอบกลับแล้ว แต่ไม่อยู่ในรูปแบบที่ CVBuilder ต้องการ ลองอีกครั้ง",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: เชื่อมต่อ {b} ไม่ได้ Ollama, LM Studio หรือเซิร์ฟเวอร์ของคุณทำงานอยู่หรือไม่",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: ไม่พบโมเดลสำหรับคีย์นี้",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: คำแปลขาดบางส่วนของ CV ลองอีกครั้ง",
   "Oppdaterte kjernekompetansen ({a} punkter)": "อัปเดตทักษะหลักแล้ว ({a} ข้อ)",
   "Skjulte {a} deler i denne CV-en": "ซ่อน {a} ส่วนใน CV นี้",
   "Viste {a} deler igjen": "แสดง {a} ส่วนอีกครั้ง",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "เปลี่ยนดีไซน์เป็น {a} แล้ว",
   "Endret seksjonen «{a}»": "แก้ไขส่วน “{a}” แล้ว",
   "La til seksjonen «{a}»": "เพิ่มส่วน “{a}” แล้ว",
-  "Fjernet seksjonen «{a}»": "ลบส่วน “{a}” แล้ว"
+  "Fjernet seksjonen «{a}»": "ลบส่วน “{a}” แล้ว",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "เปิดไฟล์ Pages ไม่ได้ ไฟล์อาจเสียหาย ใน Pages: ไฟล์ → ส่งออกไปยัง → Word หรือ PDF แล้วนำเข้าไฟล์นั้น",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ไม่ตอบภายในสิบนาทีจึงถูกหยุด ลองอีกครั้ง โดยใช้ข้อความที่สั้นลง ถ้ายังไม่ได้ ให้เปิดเทอร์มินัลแล้วรัน “claude” เพื่อดูว่าใช้งานได้หรือไม่",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ไม่ตอบภายในห้านาทีจึงถูกหยุด ลองอีกครั้ง โดยใช้เนื้อหาที่สั้นลง ถ้ายังไม่ได้ ให้เปิดเทอร์มินัลแล้วรัน “claude” เพื่อดูว่าใช้งานได้หรือไม่",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "เริ่ม Claude Code ไม่ได้ ตรวจสอบว่าติดตั้ง Claude Code แล้วและใช้งานได้ในเทอร์มินัล หรือเลือกบริการ AI อื่น",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder ไม่พบงานนี้ เลือกงานในรายการอีกครั้งแล้วลองใหม่",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} ไม่พบโมเดลสำหรับคีย์นี้ ตรวจสอบว่าคีย์เป็นของบริการนี้ หรือเลือกบริการอื่น",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} หยุดคำตอบก่อนที่จะเสร็จ ลองอีกครั้ง",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "คำตอบจาก {a} ยาวเกินไปจึงถูกตัด ลองอีกครั้งด้วยข้อความที่สั้นลง หรือเลือกโมเดลอื่น",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "คำแปลจาก {a} ขาดบางส่วนของ CV ลองอีกครั้ง หรือเลือกโมเดลอื่น"
  }
 }

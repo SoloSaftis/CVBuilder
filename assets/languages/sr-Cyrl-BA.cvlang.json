@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Датотека је празна; нема текста за читање.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word датотека је заштићена лозинком. Отворите је у Word-у, уклоните лозинку и поново је сачувајте.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Старија Word датотека (.doc) није могла да се прочита. Отворите је у Word-у и сачувајте као .docx.",
-  "Pages-filen kunne ikke åpnes.": "Pages датотека није могла да се отвори.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP датотеку није могуће отворити. Можда је оштећена или је преузета само дјелимично.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn извоз нема профил, послове или образовање за увоз.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume датотека није могла да се прочита. Можда је оштећена.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Кључ није прихваћен. Провјерите да ли сте налијепили цијели API кључ.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI је употребио превише корака за једну поруку. Подијелите задатак и покушајте поново.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code није пријављен. Отворите терминал, покрените «claude», пријавите се и покушајте поново.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code није одговорио у року од десет минута и заустављен је.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code није одговорио у року од пет минута и заустављен је.",
   "Endret sideoppsettet": "Промијенио распоред",
   "Endret rekkefølgen på seksjonene": "Промијенио редослијед одјељака",
   "Oppdaterte språkene": "Ажурирао језике",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} је одговорио грешком. Покушајте поново за тренутак или изаберите други модел.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} је одговорио, али не у формату који CVBuilder треба. Покушајте поново.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: није успјело повезивање са {b}. Да ли раде Ollama, LM Studio или ваш сервер?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: нису пронађени модели за овај кључ",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: у преводу су недостајали дијелови CV-а; покушајте поново",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Ажуриране кључне вјештине (ставки: {a})",
   "Skjulte {a} deler i denne CV-en": "Сакривених ставки у овом CV-у: {a}",
   "Viste {a} deler igjen": "Поново приказаних ставки: {a}",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Дизајн промијењен у {a}",
   "Endret seksjonen «{a}»": "Промијењен одјељак «{a}»",
   "La til seksjonen «{a}»": "Додат одјељак «{a}»",
-  "Fjernet seksjonen «{a}»": "Уклоњен одјељак «{a}»"
+  "Fjernet seksjonen «{a}»": "Уклоњен одјељак «{a}»",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages датотека није могла да се отвори. Можда је оштећена. У Pages-у: Датотека → Извези у → Word или PDF, а затим увезите ту датотеку.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code није одговорио у року од десет минута и заустављен је. Покушајте поново, по могућности са краћом поруком. Ако не помогне, отворите терминал и покрените «claude» да видите да ли ради.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code није одговорио у року од пет минута и заустављен је. Покушајте поново, по могућности са краћим текстом. Ако не помогне, отворите терминал и покрените «claude» да видите да ли ради.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code није могао да се покрене. Провјерите да ли је Claude Code инсталиран и да ли ради у терминалу, или изаберите други AI сервис.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder није пронашао посао. Поново изаберите посао на листи и покушајте опет.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "Сервис {a} није пронашао ниједан модел за овај кључ. Провјерите да ли кључ припада овом сервису, или изаберите други сервис.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "Сервис {a} је прекинуо одговор прије него што је био готов. Покушајте поново.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Одговор сервиса {a} је постао предугачак и скраћен је. Покушајте поново са краћим текстом, или изаберите други модел.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "У преводу сервиса {a} недостајали су дијелови CV-а. Покушајте поново, или изаберите други модел."
  }
 }

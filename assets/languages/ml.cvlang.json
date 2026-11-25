@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ഫയൽ ശൂന്യമാണ്; വായിക്കാൻ ടെക്സ്റ്റ് ഒന്നുമില്ല.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word ഫയൽ പാസ്‌വേഡ് സംരക്ഷിതമാണ്. Word-ൽ തുറന്ന് പാസ്‌വേഡ് നീക്കി വീണ്ടും സേവ് ചെയ്യുക.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "പഴയ Word ഫയൽ (.doc) വായിക്കാനായില്ല. Word-ൽ തുറന്ന് .docx ആയി സേവ് ചെയ്യുക.",
-  "Pages-filen kunne ikke åpnes.": "Pages ഫയൽ തുറക്കാനായില്ല.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP ഫയൽ തുറക്കാനായില്ല. അത് കേടായിരിക്കാം, അല്ലെങ്കിൽ ഭാഗികമായി മാത്രം ഡൗൺലോഡ് ചെയ്തതാകാം.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn എക്സ്പോർട്ടിൽ ഇമ്പോർട്ട് ചെയ്യാൻ പ്രൊഫൈലോ ജോലികളോ വിദ്യാഭ്യാസമോ ഇല്ല.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume ഫയൽ വായിക്കാനായില്ല. അത് കേടായിരിക്കാം.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "കീ സ്വീകരിച്ചില്ല. മുഴുവൻ API കീയും ഒട്ടിച്ചിട്ടുണ്ടോ എന്ന് പരിശോധിക്കുക.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI ഒരു സന്ദേശത്തിന് വളരെയധികം ഘട്ടങ്ങൾ ഉപയോഗിച്ചു. ജോലി വിഭജിച്ച് വീണ്ടും ശ്രമിക്കുക.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code സൈൻ ഇൻ ചെയ്തിട്ടില്ല. ഒരു ടെർമിനൽ തുറന്ന്, “claude” റൺ ചെയ്ത്, സൈൻ ഇൻ ചെയ്ത്, വീണ്ടും ശ്രമിക്കുക.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code പത്ത് മിനിറ്റിനുള്ളിൽ മറുപടി നൽകാത്തതിനാൽ നിർത്തി.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code അഞ്ച് മിനിറ്റിനുള്ളിൽ മറുപടി നൽകാത്തതിനാൽ നിർത്തി.",
   "Endret sideoppsettet": "ലേഔട്ട് മാറ്റി",
   "Endret rekkefølgen på seksjonene": "വിഭാഗങ്ങളുടെ ക്രമം മാറ്റി",
   "Oppdaterte språkene": "ഭാഷകൾ അപ്ഡേറ്റ് ചെയ്തു",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} ഒരു പിഴവോടെ മറുപടി നൽകി. അൽപസമയം കഴിഞ്ഞ് വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ മറ്റൊരു മോഡൽ തിരഞ്ഞെടുക്കുക.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} മറുപടി നൽകി, പക്ഷേ CVBuilder-ന് ആവശ്യമായ ഫോർമാറ്റിലല്ല. വീണ്ടും ശ്രമിക്കുക.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b}-മായി ബന്ധപ്പെടാൻ കഴിഞ്ഞില്ല. Ollama, LM Studio അല്ലെങ്കിൽ നിങ്ങളുടെ സെർവർ പ്രവർത്തിക്കുന്നുണ്ടോ?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: ഈ കീയ്ക്ക് മോഡലുകളൊന്നും കണ്ടെത്തിയില്ല",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: വിവർത്തനത്തിൽ സിവിയുടെ ചില ഭാഗങ്ങൾ വിട്ടുപോയി; വീണ്ടും ശ്രമിക്കുക",
   "Oppdaterte kjernekompetansen ({a} punkter)": "പ്രധാന കഴിവുകൾ പുതുക്കി ({a} പോയിന്റുകൾ)",
   "Skjulte {a} deler i denne CV-en": "ഈ സിവിയിൽ {a} ഭാഗങ്ങൾ മറച്ചു",
   "Viste {a} deler igjen": "{a} ഭാഗങ്ങൾ വീണ്ടും കാണിച്ചു",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "ഡിസൈൻ {a} ആക്കി മാറ്റി",
   "Endret seksjonen «{a}»": "“{a}” വിഭാഗം മാറ്റി",
   "La til seksjonen «{a}»": "“{a}” വിഭാഗം ചേർത്തു",
-  "Fjernet seksjonen «{a}»": "“{a}” വിഭാഗം നീക്കം ചെയ്തു"
+  "Fjernet seksjonen «{a}»": "“{a}” വിഭാഗം നീക്കം ചെയ്തു",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages ഫയൽ തുറക്കാനായില്ല. അത് കേടായിരിക്കാം. Pages-ൽ: ഫയൽ → ഇതിലേക്ക് എക്സ്പോർട്ട് ചെയ്യുക → Word അല്ലെങ്കിൽ PDF, തുടർന്ന് ആ ഫയൽ ഇമ്പോർട്ട് ചെയ്യുക.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code പത്ത് മിനിറ്റിനുള്ളിൽ മറുപടി നൽകാത്തതിനാൽ നിർത്തി. വീണ്ടും ശ്രമിക്കുക, കഴിയുമെങ്കിൽ ചെറിയൊരു സന്ദേശവുമായി. ഫലമില്ലെങ്കിൽ, ഒരു ടെർമിനൽ തുറന്ന് “claude” റൺ ചെയ്ത് അത് പ്രവർത്തിക്കുന്നുണ്ടോ എന്ന് നോക്കുക.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code അഞ്ച് മിനിറ്റിനുള്ളിൽ മറുപടി നൽകാത്തതിനാൽ നിർത്തി. വീണ്ടും ശ്രമിക്കുക, കഴിയുമെങ്കിൽ ചെറിയൊരു ടെക്സ്റ്റുമായി. ഫലമില്ലെങ്കിൽ, ഒരു ടെർമിനൽ തുറന്ന് “claude” റൺ ചെയ്ത് അത് പ്രവർത്തിക്കുന്നുണ്ടോ എന്ന് നോക്കുക.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code ആരംഭിക്കാനായില്ല. Claude Code ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ടെന്നും ഒരു ടെർമിനലിൽ പ്രവർത്തിക്കുന്നുണ്ടെന്നും പരിശോധിക്കുക, അല്ലെങ്കിൽ മറ്റൊരു AI സേവനം തിരഞ്ഞെടുക്കുക.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder-ന് ജോലി കണ്ടെത്താനായില്ല. ലിസ്റ്റിൽ ജോലി വീണ്ടും തിരഞ്ഞെടുത്ത് വീണ്ടും ശ്രമിക്കുക.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "ഈ കീയ്ക്ക് {a} മോഡലുകളൊന്നും കണ്ടെത്തിയില്ല. കീ ഈ സേവനത്തിന്റേതാണോ എന്ന് പരിശോധിക്കുക, അല്ലെങ്കിൽ മറ്റൊരു സേവനം തിരഞ്ഞെടുക്കുക.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} മറുപടി പൂർത്തിയാകുന്നതിന് മുമ്പ് നിർത്തി. വീണ്ടും ശ്രമിക്കുക.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a}-ൽ നിന്നുള്ള മറുപടി വളരെ നീണ്ടുപോയതിനാൽ മുറിച്ചുകളഞ്ഞു. ചെറിയ ടെക്സ്റ്റുമായി വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ മറ്റൊരു മോഡൽ തിരഞ്ഞെടുക്കുക.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a}-ന്റെ വിവർത്തനത്തിൽ സിവിയുടെ ചില ഭാഗങ്ങൾ വിട്ടുപോയി. വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ മറ്റൊരു മോഡൽ തിരഞ്ഞെടുക്കുക."
  }
 }

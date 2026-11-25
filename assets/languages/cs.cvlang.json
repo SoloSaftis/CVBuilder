@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Soubor je prázdný; není co načíst.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Soubor Word je chráněný heslem. Otevřete ho ve Wordu, odstraňte heslo a uložte ho znovu.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Starší soubor Word (.doc) se nepodařilo přečíst. Otevřete ho ve Wordu a uložte jako .docx.",
-  "Pages-filen kunne ikke åpnes.": "Soubor Pages se nepodařilo otevřít.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Soubor ZIP se nepodařilo otevřít. Může být poškozený nebo stažený jen částečně.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Export z LinkedIn neobsahuje žádný profil, zaměstnání ani vzdělání k načtení.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Soubor JSON Resume se nepodařilo přečíst. Může být poškozený.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Klíč nebyl přijat. Zkontrolujte, zda jste vložili celý klíč API.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI použila na jednu zprávu příliš mnoho kroků. Rozdělte úkol a zkuste to znovu.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code není přihlášen. Otevřete terminál, spusťte „claude“, přihlaste se a zkuste to znovu.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code neodpověděl do deseti minut a byl zastaven.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code neodpověděl do pěti minut a byl zastaven.",
   "Endret sideoppsettet": "Rozložení stránky změněno",
   "Endret rekkefølgen på seksjonene": "Pořadí sekcí změněno",
   "Oppdaterte språkene": "Jazyky aktualizovány",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} odpověděl chybou. Zkuste to za chvíli znovu, nebo vyberte jiný model.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} odpověděl, ale ne ve formátu, který CVBuilder potřebuje. Zkuste to znovu.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: nepodařilo se spojit s {b}. Běží Ollama, LM Studio nebo váš server?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: pro tento klíč nebyly nalezeny žádné modely",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: v překladu chyběly části CV; zkuste to znovu",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Klíčové dovednosti aktualizovány ({a} položek)",
   "Skjulte {a} deler i denne CV-en": "Skryto částí v tomto CV: {a}",
   "Viste {a} deler igjen": "Znovu zobrazeno částí: {a}",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Design změněn na {a}",
   "Endret seksjonen «{a}»": "Sekce „{a}“ změněna",
   "La til seksjonen «{a}»": "Sekce „{a}“ přidána",
-  "Fjernet seksjonen «{a}»": "Sekce „{a}“ odstraněna"
+  "Fjernet seksjonen «{a}»": "Sekce „{a}“ odstraněna",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Soubor Pages se nepodařilo otevřít. Může být poškozený. V Pages zvolte Soubor → Exportovat do → Word nebo PDF a načtěte tento soubor.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code neodpověděl do deseti minut a byl zastaven. Zkuste to znovu, nejlépe s kratší zprávou. Pokud to nepomůže, otevřete terminál a spusťte „claude“, abyste zjistili, zda funguje.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code neodpověděl do pěti minut a byl zastaven. Zkuste to znovu, nejlépe s kratším textem. Pokud to nepomůže, otevřete terminál a spusťte „claude“, abyste zjistili, zda funguje.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code se nepodařilo spustit. Zkontrolujte, že je Claude Code nainstalovaný a funguje v terminálu, nebo vyberte jinou službu AI.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder nenašel zaměstnání. Vyberte ho znovu v seznamu a zkuste to ještě jednou.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} nenašel pro tento klíč žádné modely. Zkontrolujte, že klíč patří k této službě, nebo vyberte jinou službu.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} přerušil odpověď dřív, než byla hotová. Zkuste to znovu.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Odpověď od {a} byla příliš dlouhá a byla zkrácena. Zkuste to znovu s kratším textem, nebo vyberte jiný model.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "V překladu od {a} chyběly části CV. Zkuste to znovu, nebo vyberte jiný model."
  }
 }

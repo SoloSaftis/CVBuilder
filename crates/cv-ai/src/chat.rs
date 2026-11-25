@@ -283,6 +283,9 @@ fn short_tool(name: &str) -> String {
 }
 
 /// Turns Claude Code's own failure text into a next step the person can take.
+/// Claude Code could not be started at all.
+pub const NOT_STARTED: &str = "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.";
+
 fn claude_code_failure(text: &str) -> String {
     let lower = text.to_lowercase();
     if lower.contains("login") || lower.contains("log in") || lower.contains("not logged") || lower.contains("auth") || lower.contains("api key") {
@@ -318,7 +321,7 @@ fn claude_code_turn(program: &Path, mcp_config: &Path, model: Option<&str>, hist
         use std::os::windows::process::CommandExt;
         cmd.creation_flags(0x0800_0000); // CREATE_NO_WINDOW: no console flashing over the app.
     }
-    let mut child = cmd.spawn().map_err(|e| format!("Claude Code kunne ikke startes ({e})."))?;
+    let mut child = cmd.spawn().map_err(|e| cv_core::plain::with_details(NOT_STARTED, &e.to_string()))?;
     // The message goes on stdin: it can be long, and a command line has a length limit.
     if let Some(mut stdin) = child.stdin.take() {
         let _ = stdin.write_all(user.as_bytes());
@@ -398,7 +401,7 @@ fn claude_code_turn(program: &Path, mcp_config: &Path, model: Option<&str>, hist
                 idle += Duration::from_millis(200);
                 if idle > Duration::from_secs(600) {
                     let _ = child.kill();
-                    result = Some(Err("Claude Code svarte ikke på ti minutter og ble stoppet.".into()));
+                    result = Some(Err("Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.".into()));
                     break;
                 }
             }
@@ -427,7 +430,7 @@ pub fn claude_code_once(program: &Path, system: &str, user: &str) -> Result<Stri
         use std::os::windows::process::CommandExt;
         cmd.creation_flags(0x0800_0000); // CREATE_NO_WINDOW
     }
-    let mut child = cmd.spawn().map_err(|e| format!("Claude Code kunne ikke startes ({e})."))?;
+    let mut child = cmd.spawn().map_err(|e| cv_core::plain::with_details(NOT_STARTED, &e.to_string()))?;
     if let Some(mut stdin) = child.stdin.take() {
         let _ = stdin.write_all(user.as_bytes());
     }
@@ -449,7 +452,7 @@ pub fn claude_code_once(program: &Path, system: &str, user: &str) -> Result<Stri
             Ok(None) if started.elapsed() > Duration::from_secs(300) => {
                 let _ = child.kill();
                 let _ = child.wait();
-                return Err("Claude Code svarte ikke på fem minutter og ble stoppet.".into());
+                return Err("Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.".into());
             }
             Ok(None) => std::thread::sleep(Duration::from_millis(100)),
             Err(e) => return Err(claude_code_failure(&e.to_string())),
@@ -461,5 +464,29 @@ pub fn claude_code_once(program: &Path, system: &str, user: &str) -> Result<Stri
         Ok(v) if v["is_error"].as_bool().unwrap_or(false) => Err(claude_code_failure(v["result"].as_str().unwrap_or("ukjent feil"))),
         Ok(v) => v["result"].as_str().map(str::to_string).ok_or_else(|| claude_code_failure("svaret manglet tekst")),
         Err(_) => Err(claude_code_failure(if errors.trim().is_empty() { "programmet avsluttet uten svar" } else { &errors })),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn claude_code_failure_says_what_to_do() {
+        assert_eq!(claude_code_failure("Invalid API key · Please run /login"), "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.");
+        assert!(claude_code_failure("Not logged in").starts_with("Claude Code er ikke logget inn."));
+        // Anything else: a next step, then Claude Code's own words as details.
+        let other = claude_code_failure("  something broke\n");
+        let (main, details) = cv_core::plain::split(&other);
+        assert!(main.starts_with("Claude Code stoppet med en feil. Prøv igjen."), "{other}");
+        assert_eq!(details, Some("something broke"));
+        // Very long output is cut short.
+        let long = claude_code_failure(&"y".repeat(5000));
+        assert!(cv_core::plain::split(&long).1.is_some_and(|d| d.chars().count() == 400));
+        // A program that does not start says what to check, with the system's words as details.
+        let missing = claude_code_once(Path::new("cvbuilder-no-such-program-xyz"), "", "").expect_err("not started");
+        let (main, details) = cv_core::plain::split(&missing);
+        assert_eq!(main, NOT_STARTED);
+        assert!(details.is_some(), "{missing}");
     }
 }

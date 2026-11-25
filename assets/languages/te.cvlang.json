@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ఫైల్ ఖాళీగా ఉంది; చదవడానికి టెక్స్ట్ లేదు.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word ఫైల్ పాస్‌వర్డ్‌తో రక్షించబడింది. దాన్ని Wordలో తెరిచి, పాస్‌వర్డ్ తీసివేసి మళ్లీ సేవ్ చేయండి.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "పాత Word ఫైల్ (.doc)ని చదవలేకపోయాము. దాన్ని Wordలో తెరిచి .docxగా సేవ్ చేయండి.",
-  "Pages-filen kunne ikke åpnes.": "Pages ఫైల్‌ను తెరవలేకపోయాము.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP ఫైల్‌ను తెరవడం సాధ్యం కాలేదు. అది పాడై ఉండవచ్చు లేదా కొంత భాగం మాత్రమే డౌన్‌లోడ్ అయి ఉండవచ్చు.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn ఎగుమతిలో దిగుమతి చేయడానికి ప్రొఫైల్, ఉద్యోగాలు లేదా విద్య లేవు.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume ఫైల్‌ను చదవలేకపోయాము. అది పాడై ఉండవచ్చు.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "కీ ఆమోదించబడలేదు. మొత్తం API కీని పేస్ట్ చేశారో తనిఖీ చేయండి.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI ఒక సందేశంపై చాలా దశలు ఉపయోగించింది. పనిని విభజించి మళ్లీ ప్రయత్నించండి.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code సైన్ ఇన్ కాలేదు. టెర్మినల్ తెరిచి, “claude” నడిపి, సైన్ ఇన్ చేసి, మళ్లీ ప్రయత్నించండి.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code పది నిమిషాల్లో స్పందించలేదు, అందుకే ఆపబడింది.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code ఐదు నిమిషాల్లో స్పందించలేదు, అందుకే ఆపబడింది.",
   "Endret sideoppsettet": "లేఅవుట్‌ను మార్చింది",
   "Endret rekkefølgen på seksjonene": "విభాగాల క్రమాన్ని మార్చింది",
   "Oppdaterte språkene": "భాషలను నవీకరించింది",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} ఒక లోపంతో సమాధానం ఇచ్చింది. కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి, లేదా వేరే మోడల్‌ను ఎంచుకోండి.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} స్పందించింది, కానీ CVBuilderకు అవసరమైన ఫార్మాట్‌లో కాదు. మళ్లీ ప్రయత్నించండి.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b}ను చేరుకోలేకపోయాము. Ollama, LM Studio లేదా మీ సర్వర్ నడుస్తోందా?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: ఈ కీకి మోడల్‌లు ఏవీ దొరకలేదు",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: అనువాదంలో CVలోని కొన్ని భాగాలు లేవు; మళ్లీ ప్రయత్నించండి",
   "Oppdaterte kjernekompetansen ({a} punkter)": "ప్రధాన నైపుణ్యాలు నవీకరించబడ్డాయి ({a} పాయింట్లు)",
   "Skjulte {a} deler i denne CV-en": "ఈ CVలో {a} భాగాలు దాచబడ్డాయి",
   "Viste {a} deler igjen": "{a} భాగాలు మళ్లీ చూపబడ్డాయి",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "డిజైన్ {a}కి మార్చబడింది",
   "Endret seksjonen «{a}»": "“{a}” విభాగం మార్చబడింది",
   "La til seksjonen «{a}»": "“{a}” విభాగం జోడించబడింది",
-  "Fjernet seksjonen «{a}»": "“{a}” విభాగం తీసివేయబడింది"
+  "Fjernet seksjonen «{a}»": "“{a}” విభాగం తీసివేయబడింది",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages ఫైల్‌ను తెరవలేకపోయాము. అది పాడై ఉండవచ్చు. Pagesలో: ఫైల్ → ఎగుమతి చేయి → Word లేదా PDF, ఆ తర్వాత ఆ ఫైల్‌ను దిగుమతి చేయండి.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code పది నిమిషాల్లో స్పందించలేదు, అందుకే ఆపబడింది. మళ్లీ ప్రయత్నించండి, వీలైతే చిన్న సందేశంతో. అయినా పని చేయకపోతే, టెర్మినల్ తెరిచి “claude” రన్ చేసి అది పని చేస్తుందో లేదో చూడండి.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ఐదు నిమిషాల్లో స్పందించలేదు, అందుకే ఆపబడింది. మళ్లీ ప్రయత్నించండి, వీలైతే చిన్న టెక్స్ట్‌తో. అయినా పని చేయకపోతే, టెర్మినల్ తెరిచి “claude” రన్ చేసి అది పని చేస్తుందో లేదో చూడండి.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Codeను ప్రారంభించలేకపోయాము. Claude Code ఇన్‌స్టాల్ అయి ఉందో, టెర్మినల్‌లో పని చేస్తుందో తనిఖీ చేయండి, లేదా వేరే AI సేవను ఎంచుకోండి.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilderకు ఉద్యోగం కనిపించలేదు. జాబితాలో ఉద్యోగాన్ని మళ్లీ ఎంచుకుని మళ్లీ ప్రయత్నించండి.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a}కు ఈ కీకి మోడల్‌లు ఏవీ దొరకలేదు. కీ ఈ సేవకు చెందినదో కాదో తనిఖీ చేయండి, లేదా వేరే సేవను ఎంచుకోండి.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} సమాధానం పూర్తి కాకముందే ఆపివేసింది. మళ్లీ ప్రయత్నించండి.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} నుండి వచ్చిన సమాధానం చాలా పొడవుగా మారడంతో కత్తిరించబడింది. చిన్న టెక్స్ట్‌తో మళ్లీ ప్రయత్నించండి, లేదా వేరే మోడల్‌ను ఎంచుకోండి.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} నుండి వచ్చిన అనువాదంలో CVలోని కొన్ని భాగాలు లేవు. మళ్లీ ప్రయత్నించండి, లేదా వేరే మోడల్‌ను ఎంచుకోండి."
  }
 }

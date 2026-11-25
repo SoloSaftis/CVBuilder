@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Die lêer is leeg; daar is geen teks om te lees nie.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Die Word-lêer is met 'n wagwoord beskerm. Maak dit in Word oop, verwyder die wagwoord en stoor dit weer.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Die ouer Word-lêer (.doc) kon nie gelees word nie. Maak dit in Word oop en stoor dit as .docx.",
-  "Pages-filen kunne ikke åpnes.": "Die Pages-lêer kon nie oopgemaak word nie.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Die ZIP-lêer kon nie oopgemaak word nie. Dit kan beskadig wees of net gedeeltelik afgelaai wees.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Die LinkedIn-uitvoer het geen profiel, werke of opleiding om in te voer nie.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Die JSON Resume-lêer kon nie gelees word nie. Dit kan beskadig wees.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Die sleutel is nie aanvaar nie. Maak seker jy het die hele API-sleutel geplak.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "Die KI het te veel stappe op een boodskap gebruik. Verdeel die taak en probeer weer.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code is nie aangemeld nie. Maak 'n terminaal oop, voer “claude” uit, meld aan, en probeer weer.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code het nie binne tien minute geantwoord nie en is gestop.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code het nie binne vyf minute geantwoord nie en is gestop.",
   "Endret sideoppsettet": "Het die uitleg verander",
   "Endret rekkefølgen på seksjonene": "Het die volgorde van die afdelings verander",
   "Oppdaterte språkene": "Het die tale bygewerk",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} het met 'n fout geantwoord. Probeer weer oor 'n rukkie, of kies 'n ander model.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} het geantwoord, maar nie in die formaat wat CVBuilder nodig het nie. Probeer weer.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: kon nie {b} bereik nie. Loop Ollama, LM Studio of jou bediener?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: geen modelle vir hierdie sleutel gevind nie",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: die vertaling het dele van die CV uitgelaat; probeer weer",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Het die kernvaardighede bygewerk ({a} items)",
   "Skjulte {a} deler i denne CV-en": "Het {a} dele in hierdie CV versteek",
   "Viste {a} deler igjen": "Het {a} dele weer gewys",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Het die ontwerp na {a} verander",
   "Endret seksjonen «{a}»": "Het die afdeling “{a}” verander",
   "La til seksjonen «{a}»": "Het die afdeling “{a}” bygevoeg",
-  "Fjernet seksjonen «{a}»": "Het die afdeling “{a}” verwyder"
+  "Fjernet seksjonen «{a}»": "Het die afdeling “{a}” verwyder",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Die Pages-lêer kon nie oopgemaak word nie. Dit is dalk beskadig. In Pages: Lêer → Voer uit na → Word of PDF, en laai daardie lêer in.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code het nie binne tien minute geantwoord nie en is gestop. Probeer weer, verkieslik met 'n korter boodskap. As dit nie help nie, maak 'n terminaal oop en voer “claude” uit om te sien of dit werk.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code het nie binne vyf minute geantwoord nie en is gestop. Probeer weer, verkieslik met 'n korter teks. As dit nie help nie, maak 'n terminaal oop en voer “claude” uit om te sien of dit werk.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code kon nie begin word nie. Maak seker dat Claude Code geïnstalleer is en in 'n terminaal werk, of kies 'n ander KI-diens.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder kon nie die werk vind nie. Kies die werk weer in die lys en probeer weer.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} het geen modelle vir hierdie sleutel gevind nie. Maak seker dat die sleutel aan hierdie diens behoort, of kies 'n ander diens.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} het die antwoord onderbreek voordat dit klaar was. Probeer weer.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Die antwoord van {a} het te lank geword en is afgesny. Probeer weer met korter teks, of kies 'n ander model.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Die vertaling van {a} het dele van die CV uitgelaat. Probeer weer, of kies 'n ander model."
  }
 }

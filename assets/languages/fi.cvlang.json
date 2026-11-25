@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Tiedosto on tyhjä; haettavaa tekstiä ei ole.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word-tiedosto on suojattu salasanalla. Avaa se Wordissa, poista salasana ja tallenna se uudelleen.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Vanhempaa Word-tiedostoa (.doc) ei voitu lukea. Avaa se Wordissa ja tallenna .docx-muodossa.",
-  "Pages-filen kunne ikke åpnes.": "Pages-tiedostoa ei voitu avata.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP-tiedostoa ei voitu avata. Se voi olla vioittunut tai ladattu vain osittain.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn-viennissä ei ole profiilia, työpaikkoja tai koulutusta tuotavaksi.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume -tiedostoa ei voitu lukea. Se voi olla vahingoittunut.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Avainta ei hyväksytty. Tarkista, että liitit koko API-avaimen.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "Tekoäly käytti liian monta vaihetta yhteen viestiin. Jaa tehtävä osiin ja yritä uudelleen.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Codeen ei ole kirjauduttu. Avaa pääte, suorita ”claude”, kirjaudu sisään ja yritä uudelleen.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code ei vastannut kymmeneen minuuttiin ja se pysäytettiin.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code ei vastannut viiteen minuuttiin ja se pysäytettiin.",
   "Endret sideoppsettet": "Muutettiin asettelua",
   "Endret rekkefølgen på seksjonene": "Muutettiin osioiden järjestystä",
   "Oppdaterte språkene": "Päivitettiin kielet",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} vastasi virheellä. Yritä hetken päästä uudelleen tai valitse toinen malli.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} vastasi, mutta ei muodossa, jota CVBuilder tarvitsee. Yritä uudelleen.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: osoitteeseen {b} ei saatu yhteyttä. Onko Ollama, LM Studio tai oma palvelimesi käynnissä?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: tälle avaimelle ei löytynyt malleja",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: käännöksestä puuttui osia CV:stä; yritä uudelleen",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Ydinosaaminen päivitetty ({a} kohtaa)",
   "Skjulte {a} deler i denne CV-en": "Piilotettiin {a} osaa tässä CV:ssä",
   "Viste {a} deler igjen": "Näytettiin {a} osaa uudelleen",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Ulkoasuksi vaihdettu {a}",
   "Endret seksjonen «{a}»": "Osiota ”{a}” muutettu",
   "La til seksjonen «{a}»": "Osio ”{a}” lisätty",
-  "Fjernet seksjonen «{a}»": "Osio ”{a}” poistettu"
+  "Fjernet seksjonen «{a}»": "Osio ”{a}” poistettu",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages-tiedostoa ei voitu avata. Se voi olla vioittunut. Valitse Pagesissa Arkisto → Vie → Word tai PDF ja tuo se tiedosto.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ei vastannut kymmeneen minuuttiin ja se pysäytettiin. Yritä uudelleen, mieluiten lyhyemmällä viestillä. Jos se ei auta, avaa pääte ja suorita ”claude” nähdäksesi, toimiiko se.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ei vastannut viiteen minuuttiin ja se pysäytettiin. Yritä uudelleen, mieluiten lyhyemmällä tekstillä. Jos se ei auta, avaa pääte ja suorita ”claude” nähdäksesi, toimiiko se.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Codea ei voitu käynnistää. Tarkista, että Claude Code on asennettu ja toimii päätteessä, tai valitse toinen tekoälypalvelu.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder ei löytänyt työpaikkaa. Valitse työpaikka luettelosta uudelleen ja yritä uudelleen.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} ei löytänyt malleja tälle avaimelle. Tarkista, että avain kuuluu tähän palveluun, tai valitse toinen palvelu.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} keskeytti vastauksen ennen kuin se oli valmis. Yritä uudelleen.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Vastaus palvelusta {a} tuli liian pitkä ja katkaistiin. Yritä uudelleen lyhyemmällä tekstillä tai valitse toinen malli.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Käännöksestä, jonka {a} teki, puuttui osia CV:stä. Yritä uudelleen tai valitse toinen malli."
  }
 }

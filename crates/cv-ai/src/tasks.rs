@@ -48,7 +48,7 @@ struct Bullets {
 
 /// Rewrites one job's bullets as short action-and-result points aimed at the target job.
 pub fn improve_bullets(endpoint: &Endpoint, model: &str, project: &Project, job: usize) -> Result<Vec<String>, AiFailure> {
-    let j = project.experience.get(job).ok_or(AiFailure::Other("CVBuilder", "fant ikke jobben".into()))?;
+    let j = project.experience.get(job).ok_or(AiFailure::NoJob)?;
     let user = format!(
         "{}\n\nJobb: {} hos {}\nNåværende punkter:\n- {}\n\nSkriv punktene om til 2–5 korte punkter (høyst to linjer hver) som viser handling og resultat, og bruker annonsens ord der det er sant. \
 Behold alle fakta, ikke legg til noe nytt. Svar som JSON: {{\"bullets\": [\"…\"]}}",
@@ -137,7 +137,7 @@ Stillingstitler oversettes bare hvis det finnes en vanlig tilsvarende tittel. Be
         && t.languages.len() == project.languages.len()
         && t.jobs.iter().zip(&project.experience).all(|(a, b)| a.bullets.len() == b.bullets.len());
     if !shapes_match {
-        return Err(AiFailure::Other(endpoint.service.name(), "oversettelsen manglet deler av CV-en; prøv igjen".into()));
+        return Err(AiFailure::Incomplete(endpoint.service.name()));
     }
     let mut copy = project.clone();
     copy.language = if to_english { cv_core::Language::En } else { cv_core::Language::No };

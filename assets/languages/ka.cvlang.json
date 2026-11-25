@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ფაილი ცარიელია; წასაკითხი ტექსტი არ არის.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word-ის ფაილი პაროლით არის დაცული. გახსენით Word-ში, მოხსენით პაროლი და ხელახლა შეინახეთ.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "ძველი Word-ის ფაილი (.doc) ვერ წაიკითხა. გახსენით Word-ში და შეინახეთ .docx-ად.",
-  "Pages-filen kunne ikke åpnes.": "Pages-ის ფაილი ვერ გაიხსნა.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP ფაილის გახსნა ვერ მოხერხდა. შესაძლოა, ის დაზიანებულია ან მხოლოდ ნაწილობრივ ჩამოიტვირთა.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn-ის ექსპორტში იმპორტისთვის პროფილი, სამუშაო ან განათლება არ არის.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume ფაილის წაკითხვა ვერ მოხერხდა. შესაძლოა დაზიანებულია.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "გასაღები არ იქნა მიღებული. შეამოწმეთ, სრული API-გასაღები ჩასვით თუ არა.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI-მ ერთ შეტყობინებაზე ზედმეტად ბევრი ნაბიჯი გამოიყენა. დაყავით დავალება და სცადეთ ხელახლა.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code-ში შესული არ ხართ. გახსენით ტერმინალი, გაუშვით “claude”, შედით და სცადეთ ხელახლა.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code-მა ათ წუთში არ უპასუხა და შეჩერდა.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code-მა ხუთ წუთში არ უპასუხა და შეჩერდა.",
   "Endret sideoppsettet": "განლაგება შეიცვალა",
   "Endret rekkefølgen på seksjonene": "სექციების თანმიმდევრობა შეიცვალა",
   "Oppdaterte språkene": "ენები განახლდა",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a}-მ შეცდომით უპასუხა. ცოტა ხანში სცადეთ ხელახლა, ან აირჩიეთ სხვა მოდელი.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a}-მ უპასუხა, მაგრამ არა იმ ფორმატში, რომელიც CVBuilder-ს სჭირდება. სცადეთ ხელახლა.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: ვერ დავუკავშირდით {b}-ს. მუშაობს Ollama, LM Studio ან თქვენი სერვერი?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: ამ გასაღებისთვის მოდელები ვერ მოიძებნა",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: თარგმანს CV-ის ნაწილები აკლდა; სცადეთ ხელახლა",
   "Oppdaterte kjernekompetansen ({a} punkter)": "განახლდა ძირითადი უნარები ({a} პუნქტი)",
   "Skjulte {a} deler i denne CV-en": "ამ CV-ში დაიმალა {a} ნაწილი",
   "Viste {a} deler igjen": "{a} ნაწილი ხელახლა ნაჩვენებია",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "დიზაინი შეიცვალა: {a}",
   "Endret seksjonen «{a}»": "შეიცვალა სექცია “{a}”",
   "La til seksjonen «{a}»": "დაემატა სექცია “{a}”",
-  "Fjernet seksjonen «{a}»": "წაიშალა სექცია “{a}”"
+  "Fjernet seksjonen «{a}»": "წაიშალა სექცია “{a}”",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages-ის ფაილი ვერ გაიხსნა. შესაძლოა, დაზიანებულია. Pages-ში: ფაილი → ექსპორტი → Word ან PDF, შემდეგ კი შემოიტანეთ ეს ფაილი.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-მა ათ წუთში არ უპასუხა და შეჩერდა. სცადეთ ხელახლა, სასურველია უფრო მოკლე შეტყობინებით. თუ არ გამოვიდა, გახსენით ტერმინალი და გაუშვით “claude”, რომ ნახოთ, მუშაობს თუ არა.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code-მა ხუთ წუთში არ უპასუხა და შეჩერდა. სცადეთ ხელახლა, სასურველია უფრო მოკლე ტექსტით. თუ არ გამოვიდა, გახსენით ტერმინალი და გაუშვით “claude”, რომ ნახოთ, მუშაობს თუ არა.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code ვერ გაეშვა. შეამოწმეთ, რომ Claude Code დაინსტალირებულია და ტერმინალში მუშაობს, ან აირჩიეთ სხვა AI სერვისი.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder-მა სამუშაო ადგილი ვერ იპოვა. ხელახლა აირჩიეთ სამუშაო ადგილი სიაში და კიდევ სცადეთ.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a}-მ ამ გასაღებისთვის მოდელები ვერ იპოვა. შეამოწმეთ, ეკუთვნის თუ არა გასაღები ამ სერვისს, ან აირჩიეთ სხვა სერვისი.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a}-მ პასუხი დასრულებამდე შეწყვიტა. სცადეთ ხელახლა.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a}-ის პასუხი ზედმეტად გრძელი გამოვიდა და მოიჭრა. სცადეთ ხელახლა უფრო მოკლე ტექსტით, ან აირჩიეთ სხვა მოდელი.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a}-ის თარგმანს CV-ის ნაწილები აკლდა. სცადეთ ხელახლა, ან აირჩიეთ სხვა მოდელი."
  }
 }

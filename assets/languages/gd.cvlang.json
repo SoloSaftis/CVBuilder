@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Tha am faidhle falamh; chan eil teacsa ann ri leughadh.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Tha am faidhle Word fo dhìon facail-fhaire. Fosgail e ann am Word, thoir air falbh am facal-faire is sàbhail a-rithist e.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Cha b’ urrainn dhuinn an seann fhaidhle Word (.doc) a leughadh. Fosgail e ann am Word is sàbhail e mar .docx.",
-  "Pages-filen kunne ikke åpnes.": "Cha b’ urrainn dhuinn am faidhle Pages fhosgladh.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Cha b’ urrainn dhuinn am faidhle ZIP fhosgladh. Dh’fhaodadh gu bheil e millte no nach deach a luchdadh a-nuas ach gu ìre.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Chan eil pròifil, dreuchd no foghlam ann an às-phortadh LinkedIn airson ion-phortadh.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Cha b’ urrainn dhuinn am faidhle JSON Resume a leughadh. Dh’fhaodadh gu bheil e air a mhilleadh.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Cha deach gabhail ris an iuchair. Dèan cinnteach gun do chuir thu a-steach an iuchair API shlàn.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "Chleachd an AI cus cheuman air aon teachdaireachd. Roinn an obair is feuch ris a-rithist.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Chan eil Claude Code air a chlàradh a-steach. Fosgail tèirmineal, ruith “claude”, clàraich a-steach, is feuch ris a-rithist.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Cha do fhreagair Claude Code taobh a-staigh deich mionaidean agus chaidh stad a chur air.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Cha do fhreagair Claude Code taobh a-staigh còig mionaidean agus chaidh stad a chur air.",
   "Endret sideoppsettet": "Dh’atharraich e a’ cho-dhealbhachd",
   "Endret rekkefølgen på seksjonene": "Dh’atharraich e òrdugh nan earrannan",
   "Oppdaterte språkene": "Dh’ùraich e na cànanan",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "Fhreagair {a} le mearachd. Feuch ris a-rithist an ceann greis, no tagh modail eile.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "Fhreagair {a}, ach chan ann san fhòrmat a dh’fheumas CVBuilder. Feuch ris a-rithist.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: cha b’ urrainn dhuinn ceangal ri {b}. A bheil Ollama, LM Studio no am frithealaiche agad a’ ruith?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: cha deach modail sam bith a lorg airson na h-iuchrach seo",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: dh’fhàg an eadar-theangachadh pàirtean dhen CV às; feuch ris a-rithist",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Chaidh na prìomh sgilean ùrachadh ({a} puingean)",
   "Skjulte {a} deler i denne CV-en": "Dh’fhalaich thu {a} nithean san CV seo",
   "Viste {a} deler igjen": "Chaidh {a} nithean a shealltainn a-rithist",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Chaidh an dealbhadh atharrachadh gu {a}",
   "Endret seksjonen «{a}»": "Chaidh an earrann “{a}” atharrachadh",
   "La til seksjonen «{a}»": "Chaidh an earrann “{a}” a chur ris",
-  "Fjernet seksjonen «{a}»": "Chaidh an earrann “{a}” a thoirt air falbh"
+  "Fjernet seksjonen «{a}»": "Chaidh an earrann “{a}” a thoirt air falbh",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Cha b’ urrainn dhuinn am faidhle Pages fhosgladh. Dh’fhaoidte gu bheil e air a mhilleadh. Ann am Pages: Faidhle → Às-phortaich gu → Word no PDF, agus ion-phortaich am faidhle sin.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Cha do fhreagair Claude Code taobh a-staigh deich mionaidean agus chaidh stad a chur air. Feuch ris a-rithist, le teachdaireachd nas giorra ma dh’fhaoidte. Mura cuidich sin, fosgail tèirmineal agus ruith “claude” gus faicinn a bheil e ag obair.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Cha do fhreagair Claude Code taobh a-staigh còig mionaidean agus chaidh stad a chur air. Feuch ris a-rithist, le teacsa nas giorra ma dh’fhaoidte. Mura cuidich sin, fosgail tèirmineal agus ruith “claude” gus faicinn a bheil e ag obair.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Cha b’ urrainn dhuinn Claude Code a thòiseachadh. Dèan cinnteach gu bheil Claude Code air a stàladh agus gu bheil e ag obair ann an tèirmineal, no tagh seirbheis AI eile.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "Cha do lorg CVBuilder an obair. Tagh an obair san liosta a-rithist agus feuch ris a-rithist.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "Cha do lorg {a} modail sam bith airson na h-iuchrach seo. Dèan cinnteach gur ann leis an t-seirbheis seo a tha an iuchair, no tagh seirbheis eile.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "Stad {a} am freagairt mus robh e deiseil. Feuch ris a-rithist.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Bha am freagairt o {a} ro fhada agus chaidh a ghearradh goirid. Feuch ris a-rithist le teacsa nas giorra, no tagh modail eile.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Dh’fhàg an t-eadar-theangachadh o {a} pàirtean dhen CV às. Feuch ris a-rithist, no tagh modail eile."
  }
 }
