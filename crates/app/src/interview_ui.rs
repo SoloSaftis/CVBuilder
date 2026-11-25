@@ -5,11 +5,11 @@
 //! when the person clicks it, and never the notes.
 //!
 //! The notes are the person's own preparation: they live in the data folder on this computer
-//! (`intervju-notater.json`), never in the CV file and never in the CV.
-use std::collections::BTreeMap;
+//! (`intervju-notater.json`), never in the CV file and never in the CV, and apart for each CV and job
+//! (`cv_core::interview::notes_scope`), so a note for one application never shows on another.
 use std::time::{Duration, Instant};
 
-use cv_core::interview::{self, Part, Sheet};
+use cv_core::interview::{self, Notes, Part, Sheet};
 use egui::{CornerRadius, Margin, RichText};
 
 use crate::checklist_ui::Status;
@@ -33,40 +33,54 @@ fn file() -> std::path::PathBuf {
     storage::data_dir().join("intervju-notater.json")
 }
 
-/// The notes on this computer, by item id. A file that cannot be read is moved aside, not
-/// written over.
-fn load() -> (BTreeMap<String, String>, String) {
-    match std::fs::read_to_string(file()) {
-        Ok(text) => match serde_json::from_str(&text) {
+/// The notes on this computer, for every CV and job. A file that cannot be read is moved aside,
+/// never written over.
+fn load(path: &std::path::Path) -> (Notes, String) {
+    match std::fs::read_to_string(path) {
+        Ok(text) => match Notes::from_json(&text) {
             Ok(notes) => (notes, String::new()),
             Err(e) => {
-                let _ = std::fs::rename(file(), file().with_extension("json.bad"));
-                (BTreeMap::new(), i18n::details(i18n::t("Intervjunotatene på denne maskinen kunne ikke leses og er lagt til side."), &e.to_string()))
+                let _ = set_aside(path);
+                (Notes::default(), i18n::details(i18n::t("Intervjunotatene på denne maskinen kunne ikke leses og er lagt til side."), &e))
             }
         },
-        Err(_) => (BTreeMap::new(), String::new()),
+        Err(_) => (Notes::default(), String::new()),
     }
 }
 
+/// Moves a file that cannot be read to `<name>.bad`, or `<name>.bad-2`, `-3` … when an earlier
+/// one is there, so no copy set aside before is written over.
+fn set_aside(path: &std::path::Path) -> std::io::Result<std::path::PathBuf> {
+    let name = path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+    for n in 1..10_000 {
+        let to = path.with_file_name(if n == 1 { format!("{name}.bad") } else { format!("{name}.bad-{n}") });
+        if !to.exists() {
+            std::fs::rename(path, &to)?;
+            return Ok(to);
+        }
+    }
+    Err(std::io::Error::other("too many copies set aside"))
+}
+
 /// Writes then renames; no notes, no file.
-fn save(notes: &BTreeMap<String, String>) -> Result<(), String> {
-    let path = file();
-    if notes.values().all(|n| n.trim().is_empty()) {
-        return match std::fs::remove_file(&path) {
+fn save(path: &std::path::Path, notes: &Notes) -> Result<(), String> {
+    if notes.is_empty() {
+        return match std::fs::remove_file(path) {
             Err(e) if e.kind() != std::io::ErrorKind::NotFound => Err(e.to_string()),
             _ => Ok(()),
         };
     }
     std::fs::create_dir_all(path.parent().unwrap_or(std::path::Path::new("."))).map_err(|e| e.to_string())?;
     let tmp = path.with_extension("json.tmp");
-    std::fs::write(&tmp, serde_json::to_string_pretty(notes).map_err(|e| e.to_string())?).map_err(|e| e.to_string())?;
-    std::fs::rename(&tmp, &path).map_err(|e| e.to_string())
+    std::fs::write(&tmp, notes.to_json()?).map_err(|e| e.to_string())?;
+    std::fs::rename(&tmp, path).map_err(|e| e.to_string())
 }
 
 #[derive(Default)]
 pub struct InterviewState {
     pub open: bool,
-    pub notes: BTreeMap<String, String>,
+    /// For every CV and job; the sheet shows only those of `interview::notes_scope`.
+    pub notes: Notes,
     /// The notes are read from disk the first time the window opens.
     loaded: bool,
     copied: Option<Instant>,
@@ -75,13 +89,14 @@ pub struct InterviewState {
 }
 
 impl InterviewState {
-    pub fn note(&self, id: &str) -> String {
-        self.notes.get(id).cloned().unwrap_or_default()
+    /// The note on item `id` of this CV's and job's sheet.
+    pub fn note(&self, project: &cv_core::Project, id: &str) -> String {
+        self.notes.get(&interview::notes_scope(project), id).to_string()
     }
 
     pub fn open(&mut self) {
         if !self.loaded {
-            let (notes, message) = load();
+            let (notes, message) = load(&file());
             self.notes = notes;
             self.message = message;
             self.loaded = true;
@@ -111,6 +126,7 @@ impl CvApp {
         }
         let t = Tokens::get(ctx);
         let sheet = self.interview_sheet();
+        let scope = interview::notes_scope(&self.project);
         let has_ai = self.chat_backend().is_some();
         let mut close = false;
         let mut practise = false;
@@ -149,7 +165,7 @@ impl CvApp {
                             }
                             ui.add_space(2.0);
                             let w = ui.available_width();
-                            let note = self.interview.notes.entry(item.id.clone()).or_default();
+                            let note = self.interview.notes.entry(&scope, &item.id);
                             changed |= ui
                                 .add(egui::TextEdit::multiline(note).hint_text(i18n::t("Notater")).desired_rows(1).desired_width(w))
                                 .on_hover_text(i18n::t("Det du vil si. Lagres bare på denne maskinen, ikke i CV-filen."))
@@ -167,7 +183,7 @@ impl CvApp {
                 }
                 let copy = if just { i18n::t("Kopiert") } else { i18n::t("Kopier som tekst") };
                 if theme::primary(ui, copy, i18n::t("Kopier arket med notatene, til et dokument eller en e-post til deg selv"), true).clicked() {
-                    let notes = |id: &str| self.interview.note(id);
+                    let notes = |id: &str| self.interview.notes.get(&scope, id).to_string();
                     ctx.copy_text(interview::to_text(&self.project, &sheet, &notes, &tr));
                     self.interview.copied = Some(Instant::now());
                 }
@@ -177,8 +193,8 @@ impl CvApp {
                 if has_ai && ui.button(i18n::t("Øv i AI-chatten")).on_hover_text(i18n::t("AI-en stiller spørsmålene ett om gangen og gir kort tilbakemelding. Notatene dine sendes ikke, og CV-en endres ikke.")).clicked() {
                     practise = true;
                 }
-                let any = self.interview.notes.values().any(|n| !n.trim().is_empty());
-                if any && !self.interview.confirm_clear && ui.button(i18n::t("Slett notatene")).on_hover_text(i18n::t("Slett intervjunotatene fra denne maskinen")).clicked() {
+                let any = self.interview.notes.any(&scope);
+                if any && !self.interview.confirm_clear && ui.button(i18n::t("Slett notatene")).on_hover_text(i18n::t("Slett notatene på dette arket, for denne CV-en og denne jobben")).clicked() {
                     self.interview.confirm_clear = true;
                 }
                 let default = ui.button(i18n::t("Lukk")).on_hover_text(i18n::t("Lukk arket. Notatene er lagret."));
@@ -189,10 +205,10 @@ impl CvApp {
             });
             if self.interview.confirm_clear {
                 ui.add_space(4.0);
-                ui.label(i18n::t("Slette alle intervjunotatene på denne maskinen?"));
+                ui.label(i18n::t("Slette notatene på dette arket? Notatene for andre CV-er og jobber blir liggende."));
                 ui.horizontal(|ui| {
-                    if ui.button(i18n::t("Slett")).on_hover_text(i18n::t("Slett intervjunotatene fra denne maskinen")).clicked() {
-                        self.interview.notes.clear();
+                    if ui.button(i18n::t("Slett")).on_hover_text(i18n::t("Slett notatene på dette arket, for denne CV-en og denne jobben")).clicked() {
+                        self.interview.notes.clear(&scope);
                         self.interview.confirm_clear = false;
                         changed = true;
                     }
@@ -203,8 +219,8 @@ impl CvApp {
             }
         });
         if changed {
-            self.interview.notes.retain(|_, n| !n.is_empty());
-            match save(&self.interview.notes) {
+            self.interview.notes.tidy();
+            match save(&file(), &self.interview.notes) {
                 Ok(()) => self.interview.message.clear(),
                 Err(e) => self.interview.message = i18n::failed(i18n::t("Intervjunotatene ble ikke lagret."), &e, cv_core::plain::TRY_AGAIN),
             }
@@ -223,7 +239,7 @@ impl CvApp {
 
     pub(crate) fn write_interview_pdf(&mut self, path: &std::path::Path) {
         let sheet = self.interview_sheet();
-        let notes = |id: &str| self.interview.note(id);
+        let notes = |id: &str| self.interview.note(&self.project, id);
         let doc = interview::to_document(&self.project, &sheet, &notes, &tr, &i18n::current_code());
         let result = cv_core::document::to_pdf(&doc).map_err(|e| e.to_string()).and_then(|bytes| std::fs::write(path, bytes).map_err(|e| e.to_string()));
         let message = match result {
@@ -257,5 +273,57 @@ mod tests {
         // The claims go along; the notes cannot (`practice_prompt` is never given them).
         assert!(sheet.part(interview::Part::Claims).count() > 0);
         assert!(sheet.part(interview::Part::Claims).all(|i| ask.contains(&i.subject)));
+    }
+
+    fn temp_dir(name: &str) -> std::path::PathBuf {
+        let dir = std::env::temp_dir().join(format!("cvbuilder-{name}-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    #[test]
+    fn a_file_that_cannot_be_read_is_set_aside_without_writing_over_an_earlier_one() {
+        let dir = temp_dir("interview-bad");
+        let path = dir.join("intervju-notater.json");
+        for (i, text) in ["first {", "second [", "third"].iter().enumerate() {
+            std::fs::write(&path, text).unwrap();
+            let (notes, message) = load(&path);
+            assert!(notes.is_empty() && !message.is_empty());
+            assert!(!path.exists(), "moved aside, round {i}");
+        }
+        let read = |name: &str| std::fs::read_to_string(dir.join(name)).unwrap();
+        assert_eq!(read("intervju-notater.json.bad"), "first {");
+        assert_eq!(read("intervju-notater.json.bad-2"), "second [");
+        assert_eq!(read("intervju-notater.json.bad-3"), "third");
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn the_first_notes_file_is_upgraded_and_its_notes_kept() {
+        let dir = temp_dir("interview-old");
+        let path = dir.join("intervju-notater.json");
+        std::fs::write(&path, r#"{"why": "Fordi"}"#).unwrap();
+        let (mut notes, message) = load(&path);
+        assert!(message.is_empty(), "{message}");
+        let p = cv_core::Project::example();
+        let mut other = p.clone();
+        other.target.company = "Et annet firma".into();
+        let (scope, elsewhere) = (interview::notes_scope(&p), interview::notes_scope(&other));
+        assert_eq!(notes.get(&scope, "why"), "", "an old note is not shown on any sheet");
+        *notes.entry(&scope, "ask") = "Om teamet".into();
+        *notes.entry(&elsewhere, "ask") = "Om lønn".into();
+        save(&path, &notes).unwrap();
+        // «Slett notatene» on this sheet: the other job's notes and the old ones stay.
+        notes.clear(&scope);
+        save(&path, &notes).unwrap();
+        let (again, _) = load(&path);
+        assert_eq!(again.unassigned.get("why").map(String::as_str), Some("Fordi"));
+        assert!(!again.any(&scope));
+        assert_eq!(again.get(&elsewhere, "ask"), "Om lønn");
+        // With nothing at all left, there is no file.
+        save(&path, &Notes::default()).unwrap();
+        assert!(!path.exists());
+        let _ = std::fs::remove_dir_all(&dir);
     }
 }
