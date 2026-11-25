@@ -21,8 +21,7 @@ thiserror.workspace = true
 base64 = "0.22"
 regex = "1"
 pdf-extract = "0.12"
-# Europass: the XML the editor saves, and the copy it attaches to its PDFs (same versions pdf-extract and WordCraft already use).
-lopdf = { version = "0.42", default-features = false }
+# Europass: the XML the editor saves (and the copy it attaches to its PDFs).
 quick-xml = "0.41"
 # Right-to-left and Indic PDFs: read with ActualText and in reading order (pdfread.rs).
 hayro-syntax = "0.7.2"
@@ -32,3 +31,7 @@ kurbo = "0.13"
 # Offline spell check (spelling.rs): Hunspell dictionaries in pure Rust, and the bundled ones gzipped.
 spellbook = "0.4.2"
 flate2 = "1"
+
+[dev-dependencies]
+# Tests build Europass PDFs with attachments (the same version pdf-extract and WordCraft use).
+lopdf = { version = "0.42", default-features = false }

@@ -134,25 +134,32 @@ pub fn cv_from_bytes(bytes: &[u8], ext: &str) -> Result<CvFile, String> {
     if kind == Kind::Pdf {
         // A Europass PDF carries the CV as XML: read that rather than guess from the page text.
         let owned = bytes.to_vec();
-        if let Some(Some(xml)) = isolated(move || crate::europass::xml_in_pdf(&owned))
-            && let Ok(read) = crate::europass::read_xml(&xml)
-        {
+        if let Some(Some(Ok(read))) = isolated(move || crate::europass::xml_in_pdf(&owned).map(|xml| crate::europass::read_xml(&xml))) {
             return Ok(CvFile::Europass(read));
         }
     }
     if matches!(kind, Kind::Text | Kind::Html) {
         let text = decode_text(bytes);
         if crate::europass::is_europass(&text) {
-            return crate::europass::read_xml(&text).map(CvFile::Europass);
+            // On its own thread, like the PDF readers: an odd file gives an error, not a crash.
+            return isolated(move || crate::europass::read_xml(&text)).unwrap_or_else(|| Err("Europass-filen kunne ikke leses. Den kan være skadet.".into())).map(CvFile::Europass);
         }
-        if crate::jsonresume::is_json_resume(&text) {
-            return crate::jsonresume::read(&text).map(CvFile::JsonResume);
+        if let Some(read) = crate::jsonresume::read_if_resume(&text) {
+            return read.map(CvFile::JsonResume);
         }
         if ext == "xml" {
             return Err("XML-filen er ikke en Europass-CV. Bare Europass-XML kan hentes inn.".into());
         }
     }
     text_from_bytes(bytes, ext).map(CvFile::Text)
+}
+
+/// A picked `.json` file: a JSON Resume read into a CV, or `None` when it is other JSON (a
+/// CVBuilder draft, opened as it is). The file is read once, with the usual size limit; meant
+/// for a worker thread.
+pub fn json_resume_from_file(path: &std::path::Path) -> Result<Option<CvRead>, String> {
+    let bytes = read_file(path)?;
+    crate::jsonresume::read_if_resume(&decode_text(&bytes)).transpose()
 }
 
 /// The text of a file. PDFs must contain real text (a scanned page is an image and gives none).

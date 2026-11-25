@@ -21,6 +21,10 @@ pub struct CvRead {
     pub found: Vec<String>,
 }
 
+/// The most items a structured file (Europass, JSON Resume) gives one list: far more than any CV
+/// has, and few enough that a file made with millions of entries reads quickly.
+pub(crate) const MAX_LIST: usize = 500;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Part {
     Top,

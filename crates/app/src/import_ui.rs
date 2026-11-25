@@ -16,6 +16,8 @@ pub enum Outcome {
     /// place the text.
     Cv(Result<CvFile, String>, bool),
     Ad(Result<AdInfo, String>),
+    /// A picked `.json` file that is not a JSON Resume: a CVBuilder draft, opened as it is.
+    Draft(std::path::PathBuf),
 }
 
 #[derive(Default)]
@@ -47,13 +49,14 @@ impl CvApp {
 
     /// A picked existing CV. CVBuilder files open as they are; other files are read as text.
     pub(crate) fn import_cv_file(&mut self, path: std::path::PathBuf) {
-        // A JSON Resume is read like any other CV; a CVBuilder draft opens as it is.
-        let resume = std::fs::read_to_string(&path).is_ok_and(|t| cv_core::jsonresume::is_json_resume(&t));
-        if path.extension().is_some_and(|e| e.eq_ignore_ascii_case("json")) && !resume {
-            match crate::open_project(&path) {
-                Ok(p) => self.replace(p, false, crate::step::IMPORT, i18n::t("CV-en er hentet inn. Den forrige kan hentes tilbake med Angre.")),
-                Err(e) => self.status = e,
-            }
+        // A .json file is looked at on the worker: a JSON Resume is read like any other CV, and a
+        // CVBuilder draft then opens as it is.
+        if path.extension().is_some_and(|e| e.eq_ignore_ascii_case("json")) {
+            self.run_import(i18n::t("Leser CV-en …"), move || match import::json_resume_from_file(&path) {
+                Ok(Some(read)) => Outcome::Cv(Ok(CvFile::JsonResume(read)), false),
+                Ok(None) => Outcome::Draft(path),
+                Err(e) => Outcome::Cv(Err(e), false),
+            });
             return;
         }
         let use_ai = self.import.use_ai && self.chat_backend().is_some();
@@ -125,6 +128,10 @@ impl CvApp {
         self.import.inbox = None;
         self.import.busy = None;
         match outcome {
+            Outcome::Draft(path) => match crate::open_project(&path) {
+                Ok(p) => self.replace(p, false, crate::step::IMPORT, i18n::t("CV-en er hentet inn. Den forrige kan hentes tilbake med Angre.")),
+                Err(e) => self.status = e,
+            },
             Outcome::Ad(Ok(ad)) => self.apply_ad(ad, None),
             Outcome::Ad(Err(e)) => {
                 // The message is on the ad card, so the card must be open to show it.

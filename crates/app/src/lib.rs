@@ -188,7 +188,9 @@ struct CvApp {
     /// «Krav i annonsen» in the recruiter check.
     requirements: requirements_ui::RequirementsState,
     designs: designs_ui::DesignState,
-    portrait: Option<(u64, egui::TextureHandle)>,
+    /// The portrait shown in the form, by the hash of its `data:` URL; `None` inside when that
+    /// photo could not be decoded, so a broken photo is not decoded again every frame.
+    portrait: Option<(u64, Option<egui::TextureHandle>)>,
     about_open: bool,
     /// Hjelp → «Se etter oppdateringer», while its window is open.
     update_check: Option<updates_ui::UpdateCheck>,
@@ -1038,16 +1040,13 @@ impl CvApp {
         let key = h.finish();
         if let Some((k, tex)) = &self.portrait {
             if *k == key {
-                return Some(tex.clone());
+                return tex.clone();
             }
         }
-        use base64::Engine as _;
-        let bytes = base64::engine::general_purpose::STANDARD.decode(url.split_once(',')?.1).ok()?;
-        let img = image::load_from_memory(&bytes).ok()?.to_rgba8();
-        let color = egui::ColorImage::from_rgba_unmultiplied([img.width() as usize, img.height() as usize], img.as_raw());
-        let tex = ctx.load_texture("portrait-form", color, egui::TextureOptions::LINEAR);
+        // Decoded once per photo; a photo that does not decode is remembered as such.
+        let tex = decode_portrait(url).map(|color| ctx.load_texture("portrait-form", color, egui::TextureOptions::LINEAR));
         self.portrait = Some((key, tex.clone()));
-        Some(tex)
+        tex
     }
 
     fn form_view(&mut self, ui: &mut egui::Ui) {
@@ -1212,6 +1211,22 @@ impl CvApp {
 }
 
 // ---------- small helpers ----------
+
+/// A portrait's `data:` URL as pixels for the form, or `None` when it does not decode or is
+/// larger than any photo (more than 8000 pixels on a side, or 128 MB decoded). An imported photo
+/// is at most 4000 pixels on a side, so it always fits.
+fn decode_portrait(url: &str) -> Option<egui::ColorImage> {
+    use base64::Engine as _;
+    let bytes = base64::engine::general_purpose::STANDARD.decode(url.split_once(',')?.1.trim()).ok()?;
+    let mut reader = image::ImageReader::new(std::io::Cursor::new(bytes)).with_guessed_format().ok()?;
+    let mut limits = image::Limits::default();
+    limits.max_image_width = Some(8000);
+    limits.max_image_height = Some(8000);
+    limits.max_alloc = Some(128 * 1024 * 1024);
+    reader.limits(limits);
+    let img = reader.decode().ok()?.to_rgba8();
+    Some(egui::ColorImage::from_rgba_unmultiplied([img.width() as usize, img.height() as usize], img.as_raw()))
+}
 
 /// A CVBuilder draft (`.json`) from disk. The error is a message for the status bar: why the
 /// file could not be read, or that it is not a draft, with the technical text as «Details».
@@ -1431,7 +1446,7 @@ pub fn run() -> eframe::Result {
 
 #[cfg(test)]
 mod open_project_tests {
-    use super::open_project;
+    use super::{decode_portrait, open_project};
 
     #[test]
     fn open_project_explains_what_is_wrong() {
@@ -1453,5 +1468,26 @@ mod open_project_tests {
         let draft = dir.join("utkast.json");
         std::fs::write(&draft, cv_core::Project::example().to_json().expect("json")).expect("write");
         assert!(open_project(&draft).is_ok());
+    }
+
+    /// 170: a photo that does not decode, or claims a giant size, gives no picture (and is then
+    /// remembered as such) instead of being decoded again every frame.
+    #[test]
+    fn a_broken_or_giant_portrait_is_not_decoded() {
+        use base64::Engine as _;
+        let url = |b: &[u8]| format!("data:image/jpeg;base64,{}", base64::engine::general_purpose::STANDARD.encode(b));
+        assert!(decode_portrait("data:image/jpeg;base64,!!!").is_none());
+        assert!(decode_portrait(&url(b"not a picture")).is_none());
+        assert!(decode_portrait("no comma").is_none());
+        // A PNG header claiming 60 000 × 60 000 pixels: refused by the limits, not allocated.
+        let mut png = b"\x89PNG\r\n\x1a\n\x00\x00\x00\x0dIHDR".to_vec();
+        png.extend(60_000u32.to_be_bytes());
+        png.extend(60_000u32.to_be_bytes());
+        png.extend([8, 6, 0, 0, 0, 0, 0, 0, 0]);
+        assert!(decode_portrait(&url(&png)).is_none());
+        // A real picture still decodes.
+        let mut ok = Vec::new();
+        image::RgbImage::new(4, 5).write_to(&mut std::io::Cursor::new(&mut ok), image::ImageFormat::Png).expect("png");
+        assert_eq!(decode_portrait(&url(&ok)).map(|c| c.size), Some([4, 5]));
     }
 }
