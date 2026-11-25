@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Il-fajl huwa vojt; m’hemm l-ebda test x’jinqara.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Il-fajl Word huwa protett b’password. Iftħu f’Word, neħħi l-password u erġa’ salvah.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Il-fajl Word antik (.doc) ma setax jinqara. Iftħu f’Word u salvah bħala .docx.",
-  "Pages-filen kunne ikke åpnes.": "Il-fajl Pages ma setax jinfetaħ.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Il-fajl ZIP ma setax jinfetaħ. Jista’ jkun bil-ħsara jew imniżżel parzjalment biss.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "L-esportazzjoni ta’ LinkedIn m’għandha l-ebda profil, xogħol jew edukazzjoni biex jiġu importati.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Il-fajl JSON Resume ma setax jinqara. Jista’ jkun bil-ħsara.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Iċ-ċavetta ma ġietx aċċettata. Iċċekkja li waħħalt iċ-ċavetta tal-API kollha.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "L-AI użat wisq passi fuq messaġġ wieħed. Aqsam il-kompitu u erġa’ pprova.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code mhuwiex illoggjat. Iftaħ terminal, ħaddem “claude”, illoggja, u erġa’ pprova.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code ma weġibx fi żmien għaxar minuti u twaqqaf.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code ma weġibx fi żmien ħames minuti u twaqqaf.",
   "Endret sideoppsettet": "Biddlet it-tqassim",
   "Endret rekkefølgen på seksjonene": "Biddlet l-ordni tas-sezzjonijiet",
   "Oppdaterte språkene": "Aġġornat il-lingwi",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} wieġeb bi żball. Erġa’ pprova ftit wara, jew agħżel mudell ieħor.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} wieġeb, iżda mhux fil-format li jeħtieġ CVBuilder. Erġa’ pprova.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: ma stajtx nikkuntattja {b}. Ollama, LM Studio jew is-server tiegħek għaddej?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: ma nstab l-ebda mudell għal din iċ-ċavetta",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: it-traduzzjoni ħalliet barra partijiet mis-CV; erġa’ pprova",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Il-ħiliet ewlenin ġew aġġornati ({a} punti)",
   "Skjulte {a} deler i denne CV-en": "Inħbew {a} partijiet f’dan is-CV",
   "Viste {a} deler igjen": "{a} partijiet ġew murija mill-ġdid",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Id-disinn inbidel għal {a}",
   "Endret seksjonen «{a}»": "Inbidlet is-sezzjoni “{a}”",
   "La til seksjonen «{a}»": "Żdiedet is-sezzjoni “{a}”",
-  "Fjernet seksjonen «{a}»": "Tneħħiet is-sezzjoni “{a}”"
+  "Fjernet seksjonen «{a}»": "Tneħħiet is-sezzjoni “{a}”",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Il-fajl Pages ma setax jinfetaħ. Jista’ jkun bil-ħsara. F’Pages: Fajl → Esporta lejn → Word jew PDF, u mbagħad importa dak il-fajl.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ma weġibx fi żmien għaxar minuti u twaqqaf. Erġa’ pprova, preferibbilment b’messaġġ iqsar. Jekk ma jgħinx, iftaħ terminal u ħaddem “claude” biex tara jekk jaħdimx.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ma weġibx fi żmien ħames minuti u twaqqaf. Erġa’ pprova, preferibbilment b’test iqsar. Jekk ma jgħinx, iftaħ terminal u ħaddem “claude” biex tara jekk jaħdimx.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code ma setax jinbeda. Iċċekkja li Claude Code huwa installat u jaħdem f’terminal, jew agħżel servizz ieħor tal-AI.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder ma sabx ix-xogħol. Erġa’ agħżel ix-xogħol mil-lista u erġa’ pprova.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} ma sab l-ebda mudell għal din iċ-ċavetta. Iċċekkja li ċ-ċavetta hija ta’ dan is-servizz, jew agħżel servizz ieħor.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} waqqaf it-tweġiba qabel ma lestiet. Erġa’ pprova.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "It-tweġiba minn {a} saret twila wisq u nqatgħet. Erġa’ pprova b’test iqsar, jew agħżel mudell ieħor.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "It-traduzzjoni minn {a} ħalliet barra partijiet mis-CV. Erġa’ pprova, jew agħżel mudell ieħor."
  }
 }

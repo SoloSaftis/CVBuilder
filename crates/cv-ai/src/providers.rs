@@ -197,6 +197,16 @@ pub enum AiFailure {
     Refused(&'static str),
     #[error("{0} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.")]
     Unreadable(&'static str),
+    #[error("{0} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.")]
+    NoModels(&'static str),
+    #[error("{0} avbrøt svaret før det var ferdig. Prøv igjen.")]
+    Cancelled(&'static str),
+    #[error("Svaret fra {0} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.")]
+    TooLong(&'static str),
+    #[error("Oversettelsen fra {0} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.")]
+    Incomplete(&'static str),
+    #[error("CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.")]
+    NoJob,
     #[error("{0}: {1}")]
     Other(&'static str, String),
     /// The service answered with an error of its own; its words go on the «Detaljer» line.
@@ -273,7 +283,7 @@ pub fn test_connection(endpoint: &Endpoint) -> Result<Vec<String>, AiFailure> {
     };
     ids.sort_by_key(|id| service.preferred().iter().position(|p| id.starts_with(p)).unwrap_or(usize::MAX));
     if ids.is_empty() {
-        return Err(AiFailure::Other(service.name(), "fant ingen modeller for denne nøkkelen".into()));
+        return Err(AiFailure::NoModels(service.name()));
     }
     Ok(ids)
 }
@@ -321,7 +331,7 @@ pub fn complete(endpoint: &Endpoint, model: &str, system: &str, user: &str) -> R
         match snapshot.state {
             JobState::Succeeded => return Ok(text),
             JobState::Failed { error } => return Err(openai_error(service, &error)),
-            JobState::Cancelled => return Err(AiFailure::Other(service.name(), "avbrutt".into())),
+            JobState::Cancelled => return Err(AiFailure::Cancelled(service.name())),
             _ if started.elapsed() > Duration::from_secs(180) => {
                 let _ = provider.cancel(&job);
                 return Err(AiFailure::Network(service.name()));
@@ -363,7 +373,7 @@ pub fn parse_claude(body: &str) -> Result<String, AiFailure> {
     let value: serde_json::Value = serde_json::from_str(body).map_err(|_| AiFailure::Unreadable("Claude"))?;
     match value["stop_reason"].as_str() {
         Some("refusal") => return Err(AiFailure::Refused("Claude")),
-        Some("max_tokens") => return Err(AiFailure::Other("Claude", "svaret ble for langt".into())),
+        Some("max_tokens") => return Err(AiFailure::TooLong("Claude")),
         _ => {}
     }
     let text: String = value["content"].as_array().map(|blocks| blocks.iter().filter(|b| b["type"] == "text").filter_map(|b| b["text"].as_str()).collect()).unwrap_or_default();
@@ -433,4 +443,39 @@ pub fn fetch_page_within(url: &str, limit: Duration) -> Result<String, String> {
         return Ok(format!("<pre>{}</pre>", text.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;")));
     }
     Ok(text)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn status_error_says_what_to_do() {
+        assert!(matches!(status_error(Service::Claude, 401, ""), AiFailure::BadKey));
+        assert!(matches!(status_error(Service::Claude, 403, ""), AiFailure::BadKey));
+        for busy in [429, 503, 529] {
+            assert!(matches!(status_error(Service::Claude, busy, ""), AiFailure::Busy("Claude")), "{busy}");
+        }
+        // The service's own words go on the «Detaljer» line, under a message with a next step.
+        let failed = status_error(Service::Claude, 400, r#"{"error":{"message":"model not found"}}"#).to_string();
+        assert_eq!(failed, "Claude svarte med en feil. Prøv igjen om litt, eller velg en annen modell.\nDetaljer: model not found");
+        // A body that is not the service's error format is never echoed (it could hold the key).
+        let raw = status_error(Service::Claude, 500, "sk-ant-secret <html>").to_string();
+        assert!(raw.ends_with("\nDetaljer: HTTP 500"), "{raw}");
+        assert!(!raw.contains("sk-ant"), "{raw}");
+        // A long message is cut short.
+        let long = status_error(Service::Claude, 400, &format!(r#"{{"error":{{"message":"{}"}}}}"#, "x".repeat(1000))).to_string();
+        assert!(long.len() < 400, "{}", long.len());
+    }
+
+    #[test]
+    fn failures_say_what_happened_and_what_to_do() {
+        for failure in [AiFailure::NoModels("ChatGPT"), AiFailure::Cancelled("ChatGPT"), AiFailure::TooLong("Claude"), AiFailure::Incomplete("Gemini"), AiFailure::NoJob] {
+            let text = failure.to_string();
+            let lower = text.to_lowercase();
+            assert!(lower.contains("prøv igjen") || lower.contains("velg en annen") || lower.contains("sjekk"), "no next step: {text}");
+            assert!(!text.contains(": "), "no raw «service: text»: {text}");
+        }
+        assert!(matches!(parse_claude(r#"{"stop_reason":"max_tokens","content":[]}"#), Err(AiFailure::TooLong("Claude"))));
+    }
 }

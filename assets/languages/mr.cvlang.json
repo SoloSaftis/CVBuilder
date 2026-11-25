@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "फाइल रिकामी आहे; वाचण्यासाठी कोणताही मजकूर नाही.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word फाइल पासवर्ड-संरक्षित आहे. ती Word मध्ये उघडा, पासवर्ड काढा आणि पुन्हा जतन करा.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "जुनी Word फाइल (.doc) वाचता आली नाही. ती Word मध्ये उघडा आणि .docx म्हणून जतन करा.",
-  "Pages-filen kunne ikke åpnes.": "Pages फाइल उघडता आली नाही.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP फाइल उघडता आली नाही. ती खराब झालेली असू शकते किंवा फक्त अर्धवट डाउनलोड झालेली असू शकते.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn एक्सपोर्टमध्ये आयात करण्यासाठी प्रोफाइल, नोकऱ्या किंवा शिक्षण नाही.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume फाइल वाचता आली नाही. ती खराब झालेली असू शकते.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "की स्वीकारली गेली नाही. तुम्ही संपूर्ण API की पेस्ट केली आहे का ते तपासा.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI ने एका संदेशासाठी खूप जास्त पायऱ्या वापरल्या. काम विभागून पुन्हा प्रयत्न करा.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code मध्ये लॉगिन केलेले नाही. टर्मिनल उघडा, “claude” चालवा, लॉगिन करा, आणि पुन्हा प्रयत्न करा.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code ने दहा मिनिटांत उत्तर दिले नाही आणि ते थांबवले गेले.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code ने पाच मिनिटांत उत्तर दिले नाही आणि ते थांबवले गेले.",
   "Endret sideoppsettet": "मांडणी बदलली",
   "Endret rekkefølgen på seksjonene": "विभागांचा क्रम बदलला",
   "Oppdaterte språkene": "भाषा अद्यतनित केल्या",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} ने त्रुटीसह उत्तर दिले. थोड्या वेळाने पुन्हा प्रयत्न करा, किंवा दुसरे मॉडेल निवडा.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} ने उत्तर दिले, पण CVBuilder ला लागणाऱ्या स्वरूपात नाही. पुन्हा प्रयत्न करा.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b} शी संपर्क झाला नाही. Ollama, LM Studio किंवा तुमचा सर्व्हर चालू आहे का?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: या की साठी कोणतेही मॉडेल सापडले नाहीत",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: भाषांतरात सीव्हीचे काही भाग सुटले; पुन्हा प्रयत्न करा",
   "Oppdaterte kjernekompetansen ({a} punkter)": "मुख्य कौशल्ये अद्ययावत केली ({a} मुद्दे)",
   "Skjulte {a} deler i denne CV-en": "या सीव्हीमध्ये {a} भाग लपवले",
   "Viste {a} deler igjen": "{a} भाग पुन्हा दाखवले",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "डिझाइन {a} मध्ये बदलले",
   "Endret seksjonen «{a}»": "“{a}” विभाग बदलला",
   "La til seksjonen «{a}»": "“{a}” विभाग जोडला",
-  "Fjernet seksjonen «{a}»": "“{a}” विभाग काढला"
+  "Fjernet seksjonen «{a}»": "“{a}” विभाग काढला",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages फाइल उघडता आली नाही. ती खराब झालेली असू शकते. Pages मध्ये: फाइल → यामध्ये एक्सपोर्ट करा → Word किंवा PDF, आणि ती फाइल इम्पोर्ट करा.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ने दहा मिनिटांत उत्तर दिले नाही आणि ते थांबवले गेले. पुन्हा प्रयत्न करा, शक्य असल्यास लहान संदेशासह. तरीही न झाल्यास टर्मिनल उघडा आणि ते चालते का ते पाहण्यासाठी “claude” चालवा.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ने पाच मिनिटांत उत्तर दिले नाही आणि ते थांबवले गेले. पुन्हा प्रयत्न करा, शक्य असल्यास लहान मजकुरासह. तरीही न झाल्यास टर्मिनल उघडा आणि ते चालते का ते पाहण्यासाठी “claude” चालवा.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code सुरू करता आले नाही. Claude Code इन्स्टॉल केलेले आहे आणि टर्मिनलमध्ये चालते का ते तपासा, किंवा दुसरी AI सेवा निवडा.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder ला नोकरी सापडली नाही. यादीत नोकरी पुन्हा निवडा आणि पुन्हा प्रयत्न करा.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} ला या की साठी कोणतेही मॉडेल सापडले नाहीत. ही की या सेवेची आहे का ते तपासा, किंवा दुसरी सेवा निवडा.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} ने उत्तर पूर्ण होण्यापूर्वीच थांबवले. पुन्हा प्रयत्न करा.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} कडून आलेले उत्तर खूप लांब झाल्याने कापले गेले. लहान मजकुरासह पुन्हा प्रयत्न करा, किंवा दुसरे मॉडेल निवडा.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} च्या भाषांतरात सीव्हीचे काही भाग सुटले. पुन्हा प्रयत्न करा, किंवा दुसरे मॉडेल निवडा."
  }
 }

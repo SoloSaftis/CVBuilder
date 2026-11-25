@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Skráin er tóm; enginn texti til að sækja.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word-skráin er varin með lykilorði. Opnaðu hana í Word, fjarlægðu lykilorðið og vistaðu hana aftur.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Ekki tókst að lesa eldri Word-skrána (.doc). Opnaðu hana í Word og vistaðu sem .docx.",
-  "Pages-filen kunne ikke åpnes.": "Ekki tókst að opna Pages-skrána.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Ekki tókst að opna ZIP-skrána. Hún gæti verið skemmd eða aðeins hlaðið niður að hluta.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn-útflutningurinn inniheldur engan prófíl, störf eða menntun til að sækja.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Ekki tókst að lesa JSON Resume-skrána. Hún gæti verið skemmd.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Lykillinn var ekki samþykktur. Athugaðu að þú hafir límt allan API-lykilinn.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "Gervigreindin notaði of mörg skref í einum skilaboðum. Skiptu verkefninu upp og reyndu aftur.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Ekki er skráð inn í Claude Code. Opnaðu skipanalínu, keyrðu „claude“, skráðu þig inn og reyndu aftur.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code svaraði ekki innan tíu mínútna og var stöðvað.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code svaraði ekki innan fimm mínútna og var stöðvað.",
   "Endret sideoppsettet": "Breytti uppsetningunni",
   "Endret rekkefølgen på seksjonene": "Breytti röð hlutanna",
   "Oppdaterte språkene": "Uppfærði tungumálin",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} svaraði með villu. Reyndu aftur eftir smástund eða veldu annað líkan.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} svaraði, en ekki á sniðinu sem CVBuilder þarf. Reyndu aftur.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: náði ekki sambandi við {b}. Er Ollama, LM Studio eða þjónninn þinn í gangi?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: engin líkön fundust fyrir þennan lykil",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: í þýðinguna vantaði hluta af ferilskránni; reyndu aftur",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Kjarnafærni uppfærð ({a} atriði)",
   "Skjulte {a} deler i denne CV-en": "Faldi {a} hluta í þessari ferilskrá",
   "Viste {a} deler igjen": "Sýndi {a} hluta aftur",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Útliti breytt í {a}",
   "Endret seksjonen «{a}»": "Hlutanum „{a}“ breytt",
   "La til seksjonen «{a}»": "Hlutanum „{a}“ bætt við",
-  "Fjernet seksjonen «{a}»": "Hlutinn „{a}“ fjarlægður"
+  "Fjernet seksjonen «{a}»": "Hlutinn „{a}“ fjarlægður",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Ekki tókst að opna Pages-skrána. Hún gæti verið skemmd. Í Pages: Skrá → Flytja út sem → Word eða PDF, og flyttu síðan þá skrá inn.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code svaraði ekki innan tíu mínútna og var stöðvað. Reyndu aftur, helst með styttri skilaboðum. Ef það hjálpar ekki skaltu opna skipanalínu og keyra „claude“ til að sjá hvort það virkar.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code svaraði ekki innan fimm mínútna og var stöðvað. Reyndu aftur, helst með styttri texta. Ef það hjálpar ekki skaltu opna skipanalínu og keyra „claude“ til að sjá hvort það virkar.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Ekki tókst að ræsa Claude Code. Athugaðu hvort Claude Code sé uppsett og virki í skipanalínu, eða veldu aðra gervigreindarþjónustu.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder fann ekki starfið. Veldu starfið aftur í listanum og reyndu aftur.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} fann engin líkön fyrir þennan lykil. Athugaðu hvort lykillinn tilheyri þessari þjónustu, eða veldu aðra þjónustu.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} stöðvaði svarið áður en það var tilbúið. Reyndu aftur.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Svarið frá {a} varð of langt og var stytt. Reyndu aftur með styttri texta, eða veldu annað líkan.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Í þýðinguna frá {a} vantaði hluta af ferilskránni. Reyndu aftur eða veldu annað líkan."
  }
 }

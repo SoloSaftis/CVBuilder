@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ھۆججەت قۇرۇق؛ ئوقۇيدىغان تېكىست يوق.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word ھۆججىتى پارول بىلەن قوغدالغان. ئۇنى Word دا ئېچىپ، پارولنى ئېلىۋېتىپ قايتا ساقلاڭ.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "كونا Word ھۆججىتى (.doc) نى ئوقۇغىلى بولمىدى. ئۇنى Word دا ئېچىپ .docx قىلىپ ساقلاڭ.",
-  "Pages-filen kunne ikke åpnes.": "Pages ھۆججىتىنى ئاچقىلى بولمىدى.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP ھۆججىتىنى ئاچقىلى بولمىدى. ئۇ بۇزۇلغان ياكى پەقەت ئازراق چۈشۈرۈلگەن بولۇشى مۇمكىن.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn چىقىرىلمىسىدا ئەكىرىدىغان شەخسىي ئارخىپ، خىزمەت ياكى مائارىپ يوق.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume ھۆججىتىنى ئوقۇغىلى بولمىدى. ئۇ بۇزۇلغان بولۇشى مۇمكىن.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "ئاچقۇچ قوبۇل قىلىنمىدى. پۈتۈن API ئاچقۇچىنى چاپلىغانلىقىڭىزنى تەكشۈرۈڭ.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "سۈنئىي ئەقىل بىر ئۇچۇرغا بەك كۆپ قەدەم ئىشلەتتى. ۋەزىپىنى بۆلۈپ قايتا سىناڭ.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code غا كىرىلمىگەن. تېرمىنال ئېچىپ، «claude» نى ئىجرا قىلىپ، كىرىپ، قايتا سىناڭ.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code ئون مىنۇت ئىچىدە جاۋاب بەرمىگەچكە توختىتىلدى.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code بەش مىنۇت ئىچىدە جاۋاب بەرمىگەچكە توختىتىلدى.",
   "Endret sideoppsettet": "بەت تەڭشىكى ئۆزگەرتىلدى",
   "Endret rekkefølgen på seksjonene": "بۆلەكلەرنىڭ تەرتىپى ئۆزگەرتىلدى",
   "Oppdaterte språkene": "تىللار يېڭىلاندى",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} خاتالىق بىلەن جاۋاب بەردى. سەل تۇرۇپ قايتا سىناڭ، ياكى باشقا مودېل تاللاڭ.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} جاۋاب قايتۇردى، ئەمما CVBuilder غا كېرەكلىك فورماتتا ئەمەس. قايتا سىناڭ.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b} غا ئۇلانغىلى بولمىدى. Ollama، LM Studio ياكى مۇلازىمېتىرىڭىز ئىشلەۋاتامدۇ؟",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: بۇ ئاچقۇچ ئۈچۈن ھېچقانداق مودېل تېپىلمىدى",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: تەرجىمىدە تەرجىمىھالنىڭ بەزى قىسىملىرى چۈشۈپ قالدى؛ قايتا سىناڭ",
   "Oppdaterte kjernekompetansen ({a} punkter)": "ئاساسلىق ماھارەتلەر يېڭىلاندى ({a} نۇقتا)",
   "Skjulte {a} deler i denne CV-en": "بۇ تەرجىمىھالدا {a} قىسىم يوشۇرۇلدى",
   "Viste {a} deler igjen": "{a} قىسىم قايتا كۆرسىتىلدى",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "لايىھە {a} غا ئالماشتۇرۇلدى",
   "Endret seksjonen «{a}»": "«{a}» بۆلىكى ئۆزگەرتىلدى",
   "La til seksjonen «{a}»": "«{a}» بۆلىكى قوشۇلدى",
-  "Fjernet seksjonen «{a}»": "«{a}» بۆلىكى ئۆچۈرۈلدى"
+  "Fjernet seksjonen «{a}»": "«{a}» بۆلىكى ئۆچۈرۈلدى",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages ھۆججىتىنى ئاچقىلى بولمىدى. ئۇ بۇزۇلغان بولۇشى مۇمكىن. Pages دا: ھۆججەت → چىقىرىش → Word ياكى PDF نى تاللاپ، ئاندىن شۇ ھۆججەتنى ئەكىرىڭ.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ئون مىنۇت ئىچىدە جاۋاب بەرمىگەچكە توختىتىلدى. قايتا سىناڭ، ئەڭ ياخشىسى قىسقىراق ئۇچۇر بىلەن. ياردىمى بولمىسا، تېرمىنال ئېچىپ ئىشلەيدىغان-ئىشلىمەيدىغانلىقىنى كۆرۈش ئۈچۈن «claude» نى ئىجرا قىلىڭ.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code بەش مىنۇت ئىچىدە جاۋاب بەرمىگەچكە توختىتىلدى. قايتا سىناڭ، ئەڭ ياخشىسى قىسقىراق تېكىست بىلەن. ياردىمى بولمىسا، تېرمىنال ئېچىپ ئىشلەيدىغان-ئىشلىمەيدىغانلىقىنى كۆرۈش ئۈچۈن «claude» نى ئىجرا قىلىڭ.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code نى قوزغاتقىلى بولمىدى. Claude Code نىڭ ئورنىتىلغانلىقى ۋە تېرمىنالدا ئىشلەيدىغانلىقىنى تەكشۈرۈڭ، ياكى باشقا AI مۇلازىمىتىنى تاللاڭ.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder خىزمەتنى تاپالمىدى. تىزىملىكتىن خىزمەتنى قايتا تاللاپ، قايتا سىناڭ.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} بۇ ئاچقۇچ ئۈچۈن ھېچقانداق مودېل تاپالمىدى. ئاچقۇچنىڭ بۇ مۇلازىمەتكە تەۋە ئىكەنلىكىنى تەكشۈرۈڭ، ياكى باشقا مۇلازىمەت تاللاڭ.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} جاۋابنى تاماملانماي تۇرۇپ ئۈزۈپ قويدى. قايتا سىناڭ.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} دىن كەلگەن جاۋاب بەك ئۇزۇن بولۇپ كەتكەچكە كېسىلدى. قىسقىراق تېكىست بىلەن قايتا سىناڭ، ياكى باشقا مودېل تاللاڭ.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} دىن كەلگەن تەرجىمىدە تەرجىمىھالنىڭ بەزى قىسىملىرى چۈشۈپ قالدى. قايتا سىناڭ، ياكى باشقا مودېل تاللاڭ."
  }
 }

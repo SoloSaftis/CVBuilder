@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "ファイルが空です。取得できるテキストがありません。",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Wordファイルはパスワードで保護されています。Wordで開き、パスワードを解除して保存し直してください。",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "古い形式のWordファイル（.doc）を読み取れませんでした。Wordで開き、.docxとして保存してください。",
-  "Pages-filen kunne ikke åpnes.": "Pagesファイルを開けませんでした。",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIPファイルを開けませんでした。破損しているか、一部しかダウンロードされていない可能性があります。",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedInのエクスポートに、取り込めるプロフィール、職歴、学歴がありません。",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume ファイルを読み込めませんでした。壊れている可能性があります。",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "キーが受け付けられませんでした。API キー全体を貼り付けたか確認してください。",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI が 1 つのメッセージに多くの手順を使いすぎました。作業を分割して、もう一度お試しください。",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code にサインインしていません。ターミナルを開いて「claude」を実行し、サインインしてからもう一度お試しください。",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code が 10 分以内に応答しなかったため、停止しました。",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code が 5 分以内に応答しなかったため、停止しました。",
   "Endret sideoppsettet": "レイアウトを変更しました",
   "Endret rekkefølgen på seksjonene": "セクションの順序を変更しました",
   "Oppdaterte språkene": "言語を更新しました",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} がエラーを返しました。少し待ってからもう一度試すか、別のモデルを選んでください。",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} から応答がありましたが、CVBuilder が必要とする形式ではありません。もう一度試してください。",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b} に接続できませんでした。Ollama、LM Studio、またはお使いのサーバーは実行中ですか？",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: このキーで使えるモデルが見つかりません",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: 翻訳で履歴書の一部が抜けていました。もう一度試してください",
   "Oppdaterte kjernekompetansen ({a} punkter)": "コアスキルを更新しました ({a} 項目)",
   "Skjulte {a} deler i denne CV-en": "この履歴書で {a} 件を非表示にしました",
   "Viste {a} deler igjen": "{a} 件を再表示しました",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "デザインを {a} に切り替えました",
   "Endret seksjonen «{a}»": "セクション「{a}」を変更しました",
   "La til seksjonen «{a}»": "セクション「{a}」を追加しました",
-  "Fjernet seksjonen «{a}»": "セクション「{a}」を削除しました"
+  "Fjernet seksjonen «{a}»": "セクション「{a}」を削除しました",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pagesファイルを開けませんでした。ファイルが破損している可能性があります。Pagesで「ファイル」→「書き出す」→「Word」または「PDF」を選び、書き出したファイルを読み込んでください。",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code が 10 分以内に応答しなかったため、停止しました。もう一度、できればもっと短いメッセージで試してください。それでも解決しない場合は、ターミナルを開いて「claude」を実行し、動作するか確認してください。",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code が 5 分以内に応答しなかったため、停止しました。もう一度、できればもっと短いテキストで試してください。それでも解決しない場合は、ターミナルを開いて「claude」を実行し、動作するか確認してください。",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code を起動できませんでした。Claude Code がインストールされていて、ターミナルで動作するか確認するか、別の AI サービスを選んでください。",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder が職歴を見つけられませんでした。リストで職歴をもう一度選んでから、やり直してください。",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} でこのキーに対応するモデルが見つかりませんでした。キーがこのサービスのものか確認するか、別のサービスを選んでください。",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} が回答を最後まで返さずに中断しました。もう一度試してください。",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} からの回答が長くなりすぎたため、途中で切れました。もっと短いテキストでもう一度試すか、別のモデルを選んでください。",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} による翻訳で履歴書の一部が抜けていました。もう一度試すか、別のモデルを選んでください。"
  }
 }

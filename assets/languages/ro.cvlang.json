@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Fișierul este gol; nu există text de preluat.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Fișierul Word este protejat cu parolă. Deschideți-l în Word, eliminați parola și salvați-l din nou.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Fișierul Word mai vechi (.doc) nu a putut fi citit. Deschideți-l în Word și salvați-l ca .docx.",
-  "Pages-filen kunne ikke åpnes.": "Fișierul Pages nu a putut fi deschis.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Fișierul ZIP nu a putut fi deschis. Poate fi deteriorat sau descărcat doar parțial.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Exportul LinkedIn nu conține profil, joburi sau studii de importat.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Fișierul JSON Resume nu a putut fi citit. Este posibil să fie deteriorat.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Cheia nu a fost acceptată. Verificați dacă ați lipit întreaga cheie API.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI a folosit prea mulți pași pentru un singur mesaj. Împărțiți sarcina și încercați din nou.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code nu este autentificat. Deschideți un terminal, rulați „claude”, autentificați-vă și încercați din nou.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code nu a răspuns în zece minute și a fost oprit.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code nu a răspuns în cinci minute și a fost oprit.",
   "Endret sideoppsettet": "A modificat aspectul",
   "Endret rekkefølgen på seksjonene": "A modificat ordinea secțiunilor",
   "Oppdaterte språkene": "A actualizat limbile",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} a răspuns cu o eroare. Încercați din nou peste puțin timp sau alegeți alt model.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} a răspuns, dar nu în formatul de care are nevoie CVBuilder. Încercați din nou.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: nu s-a putut contacta {b}. Rulează Ollama, LM Studio sau serverul dvs.?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: nu s-au găsit modele pentru această cheie",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: traducerea a omis părți din CV; încercați din nou",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Competențele principale au fost actualizate ({a} puncte)",
   "Skjulte {a} deler i denne CV-en": "{a} elemente ascunse în acest CV",
   "Viste {a} deler igjen": "{a} elemente afișate din nou",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Designul a fost schimbat în {a}",
   "Endret seksjonen «{a}»": "Secțiunea „{a}” a fost modificată",
   "La til seksjonen «{a}»": "Secțiunea „{a}” a fost adăugată",
-  "Fjernet seksjonen «{a}»": "Secțiunea „{a}” a fost eliminată"
+  "Fjernet seksjonen «{a}»": "Secțiunea „{a}” a fost eliminată",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Fișierul Pages nu a putut fi deschis. Este posibil să fie deteriorat. În Pages: Fișier → Exportă ca → Word sau PDF, apoi importați acel fișier.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code nu a răspuns în zece minute și a fost oprit. Încercați din nou, eventual cu un mesaj mai scurt. Dacă nu ajută, deschideți un terminal și rulați „claude” ca să vedeți dacă funcționează.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code nu a răspuns în cinci minute și a fost oprit. Încercați din nou, eventual cu un text mai scurt. Dacă nu ajută, deschideți un terminal și rulați „claude” ca să vedeți dacă funcționează.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code nu a putut fi pornit. Verificați dacă Claude Code este instalat și funcționează într-un terminal sau alegeți alt serviciu AI.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder nu a găsit locul de muncă. Alegeți din nou locul de muncă din listă și încercați iar.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} nu a găsit modele pentru această cheie. Verificați dacă cheia aparține acestui serviciu sau alegeți alt serviciu.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} a întrerupt răspunsul înainte să fie gata. Încercați din nou.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Răspunsul de la {a} a devenit prea lung și a fost tăiat. Încercați din nou cu un text mai scurt sau alegeți alt model.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Traducerea de la {a} a omis părți din CV. Încercați din nou sau alegeți alt model."
  }
 }

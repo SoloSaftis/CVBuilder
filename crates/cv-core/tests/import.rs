@@ -735,3 +735,24 @@ fn a_blank_cv_has_no_content() {
     p.candidate.name = "Kari".into();
     assert!(p.has_content());
 }
+
+#[test]
+fn unreadable_says_why_and_keeps_the_technical_text_as_details() {
+    let denied = import::unreadable(&std::io::Error::new(std::io::ErrorKind::PermissionDenied, "Access is denied. (os error 5)"));
+    assert_eq!(denied, format!("Filen kunne ikke leses. {}\nDetaljer: Access is denied. (os error 5)", cv_core::plain::NO_ACCESS));
+    let gone = import::unreadable(&std::io::Error::from(std::io::ErrorKind::NotFound));
+    let (main, details) = cv_core::plain::split(&gone);
+    assert_eq!(main, format!("Filen kunne ikke leses. {}", cv_core::plain::GONE));
+    assert!(details.is_some(), "{gone}");
+    // An error CVBuilder knows nothing about still says what to try.
+    let odd = import::unreadable(&std::io::Error::other("something odd"));
+    assert_eq!(odd, format!("Filen kunne ikke leses. {}\nDetaljer: something odd", cv_core::plain::TRY_ANOTHER_FILE));
+}
+
+#[test]
+fn a_broken_pages_file_is_explained_in_plain_words() {
+    let error = import::text_from_bytes(b"PK\x03\x04 not really a package", "pages").expect_err("broken");
+    let (main, details) = cv_core::plain::split(&error);
+    assert_eq!(main, import::PAGES_BROKEN);
+    assert!(details.is_some_and(|d| !d.trim().is_empty()), "the zip error goes on the details line: {error}");
+}

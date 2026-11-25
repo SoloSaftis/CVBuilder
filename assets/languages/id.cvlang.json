@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "File kosong; tidak ada teks yang bisa diambil.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "File Word dilindungi kata sandi. Buka di Word, hapus kata sandinya, lalu simpan ulang.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "File Word lama (.doc) tidak dapat dibaca. Buka di Word dan simpan sebagai .docx.",
-  "Pages-filen kunne ikke åpnes.": "File Pages tidak dapat dibuka.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "File ZIP tidak dapat dibuka. Mungkin rusak atau hanya terunduh sebagian.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Ekspor LinkedIn tidak memiliki profil, pekerjaan, atau pendidikan untuk diimpor.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "File JSON Resume tidak dapat dibaca. File mungkin rusak.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Kunci tidak diterima. Pastikan Anda menempelkan seluruh kunci API.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI menggunakan terlalu banyak langkah untuk satu pesan. Bagi tugasnya dan coba lagi.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code belum login. Buka terminal, jalankan “claude”, login, lalu coba lagi.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code tidak menjawab dalam sepuluh menit dan dihentikan.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code tidak menjawab dalam lima menit dan dihentikan.",
   "Endret sideoppsettet": "Tata letak diubah",
   "Endret rekkefølgen på seksjonene": "Urutan bagian diubah",
   "Oppdaterte språkene": "Bahasa diperbarui",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} menjawab dengan kesalahan. Coba lagi sebentar lagi, atau pilih model lain.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} menjawab, tetapi tidak dalam format yang dibutuhkan CVBuilder. Coba lagi.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: tidak dapat terhubung ke {b}. Apakah Ollama, LM Studio, atau server Anda berjalan?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: tidak ada model untuk kunci ini",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: terjemahan melewatkan sebagian CV; coba lagi",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Keahlian utama diperbarui ({a} poin)",
   "Skjulte {a} deler i denne CV-en": "Menyembunyikan {a} bagian di CV ini",
   "Viste {a} deler igjen": "Menampilkan {a} bagian lagi",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Desain diganti ke {a}",
   "Endret seksjonen «{a}»": "Bagian “{a}” diubah",
   "La til seksjonen «{a}»": "Bagian “{a}” ditambahkan",
-  "Fjernet seksjonen «{a}»": "Bagian “{a}” dihapus"
+  "Fjernet seksjonen «{a}»": "Bagian “{a}” dihapus",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "File Pages tidak dapat dibuka. Mungkin file tersebut rusak. Di Pages: File → Ekspor Ke → Word atau PDF, lalu impor file tersebut.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code tidak menjawab dalam sepuluh menit dan dihentikan. Coba lagi, sebaiknya dengan pesan yang lebih pendek. Jika tidak berhasil, buka terminal dan jalankan “claude” untuk melihat apakah itu berfungsi.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code tidak menjawab dalam lima menit dan dihentikan. Coba lagi, sebaiknya dengan teks yang lebih pendek. Jika tidak berhasil, buka terminal dan jalankan “claude” untuk melihat apakah itu berfungsi.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code tidak dapat dijalankan. Pastikan Claude Code sudah terpasang dan berfungsi di terminal, atau pilih layanan AI lain.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder tidak menemukan pekerjaan tersebut. Pilih lagi pekerjaan di daftar, lalu coba lagi.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} tidak menemukan model untuk kunci ini. Pastikan kunci tersebut milik layanan ini, atau pilih layanan lain.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} menghentikan jawaban sebelum selesai. Coba lagi.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Jawaban dari {a} terlalu panjang dan terpotong. Coba lagi dengan teks yang lebih pendek, atau pilih model lain.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Terjemahan dari {a} melewatkan sebagian CV. Coba lagi, atau pilih model lain."
  }
 }

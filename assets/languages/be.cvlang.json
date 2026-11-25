@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Файл пусты; тэксту ў ім няма.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Файл Word абаронены паролем. Адкрыйце яго ў Word, прыбярыце пароль і захавайце зноў.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Не ўдалося прачытаць стары файл Word (.doc). Адкрыйце яго ў Word і захавайце як .docx.",
-  "Pages-filen kunne ikke åpnes.": "Не ўдалося адкрыць файл Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Не атрымалася адкрыць файл ZIP. Магчыма, ён пашкоджаны або спампаваны толькі часткова.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "У экспарце LinkedIn няма профілю, месцаў працы або адукацыі для імпарту.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Не ўдалося прачытаць файл JSON Resume. Магчыма, ён пашкоджаны.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Ключ не прыняты. Праверце, ці ўставілі вы ключ API цалкам.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "ШІ зрабіў занадта шмат крокаў для аднаго паведамлення. Падзяліце задачу і паспрабуйце зноў.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "У Claude Code не выкананы ўваход. Адкрыйце тэрмінал, выканайце «claude», увайдзіце і паспрабуйце зноў.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code не адказаў за дзесяць хвілін і быў спынены.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code не адказаў за пяць хвілін і быў спынены.",
   "Endret sideoppsettet": "Змяніў макет",
   "Endret rekkefølgen på seksjonene": "Змяніў парадак раздзелаў",
   "Oppdaterte språkene": "Абнавіў мовы",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} адказаў з памылкай. Паспрабуйце зноў крыху пазней або выберыце іншую мадэль.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} адказаў, але не ў фармаце, патрэбным CVBuilder. Паспрабуйце яшчэ раз.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: не ўдалося падключыцца да {b}. Ці працуе Ollama, LM Studio або ваш сервер?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: для гэтага ключа не знойдзена мадэляў",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: у перакладзе прапушчаны часткі рэзюмэ; паспрабуйце яшчэ раз",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Абнавіў ключавыя навыкі (пунктаў: {a})",
   "Skjulte {a} deler i denne CV-en": "Схавана частак у гэтым рэзюмэ: {a}",
   "Viste {a} deler igjen": "Паказана частак зноў: {a}",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Змяніў дызайн на {a}",
   "Endret seksjonen «{a}»": "Змяніў раздзел «{a}»",
   "La til seksjonen «{a}»": "Дадаў раздзел «{a}»",
-  "Fjernet seksjonen «{a}»": "Выдаліў раздзел «{a}»"
+  "Fjernet seksjonen «{a}»": "Выдаліў раздзел «{a}»",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Не ўдалося адкрыць файл Pages. Магчыма, ён пашкоджаны. У Pages: Файл → Экспартаваць у → Word або PDF, а потым імпартуйце гэты файл.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code не адказаў за дзесяць хвілін і быў спынены. Паспрабуйце зноў, лепш з карацейшым паведамленнем. Калі не дапаможа, адкрыйце тэрмінал і выканайце «claude», каб праверыць, ці ён працуе.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code не адказаў за пяць хвілін і быў спынены. Паспрабуйце зноў, лепш з карацейшым тэкстам. Калі не дапаможа, адкрыйце тэрмінал і выканайце «claude», каб праверыць, ці ён працуе.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Не ўдалося запусціць Claude Code. Праверце, што Claude Code усталяваны і працуе ў тэрмінале, або выберыце іншы сэрвіс ШІ.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder не знайшоў месца працы. Выберыце яго ў спісе зноў і паспрабуйце яшчэ раз.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} не знайшоў мадэляў для гэтага ключа. Праверце, што ключ належыць гэтаму сэрвісу, або выберыце іншы сэрвіс.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} перапыніў адказ, перш чым ён быў гатовы. Паспрабуйце зноў.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Адказ ад {a} атрымаўся занадта доўгім і быў абрэзаны. Паспрабуйце зноў з карацейшым тэкстам або выберыце іншую мадэль.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "У перакладзе ад {a} прапушчаны часткі рэзюмэ. Паспрабуйце зноў або выберыце іншую мадэль."
  }
 }

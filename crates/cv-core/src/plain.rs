@@ -2,8 +2,8 @@
 //! do next; the technical text (such as «Access is denied. (os error 5)») goes on a line of its
 //! own after [`DETAILS`], which the app shows as a quiet «Details» line or in a tooltip.
 //!
-//! [`file_cause`] and [`network_cause`] turn the technical text of a failed file or connection
-//! into one of the [`CAUSES`], a whole sentence the app translates.
+//! [`file_cause`] and [`io_cause`] turn the technical text of a failed file or connection into
+//! one of the [`CAUSES`], a whole sentence the app translates.
 
 /// Starts the line with the technical text, under the message.
 pub const DETAILS: &str = "Detaljer: ";
@@ -115,23 +115,6 @@ pub fn file_cause(technical: &str) -> Option<&'static str> {
     }
 }
 
-/// Why a connection failed, from the technical text of its error. `None` when it says nothing
-/// CVBuilder knows.
-pub fn network_cause(technical: &str) -> Option<&'static str> {
-    let lower = technical.to_lowercase();
-    let has = |words: &[&str]| words.iter().any(|w| lower.contains(w));
-    if has(&["timed out", "timeout"]) {
-        return Some(TOO_SLOW);
-    }
-    if has(&["dns", "lookup", "resolve", "host not found", "no such host", "connection refused", "connection reset", "connection aborted", "network is unreachable", "network unreachable", "no route", "host is unreachable", "not connected", "connection failed", "io: "]) {
-        return Some(OFFLINE);
-    }
-    match os_code(technical).map(|c| kind_cause(std::io::Error::from_raw_os_error(c).kind())) {
-        Some(Some(cause)) if cause == OFFLINE || cause == TOO_SLOW => Some(cause),
-        _ => None,
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -164,14 +147,6 @@ mod tests {
         assert_eq!(file_cause("expected value at line 1 column 1"), Some(DAMAGED));
         assert_eq!(file_cause("stream did not contain valid UTF-8"), Some(DAMAGED));
         assert_eq!(file_cause("something odd"), None);
-    }
-
-    #[test]
-    fn connections_say_why_in_plain_words() {
-        assert_eq!(network_cause("timeout: global"), Some(TOO_SLOW));
-        assert_eq!(network_cause("io: Connection refused (os error 10061)"), Some(OFFLINE));
-        assert_eq!(network_cause("dns failed: no such host"), Some(OFFLINE));
-        assert_eq!(network_cause("GitHub answered 503"), None);
     }
 
     #[test]

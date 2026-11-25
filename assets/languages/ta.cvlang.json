@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "கோப்பு காலியாக உள்ளது; படிக்க உரை இல்லை.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word கோப்பு கடவுச்சொல்லால் பாதுகாக்கப்பட்டுள்ளது. அதை Word இல் திறந்து, கடவுச்சொல்லை நீக்கி, மீண்டும் சேமியுங்கள்.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "பழைய Word கோப்பை (.doc) படிக்க முடியவில்லை. அதை Word இல் திறந்து .docx ஆகச் சேமியுங்கள்.",
-  "Pages-filen kunne ikke åpnes.": "Pages கோப்பைத் திறக்க முடியவில்லை.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP கோப்பைத் திறக்க முடியவில்லை. அது சேதமடைந்திருக்கலாம் அல்லது பகுதியளவு மட்டுமே பதிவிறக்கப்பட்டிருக்கலாம்.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn ஏற்றுமதியில் இறக்குமதி செய்ய சுயவிவரம், வேலைகள் அல்லது கல்வி எதுவும் இல்லை.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume கோப்பைப் படிக்க முடியவில்லை. அது சேதமடைந்திருக்கலாம்.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "விசை ஏற்கப்படவில்லை. முழு API விசையையும் ஒட்டியுள்ளீர்களா எனச் சரிபார்க்கவும்.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI ஒரு செய்திக்கு அதிகமான படிகளைப் பயன்படுத்தியது. பணியைப் பிரித்து மீண்டும் முயலுங்கள்.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code உள்நுழையவில்லை. ஒரு முனையத்தைத் திறந்து, “claude” ஐ இயக்கி, உள்நுழைந்து, மீண்டும் முயலுங்கள்.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code பத்து நிமிடங்களுக்குள் பதிலளிக்கவில்லை, எனவே நிறுத்தப்பட்டது.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code ஐந்து நிமிடங்களுக்குள் பதிலளிக்கவில்லை, எனவே நிறுத்தப்பட்டது.",
   "Endret sideoppsettet": "தளவமைப்பை மாற்றியது",
   "Endret rekkefølgen på seksjonene": "பிரிவுகளின் வரிசையை மாற்றியது",
   "Oppdaterte språkene": "மொழிகளைப் புதுப்பித்தது",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} பிழையுடன் பதிலளித்தது. சற்று நேரம் கழித்து மீண்டும் முயலுங்கள், அல்லது வேறு மாதிரியைத் தேர்ந்தெடுங்கள்.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} பதிலளித்தது, ஆனால் CVBuilder-க்குத் தேவையான வடிவத்தில் இல்லை. மீண்டும் முயலவும்.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b}-ஐ அணுக முடியவில்லை. Ollama, LM Studio அல்லது உங்கள் சேவையகம் இயங்குகிறதா?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: இந்த விசைக்கு மாதிரிகள் எதுவும் கிடைக்கவில்லை",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: மொழிபெயர்ப்பில் CV-யின் சில பகுதிகள் விடுபட்டன; மீண்டும் முயலவும்",
   "Oppdaterte kjernekompetansen ({a} punkter)": "முக்கியத் திறன்கள் புதுப்பிக்கப்பட்டன ({a} குறிப்புகள்)",
   "Skjulte {a} deler i denne CV-en": "இந்த CV-இல் {a} பகுதிகள் மறைக்கப்பட்டன",
   "Viste {a} deler igjen": "{a} பகுதிகள் மீண்டும் காட்டப்பட்டன",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "வடிவமைப்பு {a} ஆக மாற்றப்பட்டது",
   "Endret seksjonen «{a}»": "“{a}” பிரிவு மாற்றப்பட்டது",
   "La til seksjonen «{a}»": "“{a}” பிரிவு சேர்க்கப்பட்டது",
-  "Fjernet seksjonen «{a}»": "“{a}” பிரிவு அகற்றப்பட்டது"
+  "Fjernet seksjonen «{a}»": "“{a}” பிரிவு அகற்றப்பட்டது",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages கோப்பைத் திறக்க முடியவில்லை. அது சேதமடைந்திருக்கலாம். Pages-இல்: கோப்பு → ஏற்றுமதி செய் → Word அல்லது PDF, பிறகு அந்தக் கோப்பை இறக்குமதி செய்யுங்கள்.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code பத்து நிமிடங்களுக்குள் பதிலளிக்கவில்லை, எனவே நிறுத்தப்பட்டது. மீண்டும் முயலுங்கள், முடிந்தால் சுருக்கமான செய்தியுடன். அது உதவவில்லை என்றால், ஒரு டெர்மினலைத் திறந்து “claude” ஐ இயக்கி அது வேலை செய்கிறதா என்று பாருங்கள்.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ஐந்து நிமிடங்களுக்குள் பதிலளிக்கவில்லை, எனவே நிறுத்தப்பட்டது. மீண்டும் முயலுங்கள், முடிந்தால் சுருக்கமான உரையுடன். அது உதவவில்லை என்றால், ஒரு டெர்மினலைத் திறந்து “claude” ஐ இயக்கி அது வேலை செய்கிறதா என்று பாருங்கள்.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code-ஐத் தொடங்க முடியவில்லை. Claude Code நிறுவப்பட்டு டெர்மினலில் வேலை செய்கிறதா என்று சரிபாருங்கள், அல்லது வேறு AI சேவையைத் தேர்ந்தெடுங்கள்.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder-ஆல் வேலையைக் கண்டுபிடிக்க முடியவில்லை. பட்டியலில் வேலையை மீண்டும் தேர்ந்தெடுத்து மீண்டும் முயலுங்கள்.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} இந்த விசைக்கு மாதிரிகள் எதையும் கண்டுபிடிக்கவில்லை. விசை இந்தச் சேவைக்குச் சொந்தமானதா என்று சரிபாருங்கள், அல்லது வேறு சேவையைத் தேர்ந்தெடுங்கள்.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} பதிலை முடிப்பதற்கு முன்பே நிறுத்திவிட்டது. மீண்டும் முயலுங்கள்.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} அளித்த பதில் மிக நீளமாகிவிட்டதால் வெட்டப்பட்டது. சுருக்கமான உரையுடன் மீண்டும் முயலுங்கள், அல்லது வேறு மாதிரியைத் தேர்ந்தெடுங்கள்.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} அளித்த மொழிபெயர்ப்பில் CV-யின் சில பகுதிகள் விடுபட்டன. மீண்டும் முயலுங்கள், அல்லது வேறு மாதிரியைத் தேர்ந்தெடுங்கள்."
  }
 }

@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Файл бос; алатын мәтін жоқ.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word файлы құпиясөзбен қорғалған. Оны Word-та ашып, құпиясөзді алып тастаңыз да, қайта сақтаңыз.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Ескі Word файлын (.doc) оқу мүмкін болмады. Оны Word-та ашып, .docx ретінде сақтаңыз.",
-  "Pages-filen kunne ikke åpnes.": "Pages файлын ашу мүмкін болмады.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP файлын ашу мүмкін болмады. Ол бүлінген немесе тек ішінара жүктелген болуы мүмкін.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn экспортында импорттауға профиль, жұмыс немесе білім жоқ.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume файлын оқу мүмкін болмады. Ол бүлінген болуы мүмкін.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Кілт қабылданбады. API кілтін толық қойғаныңызды тексеріңіз.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI бір хабарламаға тым көп қадам жұмсады. Тапсырманы бөліп, қайталап көріңіз.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code жүйеге кірмеген. Терминалды ашып, «claude» іске қосыңыз, жүйеге кіріп, қайталап көріңіз.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code он минут ішінде жауап бермеді және тоқтатылды.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code бес минут ішінде жауап бермеді және тоқтатылды.",
   "Endret sideoppsettet": "Бет макеті өзгертілді",
   "Endret rekkefølgen på seksjonene": "Бөлімдердің реті өзгертілді",
   "Oppdaterte språkene": "Тілдер жаңартылды",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} қатемен жауап берді. Сәлден кейін қайталап көріңіз немесе басқа модель таңдаңыз.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} жауап берді, бірақ CVBuilder-ге керек пішімде емес. Қайта көріңіз.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b} мекенжайына қосылу мүмкін болмады. Ollama, LM Studio немесе серверіңіз жұмыс істеп тұр ма?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: бұл кілт үшін модельдер табылмады",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: аудармада түйіндеменің кейбір бөліктері түсіп қалды; қайта көріңіз",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Негізгі дағдылар жаңартылды ({a} тармақ)",
   "Skjulte {a} deler i denne CV-en": "Осы түйіндемеде {a} бөлім жасырылды",
   "Viste {a} deler igjen": "{a} бөлім қайта көрсетілді",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Дизайн ауыстырылды: {a}",
   "Endret seksjonen «{a}»": "«{a}» бөлімі өзгертілді",
   "La til seksjonen «{a}»": "«{a}» бөлімі қосылды",
-  "Fjernet seksjonen «{a}»": "«{a}» бөлімі жойылды"
+  "Fjernet seksjonen «{a}»": "«{a}» бөлімі жойылды",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages файлын ашу мүмкін болмады. Ол бүлінген болуы мүмкін. Pages ішінде: Файл → Экспорттау → Word немесе PDF, содан кейін сол файлды импорттаңыз.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code он минут ішінде жауап бермеді және тоқтатылды. Қайталап көріңіз, мүмкін болса қысқарақ хабарламамен. Көмектеспесе, терминалды ашып, оның жұмыс істейтінін көру үшін «claude» командасын іске қосыңыз.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code бес минут ішінде жауап бермеді және тоқтатылды. Қайталап көріңіз, мүмкін болса қысқарақ мәтінмен. Көмектеспесе, терминалды ашып, оның жұмыс істейтінін көру үшін «claude» командасын іске қосыңыз.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code іске қосылмады. Claude Code орнатылғанын және терминалда жұмыс істейтінін тексеріңіз немесе басқа ЖИ қызметін таңдаңыз.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder жұмысты таппады. Тізімнен жұмысты қайта таңдап, қайталап көріңіз.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} бұл кілт үшін ешқандай модель таппады. Кілттің осы қызметке тиесілі екенін тексеріңіз немесе басқа қызметті таңдаңыз.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} жауапты аяқталмай тұрып үзіп тастады. Қайталап көріңіз.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} жауабы тым ұзын болып, қиылып қалды. Қысқарақ мәтінмен қайталап көріңіз немесе басқа модель таңдаңыз.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} аудармасында түйіндеменің кейбір бөліктері түсіп қалды. Қайталап көріңіз немесе басқа модель таңдаңыз."
  }
 }
