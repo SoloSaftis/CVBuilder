@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "檔案是空的，沒有可讀取的文字。",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "此 Word 檔案受密碼保護。請在 Word 中開啟，移除密碼後重新儲存。",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "無法讀取舊版 Word 檔案（.doc）。請在 Word 中開啟並另存為 .docx。",
-  "Pages-filen kunne ikke åpnes.": "無法開啟 Pages 檔案。",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "無法開啟 ZIP 檔案。檔案可能已損毀，或只下載了一部分。",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn 匯出檔中沒有可匯入的個人檔案、工作經歷或學歷。",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "無法讀取 JSON Resume 檔案。檔案可能已損壞。",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "金鑰未被接受。請確認你貼上了完整的 API 金鑰。",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI 在單一訊息上用了太多步驟。請將任務拆開後再試一次。",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code 尚未登入。請開啟終端機，執行「claude」並登入，然後再試一次。",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code 在十分鐘內沒有回應，已被停止。",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code 在五分鐘內沒有回應，已被停止。",
   "Endret sideoppsettet": "已修改版面配置",
   "Endret rekkefølgen på seksjonene": "已調整區段順序",
   "Oppdaterte språkene": "已更新語言",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} 回應了錯誤。請稍後再試，或選擇其他模型。",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} 有回應，但格式不符合 CVBuilder 的需要。請再試一次。",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}：無法連線到 {b}。Ollama、LM Studio 或你的伺服器有在執行嗎？",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}：找不到這組金鑰可用的模型",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}：譯文漏掉了履歷的部分內容；請再試一次",
   "Oppdaterte kjernekompetansen ({a} punkter)": "已更新核心能力（{a} 項）",
   "Skjulte {a} deler i denne CV-en": "已在此履歷中隱藏 {a} 個項目",
   "Viste {a} deler igjen": "已重新顯示 {a} 個項目",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "已將設計切換為 {a}",
   "Endret seksjonen «{a}»": "已修改「{a}」區段",
   "La til seksjonen «{a}»": "已新增「{a}」區段",
-  "Fjernet seksjonen «{a}»": "已移除「{a}」區段"
+  "Fjernet seksjonen «{a}»": "已移除「{a}」區段",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "無法開啟 Pages 檔案。檔案可能已損毀。在 Pages 中：檔案 → 輸出為 → Word 或 PDF，然後匯入該檔案。",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code 在十分鐘內沒有回應，已被停止。請再試一次，最好改用較短的訊息。如果還是不行，請開啟終端機並執行「claude」，看看它是否能正常運作。",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code 在五分鐘內沒有回應，已被停止。請再試一次，最好改用較短的文字。如果還是不行，請開啟終端機並執行「claude」，看看它是否能正常運作。",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "無法啟動 Claude Code。請確認 Claude Code 已安裝並能在終端機中執行，或選擇其他 AI 服務。",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder 找不到這份工作。請在清單中重新選擇這份工作，然後再試一次。",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} 找不到這組金鑰可用的模型。請確認這組金鑰屬於此服務，或選擇其他服務。",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} 的回答在完成前就中斷了。請再試一次。",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} 的回答太長，已被截斷。請改用較短的文字再試一次，或選擇其他模型。",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} 的譯文漏掉了履歷的部分內容。請再試一次，或選擇其他模型。"
  }
 }

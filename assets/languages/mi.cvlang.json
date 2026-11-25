@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "He pātea te kōnae; kāore he kuputuhi hei pānui.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Kua tiakina te kōnae Word ki te kupuhipa. Whakatuwheratia i Word, tangohia te kupuhipa, ka tiaki anō ai.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Kāore i taea te pānui i te kōnae Word tawhito (.doc). Whakatuwheratia i Word, ka tiaki hei .docx.",
-  "Pages-filen kunne ikke åpnes.": "Kāore i taea te whakatuwhera i te kōnae Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Kāore i taea te whakatuwhera i te kōnae ZIP. Tērā pea kua pakaru, kua tikiake wāhi noa rānei.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Kāore he kōtaha, he mahi, he mātauranga rānei i te kaweake LinkedIn hei kawe mai.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Kāore i taea te pānui i te kōnae JSON Resume. Tērā pea kua pakaru.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Kāore i whakaaetia te kī. Arowhaitia kua whakapiria e koe te kī API katoa.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "He maha rawa ngā hipanga i whakamahia e te AI mō te karere kotahi. Wehewehea te mahi, ka whakamātau anō.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Kāore a Claude Code i te takiuru. Whakatuwheratia he tauranga, whakahaerehia te “claude”, takiuru, ka whakamātau anō.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Kāore a Claude Code i whakautu i roto i te tekau meneti, ā, i whakamutua.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Kāore a Claude Code i whakautu i roto i te rima meneti, ā, i whakamutua.",
   "Endret sideoppsettet": "I panonitia te tahora",
   "Endret rekkefølgen på seksjonene": "I panonitia te raupapa o ngā wāhanga",
   "Oppdaterte språkene": "I whakahoutia ngā reo",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "I whakautu a {a} me tētahi hapa. Whakamātau anō ā tōna wā, kōwhiria rānei tētahi atu tauira.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "I whakautu a {a}, engari kāore i te hōputu e hiahiatia ana e CVBuilder. Ngana anō.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: kāore i taea te hono ki {b}. Kei te rere a Ollama, a LM Studio, tō tūmau rānei?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: kāore he tauira i kitea mō tēnei kī",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: i mahue ētahi wāhanga o te CV i te whakawhitinga reo; ngana anō",
   "Oppdaterte kjernekompetansen ({a} punkter)": "I whakahoutia ngā pūkenga matua ({a} tūemi)",
   "Skjulte {a} deler i denne CV-en": "I huna ngā wāhanga e {a} i tēnei CV",
   "Viste {a} deler igjen": "I whakaatu anō i ngā wāhanga e {a}",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "I huri te hoahoa ki {a}",
   "Endret seksjonen «{a}»": "I panoni i te wāhanga “{a}”",
   "La til seksjonen «{a}»": "I tāpiri i te wāhanga “{a}”",
-  "Fjernet seksjonen «{a}»": "I tango i te wāhanga “{a}”"
+  "Fjernet seksjonen «{a}»": "I tango i te wāhanga “{a}”",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Kāore i taea te whakatuwhera i te kōnae Pages. Tērā pea kua pakaru. I Pages: Kōnae → Kaweake ki → Word, PDF rānei, ā, kawemaitia taua kōnae.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Kāore a Claude Code i whakautu i roto i te tekau meneti, ā, i whakamutua. Whakamātau anō, me tētahi karere poto ake pea. Ki te kore e whai hua, huakina tētahi terminal, ka whakahaere i te “claude” kia kite mēnā e mahi ana.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Kāore a Claude Code i whakautu i roto i te rima meneti, ā, i whakamutua. Whakamātau anō, me tētahi kuputuhi poto ake pea. Ki te kore e whai hua, huakina tētahi terminal, ka whakahaere i te “claude” kia kite mēnā e mahi ana.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Kāore i taea te tīmata i a Claude Code. Tirohia kua tāutahia a Claude Code, ā, e mahi ana i tētahi terminal, kōwhiria rānei tētahi atu ratonga AI.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "Kāore i kitea e CVBuilder te tūranga mahi. Kōwhiria anō te tūranga mahi i te rārangi, ka whakamātau anō.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "Kāore he tauira i kitea e {a} mō tēnei kī. Tirohia mēnā nō tēnei ratonga te kī, kōwhiria rānei tētahi atu ratonga.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "I whakamutua e {a} te whakautu i mua i tōna otinga. Whakamātau anō.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "I roa rawa te whakautu a {a}, ā, i tapahia. Whakamātau anō me te kuputuhi poto ake, kōwhiria rānei tētahi atu tauira.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "I mahue ētahi wāhanga o te CV i te whakawhitinga reo a {a}. Whakamātau anō, kōwhiria rānei tētahi atu tauira."
  }
 }

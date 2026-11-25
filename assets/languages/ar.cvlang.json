@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "الملف فارغ؛ لا يوجد نص لقراءته.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "ملف Word محمي بكلمة مرور. افتحه في Word، وأزل كلمة المرور، ثم احفظه من جديد.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "تعذّرت قراءة ملف Word القديم (.doc). افتحه في Word واحفظه بصيغة .docx.",
-  "Pages-filen kunne ikke åpnes.": "تعذّر فتح ملف Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "تعذّر فتح ملف ZIP. قد يكون تالفًا أو تم تنزيله جزئيًا فقط.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "لا يحتوي ملف تصدير LinkedIn على نبذة شخصية أو وظائف أو تعليم لاستيرادها.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "تعذّرت قراءة ملف JSON Resume. ربما يكون تالفًا.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "لم يُقبل المفتاح. تحقّق من أنك لصقت مفتاح API كاملًا.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "استخدم الذكاء الاصطناعي خطوات كثيرة جدًا لرسالة واحدة. قسّم المهمة وحاول مجددًا.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "لم يتم تسجيل الدخول إلى Claude Code. افتح الطرفية، وشغّل «claude»، وسجّل الدخول، ثم حاول مجددًا.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "لم يستجب Claude Code خلال عشر دقائق وتم إيقافه.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "لم يستجب Claude Code خلال خمس دقائق وتم إيقافه.",
   "Endret sideoppsettet": "غيّر تخطيط الصفحة",
   "Endret rekkefølgen på seksjonene": "غيّر ترتيب الأقسام",
   "Oppdaterte språkene": "حدّث اللغات",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "ردّ {a} بخطأ. حاول مرة أخرى بعد قليل، أو اختر نموذجًا آخر.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "ردّ {a}، لكن ليس بالصيغة التي يحتاجها CVBuilder. حاول مجددًا.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: تعذّر الوصول إلى {b}. هل يعمل Ollama أو LM Studio أو خادمك؟",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: لم يُعثر على نماذج لهذا المفتاح",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: أغفلت الترجمة أجزاءً من السيرة الذاتية؛ حاول مجددًا",
   "Oppdaterte kjernekompetansen ({a} punkter)": "حدّث المهارات الأساسية ({a} بنود)",
   "Skjulte {a} deler i denne CV-en": "إخفاء عدد {a} من العناصر في هذه السيرة الذاتية",
   "Viste {a} deler igjen": "إظهار عدد {a} من العناصر مجددًا",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "غيّر التصميم إلى {a}",
   "Endret seksjonen «{a}»": "عدّل القسم «{a}»",
   "La til seksjonen «{a}»": "أضاف القسم «{a}»",
-  "Fjernet seksjonen «{a}»": "حذف القسم «{a}»"
+  "Fjernet seksjonen «{a}»": "حذف القسم «{a}»",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "تعذّر فتح ملف Pages. ربما يكون تالفًا. في Pages: ملف → تصدير إلى → Word أو PDF، ثم استورد ذلك الملف.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "لم يستجب Claude Code خلال عشر دقائق وتم إيقافه. حاول مرة أخرى، ويُفضّل برسالة أقصر. إذا لم ينجح ذلك، فافتح الطرفية وشغّل «claude» لمعرفة ما إذا كان يعمل.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "لم يستجب Claude Code خلال خمس دقائق وتم إيقافه. حاول مرة أخرى، ويُفضّل بنص أقصر. إذا لم ينجح ذلك، فافتح الطرفية وشغّل «claude» لمعرفة ما إذا كان يعمل.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "تعذّر تشغيل Claude Code. تأكد من أن Claude Code مثبّت ويعمل في الطرفية، أو اختر خدمة ذكاء اصطناعي أخرى.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "لم يعثر CVBuilder على الوظيفة. اختر الوظيفة من القائمة مرة أخرى ثم حاول مجددًا.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "لم يعثر {a} على أي نماذج لهذا المفتاح. تأكد من أن المفتاح يخص هذه الخدمة، أو اختر خدمة أخرى.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "أوقف {a} الإجابة قبل اكتمالها. حاول مرة أخرى.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "أصبحت الإجابة من {a} طويلة جدًا فتم قطعها. حاول مرة أخرى بنص أقصر، أو اختر نموذجًا آخر.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "أغفلت الترجمة من {a} أجزاءً من السيرة الذاتية. حاول مرة أخرى، أو اختر نموذجًا آخر."
  }
 }

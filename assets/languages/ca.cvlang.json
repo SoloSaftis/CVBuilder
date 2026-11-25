@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "El fitxer és buit; no hi ha text per llegir.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "El fitxer Word està protegit amb contrasenya. Obre'l al Word, treu-li la contrasenya i torna'l a desar.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "No s'ha pogut llegir el fitxer Word antic (.doc). Obre'l al Word i desa'l com a .docx.",
-  "Pages-filen kunne ikke åpnes.": "No s'ha pogut obrir el fitxer Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "No s'ha pogut obrir el fitxer ZIP. Pot estar malmès o només parcialment baixat.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "L'exportació de LinkedIn no té cap perfil, feina ni formació per importar.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "No s'ha pogut llegir el fitxer JSON Resume. Pot ser que estigui malmès.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "No s'ha acceptat la clau. Comprova que hagis enganxat la clau d'API sencera.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "La IA ha fet servir massa passos en un sol missatge. Divideix la tasca i torna-ho a provar.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code no té la sessió iniciada. Obre un terminal, executa «claude», inicia la sessió i torna-ho a provar.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code no ha respost en deu minuts i s'ha aturat.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code no ha respost en cinc minuts i s'ha aturat.",
   "Endret sideoppsettet": "Ha canviat la disposició",
   "Endret rekkefølgen på seksjonene": "Ha canviat l'ordre de les seccions",
   "Oppdaterte språkene": "Ha actualitzat els idiomes",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} ha respost amb un error. Torna-ho a provar d'aquí a una estona o tria un altre model.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} ha respost, però no en el format que necessita CVBuilder. Torna-ho a provar.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: no s'ha pogut connectar amb {b}. Funciona Ollama, LM Studio o el teu servidor?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: no s'ha trobat cap model per a aquesta clau",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: la traducció ha omès parts del CV; torna-ho a provar",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Ha actualitzat les competències clau ({a} punts)",
   "Skjulte {a} deler i denne CV-en": "Amagades {a} parts en aquest CV",
   "Viste {a} deler igjen": "Mostrades {a} parts de nou",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Ha canviat el disseny a {a}",
   "Endret seksjonen «{a}»": "Ha canviat la secció «{a}»",
   "La til seksjonen «{a}»": "Ha afegit la secció «{a}»",
-  "Fjernet seksjonen «{a}»": "Ha suprimit la secció «{a}»"
+  "Fjernet seksjonen «{a}»": "Ha suprimit la secció «{a}»",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "No s'ha pogut obrir el fitxer Pages. Pot estar malmès. A Pages: Fitxer → Exporta a → Word o PDF, i importa aquell fitxer.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code no ha respost en deu minuts i s'ha aturat. Torna-ho a provar, millor amb un missatge més curt. Si això no ajuda, obre un terminal i executa «claude» per veure si funciona.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code no ha respost en cinc minuts i s'ha aturat. Torna-ho a provar, millor amb un text més curt. Si això no ajuda, obre un terminal i executa «claude» per veure si funciona.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "No s'ha pogut iniciar Claude Code. Comprova que Claude Code estigui instal·lat i funcioni en un terminal, o tria un altre servei d'IA.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder no ha trobat la feina. Torna a triar la feina a la llista i torna-ho a provar.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} no ha trobat cap model per a aquesta clau. Comprova que la clau sigui d'aquest servei, o tria un altre servei.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} ha interromput la resposta abans d'acabar-la. Torna-ho a provar.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "La resposta de {a} s'ha fet massa llarga i s'ha tallat. Torna-ho a provar amb un text més curt o tria un altre model.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "La traducció de {a} ha omès parts del CV. Torna-ho a provar o tria un altre model."
  }
 }

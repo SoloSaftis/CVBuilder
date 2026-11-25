@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Mae’r ffeil yn wag; does dim testun i’w ddarllen.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Mae’r ffeil Word wedi’i diogelu gan gyfrinair. Agorwch hi yn Word, tynnwch y cyfrinair a’i chadw eto.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Methu darllen yr hen ffeil Word (.doc). Agorwch hi yn Word a’i chadw fel .docx.",
-  "Pages-filen kunne ikke åpnes.": "Methu agor y ffeil Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Doedd dim modd agor y ffeil ZIP. Efallai ei bod wedi’i difrodi neu ddim ond wedi’i lawrlwytho’n rhannol.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Does gan allforyn LinkedIn ddim proffil, swyddi nac addysg i’w mewnforio.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Doedd dim modd darllen y ffeil JSON Resume. Efallai ei bod wedi’i difrodi.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Ni dderbyniwyd yr allwedd. Gwiriwch eich bod wedi gludo’r allwedd API gyfan.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "Defnyddiodd yr AI ormod o gamau ar un neges. Rhannwch y dasg a rhowch gynnig arall arni.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Nid yw Claude Code wedi mewngofnodi. Agorwch derfynell, rhedwch “claude”, mewngofnodwch, a rhowch gynnig arall arni.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Ni atebodd Claude Code o fewn deg munud a chafodd ei stopio.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Ni atebodd Claude Code o fewn pum munud a chafodd ei stopio.",
   "Endret sideoppsettet": "Wedi newid y cynllun",
   "Endret rekkefølgen på seksjonene": "Wedi newid trefn yr adrannau",
   "Oppdaterte språkene": "Wedi diweddaru’r ieithoedd",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "Atebodd {a} gyda gwall. Rhowch gynnig arall arni mewn ychydig, neu dewiswch fodel arall.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "Atebodd {a}, ond nid yn y fformat sydd ei angen ar CVBuilder. Rhowch gynnig arall arni.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: methu cysylltu â {b}. Ydy Ollama, LM Studio neu eich gweinydd yn rhedeg?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: dim modelau wedi’u canfod ar gyfer yr allwedd hon",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: gadawodd y cyfieithiad rannau o’r CV allan; rhowch gynnig arall arni",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Wedi diweddaru’r sgiliau craidd ({a} eitem)",
   "Skjulte {a} deler i denne CV-en": "Cuddio {a} eitem yn y CV hwn",
   "Viste {a} deler igjen": "Dangos {a} eitem eto",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Wedi newid y dyluniad i {a}",
   "Endret seksjonen «{a}»": "Wedi newid yr adran “{a}”",
   "La til seksjonen «{a}»": "Wedi ychwanegu’r adran “{a}”",
-  "Fjernet seksjonen «{a}»": "Wedi dileu’r adran “{a}”"
+  "Fjernet seksjonen «{a}»": "Wedi dileu’r adran “{a}”",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Methu agor y ffeil Pages. Efallai ei bod wedi’i difrodi. Yn Pages: Ffeil → Allforio i → Word neu PDF, ac yna mewnforiwch y ffeil honno.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Ni atebodd Claude Code o fewn deg munud a chafodd ei stopio. Rhowch gynnig arall arni, gyda neges fyrrach os oes modd. Os nad yw hynny’n helpu, agorwch derfynell a rhedeg “claude” i weld a yw’n gweithio.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Ni atebodd Claude Code o fewn pum munud a chafodd ei stopio. Rhowch gynnig arall arni, gyda thestun byrrach os oes modd. Os nad yw hynny’n helpu, agorwch derfynell a rhedeg “claude” i weld a yw’n gweithio.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Methu cychwyn Claude Code. Gwiriwch fod Claude Code wedi’i osod a’i fod yn gweithio mewn terfynell, neu dewiswch wasanaeth AI arall.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "Methodd CVBuilder â dod o hyd i’r swydd. Dewiswch y swydd yn y rhestr eto a rhowch gynnig arall arni.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "Ni ddaeth {a} o hyd i unrhyw fodelau ar gyfer yr allwedd hon. Gwiriwch fod yr allwedd yn perthyn i’r gwasanaeth hwn, neu dewiswch wasanaeth arall.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "Torrodd {a} yr ateb cyn iddo orffen. Rhowch gynnig arall arni.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Aeth yr ateb gan {a} yn rhy hir a chafodd ei dorri. Rhowch gynnig arall arni gyda thestun byrrach, neu dewiswch fodel arall.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Gadawodd y cyfieithiad gan {a} rannau o’r CV allan. Rhowch gynnig arall arni, neu dewiswch fodel arall."
  }
 }

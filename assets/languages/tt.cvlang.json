@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Файл буш; алырлык текст юк.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Word файлы серсүз белән сакланган. Аны Word’та ачып, серсүзне бетерегез һәм яңадан саклагыз.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Иске Word файлын (.doc) укып булмады. Аны Word’та ачып, .docx итеп саклагыз.",
-  "Pages-filen kunne ikke åpnes.": "Pages файлын ачып булмады.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "ZIP файлын ачып булмады. Ул зарарланган яки өлешчә генә йөкләнгән булырга мөмкин.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "LinkedIn экспортында импортлау өчен профиль, эш урыны яки белем юк.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "JSON Resume файлын укып булмады. Ул бозылган булырга мөмкин.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Ачкыч кабул ителмәде. Бөтен API ачкычын куюыгызны тикшерегез.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "ЯИ бер хәбәргә артык күп адым сарыф итте. Биремне өлешләргә бүлеп, кабат тырышып карагыз.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code’ка кермәгәнсез. Терминалны ачып, «claude» башкарыгыз, керегез һәм кабат тырышып карагыз.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code ун минут эчендә җавап бирмәде һәм туктатылды.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code биш минут эчендә җавап бирмәде һәм туктатылды.",
   "Endret sideoppsettet": "Бит макеты үзгәртелде",
   "Endret rekkefølgen på seksjonene": "Бүлекләр тәртибе үзгәртелде",
   "Oppdaterte språkene": "Телләр яңартылды",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} хата белән җавап бирде. Бераздан кабатлап карагыз яки башка модель сайлагыз.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} җавап бирде, ләкин CVBuilder’га кирәкле форматта түгел. Кабатлап карагыз.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: {b} белән бәйләнеп булмады. Ollama, LM Studio яки серверыгыз эшлиме?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: бу ачкыч өчен бер модель дә табылмады",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: тәрҗемәдә резюменың кайбер өлешләре төшеп калды; кабатлап карагыз",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Төп күнекмәләр яңартылды ({a} пункт)",
   "Skjulte {a} deler i denne CV-en": "Бу резюмеда {a} өлеш яшерелде",
   "Viste {a} deler igjen": "{a} өлеш кабат күрсәтелде",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Дизайн {a} итеп алыштырылды",
   "Endret seksjonen «{a}»": "«{a}» бүлеге үзгәртелде",
   "La til seksjonen «{a}»": "«{a}» бүлеге өстәлде",
-  "Fjernet seksjonen «{a}»": "«{a}» бүлеге бетерелде"
+  "Fjernet seksjonen «{a}»": "«{a}» бүлеге бетерелде",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Pages файлын ачып булмады. Ул бозылган булырга мөмкин. Pages-та: Файл → Экспортлау → Word яки PDF, аннары шул файлны кертегез.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code ун минут эчендә җавап бирмәде һәм туктатылды. Кабатлап карагыз, мөмкин булса, кыскарак хәбәр белән. Ярдәм итмәсә, терминал ачыгыз һәм эшлиме-юкмы икәнен күрү өчен «claude» боерыгын җибәрегез.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code биш минут эчендә җавап бирмәде һәм туктатылды. Кабатлап карагыз, мөмкин булса, кыскарак текст белән. Ярдәм итмәсә, терминал ачыгыз һәм эшлиме-юкмы икәнен күрү өчен «claude» боерыгын җибәрегез.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code-ны җибәреп булмады. Claude Code урнаштырылганын һәм терминалда эшләвен тикшерегез, яки башка ЯИ хезмәтен сайлагыз.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder эшне тапмады. Исемлектән эшне яңадан сайлагыз һәм кабатлап карагыз.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} бу ачкыч өчен бер модель дә тапмады. Ачкычның шушы хезмәткә караганын тикшерегез, яки башка хезмәт сайлагыз.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} җавапны тәмамланганчы өзде. Кабатлап карагыз.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "{a} җавабы артык озын булды һәм киселде. Кыскарак текст белән кабатлап карагыз яки башка модель сайлагыз.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "{a} тәрҗемәсендә резюменың кайбер өлешләре төшеп калды. Кабатлап карагыз яки башка модель сайлагыз."
  }
 }

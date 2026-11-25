@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "הקובץ ריק; אין טקסט לקרוא.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "קובץ ה־Word מוגן בסיסמה. פתחו אותו ב־Word, הסירו את הסיסמה ושמרו אותו מחדש.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "לא ניתן לקרוא את קובץ ה־Word הישן (.doc). פתחו אותו ב־Word ושמרו אותו כ־‎.docx.",
-  "Pages-filen kunne ikke åpnes.": "לא ניתן לפתוח את קובץ ה־Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "לא ניתן היה לפתוח את קובץ ה-ZIP. ייתכן שהוא פגום או שהורד רק חלקית.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "בייצוא של LinkedIn אין פרופיל, משרות או השכלה לייבוא.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "לא ניתן היה לקרוא את קובץ ה־JSON Resume. ייתכן שהוא פגום.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "המפתח לא התקבל. בדקו שהדבקתם את מפתח ה־API המלא.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "ה־AI השתמש ביותר מדי צעדים בהודעה אחת. פצלו את המשימה ונסו שוב.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code לא מחובר. פתחו טרמינל, הריצו “claude”, התחברו ונסו שוב.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code לא ענה תוך עשר דקות ונעצר.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code לא ענה תוך חמש דקות ונעצר.",
   "Endret sideoppsettet": "שינה את הפריסה",
   "Endret rekkefølgen på seksjonene": "שינה את סדר המקטעים",
   "Oppdaterte språkene": "עדכן את השפות",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} ענה עם שגיאה. נסו שוב בעוד רגע, או בחרו מודל אחר.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} השיב, אבל לא בפורמט ש־CVBuilder צריך. אפשר לנסות שוב.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: אין חיבור ל־{b}. האם Ollama, LM Studio או השרת שלך פועלים?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: לא נמצאו מודלים למפתח הזה",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: בתרגום חסרו חלקים מקורות החיים; אפשר לנסות שוב",
   "Oppdaterte kjernekompetansen ({a} punkter)": "כישורי הליבה עודכנו ({a} פריטים)",
   "Skjulte {a} deler i denne CV-en": "הוסתרו {a} פריטים בקורות החיים האלה",
   "Viste {a} deler igjen": "{a} פריטים הוצגו מחדש",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "העיצוב הוחלף ל־{a}",
   "Endret seksjonen «{a}»": "המקטע “{a}” שונה",
   "La til seksjonen «{a}»": "המקטע “{a}” נוסף",
-  "Fjernet seksjonen «{a}»": "המקטע “{a}” הוסר"
+  "Fjernet seksjonen «{a}»": "המקטע “{a}” הוסר",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "לא ניתן לפתוח את קובץ ה־Pages. ייתכן שהוא פגום. ב־Pages: קובץ → ייצא אל → Word או PDF, ואז ייבאו את הקובץ הזה.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code לא ענה תוך עשר דקות ונעצר. נסו שוב, רצוי עם הודעה קצרה יותר. אם זה לא עוזר, פתחו מסוף והריצו “claude” כדי לבדוק אם הוא עובד.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code לא ענה תוך חמש דקות ונעצר. נסו שוב, רצוי עם טקסט קצר יותר. אם זה לא עוזר, פתחו מסוף והריצו “claude” כדי לבדוק אם הוא עובד.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "לא ניתן להפעיל את Claude Code. ודאו ש־Claude Code מותקן ועובד במסוף, או בחרו שירות AI אחר.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder לא מצא את המשרה. בחרו שוב את המשרה ברשימה ונסו שוב.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} לא מצא מודלים למפתח הזה. ודאו שהמפתח שייך לשירות הזה, או בחרו שירות אחר.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} הפסיק את התשובה לפני שהסתיימה. נסו שוב.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "התשובה מ־{a} יצאה ארוכה מדי ונקטעה. נסו שוב עם טקסט קצר יותר, או בחרו מודל אחר.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "בתרגום של {a} חסרו חלקים מקורות החיים. נסו שוב, או בחרו מודל אחר."
  }
 }

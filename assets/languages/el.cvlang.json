@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Το αρχείο είναι κενό· δεν υπάρχει κείμενο για ανάγνωση.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Το αρχείο Word προστατεύεται με κωδικό. Ανοίξτε το στο Word, αφαιρέστε τον κωδικό και αποθηκεύστε το ξανά.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Δεν ήταν δυνατή η ανάγνωση του παλαιότερου αρχείου Word (.doc). Ανοίξτε το στο Word και αποθηκεύστε το ως .docx.",
-  "Pages-filen kunne ikke åpnes.": "Δεν ήταν δυνατό να ανοίξει το αρχείο Pages.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Δεν ήταν δυνατό να ανοίξει το αρχείο ZIP. Μπορεί να είναι κατεστραμμένο ή να έχει ληφθεί μόνο εν μέρει.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Η εξαγωγή του LinkedIn δεν έχει προφίλ, θέσεις εργασίας ή εκπαίδευση για εισαγωγή.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Το αρχείο JSON Resume δεν ήταν δυνατό να διαβαστεί. Ίσως είναι κατεστραμμένο.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Το κλειδί δεν έγινε δεκτό. Ελέγξτε ότι επικολλήσατε ολόκληρο το κλειδί API.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "Το AI χρειάστηκε πάρα πολλά βήματα για ένα μήνυμα. Χωρίστε την εργασία και δοκιμάστε ξανά.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Το Claude Code δεν είναι συνδεδεμένο. Ανοίξτε ένα τερματικό, εκτελέστε «claude», συνδεθείτε και δοκιμάστε ξανά.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Το Claude Code δεν απάντησε μέσα σε δέκα λεπτά και διακόπηκε.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Το Claude Code δεν απάντησε μέσα σε πέντε λεπτά και διακόπηκε.",
   "Endret sideoppsettet": "Άλλαξε τη διάταξη",
   "Endret rekkefølgen på seksjonene": "Άλλαξε τη σειρά των ενοτήτων",
   "Oppdaterte språkene": "Ενημέρωσε τις γλώσσες",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "Το {a} απάντησε με σφάλμα. Δοκιμάστε ξανά σε λίγο ή επιλέξτε άλλο μοντέλο.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "Το {a} απάντησε, αλλά όχι στη μορφή που χρειάζεται το CVBuilder. Δοκιμάστε ξανά.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: δεν ήταν δυνατή η σύνδεση με το {b}. Εκτελείται το Ollama, το LM Studio ή ο διακομιστής σας;",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: δεν βρέθηκαν μοντέλα για αυτό το κλειδί",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: από τη μετάφραση έλειπαν τμήματα του βιογραφικού· δοκιμάστε ξανά",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Ενημερώθηκαν οι βασικές δεξιότητες ({a} σημεία)",
   "Skjulte {a} deler i denne CV-en": "Απόκρυψη {a} στοιχείων σε αυτό το βιογραφικό",
   "Viste {a} deler igjen": "Εμφάνιση {a} στοιχείων ξανά",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Το σχέδιο άλλαξε σε {a}",
   "Endret seksjonen «{a}»": "Άλλαξε η ενότητα «{a}»",
   "La til seksjonen «{a}»": "Προστέθηκε η ενότητα «{a}»",
-  "Fjernet seksjonen «{a}»": "Αφαιρέθηκε η ενότητα «{a}»"
+  "Fjernet seksjonen «{a}»": "Αφαιρέθηκε η ενότητα «{a}»",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Δεν ήταν δυνατό να ανοίξει το αρχείο Pages. Μπορεί να είναι κατεστραμμένο. Στο Pages: Αρχείο → Εξαγωγή σε → Word ή PDF, και μετά εισαγάγετε εκείνο το αρχείο.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Το Claude Code δεν απάντησε μέσα σε δέκα λεπτά και διακόπηκε. Δοκιμάστε ξανά, κατά προτίμηση με ένα πιο σύντομο μήνυμα. Αν δεν βοηθήσει, ανοίξτε ένα τερματικό και εκτελέστε «claude» για να δείτε αν λειτουργεί.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Το Claude Code δεν απάντησε μέσα σε πέντε λεπτά και διακόπηκε. Δοκιμάστε ξανά, κατά προτίμηση με ένα πιο σύντομο κείμενο. Αν δεν βοηθήσει, ανοίξτε ένα τερματικό και εκτελέστε «claude» για να δείτε αν λειτουργεί.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Δεν ήταν δυνατή η εκκίνηση του Claude Code. Ελέγξτε ότι το Claude Code είναι εγκατεστημένο και λειτουργεί σε τερματικό ή επιλέξτε άλλη υπηρεσία τεχνητής νοημοσύνης.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "Το CVBuilder δεν βρήκε την εργασία. Επιλέξτε ξανά την εργασία στη λίστα και δοκιμάστε πάλι.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "Το {a} δεν βρήκε μοντέλα για αυτό το κλειδί. Ελέγξτε ότι το κλειδί ανήκει σε αυτή την υπηρεσία ή επιλέξτε άλλη υπηρεσία.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "Το {a} διέκοψε την απάντηση πριν ολοκληρωθεί. Δοκιμάστε ξανά.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Η απάντηση από το {a} έγινε πολύ μεγάλη και κόπηκε. Δοκιμάστε ξανά με πιο σύντομο κείμενο ή επιλέξτε άλλο μοντέλο.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Από τη μετάφραση του {a} έλειπαν τμήματα του βιογραφικού. Δοκιμάστε ξανά ή επιλέξτε άλλο μοντέλο."
  }
 }

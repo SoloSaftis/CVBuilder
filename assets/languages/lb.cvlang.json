@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "De Fichier ass eidel; et gëtt keen Text ze liesen.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "De Word-Fichier ass mat engem Passwuert geschützt. Maach en am Word op, huel d'Passwuert ewech a späicher en nei.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Den ale Word-Fichier (.doc) konnt net gelies ginn. Maach en am Word op a späicher en als .docx.",
-  "Pages-filen kunne ikke åpnes.": "De Pages-Fichier konnt net opgemaach ginn.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "D’ZIP-Fichier konnt net opgemaach ginn. Et ka beschädegt oder just deelweis erofgelueden sinn.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Am LinkedIn-Export ass kee Profil, keng Jobs an keng Ausbildung zum Importéieren.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "De JSON Resume-Fichier konnt net gelies ginn. E ka beschädegt sinn.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "De Schlëssel gouf net akzeptéiert. Kontrolléier, ob s du de ganzen API-Schlëssel agefüügt hues.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "D'KI huet ze vill Schrëtt fir ee Message gebraucht. Deel d'Aufgab op a prob et nach eng Kéier.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code ass net ugemellt. Maach en Terminal op, féier „claude“ aus, mell dech un a prob et nach eng Kéier.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code huet bannent zéng Minutten net geäntwert a gouf gestoppt.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code huet bannent fënnef Minutten net geäntwert a gouf gestoppt.",
   "Endret sideoppsettet": "Säitelayout geännert",
   "Endret rekkefølgen på seksjonene": "Uerdnung vun de Rubriken geännert",
   "Oppdaterte språkene": "Sproochen aktualiséiert",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} huet mat engem Feeler geäntwert. Probéier et an engem Moment nach eng Kéier, oder wiel en anere Modell.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} huet geäntwert, mä net am Format, dat CVBuilder brauch. Prouf nach eng Kéier.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: keng Verbindung mat {b}. Leeft Ollama, LM Studio oder däi Server?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: keng Modeller fir dëse Schlëssel fonnt",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: an der Iwwersetzung feelen Deeler vum CV; prouf nach eng Kéier",
   "Oppdaterte kjernekompetansen ({a} punkter)": "D'Kärkompetenzen aktualiséiert ({a} Punkten)",
   "Skjulte {a} deler i denne CV-en": "{a} Deeler an dësem CV verstoppt",
   "Viste {a} deler igjen": "{a} Deeler nees gewisen",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Design op {a} gewiesselt",
   "Endret seksjonen «{a}»": "D'Rubrik „{a}“ geännert",
   "La til seksjonen «{a}»": "D'Rubrik „{a}“ derbäigesat",
-  "Fjernet seksjonen «{a}»": "D'Rubrik „{a}“ ewechgeholl"
+  "Fjernet seksjonen «{a}»": "D'Rubrik „{a}“ ewechgeholl",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "De Pages-Fichier konnt net opgemaach ginn. E kéint beschiedegt sinn. A Pages: Fichier → Exportéieren an → Word oder PDF, an import dann dee Fichier.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code huet bannent zéng Minutten net geäntwert a gouf gestoppt. Probéier et nach eng Kéier, am beschte mat enger méi kuerzer Noriicht. Wann dat net hëlleft, maach en Terminal op a féier „claude“ aus, fir ze kucken, ob et funktionéiert.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code huet bannent fënnef Minutten net geäntwert a gouf gestoppt. Probéier et nach eng Kéier, am beschte mat engem méi kuerzen Text. Wann dat net hëlleft, maach en Terminal op a féier „claude“ aus, fir ze kucken, ob et funktionéiert.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code konnt net gestart ginn. Kuck no, ob Claude Code installéiert ass an an engem Terminal funktionéiert, oder wiel en anere KI-Service.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder huet de Job net fonnt. Wiel de Job an der Lëscht nach eng Kéier a probéier et nach eng Kéier.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} huet keng Modeller fir dëse Schlëssel fonnt. Kuck no, ob de Schlëssel zu dësem Service gehéiert, oder wiel en anere Service.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} huet d'Äntwert ofgebrach, ier se fäerdeg war. Probéier et nach eng Kéier.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "D'Äntwert vun {a} gouf ze laang a gouf ofgeschnidden. Probéier et nach eng Kéier mat méi kuerzem Text, oder wiel en anere Modell.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "D'Iwwersetzung vun {a} huet Deeler vum CV ausgelooss. Probéier et nach eng Kéier, oder wiel en anere Modell."
  }
 }

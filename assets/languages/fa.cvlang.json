@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "فایل خالی است؛ متنی برای خواندن ندارد.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "فایل Word رمزدار است. آن را در Word باز کنید، رمز را بردارید و دوباره ذخیره کنید.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "فایل Word قدیمی (.doc) خوانده نشد. آن را در Word باز کنید و به‌صورت .docx ذخیره کنید.",
-  "Pages-filen kunne ikke åpnes.": "فایل Pages باز نشد.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "فایل ZIP باز نشد. ممکن است آسیب دیده یا فقط ناقص دانلود شده باشد.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "خروجی LinkedIn نمایه، شغل یا تحصیلاتی برای وارد کردن ندارد.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "فایل JSON Resume خوانده نشد. ممکن است آسیب دیده باشد.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "کلید پذیرفته نشد. بررسی کنید که کل کلید API را چسبانده باشید.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "هوش مصنوعی برای یک پیام گام‌های زیادی برداشت. کار را به چند بخش تقسیم کنید و دوباره امتحان کنید.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code وارد حساب نشده است. یک ترمینال باز کنید، «claude» را اجرا کنید، وارد شوید و دوباره امتحان کنید.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code در ده دقیقه پاسخ نداد و متوقف شد.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code در پنج دقیقه پاسخ نداد و متوقف شد.",
   "Endret sideoppsettet": "طرح‌بندی تغییر کرد",
   "Endret rekkefølgen på seksjonene": "ترتیب بخش‌ها تغییر کرد",
   "Oppdaterte språkene": "زبان‌ها به‌روز شد",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} با خطا پاسخ داد. کمی بعد دوباره امتحان کنید یا مدل دیگری انتخاب کنید.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} پاسخ داد، اما نه در قالبی که CVBuilder لازم دارد. دوباره امتحان کنید.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: اتصال به {b} برقرار نشد. آیا Ollama، LM Studio یا سرور شما در حال اجراست؟",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: هیچ مدلی برای این کلید پیدا نشد",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: ترجمه بخش‌هایی از رزومه را جا انداخت؛ دوباره امتحان کنید",
   "Oppdaterte kjernekompetansen ({a} punkter)": "مهارت‌های کلیدی به‌روز شد ({a} مورد)",
   "Skjulte {a} deler i denne CV-en": "{a} مورد در این رزومه پنهان شد",
   "Viste {a} deler igjen": "{a} مورد دوباره نمایش داده شد",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "طراحی به {a} تغییر کرد",
   "Endret seksjonen «{a}»": "بخش «{a}» تغییر کرد",
   "La til seksjonen «{a}»": "بخش «{a}» اضافه شد",
-  "Fjernet seksjonen «{a}»": "بخش «{a}» حذف شد"
+  "Fjernet seksjonen «{a}»": "بخش «{a}» حذف شد",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "فایل Pages باز نشد. ممکن است آسیب دیده باشد. در Pages: فایل → صدور به → Word یا PDF، و سپس آن فایل را وارد کنید.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code در ده دقیقه پاسخ نداد و متوقف شد. دوباره امتحان کنید، ترجیحاً با پیامی کوتاه‌تر. اگر فایده نداشت، یک ترمینال باز کنید و «claude» را اجرا کنید تا ببینید کار می‌کند یا نه.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code در پنج دقیقه پاسخ نداد و متوقف شد. دوباره امتحان کنید، ترجیحاً با متنی کوتاه‌تر. اگر فایده نداشت، یک ترمینال باز کنید و «claude» را اجرا کنید تا ببینید کار می‌کند یا نه.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code اجرا نشد. بررسی کنید که Claude Code نصب شده باشد و در ترمینال کار کند، یا سرویس هوش مصنوعی دیگری انتخاب کنید.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder آگهی شغلی را پیدا نکرد. شغل را دوباره از فهرست انتخاب کنید و دوباره امتحان کنید.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} هیچ مدلی برای این کلید پیدا نکرد. بررسی کنید که کلید متعلق به همین سرویس باشد، یا سرویس دیگری انتخاب کنید.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} پاسخ را پیش از تمام شدن قطع کرد. دوباره امتحان کنید.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "پاسخ {a} بیش از حد طولانی شد و قطع شد. با متنی کوتاه‌تر دوباره امتحان کنید، یا مدل دیگری انتخاب کنید.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "ترجمهٔ {a} بخش‌هایی از رزومه را جا انداخت. دوباره امتحان کنید، یا مدل دیگری انتخاب کنید."
  }
 }

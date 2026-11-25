@@ -710,8 +710,16 @@ static RULES: LazyLock<Vec<Rule>> = LazyLock::new(|| {
         rule(r"([^:]+): fikk ikke kontakt med (.+)\. Kjører Ollama, LM Studio eller serveren din\?", |c| {
             format!("{}: could not reach {}. Is Ollama, LM Studio or your server running?", &c[1], &c[2])
         }).t("{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?", "{a}: could not reach {b}. Is Ollama, LM Studio or your server running?"),
-        rule(r"([^:]+): fant ingen modeller for denne nøkkelen", |c| format!("{}: no models found for this key", &c[1])).t("{a}: fant ingen modeller for denne nøkkelen", "{a}: no models found for this key"),
-        rule(r"([^:]+): oversettelsen manglet deler av CV-en; prøv igjen", |c| format!("{}: the translation left out parts of the CV; try again", &c[1])).t("{a}: oversettelsen manglet deler av CV-en; prøv igjen", "{a}: the translation left out parts of the CV; try again"),
+        rule(r"(.+) fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.", |c| {
+            format!("{} found no models for this key. Check that the key belongs to this service, or choose another service.", &c[1])
+        }).t("{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.", "{a} found no models for this key. Check that the key belongs to this service, or choose another service."),
+        rule(r"(.+) avbrøt svaret før det var ferdig. Prøv igjen.", |c| format!("{} stopped the answer before it was finished. Try again.", &c[1])).t("{a} avbrøt svaret før det var ferdig. Prøv igjen.", "{a} stopped the answer before it was finished. Try again."),
+        rule(r"Svaret fra (.+) ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.", |c| {
+            format!("The answer from {} got too long and was cut off. Try again with shorter text, or choose another model.", &c[1])
+        }).t("Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.", "The answer from {a} got too long and was cut off. Try again with shorter text, or choose another model."),
+        rule(r"Oversettelsen fra (.+) manglet deler av CV-en. Prøv igjen, eller velg en annen modell.", |c| {
+            format!("The translation from {} left out parts of the CV. Try again, or choose another model.", &c[1])
+        }).t("Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.", "The translation from {a} left out parts of the CV. Try again, or choose another model."),
         // ---- cv-mcp: what a tool call changed, listed in the chat ----
         rule(r"La til jobben (.+)", |c| format!("Added the job {}", job_label(&c[1]))),
         rule(r"Fjernet jobben (.+)", |c| format!("Removed the job {}", job_label(&c[1]))),
@@ -2467,7 +2475,10 @@ static DYN: &[(&str, &str)] = &[
     ("Filen er tom; det er ingen tekst å hente.", "The file is empty; there is no text to read."),
     ("Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.", "The Word file is password-protected. Open it in Word, remove the password and save it again."),
     ("Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.", "The older Word file (.doc) could not be read. Open it in Word and save it as .docx."),
-    ("Pages-filen kunne ikke åpnes.", "The Pages file could not be opened."),
+    (
+        "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.",
+        "The Pages file could not be opened. It may be damaged. In Pages: File → Export To → Word or PDF, and import that file.",
+    ),
     ("ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.", "The ZIP file could not be opened. It may be damaged or only partly downloaded."),
     ("LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.", "The LinkedIn export has no profile, jobs or education to import."),
     ("JSON Resume-filen kunne ikke leses. Den kan være skadet.", "The JSON Resume file could not be read. It may be damaged."),
@@ -2530,8 +2541,19 @@ static DYN: &[(&str, &str)] = &[
     ("Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.", "The key was not accepted. Check that you pasted the whole API key."),
     ("AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.", "The AI used too many steps on one message. Split up the task and try again."),
     ("Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.", "Claude Code is not signed in. Open a terminal, run “claude”, sign in, and try again."),
-    ("Claude Code svarte ikke på ti minutter og ble stoppet.", "Claude Code did not answer within ten minutes and was stopped."),
-    ("Claude Code svarte ikke på fem minutter og ble stoppet.", "Claude Code did not answer within five minutes and was stopped."),
+    (
+        "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.",
+        "Claude Code did not answer within ten minutes and was stopped. Try again, perhaps with a shorter message. If that does not help, open a terminal and run “claude” to see whether it works.",
+    ),
+    (
+        "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.",
+        "Claude Code did not answer within five minutes and was stopped. Try again, perhaps with a shorter text. If that does not help, open a terminal and run “claude” to see whether it works.",
+    ),
+    (
+        "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.",
+        "Claude Code could not be started. Check that Claude Code is installed and works in a terminal, or choose another AI service.",
+    ),
+    ("CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.", "CVBuilder could not find the job. Choose the job in the list again and try again."),
     // ---- cv-mcp: what a tool call changed ----
     ("Endret sideoppsettet", "Changed the layout"),
     ("Endret rekkefølgen på seksjonene", "Changed the order of the sections"),
@@ -2601,6 +2623,16 @@ mod tests {
         assert_eq!(unknown, "The file was not saved. Try again, or save somewhere else.\nDetails: something odd");
         // Every cause and every update-check message has English.
         for text in cv_core::plain::CAUSES.iter().chain(&[cv_ai::updates::OFFLINE, cv_ai::updates::DOWN, cv_ai::updates::LIMITED, cv_ai::updates::UNCLEAR, cv_ai::dictionaries::CHANGED, cv_ai::dictionaries::REFUSED, cv_ai::dictionaries::NOT_SAVED]) {
+            assert!(english(text).is_some(), "{text}");
+        }
+        // Every AI failure and the Pages and Claude Code messages have English.
+        use cv_ai::AiFailure as F;
+        for failure in [F::BadKey, F::Busy("Claude"), F::Network("Claude"), F::Refused("Claude"), F::Unreadable("Claude"), F::NoModels("ChatGPT"), F::Cancelled("ChatGPT"), F::TooLong("Claude"), F::Incomplete("Gemini"), F::NoJob, F::Failed("Claude", "HTTP 500".into())] {
+            let text = failure.to_string();
+            assert!(english(cv_core::plain::split(&text).0).is_some(), "{text}");
+        }
+        assert_eq!(tdyn(&cv_ai::AiFailure::TooLong("Claude").to_string()), "The answer from Claude got too long and was cut off. Try again with shorter text, or choose another model.");
+        for text in [cv_core::import::PAGES_BROKEN, cv_ai::chat::NOT_STARTED] {
             assert!(english(text).is_some(), "{text}");
         }
         // A language pack translates the parts it knows.

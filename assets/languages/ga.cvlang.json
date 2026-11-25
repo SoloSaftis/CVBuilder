@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Tá an comhad folamh; níl aon téacs le léamh.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Tá an comhad Word cosanta le pasfhocal. Oscail é in Word, bain an pasfhocal agus sábháil arís é.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Níorbh fhéidir an seanchomhad Word (.doc) a léamh. Oscail é in Word agus sábháil mar .docx é.",
-  "Pages-filen kunne ikke åpnes.": "Níorbh fhéidir an comhad Pages a oscailt.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Níorbh fhéidir an comhad ZIP a oscailt. B’fhéidir go bhfuil sé damáistithe nó nár íoslódáladh ach go páirteach é.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Níl próifíl, jab ná oideachas in onnmhairiú LinkedIn le hiompórtáil.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Níorbh fhéidir an comhad JSON Resume a léamh. B’fhéidir go bhfuil sé damáistithe.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Níor glacadh leis an eochair. Seiceáil gur ghreamaigh tú an eochair API iomlán.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "D'úsáid an AI an iomarca céimeanna ar theachtaireacht amháin. Roinn an tasc agus bain triail eile as.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Níl Claude Code sínithe isteach. Oscail teirminéal, rith “claude”, sínigh isteach, agus bain triail eile as.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Níor fhreagair Claude Code laistigh de dheich nóiméad agus stopadh é.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Níor fhreagair Claude Code laistigh de chúig nóiméad agus stopadh é.",
   "Endret sideoppsettet": "Athraíodh an leagan amach",
   "Endret rekkefølgen på seksjonene": "Athraíodh ord na rannóg",
   "Oppdaterte språkene": "Nuashonraíodh na teangacha",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "D’fhreagair {a} le hearráid. Bain triail eile as i gceann tamaill, nó roghnaigh samhail eile.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "D’fhreagair {a}, ach ní san fhormáid a theastaíonn ó CVBuilder. Bain triail eile as.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: níorbh fhéidir teagmháil a dhéanamh le {b}. An bhfuil Ollama, LM Studio nó do fhreastalaí ag rith?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: níor aimsíodh aon samhail don eochair seo",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: d’fhág an t-aistriúchán codanna den CV ar lár; bain triail eile as",
   "Oppdaterte kjernekompetansen ({a} punkter)": "Nuashonraíodh na príomhscileanna ({a} pointe)",
   "Skjulte {a} deler i denne CV-en": "D’fholaigh {a} mír sa CV seo",
   "Viste {a} deler igjen": "Taispeánadh {a} mír arís",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Athraíodh an dearadh go {a}",
   "Endret seksjonen «{a}»": "Athraíodh an rannóg “{a}”",
   "La til seksjonen «{a}»": "Cuireadh an rannóg “{a}” leis",
-  "Fjernet seksjonen «{a}»": "Baineadh an rannóg “{a}”"
+  "Fjernet seksjonen «{a}»": "Baineadh an rannóg “{a}”",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Níorbh fhéidir an comhad Pages a oscailt. D’fhéadfadh sé a bheith truaillithe. In Pages: Comhad → Easpórtáil go → Word nó PDF, agus iompórtáil an comhad sin.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Níor fhreagair Claude Code laistigh de dheich nóiméad agus stopadh é. Bain triail eile as, le teachtaireacht níos giorra b’fhéidir. Mura gcabhraíonn sé sin, oscail teirminéal agus rith “claude” le fáil amach an bhfuil sé ag obair.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Níor fhreagair Claude Code laistigh de chúig nóiméad agus stopadh é. Bain triail eile as, le téacs níos giorra b’fhéidir. Mura gcabhraíonn sé sin, oscail teirminéal agus rith “claude” le fáil amach an bhfuil sé ag obair.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Níorbh fhéidir Claude Code a thosú. Seiceáil go bhfuil Claude Code suiteáilte agus go n-oibríonn sé i dteirminéal, nó roghnaigh seirbhís AI eile.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "Níor aimsigh CVBuilder an post. Roghnaigh an post sa liosta arís agus bain triail eile as.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "Níor aimsigh {a} aon samhail don eochair seo. Seiceáil gur leis an tseirbhís seo an eochair, nó roghnaigh seirbhís eile.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "Stop {a} an freagra sula raibh sé críochnaithe. Bain triail eile as.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Bhí an freagra ó {a} rófhada agus gearradh as é. Bain triail eile as le téacs níos giorra, nó roghnaigh samhail eile.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "D’fhág an t-aistriúchán ó {a} codanna den CV ar lár. Bain triail eile as, nó roghnaigh samhail eile."
  }
 }

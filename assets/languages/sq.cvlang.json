@@ -1374,7 +1374,6 @@
   "Filen er tom; det er ingen tekst å hente.": "Skedari është bosh; nuk ka tekst për t'u lexuar.",
   "Word-filen er passordbeskyttet. Åpne den i Word, fjern passordet og lagre den på nytt.": "Skedari Word është i mbrojtur me fjalëkalim. Hapeni në Word, hiqni fjalëkalimin dhe ruajeni përsëri.",
   "Den eldre Word-filen (.doc) kunne ikke leses. Åpne den i Word og lagre den som .docx.": "Skedari i vjetër Word (.doc) nuk mund të lexohej. Hapeni në Word dhe ruajeni si .docx.",
-  "Pages-filen kunne ikke åpnes.": "Skedari Pages nuk mund të hapej.",
   "ZIP-filen kunne ikke åpnes. Den kan være skadet eller bare delvis lastet ned.": "Skedari ZIP nuk u hap dot. Mund të jetë i dëmtuar ose i shkarkuar vetëm pjesërisht.",
   "LinkedIn-eksporten har ingen profil, jobber eller utdanning å hente inn.": "Eksporti i LinkedIn nuk ka profil, punë ose arsimim për t'u importuar.",
   "JSON Resume-filen kunne ikke leses. Den kan være skadet.": "Skedari JSON Resume nuk mund të lexohej. Mund të jetë i dëmtuar.",
@@ -1424,8 +1423,6 @@
   "Nøkkelen ble ikke godtatt. Sjekk at du har limt inn hele API-nøkkelen.": "Çelësi nuk u pranua. Kontrolloni që keni ngjitur të gjithë çelësin API.",
   "AI-en brukte for mange steg på én melding. Del opp oppgaven og prøv igjen.": "AI-ja përdori shumë hapa për një mesazh. Ndajeni detyrën dhe provoni përsëri.",
   "Claude Code er ikke logget inn. Åpne en terminal, kjør «claude», logg inn, og prøv igjen.": "Claude Code nuk ka hyrë në llogari. Hapni një terminal, ekzekutoni «claude», hyni dhe provoni përsëri.",
-  "Claude Code svarte ikke på ti minutter og ble stoppet.": "Claude Code nuk u përgjigj brenda dhjetë minutash dhe u ndal.",
-  "Claude Code svarte ikke på fem minutter og ble stoppet.": "Claude Code nuk u përgjigj brenda pesë minutash dhe u ndal.",
   "Endret sideoppsettet": "U ndryshua faqosja",
   "Endret rekkefølgen på seksjonene": "U ndryshua renditja e seksioneve",
   "Oppdaterte språkene": "U përditësuan gjuhët",
@@ -1500,8 +1497,6 @@
   "{a} svarte med en feil. Prøv igjen om litt, eller velg en annen modell.": "{a} u përgjigj me një gabim. Provoni përsëri pas pak ose zgjidhni një model tjetër.",
   "{a} svarte, men ikke i formatet CVBuilder trenger. Prøv igjen.": "{a} u përgjigj, por jo në formatin që i duhet CVBuilder. Provoni përsëri.",
   "{a}: fikk ikke kontakt med {b}. Kjører Ollama, LM Studio eller serveren din?": "{a}: nuk u lidh dot me {b}. A po punon Ollama, LM Studio ose serveri juaj?",
-  "{a}: fant ingen modeller for denne nøkkelen": "{a}: nuk u gjetën modele për këtë çelës",
-  "{a}: oversettelsen manglet deler av CV-en; prøv igjen": "{a}: përkthimit i mungonin pjesë të CV-së; provoni përsëri",
   "Oppdaterte kjernekompetansen ({a} punkter)": "U përditësuan aftësitë kryesore ({a} pika)",
   "Skjulte {a} deler i denne CV-en": "U fshehën {a} pjesë në këtë CV",
   "Viste {a} deler igjen": "U shfaqën sërish {a} pjesë",
@@ -1510,6 +1505,15 @@
   "Byttet design til {a}": "Dizajni u ndërrua në {a}",
   "Endret seksjonen «{a}»": "U ndryshua seksioni «{a}»",
   "La til seksjonen «{a}»": "U shtua seksioni «{a}»",
-  "Fjernet seksjonen «{a}»": "U hoq seksioni «{a}»"
+  "Fjernet seksjonen «{a}»": "U hoq seksioni «{a}»",
+  "Pages-filen kunne ikke åpnes. Den kan være skadet. I Pages: Fil → Eksporter til → Word eller PDF, og hent inn den filen.": "Skedari Pages nuk mund të hapej. Mund të jetë i dëmtuar. Në Pages: Skedar → Eksporto në → Word ose PDF, dhe pastaj importoni atë skedar.",
+  "Claude Code svarte ikke på ti minutter og ble stoppet. Prøv igjen, gjerne med en kortere melding. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code nuk u përgjigj brenda dhjetë minutash dhe u ndal. Provoni përsëri, mundësisht me një mesazh më të shkurtër. Nëse nuk ndihmon, hapni një terminal dhe ekzekutoni «claude» për të parë nëse funksionon.",
+  "Claude Code svarte ikke på fem minutter og ble stoppet. Prøv igjen, gjerne med en kortere tekst. Hjelper det ikke, åpne en terminal og kjør «claude» for å se om det virker.": "Claude Code nuk u përgjigj brenda pesë minutash dhe u ndal. Provoni përsëri, mundësisht me një tekst më të shkurtër. Nëse nuk ndihmon, hapni një terminal dhe ekzekutoni «claude» për të parë nëse funksionon.",
+  "Claude Code kunne ikke startes. Sjekk at Claude Code er installert og virker i en terminal, eller velg en annen AI-tjeneste.": "Claude Code nuk mund të nisej. Kontrolloni që Claude Code është i instaluar dhe funksionon në një terminal, ose zgjidhni një shërbim tjetër IA.",
+  "CVBuilder fant ikke jobben. Velg jobben i listen på nytt og prøv igjen.": "CVBuilder nuk e gjeti punën. Zgjidhni përsëri punën në listë dhe provoni sërish.",
+  "{a} fant ingen modeller for denne nøkkelen. Sjekk at nøkkelen hører til denne tjenesten, eller velg en annen tjeneste.": "{a} nuk gjeti modele për këtë çelës. Kontrolloni që çelësi i përket këtij shërbimi, ose zgjidhni një shërbim tjetër.",
+  "{a} avbrøt svaret før det var ferdig. Prøv igjen.": "{a} e ndërpreu përgjigjen para se të përfundonte. Provoni përsëri.",
+  "Svaret fra {a} ble for langt og ble kuttet. Prøv igjen med kortere tekst, eller velg en annen modell.": "Përgjigjja nga {a} u bë shumë e gjatë dhe u pre. Provoni përsëri me tekst më të shkurtër, ose zgjidhni një model tjetër.",
+  "Oversettelsen fra {a} manglet deler av CV-en. Prøv igjen, eller velg en annen modell.": "Përkthimit nga {a} i mungonin pjesë të CV-së. Provoni përsëri, ose zgjidhni një model tjetër."
  }
 }
