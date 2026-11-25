@@ -50,7 +50,9 @@ If a number would make a point stronger but you do not have it, write [tall] whe
 2) Write CV text in the CV's language (field \"cv_language\" in cv_read, e.g. Bokmål, English or Deutsch). Talk to the person in the language they write to you in. \
 3) Follow recruiter and ATS practice: one column of real text, standard headings, 2-4 short bullets per job that start with a verb and show a result, the job ad's own words where they are true, \
 no buzzwords, no \"I\", no personal data such as date of birth, marital status or nationality, at most two A4 pages. \
-4) Keep answers short. Say what you changed and what the person should check or fill in.";
+4) Keep answers short. Say what you changed and what the person should check or fill in. \
+5) Items with \"hidden\": true in cv_read (and the bullets listed in a job's \"hidden_bullets\") are left out of this copy of the CV by choice: they stay in the file but are not in the preview, downloads, checks or page count. \
+Do not show, delete or rewrite them unless the person asks. When you rewrite a list, keep the text of hidden items exactly as it is, so they stay hidden; if a tool result says a hidden item was replaced and is now shown, tell the person or hide it again with cv_set_visible.";
 
 fn schema(properties: Value, required: &[&str]) -> Value {
     json!({"type": "object", "properties": properties, "required": required, "additionalProperties": false})
@@ -318,12 +320,82 @@ pub fn is_editing(name: &str) -> bool {
 /// hidden stays hidden), and new ones get ids.
 pub fn call(project: &mut Project, name: &str, args: &Value) -> Outcome {
     let before = is_editing(name).then(|| project.clone());
-    let outcome = run(project, name, args);
+    let mut outcome = run(project, name, args);
     if let Some(before) = before {
         project.keep_ids_from(&before);
         project.normalize_ids();
+        if !outcome.is_error
+            && name != "cv_set_visible"
+            && let Some(note) = hidden_note(&before, project, name.ends_with("_remove"))
+        {
+            outcome.text = format!("{} {note}", outcome.text);
+        }
     }
     outcome
+}
+
+fn kind_word(kind: cv_core::ids::Kind) -> &'static str {
+    use cv_core::ids::Kind;
+    match kind {
+        Kind::Job => "job",
+        Kind::Bullet => "bullet",
+        Kind::Education => "education",
+        Kind::Skill => "skill",
+        Kind::Language => "language",
+        Kind::Certification => "course",
+        Kind::Interest => "interest",
+        Kind::Section => "section",
+        Kind::Item => "entry",
+        Kind::Contact => "contact line",
+    }
+}
+
+/// What an edit did to the hidden items, for the model: a hidden item that is gone (removed, or
+/// rewritten so that its id could not be carried over, which shows the new text), and a changed
+/// text that kept a hidden item's id (and so stays hidden). `removing`: the tool deleted
+/// something on purpose, so what went with it needs no word.
+fn hidden_note(before: &Project, after: &Project, removing: bool) -> Option<String> {
+    let all = before.items();
+    let was: Vec<&cv_core::ids::ItemRef> = all.iter().filter(|i| i.hidden).collect();
+    if was.is_empty() {
+        return None;
+    }
+    let now = after.items();
+    let exists = |id: &str| now.iter().any(|n| n.id == id);
+    // A bullet or entry gone with its job, entry or section needs no word of its own.
+    let parent_gone = |i: &cv_core::ids::ItemRef| {
+        let mut p = i.parent.clone();
+        while let Some(id) = p {
+            if !exists(&id) {
+                return true;
+            }
+            p = all.iter().find(|x| x.id == id).and_then(|x| x.parent.clone());
+        }
+        false
+    };
+    let quote = |i: &cv_core::ids::ItemRef| format!("{} «{}»", kind_word(i.kind), i.text);
+    let mut gone = Vec::new();
+    let mut kept = Vec::new();
+    for &i in &was {
+        match now.iter().find(|n| n.id == i.id) {
+            None if removing || parent_gone(i) => {}
+            None => gone.push(quote(i)),
+            Some(n) if n.text != i.text && n.hidden => kept.push(format!("{} (was «{}»)", quote(n), i.text)),
+            Some(_) => {}
+        }
+    }
+    let mut out = Vec::new();
+    if !gone.is_empty() {
+        out.push(format!(
+            "Note: {} hidden item(s) no longer exist, so nothing of them is hidden now: {}. If one was renamed or rewritten rather than removed, its new text is shown in the CV; hide it again with cv_set_visible if the person wants it left out.",
+            gone.len(),
+            gone.join("; ")
+        ));
+    }
+    if !kept.is_empty() {
+        out.push(format!("Note: these hidden items were changed and are still hidden: {}. If a new text took the place of a hidden one, show it with cv_set_visible if it belongs in the CV.", kept.join("; ")));
+    }
+    (!out.is_empty()).then(|| out.join(" "))
 }
 
 fn run(project: &mut Project, name: &str, args: &Value) -> Outcome {
@@ -380,10 +452,39 @@ fn read(p: &Project) -> String {
         o.remove("approvals");
         o.remove("public_context");
         o.remove("version");
+        let hidden: std::collections::HashSet<&str> = p.options.hidden.iter().map(String::as_str).collect();
+        for value in o.values_mut() {
+            mark_hidden(value, &hidden);
+        }
         let shown = p.options.headings.as_ref().map(|h| h.language.clone()).unwrap_or_else(|| if p.language == Language::En { "English".into() } else { "Bokmål".into() });
         o.insert("cv_language".into(), Value::String(shown));
     }
     serde_json::to_string_pretty(&v).unwrap_or_default()
+}
+
+/// Marks what is hidden in this copy where the model reads it: `"hidden": true` on each hidden
+/// item, and `"hidden_bullets"` (the texts) on a job or entry with hidden bullets.
+fn mark_hidden(v: &mut Value, hidden: &std::collections::HashSet<&str>) {
+    if hidden.is_empty() {
+        return;
+    }
+    match v {
+        Value::Array(items) => items.iter_mut().for_each(|x| mark_hidden(x, hidden)),
+        Value::Object(o) => {
+            if o.get("id").and_then(Value::as_str).is_some_and(|id| hidden.contains(id)) {
+                o.insert("hidden".into(), Value::Bool(true));
+            }
+            let texts: Vec<Value> = match (o.get("bullets").and_then(Value::as_array), o.get("bullet_ids").and_then(Value::as_array)) {
+                (Some(b), Some(ids)) => b.iter().zip(ids).filter(|(_, id)| id.as_str().is_some_and(|id| hidden.contains(id))).map(|(b, _)| b.clone()).collect(),
+                _ => Vec::new(),
+            };
+            if !texts.is_empty() {
+                o.insert("hidden_bullets".into(), Value::Array(texts));
+            }
+            o.values_mut().for_each(|x| mark_hidden(x, hidden));
+        }
+        _ => {}
+    }
 }
 
 fn today_index() -> i32 {

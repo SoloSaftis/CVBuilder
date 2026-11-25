@@ -127,8 +127,8 @@ job does not need, without deleting it.
   and it hides the least relevant points instead of deleting them.
 
 CV files are now saved in a newer format (version 3) that keeps track of each
-item. CVBuilder versions from before this feature cannot open them; they say
-the file was saved by a newer CVBuilder.
+item. CVBuilder 1.3 and older cannot open them: they say the file is not a
+CVBuilder draft. Open such a file in this version of CVBuilder instead.
 
 ## The live preview
 

@@ -122,6 +122,21 @@ fn edits_keep_ids() {
     // A list rewritten with other things: only same-count changes are taken as edits.
     assert_eq!(same(&["Planla drift", "X", "Y", "Z"], Pairing::SameCount), [Some("a".into()), None, None, None]);
     assert_eq!(same(&["Planla drift", "X", "Y"], Pairing::SameCount), [Some("a".into()), Some("b".into()), Some("c".into())]);
+    // Counts differ: a line that is plainly another one made longer or shorter keeps its id …
+    assert_eq!(same(&["Planla drift", "Skrev rapporter (ukentlig)"], Pairing::SameCount), [Some("a".into()), Some("c".into())]);
+    assert_eq!(same(&["Planla drift", "Fulgte opp", "Ny linje", "Skrev rapporter"], Pairing::SameCount), [Some("a".into()), Some("b".into()), None, Some("c".into())]);
+    // … but a deleted line never hands its id to an unrelated one, as Greedy would.
+    assert_eq!(same(&["Planla drift", "Kortere rapport"], Pairing::SameCount), [Some("a".into()), None]);
+    assert_eq!(same(&["Planla drift", "Kortere rapport"], Pairing::Greedy), [Some("a".into()), Some("b".into())]);
+    // Two candidates for one line, or one line for two: no guess.
+    let two = ["Excel", "Excel makroer", "Word"].map(String::from).to_vec();
+    assert_eq!(carry(&two, &ids, &["Excel makroer og pivot".to_string(), "Word".to_string()], Pairing::SameCount), [None, Some("c".into())]);
+    // A line deleted, one edited and one added: the edited one keeps its own id, not the deleted one's.
+    assert_eq!(same(&["Planla drift", "Skrev rapporter hver uke", "Ny linje"], Pairing::SameCount), [Some("a".into()), Some("c".into()), Some("b".into())]);
+    // One word matches only at the start: «C» is not «Objective-C».
+    let langs = ["C", "Rust"].map(String::from).to_vec();
+    assert_eq!(carry(&langs, &ids, &["Objective-C".to_string()], Pairing::SameCount), [None]);
+    assert_eq!(carry(&langs, &ids, &["C (C99)".to_string()], Pairing::SameCount), [Some("a".into())]);
 }
 
 #[test]
@@ -174,7 +189,10 @@ fn hidden_items_are_left_out_of_every_output_but_kept() {
     assert!(document::page_count(&doc) <= pages_before);
     p.target.keywords = vec![skill.name.clone()];
     let found = checks::keyword_match(&p);
-    assert!(found.missing.contains(&skill.name) || !checks::plain_text(&p).contains(&skill.name), "a hidden skill does not count as found");
+    // The skill's name is nowhere else in the CV, so hiding it must make it missing.
+    assert!(!checks::plain_text(&p).contains(&skill.name), "the hidden skill is printed");
+    assert!(found.missing.contains(&skill.name), "a hidden skill does not count as found: {found:?}");
+    assert!(!found.found.contains(&skill.name), "a hidden skill does not count as found: {found:?}");
     // … but still in the project, and back when shown again.
     assert!(p.experience.iter().any(|j| j.id == job.id) && p.skills.iter().any(|s| s.id == skill.id));
     assert!(p.set_hidden(&job.id, false));
@@ -231,7 +249,6 @@ fn json_resume_export_and_ad_requirements_see_only_this_copy() {
     let r = cv_core::requirements::Requirement { text: skill.clone(), need: cv_core::requirements::Need::Must, terms: vec![skill.clone()] };
     assert!(cv_core::requirements::backing(&p, &r).missing.is_empty());
     p.set_hidden(&p.skills[0].id.clone(), true);
-    if !checks::plain_text(&p).contains(&skill) {
-        assert!(!cv_core::requirements::backing(&p, &r).missing.is_empty(), "the hidden skill still backs «{skill}»");
-    }
+    assert!(!checks::plain_text(&p).contains(&skill), "the hidden skill «{skill}» is printed");
+    assert!(!cv_core::requirements::backing(&p, &r).missing.is_empty(), "the hidden skill still backs «{skill}»");
 }

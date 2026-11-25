@@ -191,3 +191,121 @@ fn headings_in_any_language() {
     assert!(p.options.headings.is_none() && !p.is_english());
     assert!(cv_core::checks::plain_text(&p).contains("ARBEIDSERFARING"));
 }
+
+/// The words of the CV's plain text, as the PDF, Word and text downloads print it.
+fn printed(p: &Project) -> String {
+    cv_core::checks::plain_text(p)
+}
+
+#[test]
+fn an_edited_bullet_never_takes_a_hidden_bullets_place() {
+    let mut p = Project::example();
+    let job = p.experience[0].clone();
+    let hidden = job.bullet_ids[1].clone();
+    assert!(!cv_mcp::call(&mut p, "cv_set_visible", &json!({"ids": [hidden], "visible": false})).is_error);
+    // The AI drops the hidden bullet and shortens the third one.
+    let edited = format!("{} (kortere)", job.bullets[2]);
+    let out = cv_mcp::call(&mut p, "cv_job_save", &json!({"id": job.id, "bullets": [job.bullets[0], edited]}));
+    assert!(!out.is_error, "{}", out.text);
+    let j = &p.experience[0];
+    assert_eq!(j.bullets, vec![job.bullets[0].clone(), edited.clone()]);
+    assert_eq!(j.bullet_ids[0], job.bullet_ids[0], "the unchanged bullet keeps its id");
+    assert_eq!(j.bullet_ids[1], job.bullet_ids[2], "the edited bullet keeps its own id");
+    assert!(!p.is_hidden(&j.bullet_ids[1]), "the edited bullet is shown");
+    assert!(printed(&p).contains(&edited), "the edited bullet is in the CV:\n{}", printed(&p));
+    // The hidden bullet is gone, and the model is told so.
+    assert!(p.options.hidden.is_empty());
+    assert!(out.text.contains("hidden item(s) no longer exist") && out.text.contains(&job.bullets[1]), "{}", out.text);
+}
+
+#[test]
+fn a_whole_new_set_of_bullets_does_not_inherit_a_hidden_id() {
+    let mut p = Project::example();
+    let job = p.experience[0].clone();
+    p.set_hidden(&job.bullet_ids[1], true);
+    // Two unrelated new lines for three old ones: none of them is an edit of the hidden one.
+    let out = cv_mcp::call(&mut p, "cv_job_save", &json!({"id": job.id, "bullets": ["Ledet prosjekt A", "Ledet prosjekt B"]}));
+    assert!(!out.is_error, "{}", out.text);
+    assert!(p.experience[0].bullet_ids.iter().all(|id| !p.is_hidden(id) && !job.bullet_ids.contains(id)));
+    assert!(printed(&p).contains("Ledet prosjekt A") && printed(&p).contains("Ledet prosjekt B"));
+}
+
+#[test]
+fn a_renamed_hidden_skill_stays_hidden() {
+    let mut p = Project::example();
+    let skill = p.skills[0].clone();
+    assert_eq!(skill.name, "fremdriftsplaner");
+    p.set_hidden(&skill.id, true);
+    let mut skills: Vec<Value> = p.skills.iter().map(|s| json!({"group": s.group, "name": s.name})).collect();
+    skills[0] = json!({"group": skill.group, "name": "fremdriftsplaner (avansert)"});
+    skills.push(json!({"group": "Verktøy", "name": "AutoCAD"}));
+    let out = cv_mcp::call(&mut p, "cv_skills_set", &json!({"skills": skills}));
+    assert!(!out.is_error, "{}", out.text);
+    let renamed = p.skills.iter().find(|s| s.name == "fremdriftsplaner (avansert)").expect("renamed");
+    assert_eq!(renamed.id, skill.id, "the renamed skill keeps its id");
+    assert!(p.is_hidden(&renamed.id), "and stays hidden");
+    assert!(!printed(&p).contains("fremdriftsplaner (avansert)"), "{}", printed(&p));
+    assert!(printed(&p).contains("AutoCAD"));
+    assert!(out.text.contains("still hidden") && out.text.contains("fremdriftsplaner (avansert)"), "{}", out.text);
+}
+
+#[test]
+fn a_hidden_skill_replaced_by_something_else_is_reported() {
+    let mut p = Project::example();
+    let skill = p.skills[0].clone();
+    p.set_hidden(&skill.id, true);
+    let mut skills: Vec<Value> = p.skills.iter().skip(1).map(|s| json!({"group": s.group, "name": s.name})).collect();
+    skills.push(json!({"name": "Revit"}));
+    skills.push(json!({"name": "AutoCAD"}));
+    let out = cv_mcp::call(&mut p, "cv_skills_set", &json!({"skills": skills}));
+    assert!(!out.is_error, "{}", out.text);
+    assert!(p.options.hidden.is_empty(), "nothing new is hidden: {:?}", p.options.hidden);
+    assert!(printed(&p).contains("Revit") && printed(&p).contains("AutoCAD"));
+    assert!(out.text.contains("1 hidden item(s) no longer exist") && out.text.contains("skill «Prosjekt · fremdriftsplaner»"), "{}", out.text);
+}
+
+#[test]
+fn read_marks_what_is_hidden_and_the_rules_say_what_hiding_means() {
+    let mut p = Project::example();
+    let skill = p.skills[1].id.clone();
+    let bullet = (p.experience[0].bullet_ids[2].clone(), p.experience[0].bullets[2].clone());
+    p.set_hidden(&skill, true);
+    p.set_hidden(&bullet.0, true);
+    let read: Value = serde_json::from_str(&cv_mcp::call(&mut p, "cv_read", &json!({})).text).expect("json");
+    assert_eq!(read["skills"][1]["hidden"], json!(true));
+    assert!(read["skills"][0].get("hidden").is_none(), "a shown skill has no mark");
+    assert_eq!(read["experience"][0]["hidden_bullets"], json!([bullet.1]));
+    assert!(read["experience"][1].get("hidden_bullets").is_none());
+    assert!(tools::INSTRUCTIONS.contains("\"hidden\": true") && tools::INSTRUCTIONS.contains("hidden_bullets"));
+}
+
+#[test]
+fn a_hidden_bullet_deleted_one_edited_and_one_added_keeps_the_edited_one_shown() {
+    let mut p = Project::example();
+    let job = p.experience[0].clone();
+    p.set_hidden(&job.bullet_ids[1], true);
+    let edited = format!("{} (kortere)", job.bullets[2]);
+    // As many lines changed as were replaced, but the edited one is plainly the third.
+    let out = cv_mcp::call(&mut p, "cv_job_save", &json!({"id": job.id, "bullets": [job.bullets[0], edited, "Ledet et nytt prosjekt"]}));
+    assert!(!out.is_error, "{}", out.text);
+    let j = &p.experience[0];
+    assert_eq!(j.bullet_ids[1], job.bullet_ids[2], "the edited bullet keeps its own id");
+    assert!(printed(&p).contains(&edited), "the edited bullet is in the CV");
+    // The new line takes the deleted hidden line's place, and the model hears about it.
+    assert!(p.is_hidden(&j.bullet_ids[2]));
+    assert!(out.text.contains("still hidden") && out.text.contains("Ledet et nytt prosjekt"), "{}", out.text);
+}
+
+#[test]
+fn removing_a_job_with_hidden_bullets_needs_no_note() {
+    let mut p = Project::example();
+    let job = p.experience[0].clone();
+    p.set_hidden(&job.bullet_ids[0], true);
+    let out = cv_mcp::call(&mut p, "cv_job_remove", &json!({"id": job.id}));
+    assert!(!out.is_error && !out.text.contains("Note:"), "{}", out.text);
+    // Nor a plain edit of something else.
+    let mut p = Project::example();
+    p.set_hidden(&p.skills[0].id.clone(), true);
+    let out = cv_mcp::call(&mut p, "cv_update_profile", &json!({"headline": "Prosjektleder"}));
+    assert!(!out.text.contains("Note:"), "{}", out.text);
+}
