@@ -14,7 +14,7 @@ use std::sync::LazyLock;
 use regex::Regex;
 
 use crate::Project;
-use crate::checks::{self, contains, normal};
+use crate::checks::{ENDINGS, normal, starts_word, stems};
 use crate::import::{ad_keywords, clean_paste};
 
 /// How much the ad needs a requirement.
@@ -76,9 +76,10 @@ const MUST_HEADINGS: &[&str] = &[
 /// Headings that open a block of nice-to-haves.
 const NICE_HEADINGS: &[&str] = &[
     "ønskelig", "ønskelige kvalifikasjoner", "ønskede kvalifikasjoner", "ønskjeleg", "ønskjelege kvalifikasjonar", "det er en fordel", "det er en fordel om du har",
-    "det er ein fordel", "fordel", "fordeler", "fordelaktig", "det er et pluss", "et pluss", "pluss", "det er også fint om du har", "gjerne også", "i tillegg er det fint om du har",
+    "det er ein fordel", "fordel", "fordelaktig", "det er et pluss", "et pluss", "pluss", "det er også fint om du har", "gjerne også", "i tillegg er det fint om du har",
+    "kjekt å ha", "kjekt om du har", "det er kjekt om du har", "du bør ha", "bør ha", "det er fint om du har", "vi ser gjerne at du har",
     "nice to have", "nice-to-have", "nice to haves", "nice-to-haves", "bonus", "bonus points", "bonus if you have", "preferred qualifications", "preferred", "desirable",
-    "desirable criteria", "desirable skills", "it's a plus", "it is a plus", "a plus", "plus", "extra credit", "good to have", "advantageous", "would be great",
+    "desirable criteria", "desirable skills", "good to haves", "assets", "it's a plus", "it is a plus", "a plus", "plus", "extra credit", "good to have", "advantageous", "would be great",
     "it would be great if you have", "even better if you have", "meriterande", "meriterande kvalifikationer", "det är meriterande", "meriterande om du har", "önskvärt",
     "ønskeligt", "det er en fordel hvis du har", "det er et plus", "wünschenswert", "von vorteil", "nice to have", "pluspunten", "een pré", "atouts", "serait un plus",
     "se valorará", "valorable", "deseable", "katsotaan eduksi", "eduksi katsotaan", "arvostamme",
@@ -93,7 +94,13 @@ const OTHER_HEADINGS: &[&str] = &[
     "andre opplysninger", "nøkkelinformasjon", "lønn", "lønn og betingelser", "responsibilities", "key responsibilities", "your responsibilities", "your tasks", "tasks",
     "what you will do", "what you'll do", "what you will be doing", "what you'll be doing", "your role", "the role", "about the role", "about the job", "about the position",
     "job description", "about us", "about the company", "who we are", "we offer", "what we offer", "what we can offer", "what's in it for you", "benefits", "perks",
-    "how to apply", "application", "contact", "personal qualities", "personal attributes", "personal skills", "key information", "salary", "arbetsuppgifter",
+    "how to apply", "application", "contact",
+    // Perks: «Fordeler», «Benefits» and the like list what the employer gives, not what it asks.
+    "fordeler", "fordeler hos oss", "dine fordeler", "våre fordeler", "fordeler og goder", "goder", "våre goder", "personalgoder", "frynsegoder", "velferdsordninger",
+    "hva får du", "dette får du", "hva vi gir deg", "employee benefits", "our benefits", "benefits and perks", "perks and benefits", "benefits package", "what you get",
+    "what you'll get", "what you will get", "förmåner", "våra förmåner", "fördelar", "personalegoder", "deine vorteile", "ihre vorteile", "unsere benefits", "avantages",
+    "nos avantages", "beneficios", "voordelen", "edut", "työsuhde-edut",
+"personal qualities", "personal attributes", "personal skills", "key information", "salary", "arbetsuppgifter",
     "dina arbetsuppgifter", "vi erbjuder", "om oss", "om tjänsten", "arbejdsopgaver", "dine opgaver", "vi tilbyder", "personliga egenskaper", "personlige kompetencer",
     "ihre aufgaben", "deine aufgaben", "aufgaben", "wir bieten", "das bieten wir", "über uns", "taken", "jouw taken", "wat bieden wij", "wij bieden", "over ons",
     "missions", "vos missions", "nous offrons", "funciones", "ofrecemos", "tehtävät", "tarjoamme",
@@ -112,6 +119,10 @@ const NICE_CUES: &[&str] = &[
     "preferably", "ideally", "desirable", "is a bonus", "bonus if", "would be a bonus", "would be great", "good to have", "is beneficial", "beneficial", "meriterande",
     "meriterar", "är ett plus", "önskvärt", "ønskeligt", "er et plus", "von vorteil", "wünschenswert", "idealerweise", "wäre schön", "ein plus", "is een pré", "een pré",
     "pluspunt", "est un plus", "serait un plus", "un atout", "souhaité", "souhaitée", "se valorará", "valorable", "deseable", "katsotaan eduksi", "eduksi", "plussaa",
+    // Hedges: «bør», «gjerne», «kjekt», «a bonus» ask for less than a must.
+    "bør", "bør ha", "bør kunne", "gjerne", "kan gjerne", "fordel", "kjekt", "kjekt å ha", "vi ser gjerne", "er en styrke", "er ein styrke", "gärna", "gerne", "a bonus",
+    "is an asset", "an asset", "a big plus", "big plus", "would be nice", "nice if", "great if", "it helps if", "is helpful", "would be an advantage", "would be a plus",
+    "optional", "not essential", "ikke et krav", "ikkje eit krav", "ikke krav", "not required", "not a requirement", "not mandatory",
 ];
 
 /// Words or phrases in a line that make it a must-have, whatever block it is in.
@@ -158,6 +169,24 @@ fn has_phrase(norm: &str, phrase: &str) -> bool {
     !p.is_empty() && format!(" {norm} ").contains(&format!(" {p} "))
 }
 
+/// A word list normalised once, not on every line of every ad.
+fn normalised(list: &[&str]) -> Vec<String> {
+    list.iter().map(|p| normal(p)).filter(|p| !p.is_empty()).collect()
+}
+
+/// A cue list normalised once, with a space on each side for whole-word search in a padded line.
+fn padded(list: &[&str]) -> Vec<String> {
+    normalised(list).into_iter().map(|p| format!(" {p} ")).collect()
+}
+
+static HEADINGS: LazyLock<[(Vec<String>, Block); 4]> = LazyLock::new(|| {
+    [(normalised(MUST_HEADINGS), Block::Must), (normalised(NICE_HEADINGS), Block::Nice), (normalised(OTHER_HEADINGS), Block::Other), (normalised(TOPIC_HEADINGS), Block::Topic)]
+});
+static NICE_PADDED: LazyLock<Vec<String>> = LazyLock::new(|| padded(NICE_CUES));
+static MUST_PADDED: LazyLock<Vec<String>> = LazyLock::new(|| padded(MUST_CUES));
+/// Each cue as a single key, to keep cue words out of the terms.
+static CUE_KEYS: LazyLock<std::collections::HashSet<String>> = LazyLock::new(|| normalised(MUST_CUES).into_iter().chain(normalised(NICE_CUES)).collect());
+
 /// The kind of a heading line, if it is one. `norm` is the line normalised, `ends_colon` says
 /// whether it ended in «:».
 fn heading(line: &str) -> Option<Block> {
@@ -171,15 +200,14 @@ fn heading(line: &str) -> Option<Block> {
     if norm.is_empty() || norm.split(' ').count() > 9 || raw.chars().count() > 80 {
         return None;
     }
-    let lists: [(&[&str], Block); 4] = [(MUST_HEADINGS, Block::Must), (NICE_HEADINGS, Block::Nice), (OTHER_HEADINGS, Block::Other), (TOPIC_HEADINGS, Block::Topic)];
     let mut best: Option<(usize, Block)> = None;
-    for (list, block) in lists {
+    for (list, block) in HEADINGS.iter() {
+        let block = *block;
         for h in list {
-            let h = normal(h);
-            let whole = norm == h;
+            let whole = norm == *h;
             // «Kvalifikasjoner og personlige egenskaper:» starts a block too, but only with
             // the colon: «Krav om førerkort klasse B» is a requirement, not a heading.
-            let start = colon && norm.starts_with(&format!("{h} "));
+            let start = colon && norm.len() > h.len() && norm.starts_with(h.as_str()) && norm.as_bytes()[h.len()] == b' ';
             if (whole || start) && best.is_none_or(|(len, _)| h.len() > len) {
                 best = Some((h.len(), block));
             }
@@ -189,7 +217,8 @@ fn heading(line: &str) -> Option<Block> {
     if let Some(b) = bracket {
         let b = normal(&b);
         let not_required = ["ikke krav", "ikkje krav", "not required", "optional", "valgfritt"].iter().any(|c| has_phrase(&b, c));
-        if not_required || NICE_CUES.iter().chain(NICE_HEADINGS).any(|c| has_phrase(&b, c)) {
+        let pad = format!(" {b} ");
+        if not_required || NICE_PADDED.iter().any(|c| pad.contains(c.as_str())) || HEADINGS[1].0.iter().any(|h| pad.contains(&format!(" {h} "))) {
             block = Block::Nice;
         } else if has_phrase(&b, "krav") || has_phrase(&b, "required") || has_phrase(&b, "must") {
             block = Block::Must;
@@ -198,16 +227,14 @@ fn heading(line: &str) -> Option<Block> {
     Some(block)
 }
 
-/// The need a line says it has itself, if any. Nice cues win: «Erfaring med X er en fordel,
-/// men ikke et krav».
+/// The need a line says it has itself, if any. Nice cues and hedges win: «Erfaring med X er en
+/// fordel, men ikke et krav», «Du bør ha minst 3 års erfaring».
 fn cue(norm: &str) -> Option<Need> {
-    if NICE_CUES.iter().any(|c| has_phrase(norm, c)) {
+    let pad = format!(" {norm} ");
+    if NICE_PADDED.iter().any(|c| pad.contains(c.as_str())) {
         return Some(Need::Nice);
     }
-    if has_phrase(norm, "ikke et krav") || has_phrase(norm, "not required") || has_phrase(norm, "not a requirement") {
-        return Some(Need::Nice);
-    }
-    MUST_CUES.iter().any(|c| has_phrase(norm, c)).then_some(Need::Must)
+    MUST_PADDED.iter().any(|c| pad.contains(c.as_str())).then_some(Need::Must)
 }
 
 /// A line without its list marker.
@@ -269,7 +296,7 @@ pub fn terms(text: &str) -> Vec<String> {
             continue;
         }
         // A cue word is not something the CV can show.
-        if MUST_CUES.iter().chain(NICE_CUES).any(|c| normal(c) == key) {
+        if CUE_KEYS.contains(&key) {
             continue;
         }
         if !out.iter().any(|o| normal(o) == key) {
@@ -366,7 +393,7 @@ fn content_runs(text: &str) -> Vec<String> {
             || language_of(&key).is_some()
             || key.chars().all(|c| c.is_ascii_digit() || c == '+')
             || (key.chars().count() < 2)
-            || MUST_CUES.iter().chain(NICE_CUES).any(|c| normal(c) == key);
+            || CUE_KEYS.contains(&key);
         if plain {
             flush(&mut run, &mut out);
         } else {
@@ -385,6 +412,8 @@ pub fn ad_requirements(ad: &str) -> Vec<Requirement> {
     let mut block: Option<Block> = None;
     let mut out: Vec<Requirement> = Vec::new();
     let mut seen = std::collections::HashSet::new();
+    // The block has had list points: a plain line after them is back to the ad's prose.
+    let mut listed = false;
     for raw in clean.lines() {
         let line = raw.trim();
         if line.is_empty() {
@@ -400,18 +429,40 @@ pub fn ad_requirements(ad: &str) -> Vec<Requirement> {
                     (Block::Topic, _) => Block::Must,
                     (b, _) => b,
                 });
+                listed = false;
                 continue;
             }
+            let mut inline = false;
+            let mut key_value = false;
             if let Some((head, tail)) = body.split_once([':', '：']) {
-                if !tail.trim().is_empty() && head.chars().count() <= 40 {
+                let tail = tail.trim();
+                if !tail.is_empty() && head.chars().count() <= 40 {
                     if let Some(b) = heading(&format!("{head}:")) {
                         if b != Block::Topic {
                             block = Some(b);
+                            listed = false;
                         }
-                        rest = tail.trim();
+                        rest = tail;
+                        inline = true;
+                    } else {
+                        // «Søknadsfrist: 15.12.2026», «Sted: Oslo», «Start date: ASAP».
+                        let head_words = normal(head).split(' ').count();
+                        key_value = head_words <= 3 && head.chars().count() <= 30 && normal(tail).split(' ').count() <= 12;
                     }
                 }
             }
+            // A must or nice block ends at the ad's prose: a long paragraph, a plain line after
+            // the list, or a «Key: value» line. What follows counts only by its own cue.
+            if !inline && matches!(block, Some(Block::Must | Block::Nice)) {
+                let norm = normal(body);
+                let prose = norm.split(' ').count() > 20 || listed;
+                if prose || (key_value && cue(&norm).is_none()) {
+                    block = None;
+                    listed = false;
+                }
+            }
+        } else if matches!(block, Some(Block::Must | Block::Nice)) {
+            listed = true;
         }
         // A lead-in such as «Vi ser etter deg som har:» opens nothing new and is no requirement.
         if rest.ends_with([':', '：']) {
@@ -422,9 +473,11 @@ pub fn ad_requirements(ad: &str) -> Vec<Requirement> {
             let words = norm.split(' ').count();
             let need = match (cue(&norm), block) {
                 (_, Some(Block::Other)) => None,
+                // «Nice to have: minimum 2 years with Go» stays a nice-to-have: the heading
+                // ranks the whole block, and a must word inside it never lifts a point.
+                (_, Some(Block::Nice)) => Some(Need::Nice),
                 (Some(n), _) => Some(n),
                 (None, Some(Block::Must)) => Some(Need::Must),
-                (None, Some(Block::Nice)) => Some(Need::Nice),
                 _ => None,
             };
             // Outside a block, only a sentence that says «krav» or «fordel» counts; a long
@@ -483,55 +536,76 @@ impl Backing {
     }
 }
 
+/// Whether the normalised `hay` shows `term`, or one of its «/» alternatives, as whole words:
+/// «Java» is not in «JavaScript», «Excel» not in «excellent», «C» not in «C++». The last word
+/// may take a plural or definite ending («pipeline» → «pipelines», «planer» → «plan»).
+fn shows(hay: &str, term: &str) -> bool {
+    term.split(['/', '|']).map(normal).filter(|o| !o.is_empty()).any(|o| {
+        if starts_word(hay, &o, true) {
+            return true;
+        }
+        let last = o.rsplit(' ').next().unwrap_or(&o);
+        let inflects = last.chars().count() >= 4 && last.chars().all(char::is_alphabetic);
+        (inflects && ENDINGS.iter().any(|end| starts_word(hay, &format!("{o}{end}"), true)))
+            || stems(&o).any(|s| std::iter::once("").chain(ENDINGS).any(|end| starts_word(hay, &format!("{s}{end}"), true)))
+    })
+}
+
 /// Where the CV shows each of the requirement's terms.
 pub fn backing(p: &Project, r: &Requirement) -> Backing {
     // Only what is in this copy of the CV backs a requirement (hidden items are left out).
     let p = &*p.visible();
-    let haystack = normal(&checks::cv_text(p));
     let mut found = Vec::new();
     let mut missing = Vec::new();
     let mut places: Vec<Place> = Vec::new();
-    let add = |place: Place, places: &mut Vec<Place>| {
-        if !places.contains(&place) {
-            places.push(place);
-        }
-    };
     for term in &r.terms {
-        if !contains(&haystack, term) {
-            missing.push(term.clone());
-            continue;
-        }
-        found.push(term.clone());
-        let has = |text: &str| contains(&normal(text), term);
-        for j in &p.experience {
-            if has(&j.title) || j.bullets.iter().any(|b| has(b)) || has(&j.company) {
-                let name = [j.title.trim(), j.company.trim()].iter().filter(|s| !s.is_empty()).copied().collect::<Vec<_>>().join(" · ");
-                add(Place::Job(name), &mut places);
+        let mut hit = false;
+        let mut add = |place: Place| {
+            hit = true;
+            if !places.contains(&place) {
+                places.push(place);
             }
-        }
-        for e in &p.education {
-            if has(&e.qualification) || has(&e.institution) {
-                add(Place::Education(e.qualification.trim().to_string()), &mut places);
+        };
+        let has = |text: &str| shows(&normal(text), term);
+        // «Norsk» in «Norsk Hydro» says nothing about speaking the language: only the
+        // languages section and the skills list show one.
+        let language = LANGUAGES.iter().any(|(_, s)| *s == term);
+        if !language {
+            for j in &p.experience {
+                if has(&j.title) || j.bullets.iter().any(|b| has(b)) || has(&j.company) {
+                    let name = [j.title.trim(), j.company.trim()].iter().filter(|s| !s.is_empty()).copied().collect::<Vec<_>>().join(" · ");
+                    add(Place::Job(name));
+                }
             }
-        }
-        for c in &p.certifications {
-            if has(&c.name) || has(&c.issuer) {
-                add(Place::Certification(c.name.trim().to_string()), &mut places);
+            for e in &p.education {
+                if has(&e.qualification) || has(&e.institution) {
+                    add(Place::Education(e.qualification.trim().to_string()));
+                }
             }
-        }
-        for s in &p.custom_sections {
-            if s.items.iter().any(|i| has(&i.title) || has(&i.subtitle) || i.bullets.iter().any(|b| has(b))) {
-                add(Place::Section(s.title.trim().to_string()), &mut places);
+            for c in &p.certifications {
+                if has(&c.name) || has(&c.issuer) {
+                    add(Place::Certification(c.name.trim().to_string()));
+                }
+            }
+            for s in &p.custom_sections {
+                if s.items.iter().any(|i| has(&i.title) || has(&i.subtitle) || i.bullets.iter().any(|b| has(b))) {
+                    add(Place::Section(s.title.trim().to_string()));
+                }
             }
         }
         if p.languages.iter().any(|l| has(&l.name)) {
-            add(Place::Languages, &mut places);
+            add(Place::Languages);
         }
-        if p.skills.iter().any(|s| has(&s.name) || has(&s.group)) {
-            add(Place::Skills, &mut places);
+        if p.skills.iter().any(|s| has(&s.name) || (!language && has(&s.group))) {
+            add(Place::Skills);
         }
-        if has(&p.candidate.headline) || has(&p.candidate.summary) {
-            add(Place::Profile, &mut places);
+        if !language && (has(&p.candidate.headline) || has(&p.candidate.summary)) {
+            add(Place::Profile);
+        }
+        if hit {
+            found.push(term.clone());
+        } else {
+            missing.push(term.clone());
         }
     }
     // Jobs and what was done first, the lists after: that is the evidence a recruiter trusts.
