@@ -10,7 +10,9 @@
 //! self-assessment differs between skills), the driving licence becomes a contact line, and what
 //! the CV has no field for (date of birth, nationality, prose skills, achievements) is returned as
 //! text for «Dette må plasseres».
-use crate::cvread::{CvRead, looks_english, month_or_year};
+use std::collections::HashSet;
+
+use crate::cvread::{CvRead, MAX_LIST, looks_english, month_or_year};
 use crate::import::strip_html;
 use crate::linkedin::{count, lines};
 use crate::model::{Certification, ContactField, CustomItem, CustomSection, Education, Job, Language, Project, Skill, SpokenLanguage};
@@ -30,8 +32,9 @@ impl Node {
         self.children.iter().find(|c| c.name.eq_ignore_ascii_case(name))
     }
 
+    /// The children with this local name, at most [`MAX_LIST`] of them.
     fn all<'a>(&'a self, name: &'a str) -> impl Iterator<Item = &'a Node> + 'a {
-        self.children.iter().filter(move |c| c.name.eq_ignore_ascii_case(name))
+        self.children.iter().filter(move |c| c.name.eq_ignore_ascii_case(name)).take(MAX_LIST)
     }
 
     /// The node at a path of local names, each the first of its name.
@@ -48,37 +51,89 @@ impl Node {
         self.attrs.iter().find(|(k, _)| k.eq_ignore_ascii_case(name)).map(|(_, v)| v.trim()).unwrap_or("")
     }
 
-    /// Every node below this one with this local name, in document order.
-    fn find<'a>(&'a self, name: &str, out: &mut Vec<&'a Node>) {
-        for c in &self.children {
-            if c.name.eq_ignore_ascii_case(name) {
-                out.push(c);
-            }
-            c.find(name, out);
-        }
-    }
-
+    /// Every node below this one with this local name, in document order. Walked with a list of
+    /// its own rather than by recursion, so no tree is too deep for it. At most [`MAX_LIST`].
     fn descendants(&self, name: &str) -> Vec<&Node> {
         let mut out = Vec::new();
-        self.find(name, &mut out);
+        let mut todo: Vec<&Node> = self.children.iter().rev().collect();
+        while let Some(n) = todo.pop() {
+            if n.name.eq_ignore_ascii_case(name) {
+                out.push(n);
+                if out.len() == MAX_LIST {
+                    break;
+                }
+            }
+            todo.extend(n.children.iter().rev());
+        }
         out
     }
 }
 
+/// How deep elements may nest. A Europass CV nests about a dozen levels; a file nested far
+/// deeper is not one, and refusing it keeps the reader's stack safe.
+const MAX_DEPTH: usize = 100;
+/// How many elements a file may have. A long Europass CV has a few thousand.
+const MAX_NODES: usize = 100_000;
+/// How much text one element keeps (bytes); the rest is left out.
+const MAX_TEXT: usize = 1_000_000;
+/// How many attributes an element keeps, how long a value may be, and how long a name (bytes).
+const MAX_ATTRS: usize = 16;
+const MAX_ATTR_VALUE: usize = 10_000;
+const MAX_NAME: usize = 200;
+
+/// The first `max` bytes of a text, cut at a character boundary.
+pub(crate) fn cut(text: &str, max: usize) -> &str {
+    if text.len() <= max {
+        return text;
+    }
+    let mut end = max;
+    while !text.is_char_boundary(end) {
+        end -= 1;
+    }
+    &text[..end]
+}
+
+/// Appends to an element's text, up to [`MAX_TEXT`].
+fn push_text(node: &mut Node, piece: &str) {
+    let room = MAX_TEXT.saturating_sub(node.text.len());
+    node.text.push_str(cut(piece, room));
+}
+
 /// An XML text as a tree. Entities and character references are resolved; CDATA is kept as text.
+/// A file nested deeper than [`MAX_DEPTH`] or with more than [`MAX_NODES`] elements is refused;
+/// text and attributes are kept up to their limits.
 pub(crate) fn parse(text: &str) -> Result<Node, String> {
     use quick_xml::events::Event;
     let mut reader = quick_xml::Reader::from_str(text);
     let mut stack: Vec<Node> = vec![Node::default()];
+    let mut nodes = 0usize;
     let open = |e: &quick_xml::events::BytesStart| Node {
-        name: String::from_utf8_lossy(e.local_name().as_ref()).into_owned(),
-        attrs: e.attributes().flatten().map(|a| (String::from_utf8_lossy(a.key.local_name().as_ref()).into_owned(), a.normalized_value(quick_xml::XmlVersion::Implicit1_0).map(|v| v.into_owned()).unwrap_or_default())).collect(),
+        name: cut(&String::from_utf8_lossy(e.local_name().as_ref()), MAX_NAME).to_string(),
+        attrs: e
+            .attributes()
+            .flatten()
+            .take(MAX_ATTRS)
+            .map(|a| (cut(&String::from_utf8_lossy(a.key.local_name().as_ref()), MAX_NAME).to_string(), a.normalized_value(quick_xml::XmlVersion::Implicit1_0).map(|v| cut(&v, MAX_ATTR_VALUE).to_string()).unwrap_or_default()))
+            .collect(),
         ..Default::default()
     };
     let bad = |e: &dyn std::fmt::Display| crate::plain::with_details("Europass-filen kunne ikke leses. Den kan være skadet.", &e.to_string());
     loop {
-        match reader.read_event().map_err(|e| bad(&e))? {
-            Event::Start(e) => stack.push(open(&e)),
+        let event = reader.read_event().map_err(|e| bad(&e))?;
+        if matches!(event, Event::Start(_) | Event::Empty(_)) {
+            nodes += 1;
+            if nodes > MAX_NODES {
+                return Err(bad(&format!("more than {MAX_NODES} elements")));
+            }
+        }
+        match event {
+            Event::Start(e) => {
+                // The stack holds the document node too, so its length is the depth of the new element.
+                if stack.len() > MAX_DEPTH {
+                    return Err(bad(&format!("elements nested deeper than {MAX_DEPTH} levels")));
+                }
+                stack.push(open(&e));
+            }
             Event::Empty(e) => {
                 let node = open(&e);
                 if let Some(top) = stack.last_mut() {
@@ -94,12 +149,12 @@ pub(crate) fn parse(text: &str) -> Result<Node, String> {
             }
             Event::Text(t) => {
                 if let Some(top) = stack.last_mut() {
-                    top.text.push_str(&t.decode().map_err(|e| bad(&e))?);
+                    push_text(top, &t.decode().map_err(|e| bad(&e))?);
                 }
             }
             Event::CData(t) => {
                 if let Some(top) = stack.last_mut() {
-                    top.text.push_str(&String::from_utf8_lossy(&t.into_inner()));
+                    push_text(top, &String::from_utf8_lossy(&t.into_inner()));
                 }
             }
             Event::GeneralRef(r) => {
@@ -115,7 +170,7 @@ pub(crate) fn parse(text: &str) -> Result<Node, String> {
                     },
                 };
                 if let Some(top) = stack.last_mut() {
-                    top.text.push_str(&piece);
+                    push_text(top, &piece);
                 }
             }
             Event::Eof => break,
@@ -133,20 +188,93 @@ pub fn is_europass(text: &str) -> bool {
     head.trim_start_matches('\u{feff}').trim_start().starts_with('<') && (head.contains("SkillsPassport") || head.contains("europass.eu/1.0") || head.contains("europass.cedefop.europa.eu")) && (head.contains("<SkillsPassport") || head.contains("Candidate"))
 }
 
+/// The largest attachment looked at, packed or unpacked (bytes). A Europass XML is well under a
+/// megabyte; a bigger attachment is something else, or a file made to fill the memory.
+pub(crate) const MAX_ATTACHMENT: usize = 5_000_000;
+/// How many attached files are looked at, and how much is unpacked of one before its start shows
+/// whether it is a Europass CV at all.
+const MAX_ATTACHMENTS: usize = 20;
+const HEAD: u64 = 64 * 1024;
+
+fn find(hay: &[u8], needle: &[u8]) -> Option<usize> {
+    hay.windows(needle.len()).position(|w| w == needle)
+}
+
+fn rfind(hay: &[u8], needle: &[u8]) -> Option<usize> {
+    hay.windows(needle.len()).rposition(|w| w == needle)
+}
+
 /// The Europass XML attached to a PDF from the Europass editor, if there is one. Every embedded
 /// file is looked at, so the attachment's name and where the PDF lists it do not matter.
+///
+/// The PDF is not loaded as a whole: loading unpacks every object stream without a limit, so a
+/// small PDF could fill the memory. Instead the attached files' streams (`/Type /EmbeddedFile`,
+/// which a PDF never puts inside an object stream) are found in the bytes and unpacked with a
+/// limit: a little first to see whether it is a Europass CV, the rest only then.
 pub fn xml_in_pdf(bytes: &[u8]) -> Option<String> {
-    let doc = lopdf::Document::load_mem(bytes).ok()?;
-    doc.objects.values().find_map(|object| {
-        let lopdf::Object::Stream(stream) = object else { return None };
-        let embedded = stream.dict.get(b"Type").and_then(lopdf::Object::as_name).is_ok_and(|n| n == b"EmbeddedFile");
-        if !embedded {
+    let mut at = 0;
+    let mut looked_at = 0;
+    while looked_at < MAX_ATTACHMENTS {
+        let i = at + find(&bytes[at..], b"/EmbeddedFile")?;
+        at = i + b"/EmbeddedFile".len();
+        // «/EmbeddedFiles», the name tree of the catalogue, is another name.
+        if bytes.get(at).is_some_and(|b| b.is_ascii_alphanumeric() || *b == b'#') {
+            continue;
+        }
+        looked_at += 1;
+        // The stream's dictionary runs from its «N 0 obj» to the «stream» keyword after the name.
+        let start = rfind(&bytes[..i], b"obj").map_or(0, |s| s + 3);
+        let Some(keyword) = find(&bytes[i..bytes.len().min(i + 4096)], b"stream").map(|s| i + s) else { continue };
+        let dict = &bytes[start..keyword];
+        let mut data = keyword + b"stream".len();
+        if bytes.get(data) == Some(&b'\r') {
+            data += 1;
+        }
+        if bytes.get(data) == Some(&b'\n') {
+            data += 1;
+        }
+        let window = &bytes[data.min(bytes.len())..bytes.len().min(data + MAX_ATTACHMENT + 64)];
+        let Some(end) = find(window, b"endstream") else { continue };
+        let content = &window[..end];
+        if let Some(text) = attachment_text(dict, content) {
+            return Some(text);
+        }
+    }
+    None
+}
+
+/// An attached file's text when it is a Europass CV: stored as it is, or packed with Flate (the
+/// only packing the Europass editor uses). Unpacking stops at [`MAX_ATTACHMENT`]; an attachment
+/// that is larger, uses another filter, or does not unpack is passed over.
+fn attachment_text(dict: &[u8], content: &[u8]) -> Option<String> {
+    use std::io::Read;
+    let unpack = |limit: u64| {
+        let mut out = Vec::new();
+        // A cut stream still gives what came before the cut.
+        let _ = flate2::read::ZlibDecoder::new(content).take(limit).read_to_end(&mut out);
+        out
+    };
+    let has = |name: &[u8]| find(dict, name).is_some();
+    let data = if !has(b"/Filter") {
+        content.to_vec()
+    } else if has(b"/FlateDecode") || has(b"/Fl ") || has(b"/Fl/") || has(b"/Fl]") {
+        // One filter only: any other (ASCII85, LZW, a crypt filter …) is not unpacked here.
+        if [&b"/ASCII"[..], b"/LZW", b"/RunLength", b"/Crypt", b"/A85", b"/AHx", b"/RL"].iter().any(|f| has(f)) {
             return None;
         }
-        let data = stream.decompressed_content().unwrap_or_else(|_| stream.content.clone());
-        let text = crate::import::decode_text(&data);
-        is_europass(&text).then_some(text)
-    })
+        if !is_europass(&crate::import::decode_text(&unpack(HEAD))) {
+            return None;
+        }
+        let out = unpack(MAX_ATTACHMENT as u64 + 1);
+        if out.len() > MAX_ATTACHMENT {
+            return None;
+        }
+        out
+    } else {
+        return None;
+    };
+    let text = crate::import::decode_text(&data);
+    is_europass(&text).then_some(text)
 }
 
 /// HTML from a Europass description («<ul><li>…</li></ul>», often escaped) as lines.
@@ -288,7 +416,7 @@ fn pick(english: bool, no: &str, en: &str) -> String {
 /// A contact value that is a LinkedIn profile goes in its own field, others become contact lines.
 fn web(p: &mut Project, label: &str, value: &str) {
     let value = value.trim();
-    if value.is_empty() {
+    if value.is_empty() || p.candidate.extra.len() >= MAX_LIST {
         return;
     }
     let c = &mut p.candidate;
@@ -418,8 +546,9 @@ fn read_v3(root: &Node, english: bool, r: &mut Read) {
         if let Some(computer) = skills.child("Computer") {
             let html = computer.get(&["Description"]);
             if html.to_lowercase().contains("<li") && html_lines(&html).iter().all(|l| l.chars().count() <= 60) {
-                for name in html_lines(&html) {
-                    if !p.skills.iter().any(|s| s.name.eq_ignore_ascii_case(&name)) {
+                let mut seen: HashSet<String> = p.skills.iter().map(|s| s.name.to_ascii_lowercase()).collect();
+                for name in html_lines(&html).into_iter().take(MAX_LIST) {
+                    if seen.insert(name.to_ascii_lowercase()) {
                         p.skills.push(Skill { id: String::new(), group: digital.clone(), name, evidence: String::new(), confirmed: true });
                     }
                 }
@@ -519,6 +648,9 @@ fn read_candidate(root: &Node, english: bool, r: &mut Read) {
         let company = employer.get(&["OrganizationName"]);
         let employer_city = employer.child("OrganizationContact").map(city).unwrap_or_default();
         for position in employer.all("PositionHistory") {
+            if p.experience.len() >= MAX_LIST {
+                break;
+            }
             let title = position.get(&["PositionTitle"]);
             let period = position.child("EmploymentPeriod");
             let current = period.is_some_and(|p| p.get(&["CurrentIndicator"]).eq_ignore_ascii_case("true"));
@@ -559,9 +691,10 @@ fn read_candidate(root: &Node, english: bool, r: &mut Read) {
     // Digital skills, alone or in the person's own groups.
     let digital = pick(english, "Digitale ferdigheter", "Digital skills");
     if let Some(skills) = profile.child("Skills") {
+        let mut seen: HashSet<String> = p.skills.iter().map(|s| s.name.to_ascii_lowercase()).collect();
         let mut add = |group: &str, c: &Node| {
             let name = c.get(&["CompetencyName"]);
-            if !name.is_empty() && !p.skills.iter().any(|s| s.name.eq_ignore_ascii_case(&name)) {
+            if !name.is_empty() && p.skills.len() < MAX_LIST && seen.insert(name.to_ascii_lowercase()) {
                 p.skills.push(Skill { id: String::new(), group: group.to_string(), name, evidence: String::new(), confirmed: true });
             }
         };

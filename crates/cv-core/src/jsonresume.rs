@@ -11,7 +11,9 @@
 use serde_json::{Map, Value, json};
 
 use crate::checks;
-use crate::cvread::{CvRead, looks_english, month_or_year};
+use std::collections::HashSet;
+
+use crate::cvread::{CvRead, MAX_LIST, looks_english, month_or_year};
 use crate::linkedin::{count, lines};
 use crate::model::{Certification, ContactField, CustomItem, CustomSection, Education, Interest, Job, Language, Project, Skill, SpokenLanguage};
 
@@ -24,10 +26,19 @@ const KEYS: [&str; 13] = ["basics", "work", "volunteer", "education", "awards", 
 /// Whether a JSON text is a JSON Resume rather than a CVBuilder project: it has `basics` or
 /// `work`, and none of the project's own keys.
 pub fn is_json_resume(text: &str) -> bool {
-    let Ok(Value::Object(o)) = serde_json::from_str::<Value>(text.trim_start_matches('\u{feff}')) else {
-        return false;
-    };
+    serde_json::from_str::<Value>(text.trim_start_matches('\u{feff}')).is_ok_and(|v| is_resume(&v))
+}
+
+fn is_resume(v: &Value) -> bool {
+    let Value::Object(o) = v else { return false };
     (o.contains_key("basics") || o.contains_key("work")) && !o.contains_key("candidate") && !o.contains_key("experience")
+}
+
+/// A JSON text read as a JSON Resume, when it is one (parsed once); `None` for other JSON (a
+/// CVBuilder draft) and for text that is not JSON.
+pub fn read_if_resume(text: &str) -> Option<Result<CvRead, String>> {
+    let v: Value = serde_json::from_str(text.trim_start_matches('\u{feff}')).ok()?;
+    is_resume(&v).then(|| from_value(&v))
 }
 
 /// Text of a field; numbers are written out, everything else is empty.
@@ -39,8 +50,10 @@ fn s(v: &Value, key: &str) -> String {
     }
 }
 
+/// A list of the file, at most its first [`MAX_LIST`] entries.
 fn arr<'a>(v: &'a Value, key: &str) -> &'a [Value] {
-    v.get(key).and_then(Value::as_array).map(Vec::as_slice).unwrap_or(&[])
+    let list = v.get(key).and_then(Value::as_array).map(Vec::as_slice).unwrap_or(&[]);
+    &list[..list.len().min(MAX_LIST)]
 }
 
 fn strings(v: &Value, key: &str) -> Vec<String> {
@@ -80,6 +93,30 @@ const PROJECTS: (&str, &str) = ("Prosjekter", "Projects");
 /// Reads a JSON Resume. `found` lists what was read («jobber (3)» …), `rest` what has no place.
 pub fn read(text: &str) -> Result<CvRead, String> {
     let v: Value = serde_json::from_str(text.trim_start_matches('\u{feff}')).map_err(|e| crate::plain::with_details("JSON Resume-filen kunne ikke leses. Den kan være skadet.", &e.to_string()))?;
+    from_value(&v)
+}
+
+/// The largest photo taken from `basics.image` (the `data:` text, bytes), and its largest side in
+/// pixels. CVBuilder's own photos are a few hundred kilobytes.
+const MAX_PHOTO: usize = 2_000_000;
+const MAX_PHOTO_SIDE: u32 = 4000;
+
+/// `basics.image` as CVBuilder's photo: a JPEG `data:` URL that decodes, of a sensible size.
+fn photo(image: &str) -> Option<String> {
+    use base64::Engine as _;
+    let encoded = image.strip_prefix("data:image/jpeg;base64,")?;
+    if image.len() > MAX_PHOTO {
+        return None;
+    }
+    let bytes = base64::engine::general_purpose::STANDARD.decode(encoded.trim()).ok()?;
+    let (w, h) = crate::document::jpeg_size(&bytes)?;
+    (w <= MAX_PHOTO_SIDE && h <= MAX_PHOTO_SIDE).then(|| format!("data:image/jpeg;base64,{}", encoded.trim()))
+}
+
+/// The most text kept from the keys the schema does not have (bytes, all of them together).
+const MAX_UNKNOWN: usize = 20_000;
+
+fn from_value(v: &Value) -> Result<CvRead, String> {
     if !v.is_object() {
         return Err("Filen er ikke en JSON Resume.".into());
     }
@@ -122,10 +159,12 @@ pub fn read(text: &str) -> Result<CvRead, String> {
         }
     }
     let image = s(&b, "image");
-    if image.starts_with("data:image/") {
-        c.photo = image;
+    if let Some(photo) = photo(&image) {
+        c.photo = photo;
         p.options.photo = true;
-    } else if !image.is_empty() {
+    } else if !image.is_empty() && !image.starts_with("data:") {
+        // A link is kept for the person; a picture CVBuilder cannot use (not a JPEG, too large,
+        // or broken) is left out, since its text is no help to them.
         rest.push(format!("{}: {image}", pick(("Bilde", "Photo"))));
     }
     let url = s(&b, "url");
@@ -198,10 +237,11 @@ pub fn read(text: &str) -> Result<CvRead, String> {
     count(&mut found, "utdanning", p.education.len());
 
     // ---- skills: a skill with keywords is a group of skills ----
-    for k in arr(&v, "skills") {
+    let mut seen: HashSet<String> = HashSet::new();
+    for k in arr(v, "skills") {
         let (name, keywords) = (s(k, "name"), strings(k, "keywords"));
         let mut add = |group: &str, name: &str| {
-            if !name.is_empty() && !p.skills.iter().any(|x| x.name.eq_ignore_ascii_case(name)) {
+            if !name.is_empty() && p.skills.len() < MAX_LIST && seen.insert(name.to_ascii_lowercase()) {
                 p.skills.push(Skill { id: String::new(), group: group.to_string(), name: name.to_string(), evidence: String::new(), confirmed: true });
             }
         };
@@ -296,10 +336,17 @@ pub fn read(text: &str) -> Result<CvRead, String> {
             rest.push(format!("{}: {name} – {reference}", pick(("Referanse", "Reference"))));
         }
     }
-    if let Value::Object(o) = &v {
-        let unknown: Vec<&String> = o.keys().filter(|k| !KEYS.contains(&k.as_str()) && !k.starts_with('$')).collect();
-        for k in unknown {
-            rest.push(format!("{k}: {}", o[k]));
+    if let Value::Object(o) = v {
+        // The keys the schema does not have, written out up to [`MAX_UNKNOWN`] in all.
+        let mut room = MAX_UNKNOWN;
+        for (k, value) in o.iter().filter(|(k, _)| !KEYS.contains(&k.as_str()) && !k.starts_with('$')) {
+            let line = format!("{k}: {value}");
+            if line.len() > room {
+                rest.push(format!("{} …", crate::europass::cut(&line, room)));
+                break;
+            }
+            room -= line.len();
+            rest.push(line);
         }
     }
 
@@ -368,7 +415,8 @@ pub fn write(p: &Project) -> String {
     let mut basics = Map::new();
     put(&mut basics, "name", &c.name);
     put(&mut basics, "label", &c.headline);
-    if !c.photo.is_empty() {
+    // The photo only when it is switched on, as in the PDF: a photo turned off stays private.
+    if p.options.photo && !c.photo.is_empty() {
         put(&mut basics, "image", &c.photo);
     }
     put(&mut basics, "email", &c.email);
