@@ -433,12 +433,23 @@ fn replace_in(text: &str, from: &str, to: &str) -> (String, usize) {
     let mut n = 0;
     let mut rest = text;
     let is_word = |c: char| c.is_alphanumeric() || is_mark(c);
+    // Hyphens and apostrophes inside a word belong to it, as in [`words`]: «self-motivatd» and
+    // «recieve's» are found whole, so they are replaced whole too.
+    let joins = |c: char| c == '-' || APOSTROPHES.contains(&c);
     while !rest.is_empty() {
-        // The next run of word characters.
+        // The next word: word characters, with hyphens and apostrophes only between them.
         let start = rest.char_indices().find(|(_, c)| is_word(*c)).map(|(i, _)| i).unwrap_or(rest.len());
         out.push_str(&rest[..start]);
         rest = &rest[start..];
-        let end = rest.char_indices().find(|(_, c)| !is_word(*c)).map(|(i, _)| i).unwrap_or(rest.len());
+        let mut end = 0;
+        let mut chars = rest.char_indices().peekable();
+        while let Some((i, c)) = chars.next() {
+            if is_word(c) {
+                end = i + c.len_utf8();
+            } else if !(joins(c) && chars.peek().is_some_and(|&(_, n)| is_word(n) || joins(n))) {
+                break;
+            }
+        }
         let word = &rest[..end];
         if !word.is_empty() && word.to_lowercase() == wanted {
             let capital = word.chars().next().is_some_and(char::is_uppercase) && to.chars().next().is_some_and(char::is_lowercase);
@@ -524,6 +535,28 @@ mod tests {
         assert_eq!(replace_word(&mut p, "recieved", "received"), 3);
         assert_eq!(p.candidate.summary, "Received awards. I received, not unrecieved.");
         assert_eq!(p.experience[0].bullets[0], "received");
+    }
+
+    #[test]
+    fn a_word_with_a_hyphen_or_apostrophe_is_replaced_whole() {
+        let mut p = Project::default();
+        p.candidate.summary = "Self-motivatd and self-motivatd. I recieve's it, and recieve’s too.".into();
+        p.experience.push(Job { bullets: vec!["A self-motivatd- team".into(), "'recieve's'".into()], ..Default::default() });
+        assert_eq!(replace_word(&mut p, "self-motivatd", "self-motivated"), 3);
+        assert_eq!(replace_word(&mut p, "recieve's", "receives"), 2);
+        assert_eq!(replace_word(&mut p, "recieve’s", "receives"), 1);
+        assert_eq!(p.candidate.summary, "Self-motivated and self-motivated. I receives it, and receives too.");
+        assert_eq!(p.experience[0].bullets, ["A self-motivated- team", "'receives'"]);
+        // Only the whole word: one half of a hyphenated word stays as it is.
+        p.candidate.headline = "well-knwon, knwon".into();
+        assert_eq!(replace_word(&mut p, "knwon", "known"), 1);
+        assert_eq!(p.candidate.headline, "well-knwon, known");
+        // Every word that `words` finds can be replaced.
+        for w in words("Self-motivatd, recieve's «co-op» rock'n'roll") {
+            let mut q = Project::default();
+            q.candidate.summary = format!("x {w}.");
+            assert_eq!(replace_word(&mut q, w, "ok"), 1, "{w}");
+        }
     }
 
     #[test]

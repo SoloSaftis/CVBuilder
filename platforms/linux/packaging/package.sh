@@ -35,6 +35,10 @@ rm -rf "$appdir" && mkdir -p "$appdir/usr/bin"
 cp target/release/CVBuilder "$appdir/usr/bin/CVBuilder"
 cp assets/cvbuilder-256.png "$appdir/cvbuilder.png"
 cp "$stage/cvbuilder.desktop" "$appdir/cvbuilder.desktop"
+# The licence texts go with every copy, the AppImage too.
+mkdir -p "$appdir/usr/share/doc/cvbuilder"
+cp "$stage/THIRD-PARTY.txt" "$appdir/usr/share/doc/cvbuilder/THIRD-PARTY.txt"
+cp "$stage/THIRD-PARTY.txt" "$appdir/THIRD-PARTY.txt"
 cat > "$appdir/AppRun" <<'APPRUN'
 #!/bin/sh
 here="$(dirname "$(readlink -f "$0")")"

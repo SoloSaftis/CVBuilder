@@ -13,6 +13,10 @@ automatic update check, and it does not send your CV or anything else to the CVB
   the CV file or the CV, and are not sent to an AI. "Delete all answers" removes them.
 - API keys you enter for an AI service are kept in your operating system's keychain (Windows
   Credential Manager, macOS Keychain, Secret Service on Linux), not in a file.
+- The spell check runs on your computer; your text is never sent anywhere to be checked. The
+  words you add ("Add to my words") are kept in `my-words.txt`, and the dictionaries you
+  download or pick in the `dictionaries` folder, both in the same data folder. Delete them to
+  forget them.
 
 ## When CVBuilder uses the internet
 
@@ -21,6 +25,9 @@ Only when you ask it to:
 - **Fetching a job ad** from a link you enter: CVBuilder downloads that page.
 - **Checking for updates** (Help → Check for updates): CVBuilder asks GitHub for the number of
   the newest version. Nothing about you or your CV is sent, and nothing is downloaded by itself.
+- **Downloading a spelling dictionary** (in the spell check, for a language that has none built
+  in): CVBuilder downloads that dictionary from GitHub (raw.githubusercontent.com) and checks it
+  against a fixed checksum. Only the file is asked for; nothing about you or your CV is sent.
 - **The AI assistant**, if you connect one: what you send in the chat, and the parts of your CV
   the assistant needs, go to the service you chose (Anthropic Claude, OpenAI ChatGPT, Google
   Gemini or xAI Grok), under that service's own privacy policy. A local model (Ollama,
