@@ -73,8 +73,11 @@ pub enum Pairing {
     /// Changed texts take the ids of the texts they replaced, in order, as far as they go:
     /// right for lines typed in a box, where one line is edited at a time.
     Greedy,
-    /// Only when as many texts changed as were replaced (an edit in place, or a translation);
-    /// otherwise the changed ones are new: right for lists rewritten as a whole.
+    /// First a changed text that holds the whole of one replaced text, or is held whole in it
+    /// («Excel» → «Excel (avansert)»), takes its id, when neither has another such match. Then
+    /// the rest pair in order only when as many changed as were replaced (an edit in place, or a
+    /// translation); otherwise they are new. Right for lists rewritten as a whole (the AI tools),
+    /// where a deleted line must not hand its id, and with it its hidden flag, to an edited one.
     SameCount,
 }
 
@@ -92,14 +95,45 @@ pub fn carry(old: &[String], old_ids: &[String], new: &[String], pairing: Pairin
             out[n] = old_ids.get(o).cloned();
         }
     }
-    let free_old: Vec<usize> = (0..old.len()).filter(|&o| !used[o] && old_ids.get(o).is_some_and(|id| !id.is_empty())).collect();
-    let free_new: Vec<usize> = (0..new.len()).filter(|&n| out[n].is_none()).collect();
+    let free = |used: &[bool], out: &[Option<String>]| -> (Vec<usize>, Vec<usize>) {
+        ((0..old.len()).filter(|&o| !used[o] && old_ids.get(o).is_some_and(|id| !id.is_empty())).collect(), (0..new.len()).filter(|&n| out[n].is_none()).collect())
+    };
+    let (free_old, free_new) = free(&used, &out);
+    if pairing == Pairing::SameCount {
+        // First a text that is plainly another one made longer or shorter, and the only one.
+        let old_words: Vec<Vec<String>> = free_old.iter().map(|&o| words(&old[o])).collect();
+        let matches: Vec<Vec<usize>> = free_new.iter().map(|&n| (0..free_old.len()).filter(|&k| same_line(&words(&new[n]), &old_words[k])).collect()).collect();
+        for (i, &n) in free_new.iter().enumerate() {
+            if let [k] = matches[i][..]
+                && matches.iter().filter(|m| m.contains(&k)).count() == 1
+            {
+                used[free_old[k]] = true;
+                out[n] = old_ids.get(free_old[k]).cloned();
+            }
+        }
+    }
+    let (free_old, free_new) = free(&used, &out);
     if pairing == Pairing::Greedy || free_old.len() == free_new.len() {
         for (n, o) in free_new.into_iter().zip(free_old) {
             out[n] = old_ids.get(o).cloned();
         }
     }
     out
+}
+
+fn words(s: &str) -> Vec<String> {
+    s.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()).map(str::to_lowercase).collect()
+}
+
+/// One text holds the whole of the other, word for word; a single word only at the start
+/// («Excel» → «Excel (avansert)», not «C» → «Objective-C»).
+fn same_line(a: &[String], b: &[String]) -> bool {
+    let holds = |long: &[String], short: &[String]| match short.len() {
+        0 => false,
+        1 => long.first() == short.first(),
+        n => n <= long.len() && long.windows(n).any(|w| w == short),
+    };
+    holds(a, b) || holds(b, a)
 }
 
 /// An id that has not been given out before (by this program, at this time): for items added now.
@@ -243,7 +277,8 @@ impl Project {
     }
 
     /// After a change made without regard to ids (an AI tool that rewrote a list, a translation),
-    /// gives the changed items the ids they had in `before`: see [`carry`]. Then
+    /// gives the changed items the ids they had in `before`: see [`carry`] and
+    /// [`Pairing::SameCount`], used for bullets as for every other list here. Then
     /// [`Project::normalize_ids`] gives the rest new ones.
     pub fn keep_ids_from(&mut self, before: &Project) {
         let bullets = |new_b: &[String], new_ids: &mut Vec<String>, old_b: &[String], old_ids: &[String]| {
@@ -252,7 +287,8 @@ impl Project {
             }
             // Ids the change did not touch (still exactly the old ones) belong to the old texts.
             if new_ids.as_slice() == old_ids || new_ids.iter().all(String::is_empty) {
-                *new_ids = carry(old_b, old_ids, new_b, Pairing::Greedy).into_iter().map(Option::unwrap_or_default).collect();
+                // Rewritten as a whole, not typed line by line: SameCount, as for every list.
+                *new_ids = carry(old_b, old_ids, new_b, Pairing::SameCount).into_iter().map(Option::unwrap_or_default).collect();
             }
         };
         for j in &mut self.experience {
