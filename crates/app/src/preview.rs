@@ -58,6 +58,12 @@ impl Preview {
         Preview { jobs, results, generation: 0, shown: 0, changed_at: Some(Instant::now()), textures: Vec::new(), page_count: 0, busy: false }
     }
 
+    /// An edit is waiting for typing to pause, or its pages are still being drawn.
+    #[cfg(test)]
+    pub(crate) fn pending(&self) -> bool {
+        self.changed_at.is_some() || self.busy
+    }
+
     /// Call after any edit; the preview refreshes once typing pauses.
     pub fn changed(&mut self) {
         self.changed_at = Some(Instant::now());

@@ -476,7 +476,38 @@ fn harness(size: Vec2, setup: fn(&mut CvApp)) -> Harness<'static, CvApp> {
         s.interaction.tooltip_delay = 1.0e6;
     });
     step(&mut h, 12);
+    wait_for_preview(&mut h);
     h
+}
+
+/// The pages are drawn on another thread, and the preview only gets its scroll bar once they are
+/// there. Every window waits for them, so that none is compared half loaded: a scroll bar that
+/// turned up behind a dialog looked like part of the dropdown just opened there.
+fn wait_for_preview(h: &mut Harness<'_, CvApp>) {
+    let start = std::time::Instant::now();
+    while h.state().preview.pending() {
+        assert!(start.elapsed().as_secs() < 60, "the preview was never drawn");
+        std::thread::sleep(std::time::Duration::from_millis(10));
+        h.step();
+    }
+    // The pages take their place, and the scroll bar with them.
+    step(h, 20);
+}
+
+/// The harness hands the window over with its pages drawn, so no control turns up later by itself.
+#[test]
+#[ignore = "slow: part of the ui_qa run"]
+fn nothing_appears_after_the_window_is_ready() {
+    private_data_folder("en");
+    let mut h = harness(Vec2::new(1440.0, 900.0), |a| a.open_translate(None));
+    assert!(!h.state().preview.textures.is_empty(), "no pages yet");
+    let ids = |h: &Harness<'_, CvApp>| snapshot(h).into_iter().filter(|c| c.control).map(|c| c.id).collect::<BTreeSet<_>>();
+    let before = ids(&h);
+    for _ in 0..50 {
+        std::thread::sleep(std::time::Duration::from_millis(20));
+        h.step();
+    }
+    assert_eq!(before, ids(&h));
 }
 
 /// A clean portable data folder next to the test program (so nothing touches the person's own),
@@ -516,8 +547,8 @@ fn ui_qa() {
                 } else {
                     baseline.entry((lang.clone(), size.x as u32)).or_insert_with(|| snapshot(&harness(size, |_| {})).into_iter().filter(|c| c.control).map(|c| c.id).collect()).clone()
                 };
-                // Scroll bars are egui's own and float in only while a list scrolls, so whether one
-                // is there to click depends on timing; they are left out of the click test.
+                // The panels' scroll bars are egui's own and are not click-tested here; a dropdown's
+                // or a menu's are, with the rest of what it opens.
                 let ids: Vec<u64> = base.iter().filter(|c| c.control && c.role != Role::ScrollBar && !first.contains(&c.id)).map(|c| c.id).collect();
                 count += ids.len();
                 let mut problems = check_overlaps(&mut h, &base, screen);
@@ -675,7 +706,7 @@ fn checklist_points_say_their_status() {
     let recruiter: Vec<&String> = points.iter().skip_while(|l| !l.starts_with("Done: Everything required")).skip(1).collect();
     let first_done = recruiter.iter().position(|l| l.starts_with("Done: ")).unwrap_or(recruiter.len());
     assert!(recruiter[first_done..].iter().all(|l| l.starts_with("Done: ")), "a point to do comes after a done one:\n{}", points.join("\n"));
-    // One's own list, before the preview has counted the pages: the page point is not judged yet.
+    // One's own list.
     let h = harness(Vec2::new(1440.0, 900.0), scene("Egen sjekkliste"));
     assert!(!spoken(&h).is_empty(), "the own checklist has no spoken points");
     let labels: Vec<String> = snapshot(&h).into_iter().map(|c| c.label).collect();
@@ -1122,19 +1153,6 @@ fn keyboard_shortcuts_and_safe_dialogs() {
     assert!(h.state().langs.editor.is_none(), "«Avbryt» did not close the editor");
 }
 
-/// The preview is made on its own thread after a short pause: wait for the pages (at most ten
-/// seconds), so pictures show the CV rather than «Creating preview …».
-fn wait_for_preview(h: &mut Harness<'_, CvApp>) {
-    for _ in 0..200 {
-        h.step();
-        if h.state().preview.page_count > 0 {
-            break;
-        }
-        std::thread::sleep(std::time::Duration::from_millis(50));
-    }
-    step(h, 20);
-}
-
 /// Pictures of every scene, for looking at the layout by eye:
 /// `CVBUILDER_SHOTS=<dir> cargo test --release -p cvbuilder-app ui_shots -- --ignored`
 #[test]
@@ -1148,7 +1166,6 @@ fn ui_shots() {
     private_data_folder(&lang);
     for (i, scene) in SCENES.iter().enumerate() {
         let mut h = harness(Vec2::new(1440.0, 900.0), scene.setup);
-        wait_for_preview(&mut h);
         let image = h.render().expect("render");
         image.save(dir.join(format!("{i:02}-{}.png", scene.name.replace(' ', "_")))).expect("save");
     }
@@ -1167,7 +1184,6 @@ fn requirement_shots() {
     private_data_folder(&lang);
     for scene in SCENES.iter().filter(|s| s.name.starts_with("Krav i") || s.name == "Stavekontroll" || s.name == "Sjekkliste") {
         let mut h = harness(Vec2::new(1440.0, 2600.0), scene.setup);
-        wait_for_preview(&mut h);
         let image = h.render().expect("render");
         image.save(dir.join(format!("{lang}-{}.png", scene.name.replace(' ', "_")))).expect("save");
     }
@@ -1192,7 +1208,6 @@ fn store_shots() {
     ];
     for (name, setup) in scenes {
         let mut h = harness(Vec2::new(1920.0, 1080.0), setup);
-        wait_for_preview(&mut h);
         let image = h.render().expect("render");
         image.save(dir.join(format!("{lang}-{name}.png"))).expect("save");
     }
