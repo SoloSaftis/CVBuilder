@@ -9,8 +9,9 @@
 //!
 //! The wording is Norwegian keys with `{name}` placeholders; the app translates them into the
 //! menu language (the sheet is the person's own preparation, not part of the CV). The person's
-//! notes are kept by the app, never in the CV file.
-use std::collections::HashSet;
+//! notes ([`Notes`]) are kept by the app on this computer, never in the CV file, and apart for
+//! each CV and job ([`notes_scope`]): a note written for one application never shows on another.
+use std::collections::{BTreeMap, HashSet};
 use std::sync::Arc;
 
 use wordcraft_doc::props::{Border, BorderStyle, Borders, LineSpacing};
@@ -359,6 +360,95 @@ pub fn sheet(full: &Project, today_index: i32) -> Sheet {
         if company.is_empty() { Line::new("Hva vil du spørre dem om?", &[]) } else { Line::new("Hva vet du om {company}, og hva vil du spørre dem om?", &[("company", company)]) },
     ));
     Sheet { items, suggested }
+}
+
+/// Which sheet a note belongs to: the person the CV is for and the job its ad is for (role and
+/// company). Case and spaces do not count. A tailored copy of the same person's CV for the same
+/// job shares the notes (it is the same interview); another person's CV, or the same CV for
+/// another job, does not.
+pub fn notes_scope(p: &Project) -> String {
+    [normal(&p.candidate.name), normal(&p.target.role), normal(&p.target.company)].join("\t")
+}
+
+/// The version of the notes file that [`Notes`] writes.
+pub const NOTES_VERSION: u8 = 2;
+
+/// The person's interview notes on this computer: by sheet ([`notes_scope`]), then by item id.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+pub struct Notes {
+    pub version: u8,
+    #[serde(default)]
+    pub sheets: BTreeMap<String, BTreeMap<String, String>>,
+    /// Notes from the first version of the file, which kept one set for every CV and job: which
+    /// sheet they were written for cannot be told (the usual questions had the same id on every
+    /// sheet), so they are kept here, never shown and never deleted by «Slett notatene».
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub unassigned: BTreeMap<String, String>,
+}
+
+impl Default for Notes {
+    fn default() -> Notes {
+        Notes { version: NOTES_VERSION, sheets: BTreeMap::new(), unassigned: BTreeMap::new() }
+    }
+}
+
+impl Notes {
+    /// Reads the notes file, of this version or the first one (a flat map of item id to note).
+    pub fn from_json(text: &str) -> Result<Notes, String> {
+        let value: serde_json::Value = serde_json::from_str(text).map_err(|e| e.to_string())?;
+        let Some(map) = value.as_object() else { return Err("not a JSON object".into()) };
+        let mut notes = if map.contains_key("version") {
+            let notes: Notes = serde_json::from_value(value).map_err(|e| e.to_string())?;
+            if notes.version > NOTES_VERSION {
+                return Err(format!("version {} is from a newer CVBuilder", notes.version));
+            }
+            notes
+        } else {
+            let old: BTreeMap<String, String> = serde_json::from_value(value).map_err(|e| e.to_string())?;
+            Notes { unassigned: old, ..Default::default() }
+        };
+        notes.version = NOTES_VERSION;
+        notes.tidy();
+        Ok(notes)
+    }
+
+    pub fn to_json(&self) -> Result<String, String> {
+        serde_json::to_string_pretty(&Notes { version: NOTES_VERSION, ..self.clone() }).map_err(|e| e.to_string())
+    }
+
+    /// The note on item `id` of sheet `scope`, or "".
+    pub fn get(&self, scope: &str, id: &str) -> &str {
+        self.sheets.get(scope).and_then(|s| s.get(id)).map(String::as_str).unwrap_or("")
+    }
+
+    /// The note to edit on item `id` of sheet `scope`.
+    pub fn entry(&mut self, scope: &str, id: &str) -> &mut String {
+        self.sheets.entry(scope.to_string()).or_default().entry(id.to_string()).or_default()
+    }
+
+    /// Sheet `scope` has a note.
+    pub fn any(&self, scope: &str) -> bool {
+        self.sheets.get(scope).is_some_and(|s| s.values().any(|n| !n.trim().is_empty()))
+    }
+
+    /// Deletes the notes of sheet `scope`, and only those.
+    pub fn clear(&mut self, scope: &str) {
+        self.sheets.remove(scope);
+    }
+
+    /// Drops empty notes and sheets.
+    pub fn tidy(&mut self) {
+        for sheet in self.sheets.values_mut() {
+            sheet.retain(|_, n| !n.trim().is_empty());
+        }
+        self.sheets.retain(|_, s| !s.is_empty());
+        self.unassigned.retain(|_, n| !n.trim().is_empty());
+    }
+
+    /// Nothing to keep, so no file is needed.
+    pub fn is_empty(&self) -> bool {
+        self.sheets.values().all(|s| s.values().all(|n| n.trim().is_empty())) && self.unassigned.values().all(|n| n.trim().is_empty())
+    }
 }
 
 /// Where the CV shows an item, as one line («CV-en viser det: …»; for a claim «Fra: …»).
@@ -748,6 +838,104 @@ mod tests {
         assert_eq!(s.part(Part::Claims).count(), 0);
         // With the older job hidden there is no gap between the jobs either.
         assert!(s.part(Part::Gaps).all(|i| !i.subject.is_empty()));
+    }
+
+    /// The notes as the sheet's text shows them, for one CV and its job.
+    fn shown(p: &Project, notes: &Notes) -> String {
+        let scope = notes_scope(p);
+        to_text(p, &sheet(p, today()), &|id| notes.get(&scope, id).to_string(), &no)
+    }
+
+    #[test]
+    fn notes_stay_with_their_cv_and_job() {
+        // Two CVs (two people), each sent to two jobs.
+        let mut ada = project();
+        ada.candidate.name = "Ada Berg".into();
+        let mut ola = project();
+        ola.candidate.name = "Ola Dahl".into();
+        let for_job = |p: &Project, role: &str, company: &str| {
+            let mut p = p.clone();
+            p.target.role = role.into();
+            p.target.company = company.into();
+            p
+        };
+        let ada_a = for_job(&ada, "Driftskoordinator", "Nordvik Energi");
+        let ada_b = for_job(&ada, "Planlegger", "Sørkraft");
+        let ola_a = for_job(&ola, "Driftskoordinator", "Nordvik Energi");
+        let ola_b = for_job(&ola, "Planlegger", "Sørkraft");
+        let all = [&ada_a, &ada_b, &ola_a, &ola_b];
+        let scopes: HashSet<String> = all.iter().map(|p| notes_scope(p)).collect();
+        assert_eq!(scopes.len(), 4);
+        // The same ids on every sheet: the usual questions, the claims, the requirements.
+        let claim = sheet(&ada_a, today()).part(Part::Claims).next().unwrap().id.clone();
+        for p in all {
+            let s = sheet(p, today());
+            assert!(s.items.iter().any(|i| i.id == "why") && s.items.iter().any(|i| i.id == claim));
+        }
+        let mut notes = Notes::default();
+        for p in all {
+            let tag = format!("{} hos {}", p.candidate.name, p.target.company);
+            *notes.entry(&notes_scope(p), "why") = format!("Hvorfor: {tag}");
+            *notes.entry(&notes_scope(p), &claim) = format!("Påstand: {tag}");
+        }
+        // Each sheet's text has its own notes and none of the others'.
+        for p in all {
+            let text = shown(p, &notes);
+            for other in all {
+                let tag = format!("{} hos {}", other.candidate.name, other.target.company);
+                assert_eq!(text.contains(&format!("Hvorfor: {tag}")), std::ptr::eq(p, other), "{tag} on {}:\n{text}", notes_scope(p));
+                assert_eq!(text.contains(&format!("Påstand: {tag}")), std::ptr::eq(p, other));
+            }
+            // The PDF too.
+            let scope = notes_scope(p);
+            let doc = to_document(p, &sheet(p, today()), &|id| notes.get(&scope, id).to_string(), &no, "nb");
+            let pdf = crate::import::text_from_bytes(&crate::document::to_pdf(&doc).unwrap(), "pdf").unwrap();
+            assert!(pdf.contains(&format!("Hvorfor: {} hos {}", p.candidate.name, p.target.company)));
+            assert_eq!(pdf.matches("Hvorfor: ").count(), 1, "{pdf}");
+        }
+        // Case and spaces in the ad do not move the notes; a tailored copy (hidden items) keeps them.
+        let mut same = for_job(&ada, " driftskoordinator ", "NORDVIK  energi");
+        same.normalize_ids();
+        let older = same.experience[1].id.clone();
+        same.set_hidden(&older, true);
+        assert!(shown(&same, &notes).contains("Hvorfor: Ada Berg hos Nordvik Energi"));
+        // Deleting one sheet's notes leaves the others.
+        notes.clear(&notes_scope(&ada_b));
+        assert!(!notes.any(&notes_scope(&ada_b)));
+        assert!(!shown(&ada_b, &notes).contains("Hvorfor:"));
+        for p in [&ada_a, &ola_a, &ola_b] {
+            assert!(notes.any(&notes_scope(p)));
+        }
+        // And they come back from the file as they were.
+        let again = Notes::from_json(&notes.to_json().unwrap()).unwrap();
+        assert_eq!(again, notes);
+    }
+
+    #[test]
+    fn the_first_notes_file_is_kept_but_not_shown() {
+        // Version one: one flat map for every CV and job.
+        let old = r#"{ "why": "Fordi Nordvik bygger nett", "need:erfaring med sap": "Innkjøpsflyten", "ask": "  " }"#;
+        let notes = Notes::from_json(old).unwrap();
+        assert_eq!(notes.version, NOTES_VERSION);
+        assert!(notes.sheets.is_empty());
+        assert_eq!(notes.unassigned.len(), 2, "the empty note is dropped, the rest kept");
+        assert!(!notes.is_empty());
+        let p = project();
+        assert!(!notes.any(&notes_scope(&p)));
+        let text = shown(&p, &notes);
+        assert!(!text.contains("Nordvik bygger") && !text.contains("Innkjøpsflyten"), "{text}");
+        // Written back, the old notes are still there; deleting a sheet's notes does not touch them.
+        let mut notes = notes;
+        *notes.entry(&notes_scope(&p), "why") = "Ny".into();
+        notes.clear(&notes_scope(&p));
+        let json = notes.to_json().unwrap();
+        assert!(json.contains("\"version\": 2") && json.contains("Fordi Nordvik bygger nett") && json.contains("Innkjøpsflyten"), "{json}");
+        assert_eq!(Notes::from_json(&json).unwrap().unassigned, Notes::from_json(old).unwrap().unassigned);
+        // Not a notes file, or one from a newer app: an error, so the app sets it aside.
+        for bad in ["[1, 2]", "{\"why\": 3}", "{\"version\": 9, \"sheets\": {}}", "not json"] {
+            assert!(Notes::from_json(bad).is_err(), "{bad}");
+        }
+        assert!(Notes::default().is_empty());
     }
 
     #[test]
